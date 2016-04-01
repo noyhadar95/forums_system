@@ -29,6 +29,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         */
 
         private string password;
+
+        private int numOfUsers;
+
+        private int ageOfUser;
+
+
         public string getPassword()
         {
             return password;
@@ -36,6 +42,24 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public void setPassword(string newPassword)
         {
             password = newPassword;
+        }
+
+        public int getNumOfUsers()
+        {
+            return numOfUsers;
+        }
+        public void increaseNumOfUsers()
+        {
+            this.numOfUsers++;
+        }
+
+        public int getAgeOfUser()
+        {
+            return ageOfUser;
+        }
+        public void iSetAgeOfUser(int ageOfUser)
+        {
+            this.ageOfUser = ageOfUser;
         }
     }
 }

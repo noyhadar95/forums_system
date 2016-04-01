@@ -6,28 +6,25 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class PasswordPolicy : Policy
+    class ModeratorSuspensionPolicy: Policy
     {
-        private int requiredLength;
+        private int numOfComplaints;
 
-        public PasswordPolicy(int requiredLength)
+        public ModeratorSuspensionPolicy(int numOfComplaints)
         {
-            this.requiredLength = requiredLength;
+            this.numOfComplaints = numOfComplaints;
         }
         public override bool checkPolicy(PolicyParametersObject param)
         {
             if (param.getPolicy() == type)
             {
-                return checkLength(param.getPassword());
+                //TODO: check if the moderator has too many complaints and suspend him if needed
+
+                return true; 
             }
             else
                 return base.checkPolicy(param);
 
-        }
-
-        private bool checkLength(string pass)
-        {
-            return pass.Length >= requiredLength;
         }
     }
 }

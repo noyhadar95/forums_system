@@ -11,6 +11,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         protected Policies type;
         private Policy nextPolicy;
 
+        public Policy(Policies type)
+        {
+            this.type = type;
+        }
         /// <summary>
         /// Check the params given according to the forum policies
         /// </summary>

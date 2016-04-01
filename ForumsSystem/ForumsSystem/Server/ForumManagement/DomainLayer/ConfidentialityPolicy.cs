@@ -6,28 +6,23 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class PasswordPolicy : Policy
+    class ConfidentialityPolicy: Policy
     {
-        private int requiredLength;
-
-        public PasswordPolicy(int requiredLength)
+        private bool blockPassword;
+        
+        public ConfidentialityPolicy(bool blockPassword)
         {
-            this.requiredLength = requiredLength;
-        }
+            this.blockPassword = blockPassword;
+        } 
         public override bool checkPolicy(PolicyParametersObject param)
         {
             if (param.getPolicy() == type)
             {
-                return checkLength(param.getPassword());
+                return this.blockPassword;
             }
             else
                 return base.checkPolicy(param);
 
-        }
-
-        private bool checkLength(string pass)
-        {
-            return pass.Length >= requiredLength;
         }
     }
 }

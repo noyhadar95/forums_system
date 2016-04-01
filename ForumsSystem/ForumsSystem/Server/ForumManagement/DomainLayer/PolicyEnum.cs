@@ -9,6 +9,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     enum Policies
     {
         password=0,
-        securedForum=1
+        Authentication = 1,
+        ModeratorSuspension=2,
+            Confidentiality=3,
+            ModeratorAppointment=4,
+            AdminAppointment=5,
+            MemberSuspension=6,
+            UsersLoad=7,
+            MinimumAge=8
     }
 }
