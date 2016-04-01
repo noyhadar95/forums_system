@@ -6,7 +6,32 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    interface Policy
+    abstract class Policy
     {
+        protected Policies type;
+        private Policy nextPolicy;
+
+        /// <summary>
+        /// Check the params given according to the forum policies
+        /// </summary>
+        public virtual bool checkPolicy(PolicyParametersObject param)
+        {
+            if(nextPolicy!=null)
+               return nextPolicy.checkPolicy(param);
+            return true;//TODO: check this
+        }
+        
+
+        /// <summary>
+        /// Add new policy to the end of the chain
+        /// </summary>
+        /// <param name="newPolicy"></param>
+        public void addPolicy(Policy newPolicy)
+        {
+            if (nextPolicy != null)
+                nextPolicy.addPolicy(newPolicy);
+            else
+                newPolicy = newPolicy;
+        }
     }
 }
