@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForumsSystem", "ForumsSystem\ForumsSystem.csproj", "{488D5473-E8EC-4DF6-99C9-8D07D7F30237}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptanceTests", "AcceptanceTests\AcceptanceTests.csproj", "{F72513E9-8985-4910-812B-1C0F4E1407F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{488D5473-E8EC-4DF6-99C9-8D07D7F30237}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{488D5473-E8EC-4DF6-99C9-8D07D7F30237}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{488D5473-E8EC-4DF6-99C9-8D07D7F30237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F72513E9-8985-4910-812B-1C0F4E1407F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F72513E9-8985-4910-812B-1C0F4E1407F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F72513E9-8985-4910-812B-1C0F4E1407F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F72513E9-8985-4910-812B-1C0F4E1407F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
