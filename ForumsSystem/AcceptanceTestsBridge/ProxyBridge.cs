@@ -20,6 +20,11 @@ namespace AcceptanceTestsBridge
             return 1;
         }
 
+        public int SetForumProperties(string forumProperties)
+        {
+            return 1;
+        }
+
 
     }
 }

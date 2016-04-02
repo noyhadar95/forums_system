@@ -10,5 +10,8 @@ namespace AcceptanceTestsBridge
     {
         // return a positive number upon success
         int CreateForum(string adminUserName, string forumProperties);
+
+        // return a positive number upon success
+        int SetForumProperties(string forumProperties);
     }
 }

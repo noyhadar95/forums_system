@@ -50,9 +50,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ServerTests\CreateForumTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerTests\UseCaseTest.cs" />
+    <Compile Include="ServerTests\CreateForumTests.cs" />
+    <Compile Include="ServerTests\SetForumPropTests.cs" />
+    <Compile Include="ServerTests\UseCaseTestSuite.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AcceptanceTestsBridge\AcceptanceTestsBridge.csproj">

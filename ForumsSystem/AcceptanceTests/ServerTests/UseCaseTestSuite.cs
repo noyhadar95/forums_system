@@ -5,16 +5,14 @@ using AcceptanceTestsBridge;
 namespace AcceptanceTests.ServerTests
 {
     [TestClass]
-    public class UseCaseTest
+    public class UseCaseTestSuite
     {
         protected Bridge bridge;
 
-        public UseCaseTest()
+        public UseCaseTestSuite()
         {
             bridge = new ProxyBridge();
 
         }
-
-
     }
 }
