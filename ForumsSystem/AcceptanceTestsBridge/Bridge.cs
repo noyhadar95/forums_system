@@ -13,5 +13,8 @@ namespace AcceptanceTestsBridge
 
         // return a positive number upon success
         int SetForumProperties(string forumProperties);
+
+        // return a positive number upon success
+        int RegisterToForum(string forum, string username, string password, string email);
     }
 }

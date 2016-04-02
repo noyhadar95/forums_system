@@ -25,6 +25,11 @@ namespace AcceptanceTestsBridge
             return 1;
         }
 
+        public int RegisterToForum(string forum, string username, string password, string email)
+        {
+            return 1;
+        }
+
 
     }
 }
