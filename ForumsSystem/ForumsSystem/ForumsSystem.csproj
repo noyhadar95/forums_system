@@ -43,6 +43,9 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\Forum.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\IForum.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\Policy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
