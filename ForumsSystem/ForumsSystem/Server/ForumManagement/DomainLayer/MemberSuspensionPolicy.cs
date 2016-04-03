@@ -9,7 +9,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     /// <summary>
     /// check if a member should be suspended
     /// </summary>
-    class MemberSuspensionPolicy:Policy
+    public class MemberSuspensionPolicy :Policy
     {
         private int numOfComplaints;
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    abstract class Policy
+    public abstract class Policy
     {
         protected Policies type;
         private Policy nextPolicy;
@@ -50,7 +50,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 this.nextPolicy = newPolicy;
         }
 
-        private bool CheckIfPolicyExists(Policies type)
+        public bool CheckIfPolicyExists(Policies type)
         {
             if (this.type == type)
                 return true;
@@ -77,10 +77,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             {
                 Policy temp = this.NextPolicy.NextPolicy;
                 this.NextPolicy = temp;
-                //return true;
+                return;
             }
             if (nextPolicy == null)
-                //return false;
+                return;
 
                 //return 
                 this.nextPolicy.RemovePolicyHelper(type);

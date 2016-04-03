@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class AuthenticationPolicy: Policy
+    public class AuthenticationPolicy: Policy
     {
         public AuthenticationPolicy(Policies type):base(type)
         {

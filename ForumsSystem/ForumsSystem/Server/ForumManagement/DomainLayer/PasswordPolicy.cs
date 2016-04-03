@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class PasswordPolicy : Policy
+    public class PasswordPolicy : Policy
     {
         private int requiredLength;
 
