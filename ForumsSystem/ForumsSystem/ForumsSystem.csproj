@@ -74,6 +74,8 @@
     <Compile Include="Server\ForumManagement\DomainLayer\PolicyParametersObject.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\Post.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\UsersLoadPolicy.cs" />
+    <Compile Include="Server\UserManagment\IUser.cs" />
+    <Compile Include="Server\UserManagment\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
