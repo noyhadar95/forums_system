@@ -58,15 +58,27 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\AdminAppointmentPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\ConfidentialityPolicy.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\Forum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\IForum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\ISubForum.cs" />
-    <Compile Include="Server\ForumManagement\DomainLayer\Policy.cs" />
     <Compile Include="Server\UserManagement\Guest.cs" />
     <Compile Include="Server\UserManagement\IUser.cs" />
     <Compile Include="Server\UserManagement\PrivateMessage.cs" />
     <Compile Include="Server\UserManagement\Type.cs" />
     <Compile Include="Server\UserManagement\User.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\MemberSuspensionPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\MinimumAgePolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\ModeratorAppointmentPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\ModeratorSuspensionPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\PasswordPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\Policy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\PolicyEnum.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\PolicyParametersObject.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\Post.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\UsersLoadPolicy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -87,6 +99,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Server\UserManagement\DomainLayer\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

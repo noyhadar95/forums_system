@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class ModeratorSuspensionPolicy: Policy
+    public class ModeratorSuspensionPolicy: Policy
     {
         private int numOfComplaints;
 

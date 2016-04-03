@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class ModeratorAppointmentPolicy: Policy
+    public class ModeratorAppointmentPolicy: Policy
     {
         private int seniority;
         private int numOfMessages;

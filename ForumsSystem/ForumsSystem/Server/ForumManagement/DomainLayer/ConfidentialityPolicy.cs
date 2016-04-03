@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class ConfidentialityPolicy: Policy
+    public class ConfidentialityPolicy : Policy
     {
         private bool blockPassword;
         

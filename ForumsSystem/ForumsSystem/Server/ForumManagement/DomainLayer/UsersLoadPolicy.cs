@@ -9,7 +9,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     /// <summary>
     /// check if users can register to the forum
     /// </summary>
-    class UsersLoadPolicy:Policy
+    public class UsersLoadPolicy :Policy
     {
         private int maxNumOfUsers;
 
@@ -22,7 +22,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if (param.getPolicy() == type)
             {
-                return param.getNumOfUsers()<this.maxNumOfUsers; //com
+                return param.getNumOfUsers()<this.maxNumOfUsers; 
             }
             else
                 return base.CheckPolicy(param);

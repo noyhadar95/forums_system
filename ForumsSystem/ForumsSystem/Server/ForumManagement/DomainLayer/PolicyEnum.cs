@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    enum Policies
+    public enum Policies
     {
         password=0,
         Authentication = 1,
