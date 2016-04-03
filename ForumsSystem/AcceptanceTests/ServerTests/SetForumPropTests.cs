@@ -17,14 +17,30 @@ namespace AcceptanceTests.ServerTests
         {
             // test the success main scenario with valid forum props
 
+            string forumName = "";
+            string adminUserName = "";
+            string adminPass = "";
             string forumProperties = "";
+            string newForumProperties = "";
 
             //TODO: make sure forumProperties are valid
-            int res = bridge.SetForumProperties(forumProperties);
 
-            Assert.IsTrue(res > 0);
-            //TODO: check that the forum props have changed
+            // make sure admin is a valid user in the system
+            bridge.AddUser(adminUserName, adminPass);
+            Assert.IsTrue(bridge.IsExistUser(adminUserName));
+            // make sure the forum forumName exists in the system
+            bridge.CreateForum(forumName, adminUserName, forumProperties);
+            Assert.IsTrue(bridge.IsExistForum(forumName));
 
+            bool res = bridge.SetForumProperties(forumName, newForumProperties);
+
+            Assert.IsTrue(res);
+            // check that the forum props have changed
+            // Assert.IsTrue(newForumProperties == bridge.GetForumProps(forumName));
+
+            // clean up
+            bridge.DeleteUser(adminUserName);
+            bridge.DeleteForum(forumName);
         }
 
 

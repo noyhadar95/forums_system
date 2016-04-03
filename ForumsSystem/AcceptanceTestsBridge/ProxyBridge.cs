@@ -15,19 +15,51 @@ namespace AcceptanceTestsBridge
             realBridge = null;
         }
 
-        public int CreateForum(string adminUserName, string forumProperties)
+        public bool CreateForum(string forumName, string adminUserName, string forumProperties)
         {
-            return 1;
+            return true;
         }
 
-        public int SetForumProperties(string forumProperties)
+        public bool SetForumProperties(string forumName, string forumProperties)
         {
-            return 1;
+            return true;
         }
 
-        public int RegisterToForum(string forum, string username, string password, string email)
+        public bool RegisterToForum(string forumName, string username, string password, string email)
         {
-            return 1;
+            return true;
+        }
+
+        public bool CreateSubForum(string forumName, List<string> moderators, string properties)
+        {
+            return true;
+        }
+
+
+
+
+        public bool IsExistForum(string forumName)
+        {
+            return true;
+        }
+
+        public void AddUser(string adminUserName, string adminPass)
+        {
+        }
+
+        public bool IsExistUser(string adminUserName)
+        {
+            return true;
+        }
+
+        public void DeleteUser(string adminUserName)
+        {
+        }
+
+
+        public void DeleteForum(string forumName)
+        {
+           
         }
 
 

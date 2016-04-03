@@ -11,52 +11,57 @@ namespace AcceptanceTests.ServerTests
         {
         }
 
+        // test the success main scenario with an existing admin
         [TestMethod]
         public void TestCreateForumAdminExist()
         {
-            // test the success main scenario with an existing admin
-
-            string adminUserName = "admin1";
+            string forumName = "";
+            string adminUserName = "";
+            string adminPass = "";
             string forumProperties = "";
 
-            //TODO: make sure admin1 is a valid user in the system
-            int res = bridge.CreateForum(adminUserName, forumProperties);
+            // make sure admin is a valid user in the system
+            bridge.AddUser(adminUserName, adminPass);
+            Assert.IsTrue(bridge.IsExistUser(adminUserName));
 
-            Assert.IsTrue(res > 0);
-            //TODO: check that the forum is now in the sytem
+            bool res = bridge.CreateForum(forumName, adminUserName, forumProperties);
+
+            Assert.IsTrue(res);
+            // check that the forum now exists in the sytem
+            Assert.IsTrue(bridge.IsExistForum(forumName));
+
             //TODO: MAYBE check that the forum has an admin and that he is a member in the forum
 
+
+            // clean up
+            bridge.DeleteUser(adminUserName);
+            bridge.DeleteForum(forumName);
         }
 
+        // test the failure scenario, try to create a forum with an admin
+        // that is not a user in the system
         [TestMethod]
         public void TestCreateForumAdminNotExist()
         {
-            // test the failure scenario, try to create a forum with an admin
-            // that is not a user in the system
-
-            string adminUserName = "admin2";
+            string forumName = "";
+            string adminUserName = "";
             string forumProperties = "";
 
-            //TODO: make sure admin2 not a user in the system
-            int res = bridge.CreateForum(adminUserName, forumProperties);
+            // make sure admin is not a user in the system
+            bridge.DeleteUser(adminUserName);
+            Assert.IsTrue(!bridge.IsExistUser(adminUserName));
 
-            Assert.IsTrue(res > 0);
+            bool res = bridge.CreateForum(forumName, adminUserName, forumProperties);
 
-        }
+            Assert.IsTrue(!res);
+            // check that the forum doesn't exist in the sytem
+            bool isExistForum = bridge.IsExistForum(forumName);
+            Assert.IsTrue(!isExistForum);
 
-        [TestMethod]
-        public void TestCreateForumAdminIsMember()
-        {
-            // checks if the admin of the created forum is also a member on that forum
 
-            string adminUserName = "admin2";
-            string forumProperties = "";
-
-            //TODO: make sure admin2 not a user in the system
-            int res = bridge.CreateForum(adminUserName, forumProperties);
-
-            Assert.IsTrue(res > 0);
-
+            // clean up
+            if (isExistForum)
+                bridge.DeleteForum(forumName);
         }
 
 

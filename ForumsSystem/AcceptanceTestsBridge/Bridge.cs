@@ -8,13 +8,25 @@ namespace AcceptanceTestsBridge
 {
     public interface Bridge
     {
-        // return a positive number upon success
-        int CreateForum(string adminUserName, string forumProperties);
 
-        // return a positive number upon success
-        int SetForumProperties(string forumProperties);
+        bool CreateForum(string forumName, string adminUserName, string forumProperties);
 
-        // return a positive number upon success
-        int RegisterToForum(string forum, string username, string password, string email);
+        bool SetForumProperties(string forumName, string forumProperties);
+
+        bool RegisterToForum(string forumName, string username, string password, string email);
+
+        bool CreateSubForum(string forumName, List<string> moderators, string properties);
+
+
+
+        bool IsExistForum(string forumName);
+
+        void AddUser(string adminUserName, string adminPass);
+
+        bool IsExistUser(string adminUserName);
+
+        void DeleteUser(string adminUserName);
+
+        void DeleteForum(string forumName);
     }
 }
