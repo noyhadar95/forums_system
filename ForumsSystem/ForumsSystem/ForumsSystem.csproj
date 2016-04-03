@@ -64,6 +64,11 @@
     <Compile Include="Server\ForumManagement\DomainLayer\Forum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\IForum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\ISubForum.cs" />
+    <Compile Include="Server\UserManagement\Guest.cs" />
+    <Compile Include="Server\UserManagement\IUser.cs" />
+    <Compile Include="Server\UserManagement\PrivateMessage.cs" />
+    <Compile Include="Server\UserManagement\Type.cs" />
+    <Compile Include="Server\UserManagement\User.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\MemberSuspensionPolicy.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\MinimumAgePolicy.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\ModeratorAppointmentPolicy.cs" />
@@ -74,8 +79,6 @@
     <Compile Include="Server\ForumManagement\DomainLayer\PolicyParametersObject.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\Post.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\UsersLoadPolicy.cs" />
-    <Compile Include="Server\UserManagment\IUser.cs" />
-    <Compile Include="Server\UserManagment\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
