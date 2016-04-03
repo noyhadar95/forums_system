@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumsSystem.Server.UserManagment
+namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     interface IUser
     {
         bool ChangeType(); // Type object?
-        bool SendPrivateMessage(IUser reciever /* ,PrivateMessage message*/);
-        bool AddSentMessage( /* ,PrivateMessage message*/);
-        bool AddReceivedMessage( /* ,PrivateMessage message*/);
+        void SendPrivateMessage(IUser reciever, string title, string content);
+        void AddSentMessage(PrivateMessage privateMessage);
+        void AddReceivedMessage(PrivateMessage privateMessage);
         bool RegisterToForum();
 
     }
