@@ -39,5 +39,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.replies.Add(reply);
             return true;
         }
+
+        public void Notify()
+        {
+            throw new NotImplementedException();
+            //TODO
+        }
     }
 }
