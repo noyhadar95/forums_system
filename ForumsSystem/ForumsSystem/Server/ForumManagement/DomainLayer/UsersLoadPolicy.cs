@@ -22,7 +22,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if (param.getPolicy() == type)
             {
-                return param.getNumOfUsers()<this.maxNumOfUsers; 
+                return param.getNumOfUsers()<this.maxNumOfUsers; //com
             }
             else
                 return base.CheckPolicy(param);
