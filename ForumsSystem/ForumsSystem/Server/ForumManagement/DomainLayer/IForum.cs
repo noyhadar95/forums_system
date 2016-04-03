@@ -8,7 +8,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     interface IForum
     {
-        public void EditForumProperties();
+        public bool InitForum(); //Needs to get Admins
+
+        public bool AddPolicy();
+
+        public bool RemovePolicy();
+
+      //  public void EditForumProperties();
 
         public bool RegisterToForum(string userName, string password, String Email);
 

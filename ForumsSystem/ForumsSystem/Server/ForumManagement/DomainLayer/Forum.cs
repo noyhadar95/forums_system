@@ -9,10 +9,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     class Forum : IForum
     {
 
-        public void EditForumProperties()
-        {
-            throw new NotImplementedException();
-        }
+        public List<ISubForum> sub_forums; 
+
 
         public bool RegisterToForum(string userName, string password, string Email)
         {
@@ -25,6 +23,21 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
 
         public bool Login(string userName, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool InitForum()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AddPolicy()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool RemovePolicy()
         {
             throw new NotImplementedException();
         }
