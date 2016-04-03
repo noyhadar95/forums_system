@@ -10,11 +10,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
         private int numOfComplaints;
 
-        public ModeratorSuspensionPolicy(int numOfComplaints)
+        public ModeratorSuspensionPolicy(Policies type, int numOfComplaints):base(type)
         {
             this.numOfComplaints = numOfComplaints;
         }
-        public override bool checkPolicy(PolicyParametersObject param)
+        public override bool CheckPolicy(PolicyParametersObject param)
         {
             if (param.getPolicy() == type)
             {
@@ -23,7 +23,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return true; 
             }
             else
-                return base.checkPolicy(param);
+                return base.CheckPolicy(param);
 
         }
     }

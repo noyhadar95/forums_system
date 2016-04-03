@@ -10,18 +10,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
         private bool blockPassword;
         
-        public ConfidentialityPolicy(bool blockPassword)
+        public ConfidentialityPolicy(Policies type, bool blockPassword):base(type)
         {
             this.blockPassword = blockPassword;
         } 
-        public override bool checkPolicy(PolicyParametersObject param)
+        public override bool CheckPolicy(PolicyParametersObject param)
         {
             if (param.getPolicy() == type)
             {
                 return this.blockPassword;
             }
             else
-                return base.checkPolicy(param);
+                return base.CheckPolicy(param);
 
         }
     }

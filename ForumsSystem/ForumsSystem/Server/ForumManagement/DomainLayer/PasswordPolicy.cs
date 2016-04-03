@@ -10,18 +10,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
         private int requiredLength;
 
-        public PasswordPolicy(int requiredLength)
+        public PasswordPolicy(Policies type, int requiredLength):base(type)
         {
             this.requiredLength = requiredLength;
         }
-        public override bool checkPolicy(PolicyParametersObject param)
+        public override bool CheckPolicy(PolicyParametersObject param)
         {
             if (param.getPolicy() == type)
             {
                 return checkLength(param.getPassword());
             }
             else
-                return base.checkPolicy(param);
+                return base.CheckPolicy(param);
 
         }
 

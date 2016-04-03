@@ -61,5 +61,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             this.ageOfUser = ageOfUser;
         }
+
     }
 }

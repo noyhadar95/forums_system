@@ -8,14 +8,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     class AuthenticationPolicy: Policy
     {
-        public override bool checkPolicy(PolicyParametersObject param)
+        public AuthenticationPolicy(Policies type):base(type)
+        {
+
+        }
+        public override bool CheckPolicy(PolicyParametersObject param)
         {
             if (param.getPolicy() == type)
             {
                 return true;//TODO: check this
             }
             else
-                return base.checkPolicy(param);
+                return base.CheckPolicy(param);
 
         }
 

@@ -18,14 +18,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.numOfComplaints = numOfComplaints;
         }
 
-        public override bool checkPolicy(PolicyParametersObject param)
+        public override bool CheckPolicy(PolicyParametersObject param)
         {
+
             if (param.getPolicy() == type)
             {
                 return true; //TODO: check if the member given in the param should be suspended
             }
             else
-                return base.checkPolicy(param);
+                return base.CheckPolicy(param);
 
         }
     }
