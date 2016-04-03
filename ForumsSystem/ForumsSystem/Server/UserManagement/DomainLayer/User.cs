@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 
-namespace ForumsSystem.Server.UserManagment
+namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     class User : IUser
     {
@@ -14,16 +14,17 @@ namespace ForumsSystem.Server.UserManagment
         private string email;
         private IForum forum;
         // Type
-        // list of private message sent
-        // list of private message recieved 
+        private List<PrivateMessage> sentMessages;
+        private List<PrivateMessage> receivedMessages;
+
         public User(string userName,string password,string email,IForum forum)
         {
             this.userName = userName;
             this.password = password;
             this.forum = forum;
             this.email = email;
-            //list = null
-            //list = null
+            this.sentMessages = new List<PrivateMessage>();
+            this.receivedMessages = new List<PrivateMessage>();
             // type = Guest
         }
 
@@ -39,22 +40,22 @@ namespace ForumsSystem.Server.UserManagment
             throw new NotImplementedException();
         }
 
-        public bool SendPrivateMessage(IUser reciever /* ,PrivateMessage message*/)
+        public void SendPrivateMessage(IUser reciever, string title, string content)
         {
-            // create private message
-            reciever.AddReceivedMessage( /* ,PrivateMessage message*/);
-            this.AddSentMessage( /* ,PrivateMessage message*/);
-            throw new NotImplementedException();
+            PrivateMessage privateMessage = new PrivateMessage(title, content, this, reciever);
+            reciever.AddReceivedMessage(privateMessage);
+            this.AddSentMessage(privateMessage);
         }
 
-        public bool AddSentMessage(/* ,PrivateMessage message*/)
+        public void AddSentMessage(PrivateMessage privateMessage)
         {
-            throw new NotImplementedException();
+            this.sentMessages.Add(privateMessage);
         }
 
-        public bool AddReceivedMessage(/* ,PrivateMessage message*/)
+        public void AddReceivedMessage(PrivateMessage privateMessage)
         {
-            throw new NotImplementedException();
+            this.receivedMessages.Add(privateMessage);
         }
+
     }
 }

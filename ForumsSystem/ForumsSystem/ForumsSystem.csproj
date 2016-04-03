@@ -60,7 +60,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\Forum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\IForum.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\ISubForum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\Policy.cs" />
+    <Compile Include="Server\UserManagement\Guest.cs" />
+    <Compile Include="Server\UserManagement\IUser.cs" />
+    <Compile Include="Server\UserManagement\PrivateMessage.cs" />
+    <Compile Include="Server\UserManagement\Type.cs" />
+    <Compile Include="Server\UserManagement\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
