@@ -10,7 +10,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     /// this class is the parameter for policy checks.
     /// You should initialize the parameters needed for the policy check.
     /// </summary>
-    class PolicyParametersObject
+    public class PolicyParametersObject
     {
         public PolicyParametersObject(Policies policy)
         {

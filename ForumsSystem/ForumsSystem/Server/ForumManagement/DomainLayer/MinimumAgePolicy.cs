@@ -9,7 +9,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     /// <summary>
     /// check if a user is old enough to register to the forum
     /// </summary>
-    class MinimumAgePolicy :Policy
+    public class MinimumAgePolicy :Policy
     {
         private int minAge;
 
