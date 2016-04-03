@@ -63,5 +63,17 @@ namespace UnitTests.ServerUnitTests.DomainLayer
             Assert.IsFalse(policy.AddPolicy(new PasswordPolicy(Policies.password, 12)));
             
         }
+
+        [TestMethod]
+        public void TestMissingPasswordPolicy()
+        {
+            policy = new UsersLoadPolicy(Policies.UsersLoad, 120);
+            PolicyParametersObject param = new PolicyParametersObject(Policies.password);
+            param.setPassword("12345678");
+            Assert.IsTrue(policy.CheckPolicy(param));
+            param.setPassword("1");
+            Assert.IsTrue(policy.CheckPolicy(param));
+
+        }
     }
 }
