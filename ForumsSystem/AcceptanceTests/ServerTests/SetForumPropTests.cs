@@ -1,50 +1,51 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using AcceptanceTestsBridge;
 
 namespace AcceptanceTests.ServerTests
 {
+    // this class tests the Set Forum Properties Use Case
+    // i.e. check that after calling CreateForum(...) the forum properties have been set
     [TestClass]
     public class SetForumPropTests : UseCaseTestSuite
     {
+
         public SetForumPropTests()
             : base()
         {
 
         }
 
+        // test the success main scenario with valid forum props
         [TestMethod]
         public void TestSetForumPropValid()
         {
-            // test the success main scenario with valid forum props
-
             string forumName = "";
-            string adminUserName = "";
-            string adminPass = "";
+            string adminUserName1 = "";
+            string adminPass1 = "";
+            string adminEmail1 = "";
             string forumProperties = "";
-            string newForumProperties = "";
+            List<UserStub> admins = new List<UserStub>();
+            UserStub user1 = new UserStub(adminUserName1, adminPass1, adminEmail1, forumName);
+            admins.Add(user1);
 
-            //TODO: make sure forumProperties are valid
-
-            // make sure admin is a valid user in the system
-            bridge.AddUser(adminUserName, adminPass);
-            Assert.IsTrue(bridge.IsExistUser(adminUserName));
-            // make sure the forum forumName exists in the system
-            bridge.CreateForum(forumName, adminUserName, forumProperties);
+            // create the forum with the specified properties
+            bool res = bridge.CreateForum(forumName, admins, forumProperties);
+            Assert.IsTrue(res);
+            // check that the forum now exists in the sytem
             Assert.IsTrue(bridge.IsExistForum(forumName));
 
-            bool res = bridge.SetForumProperties(forumName, newForumProperties);
-
-            Assert.IsTrue(res);
-            // check that the forum props have changed
-            // Assert.IsTrue(newForumProperties == bridge.GetForumProps(forumName));
+            //TODO: check that the forum props have been setto the above forumProperties
+            // Assert.IsTrue(forumProperties == bridge.GetForumProps(forumName));
 
             // clean up
-            bridge.DeleteUser(adminUserName);
             bridge.DeleteForum(forumName);
         }
 
 
         //TODO: test invalid forum props
+
 
 
     }

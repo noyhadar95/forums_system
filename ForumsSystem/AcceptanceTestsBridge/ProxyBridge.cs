@@ -15,7 +15,7 @@ namespace AcceptanceTestsBridge
             realBridge = null;
         }
 
-        public bool CreateForum(string forumName, string adminUserName, string forumProperties)
+        public bool CreateForum(string forumName, List<UserStub> admins, string forumProperties)
         {
             return true;
         }
@@ -30,7 +30,7 @@ namespace AcceptanceTestsBridge
             return true;
         }
 
-        public bool CreateSubForum(string forumName, List<string> moderators, string properties)
+        public bool CreateSubForum(string forumName, string subForumName, List<string> moderators, string properties)
         {
             return true;
         }
@@ -43,25 +43,51 @@ namespace AcceptanceTestsBridge
             return true;
         }
 
-        public void AddUser(string adminUserName, string adminPass)
+        public void AddUser(string userName, string pass)
         {
         }
 
-        public bool IsExistUser(string adminUserName)
+        public bool IsExistUser(string userName)
         {
             return true;
         }
 
-        public void DeleteUser(string adminUserName)
+        public void DeleteUser(string userName)
         {
         }
-
 
         public void DeleteForum(string forumName)
         {
-           
+
+        }
+
+        public bool IsRegisteredToForum(string username, string forumName)
+        {
+            return true;
         }
 
 
+        public void AddAdmin(string userName)
+        {
+
+        }
+
+
+        public bool IsAdmin(string username, string forumName)
+        {
+            return true;
+        }
+
+
+        public bool IsModerator(string username, string subForumName)
+        {
+            return true;
+        }
+
+
+        public bool AddOpeningPost(string title, string content)
+        {
+            return true;
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using AcceptanceTestsBridge;
 
 namespace AcceptanceTests.ServerTests
 {
@@ -16,28 +18,33 @@ namespace AcceptanceTests.ServerTests
         public void TestCreateForumAdminExist()
         {
             string forumName = "";
-            string adminUserName = "";
-            string adminPass = "";
+            string adminUserName1 = "", adminUserName2 = "";
+            string adminPass1 = "", adminPass2 = "";
+            string adminEmail1 = "", adminEmail2 = "";
             string forumProperties = "";
+            List<UserStub> admins = new List<UserStub>();
+            UserStub user1 = new UserStub(adminUserName1, adminPass1, adminEmail1, forumName);
+            UserStub user2 = new UserStub(adminUserName2, adminPass2, adminEmail2, forumName);
+            admins.Add(user1);
+            admins.Add(user2);
 
-            // make sure admin is a valid user in the system
-            bridge.AddUser(adminUserName, adminPass);
-            Assert.IsTrue(bridge.IsExistUser(adminUserName));
-
-            bool res = bridge.CreateForum(forumName, adminUserName, forumProperties);
-
+            // create the forum
+            bool res = bridge.CreateForum(forumName, admins, forumProperties);
             Assert.IsTrue(res);
             // check that the forum now exists in the sytem
             Assert.IsTrue(bridge.IsExistForum(forumName));
 
-            //TODO: MAYBE check that the forum has an admin and that he is a member in the forum
-
+            // check that every admin in admins list is an admin in the forum
+            foreach (UserStub admin in admins)
+            {
+                Assert.IsTrue(bridge.IsAdmin(admin.Username, forumName));
+            }
 
             // clean up
-            bridge.DeleteUser(adminUserName);
             bridge.DeleteForum(forumName);
         }
 
+        /*
         // test the failure scenario, try to create a forum with an admin
         // that is not a user in the system
         [TestMethod]
@@ -63,7 +70,7 @@ namespace AcceptanceTests.ServerTests
             if (isExistForum)
                 bridge.DeleteForum(forumName);
         }
-
+        */
 
         //TODO: add tests for success/failure forum properties
 
