@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     
-    class PrivateMessage
+   public class PrivateMessage
     {
         public string title { get;private set; }
         public string content { get; private set; }

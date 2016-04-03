@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ForumsSystem.Server.UserManagement.DomainLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,23 +7,47 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class Forum : IForum
+    public class Forum : IForum
     {
 
         public string name { get; private set; }
         private List<ISubForum> sub_forums;
         private Policy policies;
- //      private Dictionary<string, Iuser> //username, user
+        private Dictionary<string, IUser> users;//username, user
 
 
         public Forum(string forumName)
         {
+            this.name = forumName;
+            InitForum();
+        }
+
+        public bool RegisterToForum(string userName, string password, string Email) //TODO: Need to add age
+        {
+            if (users.ContainsKey(userName))
+                return false;
+            if (!CheckRegistrationPolicies(password))
+                return false;
+
+            IUser newUser = new User(userName, password, Email, this);
+            users.Add(userName, newUser);
+            return true;
 
         }
 
-        public bool RegisterToForum(string userName, string password, string Email)
+        private bool CheckRegistrationPolicies(string password)
         {
-            throw new NotImplementedException();
+            if (policies == null)
+                return true;
+            PolicyParametersObject param = new PolicyParametersObject(Policies.password);
+            param.setPassword(password);
+            if (!policies.CheckPolicy(param))
+                return false;
+            param.setPolicy(Policies.UsersLoad);
+            param.SetNumOfUsers(users.Count);
+            if (!policies.CheckPolicy(param))
+                return false;
+            return true;
         }
 
         public bool CreateSubForum(string subForumName)
@@ -30,14 +55,19 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             throw new NotImplementedException();
         }
 
-        public bool Login(string userName, string password)
+        public IUser Login(string userName, string password)
         {
-            throw new NotImplementedException();
+            if (users.ContainsKey(userName))
+                return users[userName];
+            else
+                return null;
         }
 
         public bool InitForum()
         {
             sub_forums = new List<ISubForum>();
+            //policies?
+            users = new Dictionary<string, IUser>();
 
             return true;
         }

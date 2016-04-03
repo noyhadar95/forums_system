@@ -57,5 +57,19 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.receivedMessages.Add(privateMessage);
         }
 
+        public string getUsername()
+        {
+            return userName;
+        }
+
+        public string getPassword()
+        {
+            return password;
+        }
+
+        public string getEmail()
+        {
+            return password;
+        }
     }
 }
