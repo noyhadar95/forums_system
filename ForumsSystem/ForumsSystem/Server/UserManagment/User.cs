@@ -39,7 +39,20 @@ namespace ForumsSystem.Server.UserManagment
             throw new NotImplementedException();
         }
 
-        public bool SendPrivateMessage(IUser reciever, string message)
+        public bool SendPrivateMessage(IUser reciever /* ,PrivateMessage message*/)
+        {
+            // create private message
+            reciever.AddReceivedMessage( /* ,PrivateMessage message*/);
+            this.AddSentMessage( /* ,PrivateMessage message*/);
+            throw new NotImplementedException();
+        }
+
+        public bool AddSentMessage(/* ,PrivateMessage message*/)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AddReceivedMessage(/* ,PrivateMessage message*/)
         {
             throw new NotImplementedException();
         }
