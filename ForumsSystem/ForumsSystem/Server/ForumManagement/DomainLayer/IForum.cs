@@ -8,18 +8,20 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     interface IForum
     {
-        public bool InitForum(); //Needs to get Admins
+         bool InitForum(); //Needs to get Admins
 
-        public bool AddPolicy();
+            bool AddPolicy(Policy policy);
 
-        public bool RemovePolicy();
+            void RemovePolicy(Policies policyType);
 
       //  public void EditForumProperties();
 
-        public bool RegisterToForum(string userName, string password, String Email);
+         bool RegisterToForum(string userName, string password, string Email);
 
-        public bool CreateSubForum(string subForumName);
+         bool CreateSubForum(string subForumName);
 
-        public bool Login(string userName, string password);
+         bool Login(string userName, string password);
+
+         ISubForum getSubForum(string subForumName);
     }
 }
