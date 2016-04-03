@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
-    interface IUser
+    public interface IUser
     {
         bool ChangeType(); // Type object?
         void SendPrivateMessage(IUser reciever, string title, string content);
