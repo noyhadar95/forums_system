@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    interface ISubForum
+    class SubForum
     {
-        void addThread();
-        string getName();
     }
 }

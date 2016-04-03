@@ -10,16 +10,21 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
          bool InitForum(); //Needs to get Admins
 
-         bool AddPolicy();
 
-         bool RemovePolicy();
+            bool AddPolicy(Policy policy);
+
+            void RemovePolicy(Policies policyType);
 
       //  public void EditForumProperties();
 
-         bool RegisterToForum(string userName, string password, String Email);
+         bool RegisterToForum(string userName, string password, string Email);
+
 
          bool CreateSubForum(string subForumName);
 
          bool Login(string userName, string password);
+
+         ISubForum getSubForum(string subForumName);
+
     }
 }
