@@ -37,7 +37,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public void createThread()
         {
-            threads.Add(new Thread());
+            threads.Add(new Thread(this));
         }
 
         public string getName()

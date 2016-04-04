@@ -7,6 +7,7 @@ using ForumsSystem.Server.ForumManagement.DomainLayer;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
+
     public class User : IUser
     {
         private string userName;
