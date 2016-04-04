@@ -16,10 +16,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private string title;
         private string content;
 
-        public Post(IUser publisher, Thread thread, Post parentPost, string title, string content)
+        public Post(IUser publisher, Thread thread, string title, string content)
         {
             this.publisher = publisher;
-            this.parentPost = parentPost;
+            this.parentPost = null;
             this.replies = new List<Post>();
             this.title = title;
             this.content = content;
@@ -27,9 +27,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         }
 
+
         public bool DeletePost()
         {
-            foreach (Post p in replies)
+            foreach (Post p in replies.ToList<Post>())
             {
                 p.DeletePost();
             }
@@ -43,6 +44,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public bool AddReply(Post reply)
         {
+            if (this == reply)
+                return false;
+            reply.SetParent(this);
             this.replies.Add(reply);
             return true;
         }
@@ -51,6 +55,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             throw new NotImplementedException();
             //TODO
+        }
+
+        public void SetParent(Post parent)
+        {
+            this.parentPost = parent;
         }
 
         public int NumOfReplies()
