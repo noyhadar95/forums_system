@@ -50,9 +50,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return true;
         }
 
-        public bool CreateSubForum(string subForumName)
+        public void CreateSubForum(string subForumName)
         {
-            throw new NotImplementedException();
+            sub_forums.Add(new SubForum(subForumName));
         }
 
         public IUser Login(string userName, string password)
@@ -74,12 +74,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public bool AddPolicy(Policy policy)
         {
+            if (policies == null)
+            {
+                policies = policy;
+                return true;
+            }
             return policies.AddPolicy(policy);
         }
 
         public void RemovePolicy(Policies policyType)
         {
-            policies = policies.RemovePolicy(policyType);
+            if(policies != null)
+                policies = policies.RemovePolicy(policyType);
             
         }
 

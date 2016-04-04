@@ -11,6 +11,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
 
         void createThread();
+        void removeThread();
         string getName();
         bool addModerator(IUser user, DateTime expirationDate);
         bool changeModeratorExpirationDate(IUser user, DateTime newExpirationDate);

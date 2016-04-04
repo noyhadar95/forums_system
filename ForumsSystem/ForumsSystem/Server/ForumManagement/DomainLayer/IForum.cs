@@ -21,7 +21,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
          bool RegisterToForum(string userName, string password, string Email);
 
 
-         bool CreateSubForum(string subForumName);
+         void CreateSubForum(string subForumName);
 
          IUser Login(string userName, string password);
 
