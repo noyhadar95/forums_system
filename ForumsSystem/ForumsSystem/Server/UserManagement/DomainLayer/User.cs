@@ -7,7 +7,7 @@ using ForumsSystem.Server.ForumManagement.DomainLayer;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
-    class User : IUser
+   public class User : IUser
     {
         private string userName;
         private string password;

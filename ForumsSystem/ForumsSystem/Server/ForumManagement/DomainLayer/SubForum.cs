@@ -9,32 +9,43 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     class SubForum : ISubForum
     {
-        public string name { get ; private set; }
+        private string name;
+        private Dictionary<string, Moderator> moderators;//Username, Moderator
+        private List<Thread> threads;
+
         public SubForum(string name)
         {
             this.name = name;
+            moderators = new Dictionary<string, Moderator>();
+            threads = new List<Thread>();
         }
-        public bool addModerator(IUser user, DateTime expirationDate)
+        public void addModerator(IUser user, DateTime expirationDate)
         {
-            throw new NotImplementedException();
+            Moderator mod = new Moderator(user, expirationDate);
+            moderators.Add(user.getUsername(), mod);
+
         }
 
         public bool changeModeratorExpirationDate(IUser user, DateTime newExpirationDate)
         {
-            throw new NotImplementedException();
+            Moderator mod = moderators[user.getUsername()];
+            if (mod == null)
+                return false;
+            mod.changeExpirationDate(newExpirationDate);
+            return true;
         }
 
         public void createThread()
         {
-            throw new NotImplementedException();
+            threads.Add(new Thread());
         }
 
         public string getName()
         {
-            throw new NotImplementedException();
+            return name;
         }
 
-        public void removeThread()
+        public void removeThread() //TODO need an identifier for threads
         {
             throw new NotImplementedException();
         }
