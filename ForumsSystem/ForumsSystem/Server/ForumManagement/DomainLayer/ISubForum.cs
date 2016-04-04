@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ForumsSystem.Server.UserManagement.DomainLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,14 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    interface ISubForum
+    public interface ISubForum
     {
-        void addThread();
+
+        void createThread();
+        void removeThread();
         string getName();
+        bool addModerator(IUser user, DateTime expirationDate);
+        bool changeModeratorExpirationDate(IUser user, DateTime newExpirationDate);
+        
     }
 }
