@@ -14,6 +14,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         [TestMethod]
         public void TestAddReply()//1
         {
+
             IForum forum = new Forum("name");
             ISubForum subForum = new SubForum("name");
             Thread thread = new Thread(subForum);

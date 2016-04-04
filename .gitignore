@@ -154,5 +154,3 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
-ForumsSystem/ForumsSystem/Server/UserManagement/DomainLayer/User.cs
-ForumsSystem/UnitTests/UnitTests.csproj
