@@ -12,11 +12,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private IUser publisher;
         private List<Post> replies;
         private Post parentPost;
+        private Thread thread;
+        private string title;
+        private string content;
 
-        public Post(IUser publisher , Post parentPost)
+        public Post(IUser publisher, Thread thread, Post parentPost, string title, string content)
         {
             this.publisher = publisher;
             this.parentPost = parentPost;
+            this.replies = new List<Post>();
+            this.title = title;
+            this.content = content;
+            this.thread = thread;
 
         }
 
@@ -45,5 +52,20 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             throw new NotImplementedException();
             //TODO
         }
+
+        public int NumOfReplies()
+        {
+            return replies.Count;
+        }
+
+        public Post GetReply(int id)
+        {
+            return replies[id];
+        }
+        
+
+        public string Title { get { return title; } set { this.title = value; } }
+        public string Content { get { return content; } set { this.content = value; } }
+        public Thread Thread { get { return thread; } set { this.thread = value; } }
     }
 }

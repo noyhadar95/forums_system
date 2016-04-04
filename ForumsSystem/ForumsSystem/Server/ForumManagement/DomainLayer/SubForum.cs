@@ -7,7 +7,7 @@ using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class SubForum : ISubForum
+    public class SubForum : ISubForum
     {
         private string name;
         private Dictionary<string, Moderator> moderators;//Username, Moderator

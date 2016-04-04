@@ -40,10 +40,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (policies == null)
                 return true;
             PolicyParametersObject param = new PolicyParametersObject(Policies.password);
-            param.setPassword(password);
+            param.SetPassword(password);
             if (!policies.CheckPolicy(param))
                 return false;
-            param.setPolicy(Policies.UsersLoad);
+            param.SetPolicy(Policies.UsersLoad);
             param.SetNumOfUsers(users.Count);
             if (!policies.CheckPolicy(param))
                 return false;

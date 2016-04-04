@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
@@ -12,18 +13,24 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     public class MemberSuspensionPolicy :Policy
     {
         private int numOfComplaints;
-
+        //TODO: maybe add more things
         public MemberSuspensionPolicy(Policies type, int numOfComplaints):base(type)
         {
             this.numOfComplaints = numOfComplaints;
         }
 
+        /// <summary>
+        /// check if a user should be suspended
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns>true if the user <b>should</b> be suspended</returns>
         public override bool CheckPolicy(PolicyParametersObject param)
         {
 
-            if (param.getPolicy() == type)
+            if (param.GetPolicy() == type)
             {
-                return true; //TODO: check if the member given in the param should be suspended
+                User user = (User)param.User;
+                return user.NumOfComplaints>numOfComplaints; 
             }
             else
                 return base.CheckPolicy(param);

@@ -15,20 +15,10 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         }
         [TestCleanup()]
         public void Cleanup() { policy = null; }
-        [TestMethod]
-        public void TestPasswordPolicy()
-        {
-            policy = new PasswordPolicy(Policies.password, 8);
-            PolicyParametersObject param = new PolicyParametersObject(Policies.password);
-            param.setPassword("12345678");
-            Assert.IsTrue(policy.CheckPolicy(param));
-            param.setPassword("1234567");
-            Assert.IsFalse(policy.CheckPolicy(param));
-
-        }
+        
 
         [TestMethod]
-        public void TestAddPolicy()
+        public void TestAddPolicy()//1
         {
             policy = new UsersLoadPolicy(Policies.UsersLoad, 400);
             policy.AddPolicy(new PasswordPolicy(Policies.password, 8));
@@ -37,7 +27,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         }
 
         [TestMethod]
-        public void TestRemovePolicy()
+        public void TestRemovePolicy()//2
         {
             policy = new UsersLoadPolicy(Policies.UsersLoad, 400);
             policy.AddPolicy(new PasswordPolicy(Policies.password, 8));
@@ -55,13 +45,37 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         }
 
         [TestMethod]
-        public void TestDoubleAddPolicy()
+        public void TestDoubleAddPolicy()//3 test AddPolicy with a policy that already exists
         {
             policy = new UsersLoadPolicy(Policies.UsersLoad, 400);
             policy.AddPolicy(new PasswordPolicy(Policies.password, 8));
             Assert.IsTrue(policy.CheckIfPolicyExists(Policies.password));
             Assert.IsFalse(policy.AddPolicy(new PasswordPolicy(Policies.password, 12)));
             
+        }
+
+        [TestMethod]
+        public void TestMissingPasswordPolicy()//4
+        {
+            policy = new UsersLoadPolicy(Policies.UsersLoad, 120);
+            PolicyParametersObject param = new PolicyParametersObject(Policies.password);
+            param.SetPassword("12345678");
+            Assert.IsTrue(policy.CheckPolicy(param));
+            param.SetPassword("1");
+            Assert.IsTrue(policy.CheckPolicy(param));
+
+        }
+
+        [TestMethod]
+        public void TestPasswordPolicy()//5
+        {
+            policy = new PasswordPolicy(Policies.password, 8);
+            PolicyParametersObject param = new PolicyParametersObject(Policies.password);
+            param.SetPassword("12345678");
+            Assert.IsTrue(policy.CheckPolicy(param));
+            param.SetPassword("1234567");
+            Assert.IsFalse(policy.CheckPolicy(param));
+
         }
     }
 }

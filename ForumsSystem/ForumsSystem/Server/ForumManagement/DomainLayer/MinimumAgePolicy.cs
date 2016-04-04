@@ -22,9 +22,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
 
 
-            if (param.getPolicy() == type)
+            if (param.GetPolicy() == type)
             {
-                return param.getAgeOfUser() >= this.minAge;
+                return param.GetAgeOfUser() >= this.minAge;
             }
             else
                 return base.CheckPolicy(param);

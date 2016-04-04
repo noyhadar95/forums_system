@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
@@ -17,12 +18,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.policy = policy;
         }
         private Policies policy;
-        public Policies getPolicy()
+        public Policies GetPolicy()
         {
             return policy;
         }
 
-        public void setPolicy(Policies policy)
+        public void SetPolicy(Policies policy)
         {
             this.policy = policy;
         }
@@ -39,17 +40,20 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         private int ageOfUser;
 
+        private IUser user;
 
-        public string getPassword()
+        public IUser User { get { return this.user; } set { this.user = value; } }
+
+        public string GetPassword()
         {
             return password;
         }
-        public void setPassword(string newPassword)
+        public void SetPassword(string newPassword)
         {
             password = newPassword;
         }
 
-        public int getNumOfUsers()
+        public int GetNumOfUsers()
         {
             return numOfUsers;
         }
@@ -58,7 +62,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.numOfUsers = numOfUsers;
         }
 
-        public int getAgeOfUser()
+        public int GetAgeOfUser()
         {
             return ageOfUser;
         }
