@@ -85,9 +85,23 @@ namespace AcceptanceTestsBridge
         }
 
 
-        public bool AddOpeningPost(string title, string content)
+
+
+
+        public int AddOpeningPost(string forumName, string subForumName, int threadID, string title, string content)
         {
-            return true;
+            return 0;
+        }
+
+        public int AddThread(string forumName, string subForumName, string threadName)
+        {
+            return 0;
+        }
+
+
+        public int AddReplyPost(string forumName, string subForumName, int threadID, int postID, string title, string content)
+        {
+            return 0;
         }
     }
 }

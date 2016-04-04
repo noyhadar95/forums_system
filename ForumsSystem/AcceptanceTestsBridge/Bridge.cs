@@ -37,6 +37,10 @@ namespace AcceptanceTestsBridge
 
         bool IsModerator(string username, string subForumName);
 
-        bool AddOpeningPost(string title, string content);
+        int AddOpeningPost(string forumName, string subForumName, int threadID, string title, string content);
+
+        int AddThread(string forumName, string subForumName, string threadName);
+
+        int AddReplyPost(string forumName, string subForumName, int threadID, int postID, string title, string content);
     }
 }
