@@ -16,9 +16,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
         public override bool CheckPolicy(PolicyParametersObject param)
         {
-            if (param.getPolicy() == type)
+            if (param.GetPolicy() == type)
             {
-                return checkLength(param.getPassword());
+                return checkLength(param.GetPassword());
             }
             else
                 return base.CheckPolicy(param);

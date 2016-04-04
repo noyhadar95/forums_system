@@ -23,7 +23,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public override bool CheckPolicy(PolicyParametersObject param)
         {
-            if (param.getPolicy() == type)
+            if (param.GetPolicy() == type)
             {
                 User user = (User)param.User;
                 int seniorityOfUser = (int)((DateTime.Today - user.DateJoined).TotalDays);

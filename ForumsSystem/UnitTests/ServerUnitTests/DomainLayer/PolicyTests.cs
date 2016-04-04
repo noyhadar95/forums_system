@@ -59,9 +59,9 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         {
             policy = new UsersLoadPolicy(Policies.UsersLoad, 120);
             PolicyParametersObject param = new PolicyParametersObject(Policies.password);
-            param.setPassword("12345678");
+            param.SetPassword("12345678");
             Assert.IsTrue(policy.CheckPolicy(param));
-            param.setPassword("1");
+            param.SetPassword("1");
             Assert.IsTrue(policy.CheckPolicy(param));
 
         }
@@ -71,9 +71,9 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         {
             policy = new PasswordPolicy(Policies.password, 8);
             PolicyParametersObject param = new PolicyParametersObject(Policies.password);
-            param.setPassword("12345678");
+            param.SetPassword("12345678");
             Assert.IsTrue(policy.CheckPolicy(param));
-            param.setPassword("1234567");
+            param.SetPassword("1234567");
             Assert.IsFalse(policy.CheckPolicy(param));
 
         }

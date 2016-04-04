@@ -20,9 +20,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public override bool CheckPolicy(PolicyParametersObject param)
         {
-            if (param.getPolicy() == type)
+            if (param.GetPolicy() == type)
             {
-                return param.getNumOfUsers()<this.maxNumOfUsers; 
+                return param.GetNumOfUsers()<this.maxNumOfUsers; 
             }
             else
                 return base.CheckPolicy(param);

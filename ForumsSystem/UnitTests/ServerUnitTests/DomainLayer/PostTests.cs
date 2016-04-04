@@ -15,7 +15,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         {
             IForum forum = new Forum("name");
             ISubForum subForum = new SubForum("name");
-            Thread thread = new Thread(subForum, null);
+            Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
             post = new Post(user,thread, null, "title", "content");
             Post reply = new Post(user,thread, post, "title1", "content1");
@@ -28,7 +28,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         {
             IForum forum = new Forum("name");
             ISubForum subForum = new SubForum("name");
-            Thread thread = new Thread(subForum,null);
+            Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
             post = new Post(user,thread, null, "title", "content");
             Post reply = new Post(user,thread, post, "title1", "content1");

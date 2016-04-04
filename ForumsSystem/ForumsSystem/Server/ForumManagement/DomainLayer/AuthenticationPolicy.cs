@@ -14,7 +14,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
         public override bool CheckPolicy(PolicyParametersObject param)
         {
-            if (param.getPolicy() == type)
+            if (param.GetPolicy() == type)
             {
                 return true;//TODO: check this
             }

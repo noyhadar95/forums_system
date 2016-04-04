@@ -11,9 +11,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private Post openingPost;
         private ISubForum subForum;
 
-        public Thread(ISubForum subForum, Post openingPost)
+        public Thread(ISubForum subForum)
         {
-            this.openingPost = openingPost;
+            this.openingPost = null;
             this.subForum = subForum;
         }
 
@@ -22,8 +22,19 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return openingPost.Title;
         }
 
+        public bool AddOpeningPost(Post openingPost)
+        {
+            if (openingPost != null)
+                return false;
+
+            this.openingPost = openingPost;
+            return true;
+        }
         public Post GetPostById(string id)
         {
+            if (openingPost == null)
+                return null;
+
             char[] delimiter = { '.' };
             string[] idArray = id.Split(delimiter);
             try {

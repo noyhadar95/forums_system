@@ -18,12 +18,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.policy = policy;
         }
         private Policies policy;
-        public Policies getPolicy()
+        public Policies GetPolicy()
         {
             return policy;
         }
 
-        public void setPolicy(Policies policy)
+        public void SetPolicy(Policies policy)
         {
             this.policy = policy;
         }
@@ -44,16 +44,16 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public IUser User { get { return this.user; } set { this.user = value; } }
 
-        public string getPassword()
+        public string GetPassword()
         {
             return password;
         }
-        public void setPassword(string newPassword)
+        public void SetPassword(string newPassword)
         {
             password = newPassword;
         }
 
-        public int getNumOfUsers()
+        public int GetNumOfUsers()
         {
             return numOfUsers;
         }
@@ -62,7 +62,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.numOfUsers = numOfUsers;
         }
 
-        public int getAgeOfUser()
+        public int GetAgeOfUser()
         {
             return ageOfUser;
         }
