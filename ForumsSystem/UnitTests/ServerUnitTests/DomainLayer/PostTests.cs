@@ -11,7 +11,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         Post post;
 
         [TestMethod]
-        public void TestAddReply()
+        public void TestAddReply()//1
         {
             IForum forum = new Forum();
             IUser user = new User("username", "1234", "mail.com", forum);
@@ -22,9 +22,11 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         }
 
         [TestMethod]
-        public void TestDeleteReply()
+        public void TestDeleteReply()//2
         {
             IForum forum = new Forum();
+
+            Thread thread = new Thread();
             IUser user = new User("username", "1234", "mail.com", forum);
             post = new Post(user, null, "title", "content");
             Post reply = new Post(user, post, "title1", "content1");

@@ -37,7 +37,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         private IUser user;
 
-        public IUser User { get { return this.user; } set { this.user=value} }
+        public IUser User { get { return this.user; } set { this.user = value; } }
 
         public string getPassword()
         {
