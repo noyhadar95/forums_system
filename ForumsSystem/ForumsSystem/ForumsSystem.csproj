@@ -64,6 +64,7 @@
     <Compile Include="Server\ForumManagement\DomainLayer\Forum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\IForum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\ISubForum.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\Moderator.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\Thread.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\IUser.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\PrivateMessage.cs" />
