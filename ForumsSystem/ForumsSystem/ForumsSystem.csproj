@@ -78,6 +78,7 @@
     <Compile Include="Server\ForumManagement\DomainLayer\PolicyEnum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\PolicyParametersObject.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\Post.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\SubForum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\UsersLoadPolicy.cs" />
   </ItemGroup>
   <ItemGroup>

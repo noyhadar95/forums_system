@@ -66,5 +66,20 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public DateTime DateJoined { get { return dateJoined; } set { this.dateJoined = value; } }
         public int NumOfMessages { get { return numOfMessages; } set { this.numOfMessages = value; } }
         public int NumOfComplaints { get { return numOfComplaints; } set { this.numOfComplaints = value; } }
+        public string getUsername()
+        {
+            return userName;
+        }
+
+        public string getPassword()
+        {
+            return password;
+        }
+
+        public string getEmail()
+        {
+            return password;
+        }
+
     }
 }

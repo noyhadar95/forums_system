@@ -22,6 +22,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return policy;
         }
+
+        public void setPolicy(Policies policy)
+        {
+            this.policy = policy;
+        }
       /*
       public void setPolicy(Policies newPolicy)
         {
@@ -52,16 +57,16 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return numOfUsers;
         }
-        public void increaseNumOfUsers()
+        public void SetNumOfUsers(int numOfUsers)
         {
-            this.numOfUsers++;
+            this.numOfUsers = numOfUsers;
         }
 
         public int getAgeOfUser()
         {
             return ageOfUser;
         }
-        public void iSetAgeOfUser(int ageOfUser)
+        public void SetAgeOfUser(int ageOfUser)
         {
             this.ageOfUser = ageOfUser;
         }

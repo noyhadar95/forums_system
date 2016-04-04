@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ForumsSystem.Server.UserManagement.DomainLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,37 +10,93 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     public class Forum : IForum
     {
 
-        public List<ISubForum> sub_forums; 
+        public string name { get; private set; }
+        private List<ISubForum> sub_forums;
+        private Policy policies;
+        private Dictionary<string, IUser> users;//username, user
 
 
-        public bool RegisterToForum(string userName, string password, string Email)
+        public Forum(string forumName)
         {
-            throw new NotImplementedException();
+            this.name = forumName;
+            InitForum();
         }
 
-        public bool CreateSubForum(string subForumName)
+        public bool RegisterToForum(string userName, string password, string Email) //TODO: Need to add age
         {
-            throw new NotImplementedException();
+            if (users.ContainsKey(userName))
+                return false;
+            if (!CheckRegistrationPolicies(password))
+                return false;
+
+            IUser newUser = new User(userName, password, Email, this);
+            users.Add(userName, newUser);
+            return true;
+
         }
 
-        public bool Login(string userName, string password)
+        private bool CheckRegistrationPolicies(string password)
         {
-            throw new NotImplementedException();
+            if (policies == null)
+                return true;
+            PolicyParametersObject param = new PolicyParametersObject(Policies.password);
+            param.setPassword(password);
+            if (!policies.CheckPolicy(param))
+                return false;
+            param.setPolicy(Policies.UsersLoad);
+            param.SetNumOfUsers(users.Count);
+            if (!policies.CheckPolicy(param))
+                return false;
+            return true;
+        }
+
+        public void CreateSubForum(string subForumName)
+        {
+            sub_forums.Add(new SubForum(subForumName));
+        }
+
+        public IUser Login(string userName, string password)
+        {
+            if (users.ContainsKey(userName))
+                return users[userName];
+            else
+                return null;
         }
 
         public bool InitForum()
         {
-            throw new NotImplementedException();
+            sub_forums = new List<ISubForum>();
+            //policies?
+            users = new Dictionary<string, IUser>();
+
+            return true;
         }
 
-        public bool AddPolicy()
+        public bool AddPolicy(Policy policy)
         {
-            throw new NotImplementedException();
+            if (policies == null)
+            {
+                policies = policy;
+                return true;
+            }
+            return policies.AddPolicy(policy);
         }
 
-        public bool RemovePolicy()
+        public void RemovePolicy(Policies policyType)
         {
-            throw new NotImplementedException();
+            if(policies != null)
+                policies = policies.RemovePolicy(policyType);
+            
+        }
+
+        public ISubForum getSubForum(string subForumName)
+        {
+            foreach (ISubForum subForum in sub_forums)
+            {
+                if (subForum.getName().Equals(subForumName))
+                    return subForum;
+            }
+            return null;
         }
     }
 }

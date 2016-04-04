@@ -15,5 +15,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         void AddReceivedMessage(PrivateMessage privateMessage);
         bool RegisterToForum();
 
+        string getUsername();
+        string getPassword();
+        string getEmail();
+
     }
 }

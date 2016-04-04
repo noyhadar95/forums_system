@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ForumsSystem.Server.UserManagement.DomainLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,16 +11,21 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
          bool InitForum(); //Needs to get Admins
 
-         bool AddPolicy();
 
-         bool RemovePolicy();
+            bool AddPolicy(Policy policy);
+
+            void RemovePolicy(Policies policyType);
 
       //  public void EditForumProperties();
 
-         bool RegisterToForum(string userName, string password, String Email);
+         bool RegisterToForum(string userName, string password, string Email);
 
-         bool CreateSubForum(string subForumName);
 
-         bool Login(string userName, string password);
+         void CreateSubForum(string subForumName);
+
+         IUser Login(string userName, string password);
+
+         ISubForum getSubForum(string subForumName);
+
     }
 }
