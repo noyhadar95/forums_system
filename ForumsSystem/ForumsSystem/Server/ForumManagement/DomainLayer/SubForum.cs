@@ -7,14 +7,16 @@ using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class SubForum : ISubForum
+   public class SubForum : ISubForum
     {
         private string name;
+        private IForum forum;
         private Dictionary<string, Moderator> moderators;//Username, Moderator
         private List<Thread> threads;
 
-        public SubForum(string name)
+        public SubForum(IForum forum, string name)
         {
+            this.forum = forum;
             this.name = name;
             moderators = new Dictionary<string, Moderator>();
             threads = new List<Thread>();
@@ -45,9 +47,21 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return name;
         }
 
-        public void removeThread() //TODO need an identifier for threads
+        public bool removeThread(int threadNumber) //TODO need an identifier for threads in the future
         {
-            throw new NotImplementedException();
+            int newThreadNumber = threadNumber - 1;
+            if (newThreadNumber < threads.Count)
+                return false;
+            threads.RemoveAt(newThreadNumber);
+            
+            return true;
+        }
+
+        public Moderator getModeratorByUserName(string userName)
+        {
+            if (!moderators.ContainsKey(userName))
+                return null;
+            return moderators[userName];
         }
     }
 }

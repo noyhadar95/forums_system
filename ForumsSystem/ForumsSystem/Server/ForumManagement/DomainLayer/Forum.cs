@@ -52,7 +52,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public void CreateSubForum(string subForumName)
         {
-            sub_forums.Add(new SubForum(subForumName));
+            sub_forums.Add(new SubForum(this,subForumName));
         }
 
         public IUser Login(string userName, string password)
