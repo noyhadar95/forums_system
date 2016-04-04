@@ -13,10 +13,12 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         [TestMethod]
         public void TestAddReply()//1
         {
-            IForum forum = new Forum();
+            IForum forum = new Forum("name");
+            ISubForum subForum = new SubForum("name");
+            Thread thread = new Thread(subForum, null);
             IUser user = new User("username", "1234", "mail.com", forum);
-            post = new Post(user, null, "title", "content");
-            Post reply = new Post(user, post, "title1", "content1");
+            post = new Post(user,thread, null, "title", "content");
+            Post reply = new Post(user,thread, post, "title1", "content1");
             post.AddReply(reply);
             Assert.IsTrue(post.NumOfReplies() == 1);
         }
@@ -24,12 +26,12 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         [TestMethod]
         public void TestDeleteReply()//2
         {
-            IForum forum = new Forum();
-
-            Thread thread = new Thread();
+            IForum forum = new Forum("name");
+            ISubForum subForum = new SubForum("name");
+            Thread thread = new Thread(subForum,null);
             IUser user = new User("username", "1234", "mail.com", forum);
-            post = new Post(user, null, "title", "content");
-            Post reply = new Post(user, post, "title1", "content1");
+            post = new Post(user,thread, null, "title", "content");
+            Post reply = new Post(user,thread, post, "title1", "content1");
             post.AddReply(reply);
             Assert.IsTrue(post.NumOfReplies() == 1);
             Assert.IsTrue(reply.DeletePost());

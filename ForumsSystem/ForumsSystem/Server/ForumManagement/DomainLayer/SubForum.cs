@@ -7,7 +7,7 @@ using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class SubForum : ISubForum
+    public class SubForum : ISubForum
     {
         public string name { get ; private set; }
         public SubForum(string name)
