@@ -42,5 +42,10 @@ namespace AcceptanceTestsBridge
         int AddThread(string forumName, string subForumName, string threadName);
 
         int AddReplyPost(string forumName, string subForumName, int threadID, int postID, string title, string content);
+
+        bool DeletePost(string forumName, string subForumName, int threadID, int postID);
+
+        // count the number of replies to a post recursively (i.e. including replies of replies adn so on)
+        int CountNestedReplies(string forumName, string subForumName, int threadID, int postID);
     }
 }

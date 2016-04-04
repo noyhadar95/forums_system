@@ -55,6 +55,7 @@
     <Compile Include="ServerTests\AddReplyPostTests.cs" />
     <Compile Include="ServerTests\CreateForumTests.cs" />
     <Compile Include="ServerTests\CreateSubForumTests.cs" />
+    <Compile Include="ServerTests\DeletePostTests.cs" />
     <Compile Include="ServerTests\EditForumPropTests.cs" />
     <Compile Include="ServerTests\ForumRegistrationTests.cs" />
     <Compile Include="ServerTests\SetForumPropTests.cs" />

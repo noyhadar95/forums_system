@@ -103,5 +103,17 @@ namespace AcceptanceTestsBridge
         {
             return 0;
         }
+
+
+        public bool DeletePost(string forumName, string subForumName, int threadID, int postID)
+        {
+            return true;
+        }
+
+
+        public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
+        {
+            return 0;
+        }
     }
 }

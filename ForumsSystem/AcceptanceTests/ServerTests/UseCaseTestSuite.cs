@@ -40,5 +40,17 @@ namespace AcceptanceTests.ServerTests
             bridge.DeleteForum(forumName);
         }
 
+        // create a new forum called forumName, a new sub-forum called subForumName and than
+        // a new thread in it.
+        protected int AddThread(string forumName, string forumProperties, string subForumName, List<string> moderators,
+            string subForumProps, string threadName)
+        {
+            // create a forum, sub-forum and a thread to add a post to.
+            CreateForum(forumName, forumProperties);
+            bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
+            return bridge.AddThread(forumName, subForumName, threadName);
+
+        }
+
     }
 }
