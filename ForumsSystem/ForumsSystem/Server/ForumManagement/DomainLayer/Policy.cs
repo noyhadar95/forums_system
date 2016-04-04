@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
@@ -26,7 +27,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if(nextPolicy!=null)
                return nextPolicy.CheckPolicy(param);
-            return true;//TODO: check this
+            return true;//TODO: check this - no policy specified
         }
         
 

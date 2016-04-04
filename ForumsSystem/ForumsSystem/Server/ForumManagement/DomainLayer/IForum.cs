@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    interface IForum
+    public interface IForum
     {
          bool InitForum(); //Needs to get Admins
 

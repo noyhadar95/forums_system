@@ -55,7 +55,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         }
 
         [TestMethod]
-        public void TestDoubleAddPolicy()
+        public void TestDoubleAddPolicy()//test AddPolicy with a policy that already exists
         {
             policy = new UsersLoadPolicy(Policies.UsersLoad, 400);
             policy.AddPolicy(new PasswordPolicy(Policies.password, 8));

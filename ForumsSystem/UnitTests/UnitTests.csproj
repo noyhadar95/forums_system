@@ -53,6 +53,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ServerUnitTests\DomainLayer\PolicyTests.cs" />
+    <Compile Include="ServerUnitTests\DomainLayer\PostTests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

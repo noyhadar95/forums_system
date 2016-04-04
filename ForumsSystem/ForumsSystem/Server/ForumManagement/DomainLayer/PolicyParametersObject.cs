@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
@@ -34,6 +35,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         private int ageOfUser;
 
+        private IUser user;
+
+        public IUser User { get { return this.user; } set { this.user=value} }
 
         public string getPassword()
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class Forum : IForum
+    public class Forum : IForum
     {
 
         public List<ISubForum> sub_forums; 

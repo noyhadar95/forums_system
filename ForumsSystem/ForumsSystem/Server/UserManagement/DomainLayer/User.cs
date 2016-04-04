@@ -7,12 +7,15 @@ using ForumsSystem.Server.ForumManagement.DomainLayer;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
-    class User : IUser
+    public class User : IUser
     {
         private string userName;
         private string password;
         private string email;
+        private DateTime dateJoined;
         private IForum forum;
+        private int numOfMessages;
+        private int numOfComplaints;
         // Type
         private List<PrivateMessage> sentMessages;
         private List<PrivateMessage> receivedMessages;
@@ -23,6 +26,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.password = password;
             this.forum = forum;
             this.email = email;
+            this.dateJoined = DateTime.Today;
+            this.numOfMessages = 0;
+            this.numOfComplaints = 0;
             this.sentMessages = new List<PrivateMessage>();
             this.receivedMessages = new List<PrivateMessage>();
             // type = Guest
@@ -57,5 +63,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.receivedMessages.Add(privateMessage);
         }
 
+        public DateTime DateJoined { get { return dateJoined; } set { this.dateJoined = value; } }
+        public int NumOfMessages { get { return numOfMessages; } set { this.numOfMessages = value; } }
+        public int NumOfComplaints { get { return numOfComplaints; } set { this.numOfComplaints = value; } }
     }
 }
