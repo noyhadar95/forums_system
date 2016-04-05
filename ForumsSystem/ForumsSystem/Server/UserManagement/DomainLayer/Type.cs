@@ -8,22 +8,22 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
-    abstract class Type
+    public interface Type
     {
         
 
         
         //Admin only ---------------------------------------------------------
 
-        public abstract void createSubForum(IUser callingUser, string subForumName); 
+        void createSubForum(IUser callingUser, string subForumName); 
 
-        public abstract void appointModerator(IUser callingUser, IUser user, ISubForum subForum);
+        void appointModerator(IUser callingUser, IUser user, ISubForum subForum);
 
-        public abstract void removeModerator(IUser callingUser, string userName, ISubForum subForum);
+        void removeModerator(IUser callingUser, string userName, ISubForum subForum);
 
-        public abstract void suspendModerator(IUser callingUser, string userName, ISubForum subForum);
+        void suspendModerator(IUser callingUser, string userName, ISubForum subForum);
 
-        public abstract void appointAdmin(IUser callingUser, IUser user);
+        void appointAdmin(IUser callingUser, IUser user);
 
         //in addition the admin should be able to get a report on the forum status
 
@@ -36,23 +36,23 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         //Member---------------------------------------------------------------
 
-        public abstract void postReply(IUser callingUser ); //TODO: Change once we get a post Interface
+        bool postReply(IUser callingUser, Post parent, Thread thread, string title, string content); 
 
-        public abstract void createThread(IUser callingUser); //TODO: Change once we get create
+        bool createThread(IUser callingUser, ISubForum subForum, string title, string content); 
 
-        public abstract void editPost(IUser callingUser);  //TODO
+        bool editPost(IUser callingUser,string title, string content,Post post); 
 
-        public abstract void deletePost(IUser callingUser); //TODO
+        bool deletePost(IUser callingUser, Post post);
 
-        public abstract void addFriend(IUser callingUser);
+        void addFriend(IUser callingUser,IUser friend);
 
-        public abstract void removeFriend(IUser callingUser);
+        bool removeFriend(IUser callingUser,IUser friendToRemove);
 
-        public abstract void acceptFriend(IUser callingUser);
+        bool acceptFriend(IUser callingUser, IUser userToAccept);
 
-        public abstract void fileComplaint(IUser callingUser, IUser user);  //make sure admin or moderator
+        void fileComplaint(IUser callingUser, IUser user);  //make sure that user is admin or moderator
 
-        public abstract void deactivateUser(IUser callingUser);
+        void deactivateUser(IUser callingUser);
 
         
         

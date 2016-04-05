@@ -66,7 +66,10 @@
     <Compile Include="Server\ForumManagement\DomainLayer\ISubForum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\Moderator.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\Thread.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\Admin.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\Guest.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\IUser.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\Member.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\PrivateMessage.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\Type.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\User.cs" />
