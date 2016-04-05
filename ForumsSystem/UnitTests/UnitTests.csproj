@@ -57,6 +57,7 @@
     <Compile Include="ServerUnitTests\DomainLayer\ModeratorTests.cs" />
     <Compile Include="ServerUnitTests\DomainLayer\PostTests.cs" />
     <Compile Include="ServerUnitTests\DomainLayer\ModeratorTests.cs" />
+    <Compile Include="ServerUnitTests\DomainLayer\SubForumTests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
