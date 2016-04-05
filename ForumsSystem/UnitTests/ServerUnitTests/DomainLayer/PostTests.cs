@@ -73,7 +73,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestGetReply()//5
         {
             IForum forum = new Forum("name");
-            ISubForum subForum = new SubForum(forum,"name");
+            ISubForum subForum = new SubForum(forum,"name");//s
             Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
             post = new Post(user, thread, "title", "content");
