@@ -16,7 +16,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         {
 
             IForum forum = new Forum("name");
-            ISubForum subForum = new SubForum("name");
+            ISubForum subForum = new SubForum(forum,"name");
             Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
             post = new Post(user,thread, "title", "content");
@@ -29,7 +29,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestDeleteReply()//2
         {
             IForum forum = new Forum("name");
-            ISubForum subForum = new SubForum("name");
+            ISubForum subForum = new SubForum(forum,"name");
             Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
             post = new Post(user,thread, "title", "content");
@@ -44,7 +44,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestDeletePostWithReplies()//3
         {
             IForum forum = new Forum("name");
-            ISubForum subForum = new SubForum("name");
+            ISubForum subForum = new SubForum(forum,"name");
             Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
             post = new Post(user, thread, "title", "content");
@@ -61,7 +61,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestAddReplyToSelf()//4
         {
             IForum forum = new Forum("name");
-            ISubForum subForum = new SubForum("name");
+            ISubForum subForum = new SubForum(forum,"name");
             Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
             post = new Post(user, thread, "title", "content");
@@ -73,7 +73,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestGetReply()//5
         {
             IForum forum = new Forum("name");
-            ISubForum subForum = new SubForum("name");
+            ISubForum subForum = new SubForum(forum,"name");
             Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
             post = new Post(user, thread, "title", "content");
