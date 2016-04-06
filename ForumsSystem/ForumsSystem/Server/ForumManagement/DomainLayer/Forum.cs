@@ -49,7 +49,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if (policies == null)
                 return true;
-            PolicyParametersObject param = new PolicyParametersObject(Policies.password);
+            PolicyParametersObject param = new PolicyParametersObject(Policies.Password);
             param.SetPassword(password);
             if (!policies.CheckPolicy(param))
                 return false;

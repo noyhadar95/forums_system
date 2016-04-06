@@ -42,7 +42,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         private IUser user;
 
+        private int numOfModerators;
+
         public IUser User { get { return this.user; } set { this.user = value; } }
+        public int NumOfModerators { get { return this.numOfModerators; } set { this.numOfModerators = value; } }
 
         public string GetPassword()
         {

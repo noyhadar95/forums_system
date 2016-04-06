@@ -19,12 +19,19 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public string GetTiltle()
         {
+            if (openingPost == null)
+                return "";
             return openingPost.Title;
+        }
+
+        public Post GetOpeningPost()
+        {
+            return this.openingPost;
         }
 
         public bool AddOpeningPost(Post openingPost)
         {
-            if (openingPost != null)
+            if (this.openingPost != null)
                 return false;
 
             this.openingPost = openingPost;
