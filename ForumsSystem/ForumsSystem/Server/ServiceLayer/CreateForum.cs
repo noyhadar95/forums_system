@@ -10,8 +10,10 @@ namespace ForumsSystem.Server.ServiceLayer
 {
     class CreateForum
     {
-        public static IForum Create(IUser creator, Policy properties, List<IUser> adminUsername)
+        public static IForum Create(IUser creator,string name, Policy properties, List<IUser> adminUsername)
         {
+            if (adminUsername.Count == 0)//must be an admin
+                return null;
 
             PolicyParametersObject param = new PolicyParametersObject(Policies.AdminAppointment);
             foreach (IUser user in adminUsername.ToList<IUser>())
@@ -21,8 +23,15 @@ namespace ForumsSystem.Server.ServiceLayer
                     return null;
             }
 
+            IForum forum = new Forum(name);
+            forum.AddPolicy(properties);
+            foreach (IUser user in adminUsername.ToList<IUser>())
+            {
+                user.ChangeType(new Admin());
+                forum.RegisterToForum(user);
+            }
 
-            return null;
+            return forum;
         }
     }
 }

@@ -40,9 +40,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return true;
         }
 
-        public void createThread()
+        public Thread createThread()
         {
-            threads.Add(new Thread(this));
+            Thread thread = new Thread(this);
+            threads.Add(thread);
+            return thread;
         }
 
         public string getName()
@@ -58,6 +60,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             threads.RemoveAt(newThreadNumber);
             
             return true;
+        }
+
+        public bool removeThread(Thread thread) //TODO need an identifier for threads in the future
+        {
+            return threads.Remove(thread);
         }
 
         public Moderator getModeratorByUserName(string userName)

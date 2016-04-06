@@ -13,6 +13,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private string userName;
         private string password;
         private string email;
+        private int age;
         private DateTime dateJoined;
         private IForum forum;
         private int numOfMessages;
@@ -153,6 +154,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public DateTime DateJoined { get { return dateJoined; } set { this.dateJoined = value; } }
         public int NumOfMessages { get { return numOfMessages; } set { this.numOfMessages = value; } }
         public int NumOfComplaints { get { return numOfComplaints; } set { this.numOfComplaints = value; } }
+        public int Age { get { return age; } set { this.age = value; } }
         public string getUsername()
         {
             return userName;

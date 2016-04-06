@@ -34,7 +34,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             {
                 p.DeletePost();
             }
-            return this.parentPost.DeleteReply(this);
+            if(this.parentPost!=null)
+                return this.parentPost.DeleteReply(this);
+            else//opening post
+            {
+                this.Thread.DeleteOpeningPost();
+                return true;
+            }
         }
 
         private bool DeleteReply(Post post)
