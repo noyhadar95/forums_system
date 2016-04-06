@@ -21,7 +21,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.name = forumName;
             InitForum();
         }
-
+        
         public bool RegisterToForum(string userName, string password, string Email) //TODO: Need to add age
         {
             if (users.ContainsKey(userName))
@@ -50,9 +50,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return true;
         }
 
-        public void CreateSubForum(string subForumName)
+        public void CreateSubForum(IUser creator, string subForumName)
         {
-            sub_forums.Add(new SubForum(this,subForumName));
+            sub_forums.Add(new SubForum(this,creator,subForumName));
         }
 
         public IUser Login(string userName, string password)
@@ -97,6 +97,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                     return subForum;
             }
             return null;
+        }
+
+        public IUser getUser(string username)
+        {
+            if(this.users.ContainsKey(username))
+                return this.users[username];
+            return null;
+        }
+
+        public bool isUserMember(string username)
+        {
+            return this.users.ContainsKey(username);
         }
     }
 }

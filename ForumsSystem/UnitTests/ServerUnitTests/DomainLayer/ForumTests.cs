@@ -9,10 +9,12 @@ namespace UnitTests.ServerUnitTests.DomainLayer
     public class ForumTests
     {
         IForum forum;
+        IUser admin;
         [TestInitialize()]
         public void Initialize()
         {
             forum = new Forum("testForum");
+            admin = new User("admin", "admin", "admin@gmail.com", forum);
         }
         [TestCleanup()]
         public void Cleanup() {
@@ -56,7 +58,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestSubForumCreation()
         {
             string subForumName = "sub";
-            forum.CreateSubForum(subForumName);
+            forum.CreateSubForum(admin,subForumName);
             Assert.IsNotNull(forum.getSubForum(subForumName));
         }
 
