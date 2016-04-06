@@ -56,7 +56,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 // also check the expiration date
                 // else - get user and add to dictionary of <IUser,DateTime>
             }
-            ISubForum subforum = new SubForum(forum, subForumName);
+            ISubForum subforum = new SubForum(forum,callingUser, subForumName);
             //subforum.addModerator(user, expirationDate);
             // save the admin who created the sub forum?
             return true;
