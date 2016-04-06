@@ -16,9 +16,10 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         {
 
             IForum forum = new Forum("name");
-            ISubForum subForum = new SubForum(forum,"name");
-            Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
+            ISubForum subForum = new SubForum(forum,user,"name");
+            Thread thread = new Thread(subForum);
+           
             post = new Post(user,thread, "title", "content");
             Post reply = new Post(user,thread, "title1", "content1");
             post.AddReply(reply);
@@ -29,9 +30,10 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestDeleteReply()//2
         {
             IForum forum = new Forum("name");
-            ISubForum subForum = new SubForum(forum,"name");
-            Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
+            ISubForum subForum = new SubForum(forum,user,"name");
+            Thread thread = new Thread(subForum);
+            
             post = new Post(user,thread, "title", "content");
             Post reply = new Post(user,thread, "title1", "content1");
             post.AddReply(reply);
@@ -44,9 +46,10 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestDeletePostWithReplies()//3
         {
             IForum forum = new Forum("name");
-            ISubForum subForum = new SubForum(forum,"name");
-            Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
+            ISubForum subForum = new SubForum(forum,user,"name");
+            Thread thread = new Thread(subForum);
+            
             post = new Post(user, thread, "title", "content");
             Post reply = new Post(user, thread, "title1", "content1");
             post.AddReply(reply);
@@ -61,9 +64,10 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestAddReplyToSelf()//4
         {
             IForum forum = new Forum("name");
-            ISubForum subForum = new SubForum(forum,"name");
-            Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
+            ISubForum subForum = new SubForum(forum,user,"name");
+            Thread thread = new Thread(subForum);
+            
             post = new Post(user, thread, "title", "content");
             Assert.IsFalse(post.AddReply(post));
             Assert.IsTrue(post.NumOfReplies() == 0);
@@ -73,9 +77,10 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestGetReply()//5
         {
             IForum forum = new Forum("name");
-            ISubForum subForum = new SubForum(forum,"name");
-            Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
+            ISubForum subForum = new SubForum(forum,user,"name");
+            Thread thread = new Thread(subForum);
+            
             post = new Post(user, thread, "title", "content");
             Post reply = new Post(user, thread, "title1", "content1");
             post.AddReply(reply);
@@ -87,9 +92,10 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestGetThread()//6
         {
             IForum forum = new Forum("name");
-            ISubForum subForum = new SubForum(forum, "name");
-            Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
+            ISubForum subForum = new SubForum(forum,user, "name");
+            Thread thread = new Thread(subForum);
+            
             post = new Post(user, thread, "title", "content");
             Assert.IsTrue(thread == post.Thread);
         }

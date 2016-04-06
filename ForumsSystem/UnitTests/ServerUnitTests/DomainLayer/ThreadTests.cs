@@ -12,9 +12,10 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestAddOpeningPost()//1
         {
             Forum forum = new Forum("forum");
-            SubForum subForum = new SubForum(forum, "sub forum");
-            Thread thread = new Thread(subForum);
             User user = new User("a", "1234", "mail", forum);
+            SubForum subForum = new SubForum(forum,user, "sub forum");
+            Thread thread = new Thread(subForum);
+            
             Assert.IsTrue(thread.GetTiltle().Equals(""));
             Assert.IsTrue(thread.AddOpeningPost(new Post(user, thread, "title", "content")));
             Assert.IsTrue(thread.GetTiltle().Equals("title"));
@@ -26,9 +27,10 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestGetPostById()//2
         {
             Forum forum = new Forum("forum");
-            SubForum subForum = new SubForum(forum, "sub forum");
-            Thread thread = new Thread(subForum);
             User user = new User("a", "1234", "mail", forum);
+            SubForum subForum = new SubForum(forum,user, "sub forum");
+            Thread thread = new Thread(subForum);
+            
             Assert.IsTrue(thread.GetTiltle().Equals(""));
             Post post1 = new Post(user, thread, "title", "content");
             Post rep1 = new Post(user, thread, "rep", "content");
