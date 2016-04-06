@@ -17,7 +17,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             void RemovePolicy(Policies policyType);
 
       //  public void EditForumProperties();
-
+      //quick edit
          bool RegisterToForum(string userName, string password, string Email);
         bool RegisterToForum(IUser user);
 
