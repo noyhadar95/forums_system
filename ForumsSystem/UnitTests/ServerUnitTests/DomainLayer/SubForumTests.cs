@@ -67,5 +67,18 @@ namespace UnitTests.ServerUnitTests.DomainLayer
             Assert.AreEqual(subForum.getName(), "sub1");
         }
 
+        [TestMethod]
+        public void TestCreator()
+        {
+            Assert.AreEqual(subForum.getCreator(), admin);
+        }
+
+        [TestMethod]
+        public void TestThreads()
+        {
+            Thread thr = subForum.createThread();
+            Assert.AreEqual(subForum.getThread(1), thr);
+        }
+
     }
 }
