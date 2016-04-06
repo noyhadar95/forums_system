@@ -51,15 +51,21 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerTests\AddModeratorTests.cs" />
     <Compile Include="ServerTests\AddOpeningPostTests.cs" />
     <Compile Include="ServerTests\AddReplyPostTests.cs" />
+    <Compile Include="ServerTests\AddThreadTests.cs" />
     <Compile Include="ServerTests\CreateForumTests.cs" />
     <Compile Include="ServerTests\CreateSubForumTests.cs" />
     <Compile Include="ServerTests\DeletePostTests.cs" />
     <Compile Include="ServerTests\EditForumPropTests.cs" />
+    <Compile Include="ServerTests\EditModeratorExpireDateTests.cs" />
     <Compile Include="ServerTests\ForumRegistrationTests.cs" />
+    <Compile Include="ServerTests\SuperAdminLoginTests.cs" />
+    <Compile Include="ServerTests\SendPrivateMsgTests.cs" />
     <Compile Include="ServerTests\SetForumPropTests.cs" />
     <Compile Include="ServerTests\UseCaseTestSuite.cs" />
+    <Compile Include="ServerTests\UserLoginTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AcceptanceTestsBridge\AcceptanceTestsBridge.csproj">

@@ -21,10 +21,10 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestSetForumPropValid()
         {
-            string forumName = "";
-            string adminUserName1 = "";
-            string adminPass1 = "";
-            string adminEmail1 = "";
+            string forumName = "forum1";
+            string adminUserName1 = "admin123";
+            string adminPass1 = "root123";
+            string adminEmail1 = "admin123@gmail.com";
             string forumProperties = "";
             List<UserStub> admins = new List<UserStub>();
             UserStub user1 = new UserStub(adminUserName1, adminPass1, adminEmail1, forumName);

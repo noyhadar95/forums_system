@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AcceptanceTestsBridge
 {
-    public class ProxyBridge : Bridge
+    public class ProxyBridge : IBridge
     {
-        private Bridge realBridge;
+        private IBridge realBridge;
 
         public ProxyBridge()
         {
@@ -79,7 +79,7 @@ namespace AcceptanceTestsBridge
         }
 
 
-        public bool IsModerator(string username, string subForumName)
+        public bool IsModerator(string forumName, string subForumName, string username)
         {
             return true;
         }
@@ -114,6 +114,58 @@ namespace AcceptanceTestsBridge
         public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
         {
             return 0;
+        }
+
+
+        public bool IsExistThread(string forumName, string subForumName, int threadID)
+        {
+            return true;
+        }
+
+        public bool SendPrivateMsg(string senderUsername, string receiverUsername, string msgTitle, string msgContent)
+        {
+            return true;
+        }
+
+
+        public bool IsMsgReceived(string username, string msgTitle, string msgContent)
+        {
+            return true;
+        }
+
+        public bool IsMsgSent(string username, string msgTitle, string msgContent)
+        {
+            return true;
+        }
+
+
+        public bool EditModeratorExpDate(string forumName, string subForumName, string username, DateTime newDate)
+        {
+            return true;
+        }
+
+
+        public DateTime GetModeratorExpDate(string forumName, string subForumName, string username)
+        {
+            return new DateTime();
+        }
+
+
+        public bool AddModerator(string forumName, string subForumName, string username)
+        {
+            return true;
+        }
+
+
+        public bool LoginUser(string forumName, string username, string pass)
+        {
+            return true;
+        }
+
+
+        public bool LoginSuperAdmin(string username, string pass)
+        {
+            return true;
         }
     }
 }

@@ -18,17 +18,17 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestCreateSubForumSuccess()
         {
-            string forumName = "";
+            string forumName = "forum1";
             string forumProperties = "";
-            string username1 = "";
+            string username1 = "user123";
             List<string> moderators = new List<string>();
             moderators.Add(username1);
-            string subForumName = "";
+            string subForumName = "sub forum 123";
             string subForumProps = "";
 
             base.CreateForum(forumName, forumProperties);
 
-            bool res = bridge.CreateSubForum(forumName,subForumName , moderators, subForumProps);
+            bool res = bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
             Assert.IsTrue(res);
 
             // check that the sub-forum now exists in the sytem
@@ -37,7 +37,7 @@ namespace AcceptanceTests.ServerTests
             // check that every moderator in moderators list is a moderator in the sub-forum
             foreach (string m in moderators)
             {
-                Assert.IsTrue(bridge.IsModerator(m, subForumName));
+                Assert.IsTrue(bridge.IsModerator(forumName, subForumName, m));
             }
 
             // cleanup
@@ -48,19 +48,19 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestCreateSubForumFailure()
         {
-            string forumName = "";
+            string forumName = "forum1";
             string forumProperties = "";
-            string username1 = "";
+            string username1 = "user123";
             List<string> moderators = new List<string>();
             moderators.Add(username1);
-            string subForumName = "";
+            string subForumName = "sub forum 123";
             string subForumProps = "";
 
             base.CreateForum(forumName, forumProperties);
             // make sure username is not a valid user in the forum
             bridge.DeleteUser(username1);
 
-            bool res = bridge.CreateSubForum(forumName,subForumName, moderators, subForumProps);
+            bool res = bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
 
             Assert.IsTrue(!res);
 

@@ -25,7 +25,7 @@ namespace AcceptanceTests.ServerTests
             string content = "content1";
             string forumName = "forum1";
             string forumProperties = "";
-            string username1 = "user1";
+            string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             List<string> moderators = new List<string>();
             moderators.Add(username1);
             string subForumName = "sub forum 1";
@@ -34,6 +34,7 @@ namespace AcceptanceTests.ServerTests
 
             // create a forum, sub-forum and a thread to add a post to.
             base.CreateForum(forumName, forumProperties);
+            bridge.RegisterToForum(forumName, username1, pass1, email);
             bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
             int threadID = bridge.AddThread(forumName, subForumName, threadName);
             // add opening post
@@ -56,7 +57,7 @@ namespace AcceptanceTests.ServerTests
             string content = ""; // empty content
             string forumName = "forum1";
             string forumProperties = "";
-            string username1 = "user1";
+            string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             List<string> moderators = new List<string>();
             moderators.Add(username1);
             string subForumName = "sub forum 1";
@@ -65,6 +66,7 @@ namespace AcceptanceTests.ServerTests
 
             // create a forum, sub-forum and a thread to add a post to.
             base.CreateForum(forumName, forumProperties);
+            bridge.RegisterToForum(forumName, username1, pass1, email);
             bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
             int threadID = bridge.AddThread(forumName, subForumName, threadName);
             // add opening post
@@ -87,7 +89,7 @@ namespace AcceptanceTests.ServerTests
             string content = "content1";
             string forumName = "forum1";
             string forumProperties = "";
-            string username1 = "user1";
+            string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             List<string> moderators = new List<string>();
             moderators.Add(username1);
             string subForumName = "sub forum 1";
@@ -96,6 +98,7 @@ namespace AcceptanceTests.ServerTests
 
             // create a forum, sub-forum and a thread to add a post to.
             base.CreateForum(forumName, forumProperties);
+            bridge.RegisterToForum(forumName, username1, pass1, email);
             bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
             int threadID = bridge.AddThread(forumName, subForumName, threadName);
             // add opening post
@@ -118,7 +121,7 @@ namespace AcceptanceTests.ServerTests
             string content = ""; // empty content
             string forumName = "forum1";
             string forumProperties = "";
-            string username1 = "user1";
+            string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             List<string> moderators = new List<string>();
             moderators.Add(username1);
             string subForumName = "sub forum 1";
@@ -127,6 +130,7 @@ namespace AcceptanceTests.ServerTests
 
             // create a forum, sub-forum and a thread to add a post to.
             base.CreateForum(forumName, forumProperties);
+            bridge.RegisterToForum(forumName, username1, pass1, email);
             bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
             int threadID = bridge.AddThread(forumName, subForumName, threadName);
             // add opening post
@@ -153,7 +157,7 @@ namespace AcceptanceTests.ServerTests
             string content = "content1";
             string forumName = "forum1";
             string forumProperties = "";
-            string username1 = "user1";
+            string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             List<string> moderators = new List<string>();
             moderators.Add(username1);
             string subForumName = "sub forum 1";
@@ -162,6 +166,7 @@ namespace AcceptanceTests.ServerTests
 
             // create a forum, sub-forum and a thread to add a post to.
             base.CreateForum(forumName, forumProperties);
+            bridge.RegisterToForum(forumName, username1, pass1, email);
             bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
             int threadID = bridge.AddThread(forumName, subForumName, threadName);
             // add opening post
@@ -189,7 +194,7 @@ namespace AcceptanceTests.ServerTests
             string content = "content1";
             string forumName = "forum1";
             string forumProperties = "";
-            string username1 = "user1";
+            string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             List<string> moderators = new List<string>();
             moderators.Add(username1);
             string subForumName = "sub forum 1";
@@ -198,6 +203,7 @@ namespace AcceptanceTests.ServerTests
 
             // create a forum, sub-forum and a thread to add a post to.
             base.CreateForum(forumName, forumProperties);
+            bridge.RegisterToForum(forumName, username1, pass1, email);
             bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
             int threadID = bridge.AddThread(forumName, subForumName, threadName);
             // add opening post

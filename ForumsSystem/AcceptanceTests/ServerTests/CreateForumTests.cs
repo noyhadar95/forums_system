@@ -17,10 +17,10 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestCreateForumAdminExist()
         {
-            string forumName = "";
-            string adminUserName1 = "", adminUserName2 = "";
-            string adminPass1 = "", adminPass2 = "";
-            string adminEmail1 = "", adminEmail2 = "";
+            string forumName = "forum9";
+            string adminUserName1 = "adm1", adminUserName2 = "adm2";
+            string adminPass1 = "root1", adminPass2 = "root2";
+            string adminEmail1 = "adm1@gmail.com", adminEmail2 = "adm2@gmail.com";
             string forumProperties = "";
             List<UserStub> admins = new List<UserStub>();
             UserStub user1 = new UserStub(adminUserName1, adminPass1, adminEmail1, forumName);

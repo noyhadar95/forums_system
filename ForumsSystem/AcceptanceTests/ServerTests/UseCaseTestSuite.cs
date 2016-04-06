@@ -8,7 +8,7 @@ namespace AcceptanceTests.ServerTests
     [TestClass]
     public class UseCaseTestSuite
     {
-        protected Bridge bridge;
+        protected IBridge bridge;
 
         public UseCaseTestSuite()
         {
@@ -24,9 +24,9 @@ namespace AcceptanceTests.ServerTests
 
         protected bool CreateForum(string forumName, string forumProperties)
         {
-            string adminUserName1 = "";
-            string adminPass1 = "";
-            string adminEmail1 = "";
+            string adminUserName1 = "admin1";
+            string adminPass1 = "adminPasswd";
+            string adminEmail1 = "admin1@gmail.com";
             List<UserStub> admins = new List<UserStub>();
             UserStub user1 = new UserStub(adminUserName1, adminPass1, adminEmail1, forumName);
             admins.Add(user1);
@@ -47,6 +47,13 @@ namespace AcceptanceTests.ServerTests
         {
             // create a forum, sub-forum and a thread to add a post to.
             CreateForum(forumName, forumProperties);
+
+            foreach (string mod in moderators)
+            {
+                string username = mod, pass = "passwd", email = mod + "@gmail.com";
+                bridge.RegisterToForum(forumName, mod, pass, email);
+            }
+
             bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
             return bridge.AddThread(forumName, subForumName, threadName);
 

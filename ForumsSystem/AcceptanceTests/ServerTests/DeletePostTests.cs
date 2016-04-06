@@ -41,7 +41,7 @@ namespace AcceptanceTests.ServerTests
             base.DeleteForum(forumName);
         }
 
-        // test - delete reply post with replies to it, need to delete al of it's replies
+        // test - delete reply post with replies to it, need to delete all of it's replies
         [TestMethod]
         public void TestDeletePostReplyWithReplies()
         {
@@ -79,6 +79,33 @@ namespace AcceptanceTests.ServerTests
             base.DeleteForum(forumName);
         }
 
+        // test - delete opening post, check that the thread of the opening post is deleted too.
+        [TestMethod]
+        public void TestDeletePostOpening()
+        {
+            string title = "title1";
+            string content = "content1";
+            string forumName = "forum1";
+            string forumProperties = "";
+            string username1 = "user1";
+            List<string> moderators = new List<string>();
+            moderators.Add(username1);
+            string subForumName = "sub forum 1";
+            string subForumProps = "";
+            string threadName = "thread1";
+
+            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, subForumProps, threadName);
+            int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
+
+            bool res = bridge.DeletePost(forumName, subForumName, threadID, postID);
+            // check that the deletion is successfully done
+            Assert.IsTrue(res);
+            // check that the thread has been deleted
+            Assert.IsTrue(bridge.IsExistThread(forumName, subForumName, threadID));
+
+            // cleanup
+            base.DeleteForum(forumName);
+        }
 
     }
 }

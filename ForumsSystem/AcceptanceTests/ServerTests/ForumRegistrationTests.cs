@@ -13,16 +13,16 @@ namespace AcceptanceTests.ServerTests
 
         }
 
-        
+
         // test success scenario for registration with valid info
         [TestMethod]
         public void TestForumRegistrationSuccess()
         {
-            string forumName = "";
+            string forumName = "forum1";
             string forumProperties = "";
-            string username = "";
-            string pass = "";
-            string email = "";
+            string username = "user1";
+            string pass = "passwd";
+            string email = "user1@gmail.com";
 
             base.CreateForum(forumName, forumProperties);
 
@@ -40,10 +40,10 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestForumRegistrationBadForumName()
         {
-            string forumName = "";
-            string username = "";
-            string pass = "";
-            string email = "";
+            string forumName = "forum1";
+            string username = "user1";
+            string pass = "passwd";
+            string email = "user1@gmail.com";
 
             // make sure forum doesn't exist
             base.DeleteForum(forumName);
@@ -53,8 +53,9 @@ namespace AcceptanceTests.ServerTests
 
         }
 
+        
 
-        //TODO: make tests for failure: bad username, bad pass, bad email
+        //TODO: make tests for failure: bad username, bad pass
 
     }
 }
