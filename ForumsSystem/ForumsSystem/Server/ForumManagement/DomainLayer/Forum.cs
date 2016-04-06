@@ -73,6 +73,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             {
                 Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
                 return users[userName];
+                if (users[userName].getPassword().Equals(password))
+                    return users[userName];
+                else
+                    return null;
             }
             else
                 return null;
@@ -129,6 +133,21 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public bool isUserMember(string username)
         {
             return this.users.ContainsKey(username);
+        }
+
+        public void SetPolicy(Policy policy)
+        {
+            this.policies = policy;
+        }
+
+        public Policy GetPolicy()
+        {
+            return this.policies;
+        }
+
+        public int GetNumOfUsers()
+        {
+            return this.users.Count;
         }
     }
 }

@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ForumsSystem.Server.ForumManagement.DomainLayer;
+using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
-    public class Initialization
-    {//TODO:
-        /*public static  InitializeSystem(string username,string password)
-        {
-
-        }
-        */
+    public class SuperAdminLogin
+    {
+        //TODO
     }
 }

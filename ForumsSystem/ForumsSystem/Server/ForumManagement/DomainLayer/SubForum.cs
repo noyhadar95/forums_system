@@ -47,7 +47,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             Thread thread = new Thread(this);
             threads.Add(thread);
             Loggers.Logger.GetInstance().AddActivityEntry("Thread created in subforum: " + name);
-
             return thread;
         }
 
@@ -64,6 +63,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             threads.RemoveAt(newThreadNumber);
             Loggers.Logger.GetInstance().AddActivityEntry("Thread removed from subforum: " + name);
             return true;
+        }
+
+        public bool removeThread(Thread thread) //TODO need an identifier for threads in the future
+        {
+            return threads.Remove(thread);
         }
 
         public Moderator getModeratorByUserName(string userName)

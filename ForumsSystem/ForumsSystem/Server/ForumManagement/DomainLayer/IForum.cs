@@ -13,8 +13,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
 
             bool AddPolicy(Policy policy);
+        void SetPolicy(Policy policy);
 
-            void RemovePolicy(Policies policyType);
+        void RemovePolicy(Policies policyType);
 
       //  public void EditForumProperties();
       //quick edit
@@ -28,6 +29,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
          ISubForum getSubForum(string subForumName);
         IUser getUser(string username);
         bool isUserMember(string username);
+         Policy GetPolicy();
+        int GetNumOfUsers();
 
     }
 }

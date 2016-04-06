@@ -37,6 +37,17 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.openingPost = openingPost;
             return true;
         }
+
+        public void DeleteOpeningPost()
+        {
+            this.openingPost = null;
+               
+        }
+
+        public ISubForum GetSubforum()
+        {
+            return this.subForum;
+        }
         public Post GetPostById(string id)
         {
             if (openingPost == null)
