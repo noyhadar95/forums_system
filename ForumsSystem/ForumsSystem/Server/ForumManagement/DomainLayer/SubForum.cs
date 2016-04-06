@@ -14,17 +14,19 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private IForum forum;
         private Dictionary<string, Moderator> moderators;//Username, Moderator
         private List<Thread> threads;
-
-        public SubForum(IForum forum, string name)
+        private IUser creator; //admin who created the subforum
+        public SubForum(IForum forum, IUser creator, string name)
         {
             this.forum = forum;
+            this.creator = creator;
             this.name = name;
             moderators = new Dictionary<string, Moderator>();
             threads = new List<Thread>();
         }
-        public void addModerator(IUser user, DateTime expirationDate)
+        public void addModerator(IUser admin, IUser user, DateTime expirationDate)
         {
-            Moderator mod = new Moderator(user, expirationDate);
+            //TODO perhaps check if admin is indeed an admin
+            Moderator mod = new Moderator(admin,user, expirationDate);
             moderators.Add(user.getUsername(), mod);
 
         }
@@ -63,6 +65,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (!moderators.ContainsKey(userName))
                 return null;
             return moderators[userName];
+        }
+
+        public IUser getCreator()
+        {
+            return this.creator;
         }
     }
 }

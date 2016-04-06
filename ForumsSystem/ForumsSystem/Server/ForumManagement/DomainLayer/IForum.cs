@@ -21,11 +21,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
          bool RegisterToForum(string userName, string password, string Email);
 
 
-         void CreateSubForum(string subForumName);
+         void CreateSubForum(IUser creator, string subForumName);
 
          IUser Login(string userName, string password);
 
          ISubForum getSubForum(string subForumName);
+        IUser getUser(string username);
+        bool isUserMember(string username);
 
     }
 }

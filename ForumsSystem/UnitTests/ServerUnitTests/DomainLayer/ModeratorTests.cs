@@ -10,14 +10,17 @@ namespace UnitTests.ServerUnitTests.DomainLayer
     {
         IForum forum;
         IUser user;
+        IUser admin;
         Moderator mod;
         [TestInitialize()]
         public void Initialize()
         {
             forum = new Forum("testForum"); ;
             user = new User("u1", "p1", "e1@gmail.com", forum);
+            admin = new User("admin", "admin", "admin@gmail.com", forum);
+
             DateTime expirationDate = DateTime.Today.AddMonths(1);
-            mod = new Moderator(user, expirationDate);
+            mod = new Moderator(admin,user, expirationDate);
         }
 
 

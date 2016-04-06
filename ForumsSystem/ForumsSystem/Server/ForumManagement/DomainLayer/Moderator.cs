@@ -11,9 +11,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
         public IUser user { get; private set; }
         public DateTime expirationDate { get; private set; }
+        private IUser appointer;
 
-        public Moderator(IUser user, DateTime expirationDate)
+
+        public Moderator(IUser appointer, IUser user, DateTime expirationDate)
         {
+            this.appointer = appointer;
             this.user = user;
             this.expirationDate = expirationDate;
         }
