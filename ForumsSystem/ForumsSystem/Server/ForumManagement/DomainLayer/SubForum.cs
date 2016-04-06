@@ -22,13 +22,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.name = name;
             moderators = new Dictionary<string, Moderator>();
             threads = new List<Thread>();
+            Loggers.Logger.GetInstance().AddActivityEntry("SubForum: " + name + "created for Forum: " + ((Forum)forum).name + "by: " + creator.getUsername());
+
         }
         public void addModerator(IUser admin, IUser user, DateTime expirationDate)
         {
-            //TODO perhaps check if admin is indeed an admin
+            
             Moderator mod = new Moderator(admin,user, expirationDate);
             moderators.Add(user.getUsername(), mod);
-
+            Loggers.Logger.GetInstance().AddActivityEntry("Moderator: " + user.getUsername() + "added to subforum: " + this.name + " by: " + admin.getUsername());
         }
 
         public bool changeModeratorExpirationDate(IUser user, DateTime newExpirationDate)
@@ -40,9 +42,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return true;
         }
 
-        public void createThread()
+        public Thread createThread()
         {
-            threads.Add(new Thread(this));
+            Thread thread = new Thread(this);
+            threads.Add(thread);
+            Loggers.Logger.GetInstance().AddActivityEntry("Thread created in subforum: " + name);
+
+            return thread;
         }
 
         public string getName()
@@ -56,7 +62,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (newThreadNumber < threads.Count)
                 return false;
             threads.RemoveAt(newThreadNumber);
-            
+            Loggers.Logger.GetInstance().AddActivityEntry("Thread removed from subforum: " + name);
             return true;
         }
 
@@ -70,6 +76,14 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public IUser getCreator()
         {
             return this.creator;
+        }
+
+        public Thread getThread(int index)
+        {
+            int newIndex = index - 1;
+            if (newIndex > threads.Count)
+                return null;
+            else return threads.ElementAt(newIndex);
         }
     }
 }
