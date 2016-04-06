@@ -20,6 +20,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             this.name = forumName;
             InitForum();
+            Loggers.Logger.GetInstance().AddActivityEntry(forumName + "created");
         }
         
         public bool RegisterToForum(string userName, string password, string Email) //TODO: Need to add age
@@ -31,8 +32,17 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
             IUser newUser = new User(userName, password, Email, this);
             users.Add(userName, newUser);
+            Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + "Created");
             return true;
 
+        }
+
+        public bool RegisterToForum(IUser user)
+        {
+            if (isUserMember(user.getUsername()))
+                return false;
+            users.Add(user.getUsername(), user);
+            return true;
         }
 
         private bool CheckRegistrationPolicies(string password)
