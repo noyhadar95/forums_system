@@ -126,5 +126,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             throw new NotImplementedException();
         }
+
+        void Type.appointModerator(IUser callingUser, string userName, DateTime expirationTime, ISubForum subForum)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
