@@ -19,7 +19,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
       //  public void EditForumProperties();
 
          bool RegisterToForum(string userName, string password, string Email);
-
+        bool RegisterToForum(IUser user);
 
          void CreateSubForum(IUser creator, string subForumName);
 

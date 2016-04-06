@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.Loggers
 {
-    class Logger
+   public class Logger
     {
         private static Logger instance = new Logger();
         private List<Tuple<DateTime, string>> activityLogs;
