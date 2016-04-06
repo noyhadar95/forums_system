@@ -17,9 +17,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private IForum forum;
         private int numOfMessages;
         private int numOfComplaints;
-        // Type
+        private Type type;
         private List<PrivateMessage> sentMessages;
         private List<PrivateMessage> receivedMessages;
+        private List<IUser> friends;
+        private List<IUser> waitingFriendsList;
 
         public User(string userName,string password,string email,IForum forum)
         {
@@ -32,12 +34,53 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.numOfComplaints = 0;
             this.sentMessages = new List<PrivateMessage>();
             this.receivedMessages = new List<PrivateMessage>();
-            // type = Guest
+            this.type = new Guest();                            // maybe member?
+            this.friends = new List<IUser>();
+            this.waitingFriendsList = new List<IUser>();
         }
 
-        public bool ChangeType()
+        public bool isInWaitingList(IUser user)
         {
-            throw new NotImplementedException();
+            return waitingFriendsList.Contains(user);
+        }
+        public bool isInFriendsList(IUser user)
+        {
+            return friends.Contains(user);
+        }
+        public void addToWaitingFriendsList(IUser user)
+        {
+            waitingFriendsList.Add(user);
+        } 
+        public void removeFromWaitingFriendsList(IUser user)
+        {
+            waitingFriendsList.Remove(user);
+        }
+        public void addToFriendsList(IUser user)
+        {
+            friends.Add(user);
+        }
+        public void removeFromFriendList(IUser user)
+        {
+            friends.Remove(user);
+        }
+        public void addFriend(IUser friend)
+        {
+            type.addFriend(this, friend);
+        }
+
+        public bool removeFriend(IUser friendToRemove)
+        {
+            return type.removeFriend(this, friendToRemove);
+        }
+
+        public bool acceptFriend(IUser userToAccept)
+        {
+            return type.acceptFriend(this, userToAccept);
+        }
+
+        public void ChangeType(Type type)
+        {
+            this.type = type;
         }
 
         public bool RegisterToForum()
@@ -63,6 +106,26 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             this.receivedMessages.Add(privateMessage);
         }
+        public bool postReply(Post parent, Thread thread, string title, string content)
+        {
+            return type.postReply(this,parent,thread,title,content);
+        }
+
+        public bool createThread(ISubForum subForum, string title, string content)
+        {
+            return type.createThread(this,subForum,title,content);
+        }
+
+        public bool editPost(string title, string content, Post post)
+        {
+            return type.editPost(this, title, content, post);
+        }
+
+        public bool deletePost(Post post)
+        {
+            return type.deletePost(this, post);
+        }
+
 
         public DateTime DateJoined { get { return dateJoined; } set { this.dateJoined = value; } }
         public int NumOfMessages { get { return numOfMessages; } set { this.numOfMessages = value; } }
@@ -79,8 +142,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public string getEmail()
         {
-            return password;
+            return email;
         }
-
     }
 }
