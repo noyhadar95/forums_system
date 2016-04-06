@@ -13,7 +13,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         void SendPrivateMessage(IUser reciever, string title, string content);
         void AddSentMessage(PrivateMessage privateMessage);
         void AddReceivedMessage(PrivateMessage privateMessage);
-        bool RegisterToForum();
+        bool RegisterToForum(string userName, string password, IForum forum, string email);
 
         bool postReply(Post parent, Thread thread, string title, string content);
         bool createThread(ISubForum subForum, string title, string content);
@@ -33,6 +33,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         string getUsername();
         string getPassword();
         string getEmail();
-
+        void AddToreceivedMessages(PrivateMessage privateMessage);
+        void AddTosentMessages(PrivateMessage privateMessage);
     }
 }

@@ -23,6 +23,21 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private List<IUser> friends;
         private List<IUser> waitingFriendsList;
 
+        public User()
+        {
+            this.userName = "";
+            this.password = "";
+            this.forum = null;
+            this.email = "";
+            this.numOfMessages = 0;
+            this.numOfComplaints = 0;
+            this.sentMessages = new List<PrivateMessage>();
+            this.receivedMessages = new List<PrivateMessage>();
+            this.type = new Guest();                            
+            this.friends = new List<IUser>();
+            this.waitingFriendsList = new List<IUser>();
+        }
+
         public User(string userName,string password,string email,IForum forum)
         {
             this.userName = userName;
@@ -34,7 +49,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.numOfComplaints = 0;
             this.sentMessages = new List<PrivateMessage>();
             this.receivedMessages = new List<PrivateMessage>();
-            this.type = new Guest();                            // maybe member?
+            this.type = new Member();                            
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
         }
@@ -83,29 +98,37 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.type = type;
         }
 
-        public bool RegisterToForum()
+        // TODO: change method registerToForum in forum
+        public bool RegisterToForum(string userName,string password,IForum forum,string email)
         {
-            // type = member
+            // should be in type Guest?
+            this.userName = userName;
+            this.password = password;
+            this.forum = forum;
+            this.email = email;
+            this.dateJoined = DateTime.Today;
+            type = new Member();
             //return forum.RegisterToForum(this);
             throw new NotImplementedException();
         }
 
+       
         public void SendPrivateMessage(IUser reciever, string title, string content)
         {
-            PrivateMessage privateMessage = new PrivateMessage(title, content, this, reciever);
-            reciever.AddReceivedMessage(privateMessage);
-            this.AddSentMessage(privateMessage);
+            type.SendPrivateMessage(this, reciever, title, content);
         }
 
         public void AddSentMessage(PrivateMessage privateMessage)
         {
-            this.sentMessages.Add(privateMessage);
+            type.AddSentMessage(this, privateMessage);
         }
 
         public void AddReceivedMessage(PrivateMessage privateMessage)
         {
-            this.receivedMessages.Add(privateMessage);
+            type.AddReceivedMessage(this, privateMessage);
         }
+        
+
         public bool postReply(Post parent, Thread thread, string title, string content)
         {
             return type.postReply(this,parent,thread,title,content);
@@ -143,6 +166,16 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public string getEmail()
         {
             return email;
+        }
+
+        public void AddToreceivedMessages(PrivateMessage privateMessage)
+        {
+            receivedMessages.Add(privateMessage);
+        }
+
+        public void AddTosentMessages(PrivateMessage privateMessage)
+        {
+            sentMessages.Add(privateMessage);
         }
     }
 }

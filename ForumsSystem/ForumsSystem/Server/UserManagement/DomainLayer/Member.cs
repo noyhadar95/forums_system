@@ -29,12 +29,12 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new NotImplementedException();
         }
 
-        public void appointModerator(IUser callingUser, IUser user, ISubForum subForum)
+        public void appointModerator(IUser callingUser, string userName, DateTime expirationTime, ISubForum subForum)
         {
             throw new NotImplementedException();
         }
 
-        public void createSubForum(IUser callingUser, string subForumName)
+        public void createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string, DateTime> moderators)
         {
             throw new NotImplementedException();
         }
@@ -71,7 +71,17 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return true;
         }
 
+        public void fileComplaint(IUser callingUser, Moderator moderator)
+        {
+            throw new NotImplementedException();
+        }
+
         public void fileComplaint(IUser callingUser, IUser user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void getComplaint(IUser callingUser)
         {
             throw new NotImplementedException();
         }
@@ -104,5 +114,28 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             throw new NotImplementedException();
         }
+
+
+        
+        public bool SendPrivateMessage(IUser callingUser, IUser reciever, string title, string content)
+        {
+            if (title == null & content == null)
+                return false;
+            PrivateMessage privateMessage = new PrivateMessage(title, content, callingUser, reciever);
+            reciever.AddReceivedMessage(privateMessage);
+            callingUser.AddSentMessage(privateMessage);
+            return true;
+        }
+
+        public void AddSentMessage(IUser callingUser, PrivateMessage privateMessage)
+        {
+            callingUser.AddTosentMessages(privateMessage);
+        }
+
+        public void AddReceivedMessage(IUser callingUser, PrivateMessage privateMessage)
+        {
+            callingUser.AddToreceivedMessages(privateMessage);
+        }
+        
     }
 }
