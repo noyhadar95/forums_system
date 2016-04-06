@@ -73,7 +73,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestGetReply()//5
         {
             IForum forum = new Forum("name");
-            ISubForum subForum = new SubForum(forum,"name");//s
+            ISubForum subForum = new SubForum(forum,"name");
             Thread thread = new Thread(subForum);
             IUser user = new User("username", "1234", "mail.com", forum);
             post = new Post(user, thread, "title", "content");
@@ -81,6 +81,17 @@ namespace UnitTests.ServerUnitTests.DomainLayer
             post.AddReply(reply);
             Assert.IsTrue(post.NumOfReplies() == 1);
             Assert.IsTrue(post.GetReply(0) == reply);
+        }
+
+        [TestMethod]
+        public void TestGetThread()//6
+        {
+            IForum forum = new Forum("name");
+            ISubForum subForum = new SubForum(forum, "name");
+            Thread thread = new Thread(subForum);
+            IUser user = new User("username", "1234", "mail.com", forum);
+            post = new Post(user, thread, "title", "content");
+            Assert.IsTrue(thread == post.Thread);
         }
     }
 }

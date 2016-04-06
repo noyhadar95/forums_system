@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
 
-    class MaxModeratorsPolicy:Policy
+    public class MaxModeratorsPolicy:Policy
     {
         private int maxModerators;
 
@@ -26,7 +26,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (param.GetPolicy() == type)
             {
 
-
+                Console.WriteLine(maxModerators+" "+param.NumOfModerators);
                 return this.maxModerators > param.NumOfModerators;
             }
             else
