@@ -8,7 +8,7 @@ using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
-    class DeletePost
+    public class DeletePost
     {
         public static bool Delete(IUser deleter,Post post)
         {

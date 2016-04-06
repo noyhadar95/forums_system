@@ -8,7 +8,7 @@ using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
-    class ForumMemberLogin
+    public class ForumMemberLogin
     {
         public static IUser MemberLogin(string username,string password,IForum forum)
         {

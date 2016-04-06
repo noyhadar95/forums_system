@@ -8,7 +8,7 @@ using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
-    class PostInSubForum
+    public class PostInSubForum
     {
         public static bool AddThread(ISubForum subForum,IUser publisher, string title, string content)
         {

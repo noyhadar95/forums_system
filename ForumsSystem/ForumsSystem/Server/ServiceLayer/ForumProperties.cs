@@ -8,7 +8,7 @@ using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
-    class ForumProperties
+    public class ForumProperties
     {
         public static bool SetForumProperties(IForum forum, Policy properties)
         {

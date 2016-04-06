@@ -8,7 +8,7 @@ using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
-    class SuperAdminLogin
+    public class SuperAdminLogin
     {
         //TODO
     }

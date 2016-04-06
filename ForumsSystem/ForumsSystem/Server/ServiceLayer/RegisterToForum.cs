@@ -8,7 +8,7 @@ using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
-    class RegisterToForum
+    public class RegisterToForum
     {
         public static bool Register(IForum forum,string userName, string password, string email, int age)
         {

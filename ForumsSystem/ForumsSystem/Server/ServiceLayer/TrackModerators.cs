@@ -8,7 +8,7 @@ using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
-    class TrackModerators
+    public class TrackModerators
     {
         public static bool ChangeExpirationDate(DateTime newDate,Moderator moderator)
         {

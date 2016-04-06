@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
-    class Initialization
+    public class Initialization
     {//TODO:
         /*public static  InitializeSystem(string username,string password)
         {

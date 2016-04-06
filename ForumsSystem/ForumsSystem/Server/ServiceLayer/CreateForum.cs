@@ -8,7 +8,7 @@ using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
-    class CreateForum
+    public class CreateForum
     {
         public static IForum Create(IUser creator,string name, Policy properties, List<IUser> adminUsername)
         {
