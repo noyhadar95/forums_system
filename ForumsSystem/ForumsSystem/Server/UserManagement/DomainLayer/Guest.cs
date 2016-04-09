@@ -9,104 +9,99 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     class Guest : Type
     {
-        public bool acceptFriend(IUser callingUser, IUser userToAccept)
+        public override bool acceptFriend(IUser callingUser, IUser userToAccept)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public void addFriend(IUser callingUser, IUser friend)
+        public override void addFriend(IUser callingUser, IUser friend)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public void AddReceivedMessage(IUser callingUser, PrivateMessage privateMessage)
+        public override void AddReceivedMessage(IUser callingUser, PrivateMessage privateMessage)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public void AddSentMessage(IUser callingUser, PrivateMessage privateMessage)
+        public override void AddSentMessage(IUser callingUser, PrivateMessage privateMessage)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public void appointAdmin(IUser callingUser, IUser user)
+        public override void appointAdmin(IUser callingUser, IUser user)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public void appointModerator(IUser callingUser, string userName, DateTime expirationTime, ISubForum subForum)
+        public override bool appointModerator(IUser callingUser, string userName, DateTime expirationTime, ISubForum subForum)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public void createSubForum(IUser callingUser, string subForumName)
+        public override bool createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string, DateTime> moderators)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public void createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string, DateTime> moderators)
+        public override bool createThread(IUser callingUser, ISubForum subForum, string title, string content)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public bool createThread(IUser callingUser, ISubForum subForum, string title, string content)
+        public override void deactivateUser(IUser callingUser)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public void deactivateUser(IUser callingUser)
+        public override bool deletePost(IUser callingUser, Post post)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public bool deletePost(IUser callingUser, Post post)
+        public override bool editPost(IUser callingUser, string title, string content, Post post)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public bool editPost(IUser callingUser, string title, string content, Post post)
+        public override void fileComplaint(IUser callingUser, Moderator moderator)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public void fileComplaint(IUser callingUser, Moderator moderator)
+        public override void fileComplaint(IUser callingUser, IUser user)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public void fileComplaint(IUser callingUser, IUser user)
+        public override void getComplaint(IUser callingUser)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public void getComplaint(IUser callingUser)
+        public override bool postReply(IUser callingUser, Post parent, Thread thread, string title, string content)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public bool postReply(IUser callingUser, Post parent, Thread thread, string title, string content)
+        public override bool removeFriend(IUser callingUser, IUser friendToRemove)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public bool removeFriend(IUser callingUser, IUser friendToRemove)
+        public override bool removeModerator(IUser callingUser, string userName, ISubForum subForum)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public void removeModerator(IUser callingUser, string userName, ISubForum subForum)
+        public override bool SendPrivateMessage(IUser callingUser, string recieverUserName, string title, string content)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public bool SendPrivateMessage(IUser callingUser, IUser reciever, string title, string content)
+        public override void suspendModerator(IUser callingUser, string userName, ISubForum subForum)
         {
-            throw new NotImplementedException();
-        }
-
-        public void suspendModerator(IUser callingUser, string userName, ISubForum subForum)
-        {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
     }
 }

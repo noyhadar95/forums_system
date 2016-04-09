@@ -82,5 +82,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public string Title { get { return title; } set { this.title = value; } }
         public string Content { get { return content; } set { this.content = value; } }
         public Thread Thread { get { return thread; } set { this.thread = value; } }
+        public IUser getPublisher()
+        {
+            return publisher;
+        }
     }
 }

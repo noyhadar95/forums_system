@@ -19,5 +19,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         Moderator getModeratorByUserName(string userName);
         IUser getCreator();
         Thread getThread(int num);
+        IForum getForum();
+        bool removeModerator(string moderator)
     }
 }

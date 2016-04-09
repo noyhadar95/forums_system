@@ -179,5 +179,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             sentMessages.Add(privateMessage);
         }
+
+        public IForum getForum()
+        {
+            return forum;
+        }
+        
     }
 }

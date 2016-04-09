@@ -89,5 +89,19 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return null;
             else return threads.ElementAt(newIndex);
         }
+
+        public IForum getForum()
+        {
+            return this.forum;
+        }
+
+        public bool removeModerator(string moderator)
+        {
+            if (!moderator.Contains(moderator))
+                return false; // username is not moderator of this sub forum
+            moderators.Remove(moderator);
+            Loggers.Logger.GetInstance().AddActivityEntry("Moderator: " + moderator + "removes from subforum: " + this.name );
+            return true;
+        }
     }
 }

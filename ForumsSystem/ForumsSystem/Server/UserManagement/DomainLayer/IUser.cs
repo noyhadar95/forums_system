@@ -33,6 +33,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         string getUsername();
         string getPassword();
         string getEmail();
+        IForum getForum();
         void AddToreceivedMessages(PrivateMessage privateMessage);
         void AddTosentMessages(PrivateMessage privateMessage);
     }
