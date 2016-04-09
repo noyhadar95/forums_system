@@ -60,6 +60,7 @@
     <Compile Include="ServerUnitTests\DomainLayer\ThreadTests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserManagement\DomainLayer\UserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ForumsSystem\ForumsSystem.csproj">

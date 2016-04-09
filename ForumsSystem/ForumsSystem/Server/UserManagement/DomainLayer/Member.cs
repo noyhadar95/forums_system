@@ -7,7 +7,7 @@ using ForumsSystem.Server.ForumManagement.DomainLayer;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
-    class Member : Type
+    public class Member : Type
     {
 
         public override void appointAdmin(IUser callingUser, IUser user)
@@ -20,7 +20,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new Exception("permission denied");
         }
 
-        public override bool createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string, DateTime> moderators)
+        public override ISubForum createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string, DateTime> moderators)
         {
             throw new Exception("permission denied");
         }

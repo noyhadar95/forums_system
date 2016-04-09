@@ -15,25 +15,28 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         
         //Admin only ---------------------------------------------------------
 
-        public virtual bool createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string,DateTime> users)
+        public virtual ISubForum createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string,DateTime> users)
         {
             Dictionary<IUser, DateTime> moderators = new Dictionary<IUser, DateTime>();
             if (subForumName == "" || forum == null)
-                return false;
+                return null;
             foreach (KeyValuePair<string, DateTime> moderator in users)
             {
-                if (forum.isUserMember(moderator.Key))
-                    return false; // moderator should be member in the forum
+                if (!forum.isUserMember(moderator.Key))
+                    return null; // moderator should be member in the forum
                 if (moderator.Value != null && moderator.Value.CompareTo(DateTime.Now) < 0)
-                    return false; // expiration date should be after now
+                    return null; // expiration date should be after now
                 moderators.Add(forum.getUser(moderator.Key), moderator.Value);
             }
+            if (forum.getSubForum(subForumName) != null)
+                return null;
             ISubForum subforum = new SubForum(forum, callingUser, subForumName);
+            forum.addSubForum(subforum);
             foreach (KeyValuePair<IUser, DateTime> moderator in moderators)
             {
                 subforum.addModerator(callingUser, moderator.Key, moderator.Value);
             }
-            return true;
+            return subforum;
         }
 
         public virtual bool appointModerator(IUser callingUser, string userName, DateTime expirationTime, ISubForum subForum)
@@ -159,18 +162,18 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new NotImplementedException();
         }
 
-        public virtual bool SendPrivateMessage(IUser callingUser, string recieverUserName, string title, string content)
+        public virtual PrivateMessage SendPrivateMessage(IUser callingUser, string recieverUserName, string title, string content)
         {
-            if (title == null & content == null)
-                return false;
+            if ((title == null || title=="") & (content == null || content ==""))
+                return null;
             IForum forum = callingUser.getForum();
             if (!forum.isUserMember(recieverUserName))
-                return false; // not a member in this forum
+                return null; // not a member in this forum
             IUser reciever = forum.getUser(recieverUserName);
             PrivateMessage privateMessage = new PrivateMessage(title, content, callingUser, reciever);
             reciever.AddReceivedMessage(privateMessage);
             callingUser.AddSentMessage(privateMessage);
-            return true;
+            return privateMessage;
         }
 
         public virtual void AddSentMessage(IUser callingUser, PrivateMessage privateMessage)

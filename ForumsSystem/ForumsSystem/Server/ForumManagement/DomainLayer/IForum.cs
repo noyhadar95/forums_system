@@ -11,6 +11,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
          bool InitForum(); //Needs to get Admins
 
+        void addSubForum(ISubForum subForum);
 
             bool AddPolicy(Policy policy);
         void SetPolicy(Policy policy);

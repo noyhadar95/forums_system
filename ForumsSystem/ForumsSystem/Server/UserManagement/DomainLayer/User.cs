@@ -53,6 +53,16 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.type = new Member();                            
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
+            forum.RegisterToForum(this);
+        }
+
+        public List<PrivateMessage> getSentMessages()
+        {
+            return sentMessages;
+        }
+        public List<PrivateMessage> getReceivedMessages()
+        {
+            return receivedMessages;
         }
 
         public bool isInWaitingList(IUser user)
@@ -99,24 +109,27 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.type = type;
         }
 
-        // TODO: change method registerToForum in forum
+        
         public bool RegisterToForum(string userName,string password,IForum forum,string email)
         {
-            // should be in type Guest?
-            this.userName = userName;
-            this.password = password;
-            this.forum = forum;
-            this.email = email;
-            this.dateJoined = DateTime.Today;
-            type = new Member();
-            //return forum.RegisterToForum(this);
-            throw new NotImplementedException();
+            if (this.forum == null)
+            {
+                this.userName = userName;
+                this.password = password;
+                this.forum = forum;
+                this.email = email;
+                this.dateJoined = DateTime.Today;
+                type = new Member();
+                return forum.RegisterToForum(this);
+            }
+            else
+                return false;
         }
 
        
-        public void SendPrivateMessage(string reciever, string title, string content)
+        public PrivateMessage SendPrivateMessage(string reciever, string title, string content)
         {
-            type.SendPrivateMessage(this, reciever, title, content);
+            return type.SendPrivateMessage(this, reciever, title, content);
         }
 
         public void AddSentMessage(PrivateMessage privateMessage)
@@ -184,6 +197,26 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             return forum;
         }
-        
+
+        public Type getType()
+        {
+            return type;
+        }
+
+        public ISubForum createSubForum(string subForumName,Dictionary<string, DateTime> users)
+        {
+            IForum forum = this.forum;
+            return type.createSubForum(this, subForumName, forum, users);
+        }
+
+        public bool appointModerator(string userName, DateTime expirationTime, ISubForum subForum)
+        {
+            return type.appointModerator(this, userName, expirationTime, subForum);
+        }
+
+        public bool removeModerator(string userName, ISubForum subForum)
+        {
+            return type.removeModerator(this, userName, subForum);
+        }
     }
 }

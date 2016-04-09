@@ -33,6 +33,14 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             Loggers.Logger.GetInstance().AddActivityEntry("Moderator: " + user.getUsername() + "added to subforum: " + this.name + " by: " + admin.getUsername());
         }
 
+        public bool isModerator(string userName)
+        {
+            Moderator moderator = getModeratorByUserName(userName);
+            if (moderator == null)
+                return false;
+            return moderator.expirationDate>DateTime.Today;
+        }
+
         public bool changeModeratorExpirationDate(IUser user, DateTime newExpirationDate)
         {
             Moderator mod = moderators[user.getUsername()];

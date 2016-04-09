@@ -21,5 +21,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         Thread getThread(int num);
         IForum getForum();
         bool removeModerator(string moderator);
+        bool isModerator(string userName);
     }
 }

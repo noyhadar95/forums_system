@@ -31,8 +31,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return false;
 
             IUser newUser = new User(userName, password, Email, this);
-            users.Add(userName, newUser);
-            Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " Created and registered");
+            Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " Created");
             return true;
 
         }
@@ -59,6 +58,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (!policies.CheckPolicy(param))
                 return false;
             return true;
+        }
+
+        public void addSubForum(ISubForum subForum)
+        {
+            sub_forums.Add(subForum);
+            Loggers.Logger.GetInstance().AddActivityEntry("SubForum: " + subForum.getName() + " created by: " + subForum.getCreator().getUsername());
         }
 
         public void CreateSubForum(IUser creator, string subForumName)

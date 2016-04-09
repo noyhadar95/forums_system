@@ -7,7 +7,7 @@ using ForumsSystem.Server.ForumManagement.DomainLayer;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
-    class Guest : Type
+    public class Guest : Type
     {
         public override bool acceptFriend(IUser callingUser, IUser userToAccept)
         {
@@ -39,7 +39,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new Exception("permission denied");
         }
 
-        public override bool createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string, DateTime> moderators)
+        public override ISubForum createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string, DateTime> moderators)
         {
             throw new Exception("permission denied");
         }
@@ -94,7 +94,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new Exception("permission denied");
         }
 
-        public override bool SendPrivateMessage(IUser callingUser, string recieverUserName, string title, string content)
+        public override PrivateMessage SendPrivateMessage(IUser callingUser, string recieverUserName, string title, string content)
         {
             throw new Exception("permission denied");
         }
