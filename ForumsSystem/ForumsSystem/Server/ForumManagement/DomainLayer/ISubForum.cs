@@ -20,6 +20,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         IUser getCreator();
         Thread getThread(int num);
         IForum getForum();
-        bool removeModerator(string moderator)
+        bool removeModerator(string moderator);
     }
 }

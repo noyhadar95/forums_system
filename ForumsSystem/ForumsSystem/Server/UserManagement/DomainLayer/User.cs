@@ -114,7 +114,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         }
 
        
-        public void SendPrivateMessage(IUser reciever, string title, string content)
+        public void SendPrivateMessage(string reciever, string title, string content)
         {
             type.SendPrivateMessage(this, reciever, title, content);
         }

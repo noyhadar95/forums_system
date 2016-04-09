@@ -66,6 +66,17 @@
     <Compile Include="Server\ForumManagement\DomainLayer\ISubForum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\SuperAdmin.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\System.cs" />
+    <Compile Include="Server\ServiceLayer\CreateForum.cs" />
+    <Compile Include="Server\ServiceLayer\CreateSubForum.cs" />
+    <Compile Include="Server\ServiceLayer\DeletePost.cs" />
+    <Compile Include="Server\ServiceLayer\ForumMemberLogin.cs" />
+    <Compile Include="Server\ServiceLayer\ForumProperties.cs" />
+    <Compile Include="Server\ServiceLayer\Initialization.cs" />
+    <Compile Include="Server\ServiceLayer\PostInSubForum.cs" />
+    <Compile Include="Server\ServiceLayer\RegisterToForum.cs" />
+    <Compile Include="Server\ServiceLayer\SendPrivateMessage.cs" />
+    <Compile Include="Server\ServiceLayer\SuperAdminLogin.cs" />
+    <Compile Include="Server\ServiceLayer\TrackModerators.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\Admin.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\Guest.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\MaxModeratorsPolicy.cs" />

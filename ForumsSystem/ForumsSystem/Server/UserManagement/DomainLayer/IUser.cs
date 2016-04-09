@@ -10,7 +10,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
     public interface IUser
     {
         void ChangeType(Type type); 
-        void SendPrivateMessage(IUser reciever, string title, string content);
+        void SendPrivateMessage(string reciever, string title, string content);
         void AddSentMessage(PrivateMessage privateMessage);
         void AddReceivedMessage(PrivateMessage privateMessage);
         bool RegisterToForum(string userName, string password, IForum forum, string email);
