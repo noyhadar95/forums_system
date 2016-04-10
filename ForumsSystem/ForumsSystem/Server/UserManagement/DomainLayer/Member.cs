@@ -7,135 +7,60 @@ using ForumsSystem.Server.ForumManagement.DomainLayer;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
-    class Member : Type
+    public class Member : Type
     {
-        public bool acceptFriend(IUser callingUser, IUser userToAccept)
+
+        public override void appointAdmin(IUser callingUser, IUser user)
         {
-            if (!callingUser.isInWaitingList(userToAccept))
-                return false;
-            callingUser.removeFromWaitingFriendsList(userToAccept);
-            callingUser.addToFriendsList(userToAccept);
-            userToAccept.addToFriendsList(callingUser);
-            return true;
+            throw new Exception("permission denied");
         }
 
-        public void addFriend(IUser callingUser, IUser friend)
+        public override bool appointModerator(IUser callingUser, string userName, DateTime expirationTime, ISubForum subForum)
         {
-            friend.addToWaitingFriendsList(callingUser);
+            throw new Exception("permission denied");
         }
 
-        public void appointAdmin(IUser callingUser, IUser user)
+        public override ISubForum createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string, DateTime> moderators)
         {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
-        public void appointModerator(IUser callingUser, string userName, DateTime expirationTime, ISubForum subForum)
+        public override void deactivateUser(IUser callingUser)
         {
             throw new NotImplementedException();
         }
 
-        public void createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string, DateTime> moderators)
+        public override void fileComplaint(IUser callingUser, Moderator moderator)
         {
             throw new NotImplementedException();
         }
 
-        public bool createThread(IUser callingUser,ISubForum subForum, string title, string content)
-        {
-            if (subForum == null)
-                return false;
-            if (title == null & content == null)
-                return false;
-            Thread thread = new Thread(subForum);
-            Post openingPost = new Post(callingUser, thread, title, content);
-            return thread.AddOpeningPost(openingPost);
-        }
-
-        public void deactivateUser(IUser callingUser)
+        public override void fileComplaint(IUser callingUser, IUser user)
         {
             throw new NotImplementedException();
         }
 
-        public bool deletePost(IUser callingUser, Post post)
+        public override void getComplaint(IUser callingUser)
         {
-            // get post publisher and check if he is equal to callingUser
-            return post.DeletePost();
-        }
-
-        public bool editPost(IUser callingUser, string title, string content, Post post)
-        {
-            // get post publisher and check if he is equal to callingUser
-            if (title == null & content == null)
-                return false;
-            post.Content = content;
-            post.Title = title;
-            return true;
-        }
-
-        public void fileComplaint(IUser callingUser, Moderator moderator)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void fileComplaint(IUser callingUser, IUser user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void getComplaint(IUser callingUser)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool postReply(IUser callingUser,Post parent, Thread thread, string title, string content)
-        {
-            if (title == null & content == null)
-                return false;
-            if (thread == null)
-                return false;
-            Post reply = new Post(callingUser, thread, title, content);
-            return parent.AddReply(reply);
-        }
-
-        public bool removeFriend(IUser callingUser, IUser friendToRemove)
-        {
-            if (!callingUser.isInFriendsList(friendToRemove))
-                return false;
-            callingUser.removeFromFriendList(friendToRemove);
-            friendToRemove.removeFromFriendList(callingUser);
-            return true;
-        }
-
-        public void removeModerator(IUser callingUser, string userName, ISubForum subForum)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void suspendModerator(IUser callingUser, string userName, ISubForum subForum)
-        {
-            throw new NotImplementedException();
+            throw new Exception("permission denied");
         }
 
 
-        
-        public bool SendPrivateMessage(IUser callingUser, IUser reciever, string title, string content)
+        public override bool removeModerator(IUser callingUser, string userName, ISubForum subForum)
         {
-            if (title == null & content == null)
-                return false;
-            PrivateMessage privateMessage = new PrivateMessage(title, content, callingUser, reciever);
-            reciever.AddReceivedMessage(privateMessage);
-            callingUser.AddSentMessage(privateMessage);
-            return true;
+            throw new Exception("permission denied");
         }
 
-        public void AddSentMessage(IUser callingUser, PrivateMessage privateMessage)
+        public override void suspendModerator(IUser callingUser, string userName, ISubForum subForum)
         {
-            callingUser.AddTosentMessages(privateMessage);
+            throw new Exception("permission denied");
         }
 
-        public void AddReceivedMessage(IUser callingUser, PrivateMessage privateMessage)
+        public override bool editExpirationTimeOfModerator(IUser callingUser, string userName, DateTime expirationTime, ISubForum subForum)
         {
-            callingUser.AddToreceivedMessages(privateMessage);
+            throw new Exception("permission denied");
         }
-        
+
+
     }
 }

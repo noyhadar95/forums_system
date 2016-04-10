@@ -52,6 +52,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if (this == reply)
                 return false;
+            if (reply.replies.Contains(this))
+                return false;
             reply.SetParent(this);
             this.replies.Add(reply);
             return true;
@@ -77,10 +79,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return replies[id];
         }
-        
+        public List<Post> GetReplies()
+        {
+            return replies;
+        }
+
 
         public string Title { get { return title; } set { this.title = value; } }
         public string Content { get { return content; } set { this.content = value; } }
         public Thread Thread { get { return thread; } set { this.thread = value; } }
+        public IUser getPublisher()
+        {
+            return publisher;
+        }
     }
 }

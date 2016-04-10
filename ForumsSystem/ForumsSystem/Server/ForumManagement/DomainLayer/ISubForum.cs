@@ -18,6 +18,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         bool changeModeratorExpirationDate(IUser user, DateTime newExpirationDate);
         Moderator getModeratorByUserName(string userName);
         IUser getCreator();
-        
+        Thread getThread(int num);
+        IForum getForum();
+        bool removeModerator(string moderator);
+        bool isModerator(string userName);
     }
 }

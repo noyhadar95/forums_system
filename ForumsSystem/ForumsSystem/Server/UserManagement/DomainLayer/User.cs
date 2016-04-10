@@ -23,6 +23,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private List<PrivateMessage> receivedMessages;
         private List<IUser> friends;
         private List<IUser> waitingFriendsList;
+        private bool isLoggedIn;
 
         public User()
         {
@@ -37,6 +38,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.type = new Guest();                            
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
+            this.isLoggedIn = false;
         }
 
         public User(string userName,string password,string email,IForum forum)
@@ -53,6 +55,17 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.type = new Member();                            
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
+            this.forum.RegisterToForum(this);
+            this.isLoggedIn = false;
+        }
+
+        public List<PrivateMessage> getSentMessages()
+        {
+            return sentMessages;
+        }
+        public List<PrivateMessage> getReceivedMessages()
+        {
+            return receivedMessages;
         }
 
         public bool isInWaitingList(IUser user)
@@ -99,24 +112,27 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.type = type;
         }
 
-        // TODO: change method registerToForum in forum
+        
         public bool RegisterToForum(string userName,string password,IForum forum,string email)
         {
-            // should be in type Guest?
-            this.userName = userName;
-            this.password = password;
-            this.forum = forum;
-            this.email = email;
-            this.dateJoined = DateTime.Today;
-            type = new Member();
-            //return forum.RegisterToForum(this);
-            throw new NotImplementedException();
+            if (this.forum == null)
+            {
+                this.userName = userName;
+                this.password = password;
+                this.forum = forum;
+                this.email = email;
+                this.dateJoined = DateTime.Today;
+                type = new Member();
+                return forum.RegisterToForum(this);
+            }
+            else
+                return false;
         }
 
        
-        public void SendPrivateMessage(IUser reciever, string title, string content)
+        public PrivateMessage SendPrivateMessage(string reciever, string title, string content)
         {
-            type.SendPrivateMessage(this, reciever, title, content);
+            return type.SendPrivateMessage(this, reciever, title, content);
         }
 
         public void AddSentMessage(PrivateMessage privateMessage)
@@ -130,12 +146,12 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         }
         
 
-        public bool postReply(Post parent, Thread thread, string title, string content)
+        public Post postReply(Post parent, Thread thread, string title, string content)
         {
             return type.postReply(this,parent,thread,title,content);
         }
 
-        public bool createThread(ISubForum subForum, string title, string content)
+        public Thread createThread(ISubForum subForum, string title, string content)
         {
             return type.createThread(this,subForum,title,content);
         }
@@ -178,6 +194,57 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public void AddTosentMessages(PrivateMessage privateMessage)
         {
             sentMessages.Add(privateMessage);
+        }
+
+        public IForum getForum()
+        {
+            return forum;
+        }
+
+        public Type getType()
+        {
+            return type;
+        }
+
+        public ISubForum createSubForum(string subForumName,Dictionary<string, DateTime> users)
+        {
+            IForum forum = this.forum;
+            return type.createSubForum(this, subForumName, forum, users);
+        }
+
+        public bool appointModerator(string userName, DateTime expirationTime, ISubForum subForum)
+        {
+            return type.appointModerator(this, userName, expirationTime, subForum);
+        }
+
+        public bool removeModerator(string userName, ISubForum subForum)
+        {
+            return type.removeModerator(this, userName, subForum);
+        }
+
+        public bool editExpirationTimeOfModerator(string userName, DateTime expirationTime, ISubForum subForum)
+        {
+            return type.editExpirationTimeOfModerator(this, userName, expirationTime, subForum);
+        }
+
+        public bool Login()
+        {
+            if (type.Login(this))
+            {
+                this.isLoggedIn = true;
+                return true;
+            }
+            return false;
+        }
+
+        public void LogOff()
+        {
+            this.isLoggedIn = false;
+        }
+
+        public bool isLogin()
+        {
+            return this.isLoggedIn;
         }
     }
 }

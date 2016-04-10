@@ -31,8 +31,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return false;
 
             IUser newUser = new User(userName, password, Email, this);
-            users.Add(userName, newUser);
-            Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + "Created");
+            Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " Created");
             return true;
 
         }
@@ -41,7 +40,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if (isUserMember(user.getUsername()))
                 return false;
+            if (!CheckRegistrationPolicies(user.getPassword()))
+                return false;
             users.Add(user.getUsername(), user);
+            Loggers.Logger.GetInstance().AddActivityEntry("User: " + user.getUsername() + " Registered");
             return true;
         }
 
@@ -60,15 +62,23 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return true;
         }
 
+        public void addSubForum(ISubForum subForum)
+        {
+            sub_forums.Add(subForum);
+            Loggers.Logger.GetInstance().AddActivityEntry("SubForum: " + subForum.getName() + " created by: " + subForum.getCreator().getUsername());
+        }
+
         public void CreateSubForum(IUser creator, string subForumName)
         {
             sub_forums.Add(new SubForum(this,creator,subForumName));
+            Loggers.Logger.GetInstance().AddActivityEntry("SubForum: " + subForumName + " created by: " + creator.getUsername());
         }
 
         public IUser Login(string userName, string password)
         {
             if (users.ContainsKey(userName))
             {
+                Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
                 if (users[userName].getPassword().Equals(password))
                     return users[userName];
                 else
@@ -89,6 +99,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public bool AddPolicy(Policy policy)
         {
+            Loggers.Logger.GetInstance().AddActivityEntry("Policy: " + policy.Type + "added to subforum: " + this.name);
             if (policies == null)
             {
                 policies = policy;
@@ -99,9 +110,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public void RemovePolicy(Policies policyType)
         {
-            if(policies != null)
+            if (policies != null)
+            {
                 policies = policies.RemovePolicy(policyType);
-            
+                Loggers.Logger.GetInstance().AddActivityEntry("Policy of type: " + policyType + "removed from subforum " + this.name);
+
+            }
+
         }
 
         public ISubForum getSubForum(string subForumName)
