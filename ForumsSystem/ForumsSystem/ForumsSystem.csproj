@@ -11,6 +11,21 @@
     <AssemblyName>ForumsSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -46,7 +61,51 @@
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+
     <Compile Include="Server\ForumManagement\DomainLayer\Policy.cs" />
+
+    <Compile Include="Server\ForumManagement\DomainLayer\AdminAppointmentPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\ConfidentialityPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\Forum.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\IForum.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\ISubForum.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\SuperAdmin.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\System.cs" />
+    <Compile Include="Server\ServiceLayer\CreateForum.cs" />
+    <Compile Include="Server\ServiceLayer\CreateSubForum.cs" />
+    <Compile Include="Server\ServiceLayer\DeletePost.cs" />
+    <Compile Include="Server\ServiceLayer\ForumMemberLogin.cs" />
+    <Compile Include="Server\ServiceLayer\ForumProperties.cs" />
+    <Compile Include="Server\ServiceLayer\Initialization.cs" />
+    <Compile Include="Server\ServiceLayer\PostInSubForum.cs" />
+    <Compile Include="Server\ServiceLayer\RegisterToForum.cs" />
+    <Compile Include="Server\ServiceLayer\SendPrivateMessage.cs" />
+    <Compile Include="Server\ServiceLayer\SuperAdminLogin.cs" />
+    <Compile Include="Server\ServiceLayer\TrackModerators.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\Admin.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\Guest.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\MaxModeratorsPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\Thread.cs" />
+    <Compile Include="Server\Logger\Logger.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\IUser.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\Member.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\Moderator.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\PrivateMessage.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\Type.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\User.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\MemberSuspensionPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\MinimumAgePolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\ModeratorAppointmentPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\ModeratorSuspensionPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\PasswordPolicy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\Policy.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\PolicyEnum.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\PolicyParametersObject.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\Post.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\SubForum.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\UsersLoadPolicy.cs" />
+
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -63,6 +122,24 @@
   <ItemGroup>
     <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
