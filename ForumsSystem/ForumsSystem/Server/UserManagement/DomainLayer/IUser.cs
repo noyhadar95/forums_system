@@ -44,5 +44,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         Type getType();
         void AddToreceivedMessages(PrivateMessage privateMessage);
         void AddTosentMessages(PrivateMessage privateMessage);
+
+        bool Login();
+        void LogOff();
+        bool isLogin();
     }
 }

@@ -17,6 +17,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual ISubForum createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string,DateTime> users)
         {
+            if (!callingUser.isLogin())
+                return null;
             Dictionary<IUser, DateTime> moderators = new Dictionary<IUser, DateTime>();
             if (subForumName == "" || forum == null)
                 return null;
@@ -41,6 +43,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual bool appointModerator(IUser callingUser, string userName, DateTime expirationTime, ISubForum subForum)
         {
+            if (!callingUser.isLogin())
+                return false;
             IForum forum = subForum.getForum();
             if (forum.isUserMember(userName))
                 return false; // moderator should be member in the forum
@@ -53,6 +57,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual bool editExpirationTimeOfModerator(IUser callingUser,string userName,DateTime expirationTime, ISubForum subForum)
         {
+            if (!callingUser.isLogin())
+                return false;
             if (userName == "")
                 return false;
             if (subForum == null)
@@ -68,6 +74,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual bool removeModerator(IUser callingUser, string userName, ISubForum subForum)
         {
+            if (!callingUser.isLogin())
+                return false;
             return subForum.removeModerator(userName);
         }
 
@@ -97,10 +105,18 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         //Member---------------------------------------------------------------
 
-        // login?
+        public virtual bool Login(IUser callingUser)
+        {
+            IForum forum = callingUser.getForum();
+            if (forum.Login(callingUser.getUsername(), callingUser.getPassword()) == null)
+                return false;
+            return true;
+        }
 
         public virtual Post postReply(IUser callingUser, Post parent, Thread thread, string title, string content)
         {
+            if (!callingUser.isLogin())
+                return null;
             if ((title == null | title == "") & (content == null || content ==""))
                 return null;
             if (thread == null)
@@ -115,6 +131,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual Thread createThread(IUser callingUser, ISubForum subForum, string title, string content)
         {
+            if (!callingUser.isLogin())
+                return null;
             if (subForum == null)
                 return null;
             if ((title == null || title =="") & (content == null || content == ""))
@@ -128,6 +146,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual bool editPost(IUser callingUser,string title, string content,Post post)
         {
+            if (!callingUser.isLogin())
+                return false;
             if (post.getPublisher() != callingUser)
                 return false; // user can't edit other user's posts
             if (title == null & content == null)
@@ -139,6 +159,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual bool deletePost(IUser callingUser, Post post)
         {
+            if (!callingUser.isLogin())
+                return false;
             if (post == null)
                 return false;
             if (post.getPublisher() == callingUser)
@@ -148,11 +170,15 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual void addFriend(IUser callingUser,IUser friend)
         {
+            if (!callingUser.isLogin())
+                throw new Exception("user should login first");
             friend.addToWaitingFriendsList(callingUser);
         }
 
         public virtual bool removeFriend(IUser callingUser,IUser friendToRemove)
         {
+            if (!callingUser.isLogin())
+                return false;
             if (!callingUser.isInFriendsList(friendToRemove))
                 return false;
             callingUser.removeFromFriendList(friendToRemove);
@@ -162,6 +188,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual bool acceptFriend(IUser callingUser, IUser userToAccept)
         {
+            if (!callingUser.isLogin())
+                return false;
             if (!callingUser.isInWaitingList(userToAccept))
                 return false;
             callingUser.removeFromWaitingFriendsList(userToAccept);
@@ -187,6 +215,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual PrivateMessage SendPrivateMessage(IUser callingUser, string recieverUserName, string title, string content)
         {
+            if (!callingUser.isLogin())
+                return null;
             if ((title == null || title=="") & (content == null || content ==""))
                 return null;
             IForum forum = callingUser.getForum();
@@ -201,11 +231,14 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual void AddSentMessage(IUser callingUser, PrivateMessage privateMessage)
         {
+            if (!callingUser.isLogin())
+                throw new Exception("user should login first");
             callingUser.AddTosentMessages(privateMessage);
         }
 
         public virtual void AddReceivedMessage(IUser callingUser, PrivateMessage privateMessage)
         {
+            
             callingUser.AddToreceivedMessages(privateMessage);
         }
 

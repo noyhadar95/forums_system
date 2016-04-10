@@ -17,6 +17,7 @@ namespace UnitTests.UserManagement.DomainLayer
         {
             forum = new Forum("testUser"); ;
             user = new User("u1", "p1", "e1@gmail.com", forum);
+            user.Login();
         }
 
 
@@ -49,6 +50,10 @@ namespace UnitTests.UserManagement.DomainLayer
             PrivateMessage noContent = user.SendPrivateMessage(receiver.getUsername(), "hi", "");
             Assert.IsNotNull(noContent);
 
+            user.LogOff();
+            Assert.IsNull(user.SendPrivateMessage(receiver.getUsername(), "hi", ""));
+            user.Login();
+
             IForum forum2 = new Forum("f2");
             IUser receiver2 = new User("cantReceive", "p3", "u3@gmail.com", forum2);
             PrivateMessage privateMessage2 = user.SendPrivateMessage(receiver2.getUsername(), "hi", "sending message");
@@ -75,6 +80,7 @@ namespace UnitTests.UserManagement.DomainLayer
         {
             user = new User();
             Assert.IsTrue(user.RegisterToForum("u2", "p2", forum, "u2@gmail.com"));
+            user.Login();
             Assert.IsTrue(forum.isUserMember(user.getUsername()));
 
             IForum forum2 = new Forum("f2");
@@ -130,6 +136,7 @@ namespace UnitTests.UserManagement.DomainLayer
             ISubForum subForum = user.createSubForum("sub forum1", moderators);
 
             Assert.IsNotNull(user.createThread(subForum, "new thread", "by admin"));
+            user1.Login();
             Assert.IsNotNull(user1.createThread(subForum, "", "by member"));
 
             Assert.IsNull(user.createThread(null, "new thread", "by admin"));
@@ -166,6 +173,7 @@ namespace UnitTests.UserManagement.DomainLayer
             Assert.IsNull(user.postReply(openning, null, "reply", "by admin"));
             Assert.IsNull(user.postReply(openning, thread, "", ""));
 
+            user1.Login();
             Post replyToReply = user1.postReply(reply, thread, "reply", "by admin");
             Assert.IsNotNull(replyToReply);
             Assert.IsTrue(replyToReply.getPublisher() == user1);

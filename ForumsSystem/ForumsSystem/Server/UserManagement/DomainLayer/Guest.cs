@@ -108,5 +108,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             throw new Exception("permission denied");
         }
+
+        public override bool Login(IUser callingUser)
+        {
+            throw new Exception("permission denied");
+        }
     }
 }

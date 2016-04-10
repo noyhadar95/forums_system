@@ -23,6 +23,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private List<PrivateMessage> receivedMessages;
         private List<IUser> friends;
         private List<IUser> waitingFriendsList;
+        private bool isLoggedIn;
 
         public User()
         {
@@ -37,6 +38,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.type = new Guest();                            
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
+            this.isLoggedIn = false;
         }
 
         public User(string userName,string password,string email,IForum forum)
@@ -53,7 +55,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.type = new Member();                            
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
-            forum.RegisterToForum(this);
+            this.forum.RegisterToForum(this);
+            this.isLoggedIn = false;
         }
 
         public List<PrivateMessage> getSentMessages()
@@ -222,6 +225,26 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public bool editExpirationTimeOfModerator(string userName, DateTime expirationTime, ISubForum subForum)
         {
             return type.editExpirationTimeOfModerator(this, userName, expirationTime, subForum);
+        }
+
+        public bool Login()
+        {
+            if (type.Login(this))
+            {
+                this.isLoggedIn = true;
+                return true;
+            }
+            return false;
+        }
+
+        public void LogOff()
+        {
+            this.isLoggedIn = false;
+        }
+
+        public bool isLogin()
+        {
+            return this.isLoggedIn;
         }
     }
 }
