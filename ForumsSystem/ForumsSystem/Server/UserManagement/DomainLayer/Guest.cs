@@ -44,7 +44,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new Exception("permission denied");
         }
 
-        public override bool createThread(IUser callingUser, ISubForum subForum, string title, string content)
+        public override Thread createThread(IUser callingUser, ISubForum subForum, string title, string content)
         {
             throw new Exception("permission denied");
         }
@@ -79,7 +79,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new Exception("permission denied");
         }
 
-        public override bool postReply(IUser callingUser, Post parent, Thread thread, string title, string content)
+        public override Post postReply(IUser callingUser, Post parent, Thread thread, string title, string content)
         {
             throw new Exception("permission denied");
         }
@@ -100,6 +100,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         }
 
         public override void suspendModerator(IUser callingUser, string userName, ISubForum subForum)
+        {
+            throw new Exception("permission denied");
+        }
+
+        public override bool editExpirationTimeOfModerator(IUser callingUser, string userName, DateTime expirationTime, ISubForum subForum)
         {
             throw new Exception("permission denied");
         }

@@ -15,14 +15,15 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         void AddReceivedMessage(PrivateMessage privateMessage);
         bool RegisterToForum(string userName, string password, IForum forum, string email);
 
-        bool postReply(Post parent, Thread thread, string title, string content);
-        bool createThread(ISubForum subForum, string title, string content);
+        Post postReply(Post parent, Thread thread, string title, string content);
+        Thread createThread(ISubForum subForum, string title, string content);
         bool editPost(string title, string content, Post post);
         bool deletePost(Post post);
 
         ISubForum createSubForum(string subForumName, Dictionary<string, DateTime> users);
         bool appointModerator(string userName, DateTime expirationTime, ISubForum subForum);
         bool removeModerator(string userName, ISubForum subForum);
+        bool editExpirationTimeOfModerator(string userName, DateTime expirationTime, ISubForum subForum);
 
         bool isInWaitingList(IUser user);
         bool isInFriendsList(IUser user);

@@ -56,6 +56,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new Exception("permission denied");
         }
 
-        
+        public override bool editExpirationTimeOfModerator(IUser callingUser, string userName, DateTime expirationTime, ISubForum subForum)
+        {
+            throw new Exception("permission denied");
+        }
+
+
     }
 }

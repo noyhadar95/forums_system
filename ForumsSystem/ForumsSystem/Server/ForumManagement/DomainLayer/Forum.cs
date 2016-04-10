@@ -40,6 +40,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if (isUserMember(user.getUsername()))
                 return false;
+            if (!CheckRegistrationPolicies(user.getPassword()))
+                return false;
             users.Add(user.getUsername(), user);
             Loggers.Logger.GetInstance().AddActivityEntry("User: " + user.getUsername() + " Registered");
             return true;
@@ -77,7 +79,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (users.ContainsKey(userName))
             {
                 Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
-                return users[userName];
                 if (users[userName].getPassword().Equals(password))
                     return users[userName];
                 else

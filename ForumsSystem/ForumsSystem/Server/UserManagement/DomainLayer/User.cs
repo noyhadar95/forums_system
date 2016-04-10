@@ -143,12 +143,12 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         }
         
 
-        public bool postReply(Post parent, Thread thread, string title, string content)
+        public Post postReply(Post parent, Thread thread, string title, string content)
         {
             return type.postReply(this,parent,thread,title,content);
         }
 
-        public bool createThread(ISubForum subForum, string title, string content)
+        public Thread createThread(ISubForum subForum, string title, string content)
         {
             return type.createThread(this,subForum,title,content);
         }
@@ -217,6 +217,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public bool removeModerator(string userName, ISubForum subForum)
         {
             return type.removeModerator(this, userName, subForum);
+        }
+
+        public bool editExpirationTimeOfModerator(string userName, DateTime expirationTime, ISubForum subForum)
+        {
+            return type.editExpirationTimeOfModerator(this, userName, expirationTime, subForum);
         }
     }
 }

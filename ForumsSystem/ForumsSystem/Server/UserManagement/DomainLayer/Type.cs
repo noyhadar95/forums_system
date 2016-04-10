@@ -51,6 +51,21 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return true;
         }
 
+        public virtual bool editExpirationTimeOfModerator(IUser callingUser,string userName,DateTime expirationTime, ISubForum subForum)
+        {
+            if (userName == "")
+                return false;
+            if (subForum == null)
+                return false;
+            if (!subForum.isModerator(userName))
+                return false;
+            Moderator moderator = subForum.getModeratorByUserName(userName);
+            if (moderator.appointer != callingUser)
+                return false;
+            moderator.changeExpirationDate(expirationTime);
+            return true;
+        }
+
         public virtual bool removeModerator(IUser callingUser, string userName, ISubForum subForum)
         {
             return subForum.removeModerator(userName);
@@ -84,25 +99,31 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         // login?
 
-        public virtual bool postReply(IUser callingUser, Post parent, Thread thread, string title, string content)
+        public virtual Post postReply(IUser callingUser, Post parent, Thread thread, string title, string content)
         {
-            if (title == null & content == null)
-                return false;
+            if ((title == null | title == "") & (content == null || content ==""))
+                return null;
             if (thread == null)
-                return false;
+                return null;
+            if (parent == null)
+                return null;
             Post reply = new Post(callingUser, thread, title, content);
-            return parent.AddReply(reply);
+            if (parent.AddReply(reply))
+                return reply;
+            return null;
         }
 
-        public virtual bool createThread(IUser callingUser, ISubForum subForum, string title, string content)
+        public virtual Thread createThread(IUser callingUser, ISubForum subForum, string title, string content)
         {
             if (subForum == null)
-                return false;
-            if (title == null & content == null)
-                return false;
+                return null;
+            if ((title == null || title =="") & (content == null || content == ""))
+                return null;
             Thread thread = new Thread(subForum);
             Post openingPost = new Post(callingUser, thread, title, content);
-            return thread.AddOpeningPost(openingPost);
+            if (thread.AddOpeningPost(openingPost))
+                return thread;
+            return null;
         }
 
         public virtual bool editPost(IUser callingUser,string title, string content,Post post)
@@ -118,6 +139,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual bool deletePost(IUser callingUser, Post post)
         {
+            if (post == null)
+                return false;
             if (post.getPublisher() == callingUser)
                 return post.DeletePost();
             return false; // user can't delete other user's posts
