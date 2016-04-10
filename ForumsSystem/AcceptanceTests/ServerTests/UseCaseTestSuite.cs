@@ -9,11 +9,13 @@ namespace AcceptanceTests.ServerTests
     public class UseCaseTestSuite
     {
         protected IBridge bridge;
+        protected string superAdminUsername = "superadmin";
+        protected string superAdminPass = "superadminpass";
 
         public UseCaseTestSuite()
         {
-            bridge = new ProxyBridge();
-
+            bridge = ProxyBridge.GetInstance();
+            bridge.InitializeSystem(superAdminUsername, superAdminPass);
         }
 
         protected bool CreateForum(string forumName)

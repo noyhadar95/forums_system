@@ -8,11 +8,28 @@ namespace AcceptanceTestsBridge
 {
     public class ProxyBridge : IBridge
     {
+        private static ProxyBridge instance = null;
+
         private IBridge realBridge;
 
-        public ProxyBridge()
+        private ProxyBridge()
         {
             realBridge = null;
+        }
+
+        public static ProxyBridge GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new ProxyBridge();
+                // TODO: set real bridge
+            }
+            return instance;
+        }
+
+        public void SetRealBridge(IBridge realBridge)
+        {
+            this.realBridge = realBridge;
         }
 
         public bool CreateForum(string forumName, List<UserStub> admins, string forumProperties)
@@ -167,5 +184,19 @@ namespace AcceptanceTestsBridge
         {
             return true;
         }
+
+
+        public bool InitializeSystem(string username, string pass)
+        {
+            return true;
+        }
+
+
+        public bool ConfirmRegistration(string forumName, string username)
+        {
+            return true;
+        }
+
+
     }
 }

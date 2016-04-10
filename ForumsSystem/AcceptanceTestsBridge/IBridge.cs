@@ -75,6 +75,11 @@ namespace AcceptanceTestsBridge
 
         bool LoginSuperAdmin(string username, string pass);
 
+        // initializes the sytem with username, pass as the login info for the super admin
+        bool InitializeSystem(string username, string pass);
+
+        bool ConfirmRegistration(string forumName, string username);
+
 
     }
 }

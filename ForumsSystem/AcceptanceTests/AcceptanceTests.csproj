@@ -60,7 +60,9 @@
     <Compile Include="ServerTests\DeletePostTests.cs" />
     <Compile Include="ServerTests\EditForumPropTests.cs" />
     <Compile Include="ServerTests\EditModeratorExpireDateTests.cs" />
+    <Compile Include="ServerTests\EmailConfirmationTests.cs" />
     <Compile Include="ServerTests\ForumRegistrationTests.cs" />
+    <Compile Include="ServerTests\InitializeSystemTests.cs" />
     <Compile Include="ServerTests\SuperAdminLoginTests.cs" />
     <Compile Include="ServerTests\SendPrivateMsgTests.cs" />
     <Compile Include="ServerTests\SetForumPropTests.cs" />
