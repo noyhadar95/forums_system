@@ -75,6 +75,7 @@
     <Compile Include="Server\ServiceLayer\PostInSubForum.cs" />
     <Compile Include="Server\ServiceLayer\RegisterToForum.cs" />
     <Compile Include="Server\ServiceLayer\SendPrivateMessage.cs" />
+    <Compile Include="Server\ServiceLayer\ServiceLayer.cs" />
     <Compile Include="Server\ServiceLayer\SuperAdminLogin.cs" />
     <Compile Include="Server\ServiceLayer\TrackModerators.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\Admin.cs" />
