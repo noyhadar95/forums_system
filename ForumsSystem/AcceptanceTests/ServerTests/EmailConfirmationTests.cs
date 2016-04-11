@@ -21,10 +21,11 @@ namespace AcceptanceTests.ServerTests
             string username = "user1";
             string pass = "passwd";
             string email = "user1@gmail.com";
+            DateTime dateOfBirth = DateTime.Now;
 
             // make sure the forum is defined as "secured forum".
             base.CreateForum(forumName, forumProperties);
-            bool res = bridge.RegisterToForum(forumName, username, pass, email);
+            bool res = bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
             Assert.IsTrue(res);
 
             // check that the user is not yet considered registered to the forum
@@ -47,10 +48,11 @@ namespace AcceptanceTests.ServerTests
             string username = "user1", badUsername = "fakeuser";
             string pass = "passwd";
             string email = "user1@gmail.com";
+            DateTime dateOfBirth = DateTime.Now;
 
             // make sure the forum is defined as "secured forum".
             base.CreateForum(forumName, forumProperties);
-            bool res = bridge.RegisterToForum(forumName, username, pass, email);
+            bool res = bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
             Assert.IsTrue(res);
 
             // check that the user is not yet considered registered to the forum

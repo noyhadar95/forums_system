@@ -29,7 +29,7 @@ namespace AcceptanceTests.ServerTests
             admins.Add(user2);
 
             // create the forum
-            bool res = bridge.CreateForum(forumName, admins, forumProperties);
+            bool res = bridge.CreateForum(this.superAdminUsername, forumName, admins, forumProperties);
             Assert.IsTrue(res);
             // check that the forum now exists in the sytem
             Assert.IsTrue(bridge.IsExistForum(forumName));
