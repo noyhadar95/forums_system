@@ -23,10 +23,11 @@ namespace AcceptanceTests.ServerTests
             string username = "user1";
             string pass = "passwd";
             string email = "user1@gmail.com";
+            DateTime dateOfBirth = DateTime.Now;
 
             base.CreateForum(forumName, forumProperties);
 
-            bool res = bridge.RegisterToForum(forumName, username, pass, email);
+            bool res = bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
 
             Assert.IsTrue(res);
             // make sure user is registered
@@ -44,16 +45,17 @@ namespace AcceptanceTests.ServerTests
             string username = "user1";
             string pass = "passwd";
             string email = "user1@gmail.com";
+            DateTime dateOfBirth = DateTime.Now;
 
             // make sure forum doesn't exist
             base.DeleteForum(forumName);
 
-            bool res = bridge.RegisterToForum(forumName, username, pass, email);
+            bool res = bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
             Assert.IsTrue(!res);
 
         }
 
-        
+
 
         //TODO: make tests for failure: bad username, bad pass
 

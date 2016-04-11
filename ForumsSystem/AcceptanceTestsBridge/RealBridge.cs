@@ -22,14 +22,23 @@ namespace AcceptanceTestsBridge
 
         #region Add/Create Methods
 
-        public bool CreateForum(string forumName, List<UserStub> admins, string forumProperties)
+        public bool CreateForum(string creator, string forumName, List<UserStub> admins, string forumProperties)
         {
-            throw new NotImplementedException();
+            IForum forum = sl.GetForum(forumName);
+            List<IUser> newAdmins = new List<IUser>();
+
+            foreach (UserStub user in admins)
+            {
+                IUser u = forum.getUser(user.Username);
+                newAdmins.Add(u);
+            }
+
+            sl.CreateForum(creator, forumName, properties, newAdmins);
         }
 
-        public bool CreateSubForum(string forumName, string subForumName, List<string> moderators, string properties)
+        public bool CreateSubForum(string creator, string forumName, string subForumName, List<string> moderators, string properties)
         {
-            throw new NotImplementedException();
+            sl.CreateSubForum(forum,creator,)
         }
 
         public int AddOpeningPost(string forumName, string subForumName, int threadID, string title, string content)
@@ -39,7 +48,7 @@ namespace AcceptanceTestsBridge
 
         public int AddThread(string forumName, string subForumName, string threadName)
         {
-            throw new NotImplementedException();
+            sl.AddThread();
         }
 
         public int AddReplyPost(string forumName, string subForumName, int threadID, int postID, string title, string content)
@@ -120,12 +129,14 @@ namespace AcceptanceTestsBridge
 
         public bool SetForumProperties(string forumName, string forumProperties)
         {
-            throw new NotImplementedException();
+            IForum forum = sl.GetForum(forumName);
+            sl.SetForumProperties(forum, properties);
         }
 
-        public bool RegisterToForum(string forumName, string username, string password, string email)
+        public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
         {
-            throw new NotImplementedException();
+            IForum forum = sl.GetForum(forumName);
+            sl.RegisterToForum(forum, username, password, email, dateOfBirth);
         }
 
         public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
@@ -144,7 +155,7 @@ namespace AcceptanceTestsBridge
         public bool EditModeratorExpDate(string forumName, string subForumName, string username, DateTime newDate)
         {
             //TODO: get the moderator
-            //sl.ChangeExpirationDate(newDate,)
+            sl.ChangeExpirationDate(newDate,);
             return true;
         }
 

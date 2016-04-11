@@ -34,7 +34,7 @@ namespace AcceptanceTests.ServerTests
             admins.Add(user1);
 
             // create the forum
-            return bridge.CreateForum(forumName, admins, forumProperties);
+            return bridge.CreateForum(superAdminUsername, forumName, admins, forumProperties);
         }
 
         protected void DeleteForum(string forumName)
@@ -42,21 +42,31 @@ namespace AcceptanceTests.ServerTests
             bridge.DeleteForum(forumName);
         }
 
+        // create a new forum called forumName and a new sub-forum called subForumName.
+        protected bool CreateSubForum(string forumName, string forumProperties, string subForumName, List<string> moderators,
+            string subForumProps)
+        {
+            // create a forum
+            CreateForum(forumName, forumProperties);
+
+            // register all moderators-to-be to the forum
+            foreach (string mod in moderators)
+            {
+                string username = mod, pass = mod + "passwd", email = mod + "@gmail.com";
+                DateTime dateOfBirth = new DateTime(1995, 8, 2);
+
+                bridge.RegisterToForum(forumName, mod, pass, email, dateOfBirth);
+            }
+
+            return bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
+        }
+
         // create a new forum called forumName, a new sub-forum called subForumName and than
         // a new thread in it.
         protected int AddThread(string forumName, string forumProperties, string subForumName, List<string> moderators,
             string subForumProps, string threadName)
         {
-            // create a forum, sub-forum and a thread to add a post to.
-            CreateForum(forumName, forumProperties);
-
-            foreach (string mod in moderators)
-            {
-                string username = mod, pass = "passwd", email = mod + "@gmail.com";
-                bridge.RegisterToForum(forumName, mod, pass, email);
-            }
-
-            bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
+            CreateSubForum(forumName, forumProperties, subForumName, moderators, subForumProps);
             return bridge.AddThread(forumName, subForumName, threadName);
 
         }
