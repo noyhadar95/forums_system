@@ -45,6 +45,12 @@
     <Compile Include="RealBridge.cs" />
     <Compile Include="UserStub.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ForumsSystem\ForumsSystem.csproj">
+      <Project>{488d5473-e8ec-4df6-99c9-8d07d7f30237}</Project>
+      <Name>ForumsSystem</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

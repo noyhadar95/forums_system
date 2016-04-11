@@ -32,171 +32,166 @@ namespace AcceptanceTestsBridge
             this.realBridge = realBridge;
         }
 
+
+        #region Add/Create Methods
+
         public bool CreateForum(string forumName, List<UserStub> admins, string forumProperties)
         {
-            return true;
-        }
-
-        public bool SetForumProperties(string forumName, string forumProperties)
-        {
-            return true;
-        }
-
-        public bool RegisterToForum(string forumName, string username, string password, string email)
-        {
-            return true;
+            throw new NotImplementedException();
         }
 
         public bool CreateSubForum(string forumName, string subForumName, List<string> moderators, string properties)
         {
-            return true;
+            throw new NotImplementedException();
         }
-
-
-
-
-        public bool IsExistForum(string forumName)
-        {
-            return true;
-        }
-
-        public void AddUser(string userName, string pass)
-        {
-        }
-
-        public bool IsExistUser(string userName)
-        {
-            return true;
-        }
-
-        public void DeleteUser(string userName)
-        {
-        }
-
-        public void DeleteForum(string forumName)
-        {
-
-        }
-
-        public bool IsRegisteredToForum(string username, string forumName)
-        {
-            return true;
-        }
-
-
-        public void AddAdmin(string userName)
-        {
-
-        }
-
-
-        public bool IsAdmin(string username, string forumName)
-        {
-            return true;
-        }
-
-
-        public bool IsModerator(string forumName, string subForumName, string username)
-        {
-            return true;
-        }
-
-
-
-
 
         public int AddOpeningPost(string forumName, string subForumName, int threadID, string title, string content)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         public int AddThread(string forumName, string subForumName, string threadName)
         {
-            return 0;
+            throw new NotImplementedException();
         }
-
 
         public int AddReplyPost(string forumName, string subForumName, int threadID, int postID, string title, string content)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
+        public bool AddModerator(string forumName, string subForumName, string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Delete Methods
+
+        public void DeleteUser(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteForum(string forumName)
+        {
+            throw new NotImplementedException();
+        }
 
         public bool DeletePost(string forumName, string subForumName, int threadID, int postID)
         {
-            return true;
+            throw new NotImplementedException();
         }
 
+        #endregion
 
-        public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
+
+        #region Boolean Queries: IsExist, IsRegistered...
+
+        public bool IsExistForum(string forumName)
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
+        public bool IsRegisteredToForum(string username, string forumName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsAdmin(string username, string forumName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsModerator(string forumName, string subForumName, string username)
+        {
+            throw new NotImplementedException();
+        }
 
         public bool IsExistThread(string forumName, string subForumName, int threadID)
         {
-            return true;
+            throw new NotImplementedException();
         }
-
-        public bool SendPrivateMsg(string senderUsername, string receiverUsername, string msgTitle, string msgContent)
-        {
-            return true;
-        }
-
 
         public bool IsMsgReceived(string username, string msgTitle, string msgContent)
         {
-            return true;
+            throw new NotImplementedException();
         }
 
         public bool IsMsgSent(string username, string msgTitle, string msgContent)
         {
-            return true;
+            throw new NotImplementedException();
         }
 
+        #endregion
+
+
+
+        // ---------------------------------- Other Methods
+
+
+        public bool SetForumProperties(string forumName, string forumProperties)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool RegisterToForum(string forumName, string username, string password, string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SendPrivateMsg(string forumName, string senderUsername, string receiverUsername, string msgTitle, string msgContent)
+        {
+            throw new NotImplementedException();
+        }
 
         public bool EditModeratorExpDate(string forumName, string subForumName, string username, DateTime newDate)
         {
-            return true;
+            throw new NotImplementedException();
         }
-
 
         public DateTime GetModeratorExpDate(string forumName, string subForumName, string username)
         {
-            return new DateTime();
+            throw new NotImplementedException();
         }
-
-
-        public bool AddModerator(string forumName, string subForumName, string username)
-        {
-            return true;
-        }
-
 
         public bool LoginUser(string forumName, string username, string pass)
         {
+            if (realBridge != null)
+                return realBridge.LoginUser(forumName, username, pass);
+
             return true;
         }
-
 
         public bool LoginSuperAdmin(string username, string pass)
         {
+            if (realBridge != null)
+                return realBridge.LoginSuperAdmin(username, pass);
+
             return true;
         }
-
 
         public bool InitializeSystem(string username, string pass)
         {
+            if (realBridge != null)
+                return realBridge.InitializeSystem(username, pass);
+
             return true;
         }
-
 
         public bool ConfirmRegistration(string forumName, string username)
         {
+            if (realBridge != null)
+                return realBridge.ConfirmRegistration(forumName, username);
+
             return true;
         }
-
 
     }
 }

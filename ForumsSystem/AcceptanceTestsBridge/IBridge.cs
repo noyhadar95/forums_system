@@ -65,7 +65,7 @@ namespace AcceptanceTestsBridge
         // count the number of replies to a post recursively (i.e. including replies of replies adn so on)
         int CountNestedReplies(string forumName, string subForumName, int threadID, int postID);
 
-        bool SendPrivateMsg(string senderUsername, string receiverUsername, string msgTitle, string msgContent);
+        bool SendPrivateMsg(string forumName, string senderUsername, string receiverUsername, string msgTitle, string msgContent);
 
         bool EditModeratorExpDate(string forumName, string subForumName, string username, DateTime newDate);
 

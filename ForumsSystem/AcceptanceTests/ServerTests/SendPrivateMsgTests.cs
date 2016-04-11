@@ -31,7 +31,7 @@ namespace AcceptanceTests.ServerTests
             bridge.RegisterToForum(forumName, username2, pass2, email2);
 
             // send private msg
-            bool res = bridge.SendPrivateMsg(username1, username2, msgTitle, msgContent);
+            bool res = bridge.SendPrivateMsg(forumName, username1, username2, msgTitle, msgContent);
             Assert.IsTrue(res);
 
             bridge.IsMsgReceived(username2, msgTitle, msgContent);
@@ -58,7 +58,7 @@ namespace AcceptanceTests.ServerTests
             bridge.RegisterToForum(forumName, username2, pass2, email2);
 
             // send private msg
-            bool res = bridge.SendPrivateMsg(username1, username2, msgTitle, msgContent);
+            bool res = bridge.SendPrivateMsg(forumName, username1, username2, msgTitle, msgContent);
             Assert.IsTrue(res);
 
             bridge.IsMsgSent(username1, msgTitle, msgContent);
