@@ -57,5 +57,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         bool SetForumProperties(IForum forum, Policy properties);
         bool ChangeForumProperties(IForum forum, Policy properties);
         bool DeleteForumProperties(IForum forum, List<Policies> properties);
+        bool IsMessageSent(string msgTitle, string msgContent);
+        bool IsMessageReceived(string msgTitle, string msgContent);
     }
 }

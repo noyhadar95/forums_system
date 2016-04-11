@@ -310,4 +310,27 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return friends;
         }
     }
+
+        public bool IsMessageSent(string msgTitle, string msgContent)
+        {
+            foreach (PrivateMessage msg in sentMessages.ToList<PrivateMessage>())
+            {
+                if (msg.title.Equals(msgTitle) && msg.content.Equals(msgContent))
+                    return true;
+            }
+            return false;
+        }
+
+        bool IsMessageReceived(string msgTitle, string msgContent)
+        {
+            foreach (PrivateMessage msg in receivedMessages.ToList<PrivateMessage>())
+            {
+                if (msg.title.Equals(msgTitle) && msg.content.Equals(msgContent))
+                    return true;
+            }
+            return false;
+        }
+    
+}
+
 }
