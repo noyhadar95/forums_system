@@ -24,6 +24,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private List<PrivateMessage> notifications;
         private List<IUser> friends;
         private List<IUser> waitingFriendsList;
+        private List<Post> postsNotifications;
         private bool isLoggedIn;
 
         public User()
@@ -269,6 +270,23 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             List<PrivateMessage> notifications = this.notifications;
             this.notifications = new List<PrivateMessage>();
             return notifications;
+        }
+
+        public void AddPostNotification(Post post)
+        {
+            postsNotifications.Add(post);
+        }
+
+        public List<Post> GetPostNotifications()
+        {
+            List<Post> notifications = this.postsNotifications;
+            this.postsNotifications = new List<Post>();
+            return notifications;
+        }
+
+        public List<IUser> GetFriendsList()
+        {
+            return friends;
         }
     }
 }

@@ -182,7 +182,16 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return null;
             Post reply = new Post(callingUser, thread, title, content);
             if (parent.AddReply(reply))
+            {
+                List<IUser> friends = callingUser.GetFriendsList();
+                foreach (IUser friend in friends)
+                {
+                    friend.AddPostNotification(reply);
+                }
+                IUser user = thread.GetOpeningPost().getPublisher();
+                user.AddPostNotification(reply);
                 return reply;
+            }
             return null;
         }
 
@@ -197,7 +206,14 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             Thread thread = new Thread(subForum);
             Post openingPost = new Post(callingUser, thread, title, content);
             if (thread.AddOpeningPost(openingPost))
+            {
+                List<IUser> friends = callingUser.GetFriendsList();
+                foreach (IUser friend in friends)
+                {
+                    friend.AddPostNotification(openingPost);
+                }
                 return thread;
+            }
             return null;
         }
 
