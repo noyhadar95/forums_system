@@ -99,7 +99,19 @@ namespace ForumsSystem.Server.ServiceLayer
             return SuperAdmin.GetInstance().forumSystem.getForum(forumName);
         }
 
+        public bool AddModerator(IUser admin, ISubForum subForum, string username,DateTime expiratoinDate)
+        {
+            return admin.appointModerator(username, expiratoinDate, subForum);
+        }
 
+        public bool AddModerator(IUser admin, ISubForum subForum, string username)
+        {
+            throw new NotImplementedException();
+        }
 
+        public void removeForum(string forumName)
+        {
+            SuperAdmin.GetInstance().removeForum(forumName);
+        }
     }
 }
