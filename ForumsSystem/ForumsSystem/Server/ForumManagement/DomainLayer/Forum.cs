@@ -80,7 +80,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             {
                 Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
                 if (users[userName].getPassword().Equals(password))
+                {
+                    users[userName].Login();
                     return users[userName];
+
+                }
                 else
                     return null;
             }

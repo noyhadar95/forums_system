@@ -127,6 +127,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (parent.AddReply(reply))
                 return reply;
             return null;
+
+            //TODO: notify friends
         }
 
         public virtual Thread createThread(IUser callingUser, ISubForum subForum, string title, string content)
