@@ -11,9 +11,9 @@ namespace AcceptanceTestsBridge
 
         #region Add/Create Methods
 
-        bool CreateForum(string forumName, List<UserStub> admins, string forumProperties);
+        bool CreateForum(string creator, string forumName, List<UserStub> admins, string forumProperties);
 
-        bool CreateSubForum(string forumName, string subForumName, List<string> moderators, string properties);
+        bool CreateSubForum(string creator, string forumName, string subForumName, List<string> moderators, string properties);
 
         int AddOpeningPost(string forumName, string subForumName, int threadID, string title, string content);
 
@@ -60,7 +60,7 @@ namespace AcceptanceTestsBridge
 
         bool SetForumProperties(string forumName, string forumProperties);
 
-        bool RegisterToForum(string forumName, string username, string password, string email);
+        bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth);
 
         // count the number of replies to a post recursively (i.e. including replies of replies adn so on)
         int CountNestedReplies(string forumName, string subForumName, int threadID, int postID);

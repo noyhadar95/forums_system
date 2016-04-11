@@ -117,5 +117,14 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             Loggers.Logger.GetInstance().AddActivityEntry("Moderator: " + moderator + "removes from subforum: " + this.name );
             return true;
         }
+        public Thread GetThreadById(int id)
+        {
+            foreach (Thread t in threads.ToList<Thread>())
+            {
+                if (t.id == id)
+                    return t;
+            }
+            return null;
+        }
     }
 }

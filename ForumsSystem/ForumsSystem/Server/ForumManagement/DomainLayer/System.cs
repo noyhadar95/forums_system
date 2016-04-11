@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class System
+    public class System
     {
         private SuperAdmin superAdmin;
         private Dictionary<string, IForum> forums; //name, forum
 
         public System()
         {
-            this.superAdmin = new SuperAdmin("root", "toor", this);
+            this.superAdmin = SuperAdmin.CreateSuperAdmin("root", "toor", this);
             forums = new Dictionary<string, IForum>();
         }
 

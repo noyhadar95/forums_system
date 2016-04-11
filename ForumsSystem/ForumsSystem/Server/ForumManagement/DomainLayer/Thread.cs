@@ -11,11 +11,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private Post openingPost;
         private ISubForum subForum;
 
+        public int id { get; set; }
+        private static int nextId = 1;
+
         public Thread(ISubForum subForum)
         {
             this.openingPost = null;
             this.subForum = subForum;
+
+            this.id = nextId++;
         }
+
+
 
         public string GetTiltle()
         {
@@ -50,9 +57,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return this.subForum;
         }
-        public Post GetPostById(string id)
+        public Post GetPostById(int id)
         {
-            if (openingPost == null)
+            return openingPost.GetPostById(id);
+         /*   if (openingPost == null)
                 return null;
 
             char[] delimiter = { '.' };
@@ -72,7 +80,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return null;//error in given id
             }
             
-            
+            */
+        }
+        public int GetNumOfNestedReplies()
+        {
+            return 1 + openingPost.GetNumOfNestedReplies();
         }
 
     }

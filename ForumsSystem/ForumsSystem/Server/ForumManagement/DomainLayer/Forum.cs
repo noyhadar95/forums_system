@@ -100,7 +100,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             {
                 Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
                 if (users[userName].getPassword().Equals(password))
+                {
+                    users[userName].Login();
                     return users[userName];
+
+                }
                 else
                     return null;
             }
@@ -176,6 +180,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return this.users.Count;
         }
 
+
         public void sendMail(string email, string userName, string subject, string body)
         {
             var fromAddress = new MailAddress("TimTimTeam1@gmail.com","TimTimTeam");
@@ -203,5 +208,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
 
         
+
+        public void DeleteUser(string userName)
+        {
+            this.users.Remove(userName);
+        }
+
     }
 }

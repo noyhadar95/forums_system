@@ -19,9 +19,10 @@ namespace AcceptanceTests.ServerTests
             string forumName = "forum1";
             string forumProperties = "";
             string username = "user1", pass = "passwd", email = "user1@gmail.com";
+            DateTime dateOfBirth = new DateTime(1995, 8, 2);
 
             base.CreateForum(forumName, forumProperties);
-            bridge.RegisterToForum(forumName, username, pass, email);
+            bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
             bool res = bridge.LoginUser(forumName, username, pass);
             Assert.IsTrue(res);
 
