@@ -32,10 +32,8 @@ namespace AcceptanceTests.ServerTests
             string threadName = "thread1";
 
             // create a forum, sub-forum and a thread to add a post to.
-            base.CreateForum(forumName, forumProperties);
-            bridge.RegisterToForum(forumName, username1, pass1, email, dateOfBirth1);
-            bridge.CreateSubForum(this.superAdminUsername, forumName, subForumName, moderators, subForumProps);
-            int threadID = bridge.AddThread(forumName, subForumName, threadName);
+            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
+                subForumProps, threadName);
 
             // add opening post
             int res = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
@@ -63,10 +61,8 @@ namespace AcceptanceTests.ServerTests
             string threadName = "thread1";
 
             // create a forum, sub-forum and a thread to add a post to.
-            base.CreateForum(forumName, forumProperties);
-            bridge.RegisterToForum(forumName, username1, pass1, email, dateOfBirth1);
-            bridge.CreateSubForum(this.superAdminUsername, forumName, subForumName, moderators, subForumProps);
-            int threadID = bridge.AddThread(forumName, subForumName, threadName);
+            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
+                subForumProps, threadName);
 
             // add opening post
             int res = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
@@ -94,10 +90,8 @@ namespace AcceptanceTests.ServerTests
             string threadName = "thread1";
 
             // create a forum, sub-forum and a thread to add a post to.
-            base.CreateForum(forumName, forumProperties);
-            bridge.RegisterToForum(forumName, username1, pass1, email, dateOfBirth1);
-            bridge.CreateSubForum(this.superAdminUsername, forumName, subForumName, moderators, subForumProps);
-            int threadID = bridge.AddThread(forumName, subForumName, threadName);
+            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
+                subForumProps, threadName);
 
             // add opening post
             int res = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
@@ -125,10 +119,8 @@ namespace AcceptanceTests.ServerTests
             string threadName = "thread1";
 
             // create a forum, sub-forum and a thread to add a post to.
-            base.CreateForum(forumName, forumProperties);
-            bridge.RegisterToForum(forumName, username1, pass1, email, dateOfBirth1);
-            bridge.CreateSubForum(this.superAdminUsername, forumName, subForumName, moderators, subForumProps);
-            int threadID = bridge.AddThread(forumName, subForumName, threadName);
+            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
+                subForumProps, threadName);
 
             // add opening post
             int res = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);

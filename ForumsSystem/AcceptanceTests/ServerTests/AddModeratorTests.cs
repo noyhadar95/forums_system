@@ -28,9 +28,7 @@ namespace AcceptanceTests.ServerTests
             string subForumProps = "";
 
             // create a forum, sub-forum and a thread to add a post to.
-            CreateForum(forumName, forumProperties);
-            bridge.RegisterToForum(forumName, username1, pass1, email1, dateOfBirth1);
-            bridge.CreateSubForum(this.superAdminUsername, forumName, subForumName, moderators, subForumProps);
+            base.CreateSubForum(this.superAdminUsername, forumName, subForumName, moderators, subForumProps);
             bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
 
             bool res = bridge.AddModerator(forumName, subForumName, username2);
