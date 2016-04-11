@@ -42,6 +42,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.waitingFriendsList = new List<IUser>();
             this.isLoggedIn = false;
             this.notifications = new List<PrivateMessage>();
+            this.postsNotifications = new List<Post>();
         }
 
         public User(string userName,string password,string email,IForum forum)
@@ -61,6 +62,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.forum.RegisterToForum(this);
             this.isLoggedIn = false;
             this.notifications = new List<PrivateMessage>();
+            this.postsNotifications = new List<Post>();
         }
 
         public List<PrivateMessage> getSentMessages()
