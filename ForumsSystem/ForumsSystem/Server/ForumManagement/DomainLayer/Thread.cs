@@ -35,13 +35,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return false;
 
             this.openingPost = openingPost;
+            Loggers.Logger.GetInstance().AddActivityEntry("A new opening post: " + openingPost.Title + " was added to the thread");
             return true;
         }
 
         public void DeleteOpeningPost()
         {
-            this.openingPost = null;
-               
+            Loggers.Logger.GetInstance().AddActivityEntry("The opening post: " +this.openingPost.Title +" has been deleted");
+       this.openingPost = null;
+       
         }
 
         public ISubForum GetSubforum()

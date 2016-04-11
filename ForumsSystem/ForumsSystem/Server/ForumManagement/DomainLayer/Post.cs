@@ -30,6 +30,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public bool DeletePost()
         {
+            Loggers.Logger.GetInstance().AddActivityEntry("The post was deleted");
             foreach (Post p in replies.ToList<Post>())
             {
                 p.DeletePost();
@@ -56,6 +57,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return false;
             reply.SetParent(this);
             this.replies.Add(reply);
+            Loggers.Logger.GetInstance().AddActivityEntry("A reply to the post was added");
             return true;
         }
 

@@ -55,6 +55,18 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         }
 
         [TestMethod]
+        public void TestEmailSending()
+        {
+                string username = "user1";
+                string pass = "pass1";
+                string email = "noyhada@post.bgu.ac.il";
+                Policy policy = new AuthenticationPolicy(Policies.Authentication);
+                forum.AddPolicy(policy);
+                Assert.IsTrue(forum.RegisterToForum(username, pass, email));
+            
+        }
+
+        [TestMethod]
         public void TestSubForumCreation()
         {
             string subForumName = "sub";

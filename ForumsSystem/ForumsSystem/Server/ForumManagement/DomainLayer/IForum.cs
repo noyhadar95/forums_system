@@ -26,7 +26,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
          void CreateSubForum(IUser creator, string subForumName);
 
          IUser Login(string userName, string password);
-
+        void sendMail(string email, string userName, string subject, string body);
          ISubForum getSubForum(string subForumName);
         IUser getUser(string username);
         bool isUserMember(string username);
