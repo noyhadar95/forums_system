@@ -14,13 +14,16 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         IUser admin;
         IUser user;
         ISubForum subForum;
+        DateTime year;
 
         [TestInitialize()]
         public void Initialize()
         {
+            DateTime today = DateTime.Today;
+            year = today.AddYears(-24);
             forum = new Forum("testForum"); ;
-            user = new User("u1", "p1", "e1@gmail.com", forum);
-            admin = new User("admin", "admin", "admin@gmail.com", forum);
+            user = new User("u1", "p1", "e1@gmail.com", forum,year);
+            admin = new User("admin", "admin", "admin@gmail.com", forum, year);
             subForum = new SubForum(forum, admin,"sub1");
         }
 

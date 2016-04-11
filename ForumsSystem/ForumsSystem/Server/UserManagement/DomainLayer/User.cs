@@ -135,15 +135,15 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
                 PolicyParametersObject param = new PolicyParametersObject(Policies.MinimumAge);
                 param.SetAgeOfUser((int)((dateOfBirth - DateTime.Today).TotalDays) / 365);
-                if (!forum.GetPolicy().CheckPolicy(param))
+                if (forum.GetPolicy()!=null&&!forum.GetPolicy().CheckPolicy(param))
                     return false;
                 param.SetPolicy(Policies.Password);
                 param.SetPassword(password);
-                if (!forum.GetPolicy().CheckPolicy(param))
+                if (forum.GetPolicy() != null && !forum.GetPolicy().CheckPolicy(param))
                     return false;
                 param.SetPolicy(Policies.UsersLoad);
                 param.SetNumOfUsers(forum.GetNumOfUsers());
-                if (!forum.GetPolicy().CheckPolicy(param))
+                if (forum.GetPolicy() != null && !forum.GetPolicy().CheckPolicy(param))
                     return false;
 
 
@@ -328,7 +328,6 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.emailAccepted = true;
 
         }
-    }
 
         public bool IsMessageSent(string msgTitle, string msgContent)
         {
@@ -340,7 +339,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return false;
         }
 
-        bool IsMessageReceived(string msgTitle, string msgContent)
+        public bool IsMessageReceived(string msgTitle, string msgContent)
         {
             foreach (PrivateMessage msg in receivedMessages.ToList<PrivateMessage>())
             {
@@ -349,7 +348,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             }
             return false;
         }
+    }
+
+
+      
     
 }
 
-}
+

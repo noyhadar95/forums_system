@@ -9,14 +9,15 @@ namespace UnitTests.ServerUnitTests.DomainLayer
     public class PostTests
     {
         Post post;
-
+        DateTime year;
 
         [TestMethod]
         public void TestAddReply()//1
         {
-
+            DateTime today = DateTime.Today;
+            year = today.AddYears(-34);
             IForum forum = new Forum("name");
-            IUser user = new User("username", "1234", "mail.com", forum);
+            IUser user = new User("username", "1234", "mail.com", forum,year);
             ISubForum subForum = new SubForum(forum,user,"name");
             Thread thread = new Thread(subForum);
            
@@ -30,7 +31,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestDeleteReply()//2
         {
             IForum forum = new Forum("name");
-            IUser user = new User("username", "1234", "mail.com", forum);
+            IUser user = new User("username", "1234", "mail.com", forum, year);
             ISubForum subForum = new SubForum(forum,user,"name");
             Thread thread = new Thread(subForum);
             
@@ -46,7 +47,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestDeletePostWithReplies()//3
         {
             IForum forum = new Forum("name");
-            IUser user = new User("username", "1234", "mail.com", forum);
+            IUser user = new User("username", "1234", "mail.com", forum, year);
             ISubForum subForum = new SubForum(forum,user,"name");
             Thread thread = new Thread(subForum);
             
@@ -64,7 +65,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestAddReplyToSelf()//4
         {
             IForum forum = new Forum("name");
-            IUser user = new User("username", "1234", "mail.com", forum);
+            IUser user = new User("username", "1234", "mail.com", forum, year);
             ISubForum subForum = new SubForum(forum,user,"name");
             Thread thread = new Thread(subForum);
             
@@ -77,7 +78,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestGetReply()//5
         {
             IForum forum = new Forum("name");
-            IUser user = new User("username", "1234", "mail.com", forum);
+            IUser user = new User("username", "1234", "mail.com", forum, year);
             ISubForum subForum = new SubForum(forum,user,"name");
             Thread thread = new Thread(subForum);
             
@@ -92,7 +93,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestGetThread()//6
         {
             IForum forum = new Forum("name");
-            IUser user = new User("username", "1234", "mail.com", forum);
+            IUser user = new User("username", "1234", "mail.com", forum, year);
             ISubForum subForum = new SubForum(forum,user, "name");
             Thread thread = new Thread(subForum);
             

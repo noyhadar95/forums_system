@@ -11,12 +11,14 @@ namespace UnitTests.UserManagement.DomainLayer
     {
         IForum forum;
         IUser user;
-
+        DateTime year;
         [TestInitialize()]
         public void Initialize()
         {
+            DateTime today = DateTime.Today;
+            year = today.AddYears(-26);
             forum = new Forum("testUser"); ;
-            user = new User("u1", "p1", "e1@gmail.com", forum);
+            user = new User("u1", "p1", "e1@gmail.com", forum,year);
             user.Login();
         }
 
@@ -39,7 +41,7 @@ namespace UnitTests.UserManagement.DomainLayer
         [TestMethod]
         public void TestSendPrivateMessage()
         {
-            IUser receiver = new User("u2", "p2", "u2@gmail.com", forum);
+            IUser receiver = new User("u2", "p2", "u2@gmail.com", forum, year);
             PrivateMessage privateMessage= user.SendPrivateMessage(receiver.getUsername(), "hi", "sending message");
             Assert.IsTrue(user.getSentMessages().Contains(privateMessage));
             Assert.IsTrue(receiver.getReceivedMessages().Contains(privateMessage));
@@ -55,7 +57,7 @@ namespace UnitTests.UserManagement.DomainLayer
             user.Login();
 
             IForum forum2 = new Forum("f2");
-            IUser receiver2 = new User("cantReceive", "p3", "u3@gmail.com", forum2);
+            IUser receiver2 = new User("cantReceive", "p3", "u3@gmail.com", forum2, year);
             PrivateMessage privateMessage2 = user.SendPrivateMessage(receiver2.getUsername(), "hi", "sending message");
             Assert.IsFalse(user.getSentMessages().Contains(privateMessage2));
             Assert.IsFalse(receiver2.getReceivedMessages().Contains(privateMessage2));
@@ -79,12 +81,12 @@ namespace UnitTests.UserManagement.DomainLayer
         public void TestRegisterToForum()
         {
             user = new User();
-            Assert.IsTrue(user.RegisterToForum("u2", "p2", forum, "u2@gmail.com"));
+            Assert.IsTrue(user.RegisterToForum("u2", "p2", forum, "u2@gmail.com", year));
             user.Login();
             Assert.IsTrue(forum.isUserMember(user.getUsername()));
 
             IForum forum2 = new Forum("f2");
-            Assert.IsFalse(user.RegisterToForum("u2", "p2", forum2, "u2@gmail.com"));
+            Assert.IsFalse(user.RegisterToForum("u2", "p2", forum2, "u2@gmail.com", year));
             Assert.IsFalse(forum2.isUserMember(user.getUsername()));
         }
 
@@ -92,8 +94,8 @@ namespace UnitTests.UserManagement.DomainLayer
         public void TestCreateSubForum()
         {
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum);
-            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
             try
@@ -128,8 +130,8 @@ namespace UnitTests.UserManagement.DomainLayer
         public void TestFirstPost()
         {
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum);
-            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
             user.ChangeType(new Admin());
@@ -155,8 +157,8 @@ namespace UnitTests.UserManagement.DomainLayer
         public void TestReplyPost()
         {
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum);
-            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
             user.ChangeType(new Admin());
@@ -192,8 +194,8 @@ namespace UnitTests.UserManagement.DomainLayer
         public void TestDeletePost()
         {
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum);
-            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
             user.ChangeType(new Admin());
@@ -224,8 +226,8 @@ namespace UnitTests.UserManagement.DomainLayer
         public void TestEditPost()
         {
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum);
-            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
             user.ChangeType(new Admin());
@@ -256,8 +258,8 @@ namespace UnitTests.UserManagement.DomainLayer
         public void TestEditExpirationTimeOfModerator()
         {
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum);
-            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
 
@@ -277,7 +279,7 @@ namespace UnitTests.UserManagement.DomainLayer
             Assert.IsFalse(user.editExpirationTimeOfModerator(user2.getUsername(), DateTime.Today.AddMonths(2), null));
             Assert.IsFalse(user.editExpirationTimeOfModerator("", DateTime.Today.AddMonths(2), subForum));
 
-            IUser admin = new User("a1", "ap1", "a1@gmail.com", forum);
+            IUser admin = new User("a1", "ap1", "a1@gmail.com", forum, year);
             admin.ChangeType(new Admin());
             Assert.IsFalse(admin.editExpirationTimeOfModerator(user2.getUsername(), DateTime.Today.AddMonths(2), subForum));
             Assert.AreEqual(subForum.getModeratorByUserName(user2.getUsername()).expirationDate, DateTime.Today.AddMonths(3));

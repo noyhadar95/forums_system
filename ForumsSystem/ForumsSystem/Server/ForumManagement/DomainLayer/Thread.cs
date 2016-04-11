@@ -59,7 +59,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
         public Post GetPostById(int id)
         {
+            if(openingPost!=null)
             return openingPost.GetPostById(id);
+            return null;
          /*   if (openingPost == null)
                 return null;
 

@@ -42,14 +42,14 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             
         }
 
-        public bool RegisterToForum(string userName, string password, string Email) //TODO: Need to add age
+        public bool RegisterToForum(string userName, string password, string Email, DateTime dateOfBirth) //TODO: Need to add age
         {
             if (users.ContainsKey(userName))
                 return false;
             if (!CheckRegistrationPolicies(password))
                 return false;
 
-            IUser newUser = new User(userName, password, Email, this);
+            IUser newUser = new User(userName, password, Email, this, dateOfBirth);
 
             return true;
 

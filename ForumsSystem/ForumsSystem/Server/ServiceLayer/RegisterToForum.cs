@@ -26,7 +26,8 @@ namespace ForumsSystem.Server.ServiceLayer
             if (!forum.GetPolicy().CheckPolicy(param))
                 return false;
 
-            forum.RegisterToForum(userName, password, email);
+            DateTime today = DateTime.Today;
+            forum.RegisterToForum(userName, password, email, today.AddYears(age));
             return true;
         }
     }

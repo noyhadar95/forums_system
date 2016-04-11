@@ -12,15 +12,18 @@ namespace UnitTests.ServerIntegrationTests
         IForum forum;
         IUser admin;
         IUser user;
+        DateTime year;
         [TestInitialize()]
         public void Initialize()
         {
+            DateTime today = DateTime.Today;
+             year = today.AddYears(-20);
             forum = new Forum("testForum");
-            admin = new User("admin", "admin", "admin@gmail.com", forum);
+            admin = new User("admin", "admin", "admin@gmail.com", forum, year);
             ForumsSystem.Server.UserManagement.DomainLayer.Type ad = new Admin();
             admin.ChangeType(ad);
             admin.Login();
-            user = new User("u1", "p1", "e1@gmail.com", forum);
+            user = new User("u1", "p1", "e1@gmail.com", forum, year);
             user.Login();
         }
         [TestCleanup()]
@@ -36,8 +39,8 @@ namespace UnitTests.ServerIntegrationTests
         {
             string subforumName = "newSub";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum);
-            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
            ISubForum subforum =  admin.createSubForum(subforumName, moderators);
@@ -70,8 +73,8 @@ namespace UnitTests.ServerIntegrationTests
             forum.AddPolicy(policy);
             string subforumName = "newSub";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "noyhada@post.bgu.ac.il", forum);
-            IUser user2 = new User("m2", "mp2", "nimrodh@post.bgu.ac.il", forum);
+            IUser user1 = new User("m1", "mp1", "noyhada@post.bgu.ac.il", forum, year);
+            IUser user2 = new User("m2", "mp2", "nimrodh@post.bgu.ac.il", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
             ISubForum subforum = admin.createSubForum(subforumName, moderators);
@@ -81,10 +84,11 @@ namespace UnitTests.ServerIntegrationTests
 
             Assert.IsNotNull(thr);
             user1.Login();
-            Assert.IsFalse(user1.Login());
+            Assert.IsFalse(user1.isLogin());
 
             user1.AcceptEmail();
-            Assert.IsTrue(user1.Login());
+            user1.Login();
+            Assert.IsTrue(user1.isLogin());
 
             Post opening = thr.GetOpeningPost();
             Post reply = user1.postReply(opening, thr, "reply", "by admin");
@@ -108,19 +112,19 @@ namespace UnitTests.ServerIntegrationTests
             string email = "tester@email.com";
             Policy policy = new PasswordPolicy(Policies.Password, 8);
             forum.AddPolicy(policy);
-            Assert.IsFalse(forum.RegisterToForum(username, pass, email));
+            Assert.IsFalse(forum.RegisterToForum(username, pass, email,DateTime.Today.AddYears(-20)));
         }
 
         [TestMethod]
         public void TestRegisterToForum()
         {
             user = new User();
-            Assert.IsTrue(user.RegisterToForum("u2", "p2", forum, "u2@gmail.com"));
+            Assert.IsTrue(user.RegisterToForum("u2", "p2", forum, "u2@gmail.com", year));
             user.Login();
             Assert.IsTrue(forum.isUserMember(user.getUsername()));
 
             IForum forum2 = new Forum("f2");
-            Assert.IsFalse(user.RegisterToForum("u2", "p2", forum2, "u2@gmail.com"));
+            Assert.IsFalse(user.RegisterToForum("u2", "p2", forum2, "u2@gmail.com", year));
             Assert.IsFalse(forum2.isUserMember(user.getUsername()));
         }
 
@@ -128,8 +132,8 @@ namespace UnitTests.ServerIntegrationTests
         public void TestCreateSubForum()
         {
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum);
-            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
             try
@@ -163,9 +167,11 @@ namespace UnitTests.ServerIntegrationTests
         [TestMethod]
         public void TestFirstPost()
         {
+        
+            
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum);
-            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum , year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
             user.ChangeType(new Admin());
@@ -191,8 +197,8 @@ namespace UnitTests.ServerIntegrationTests
         public void TestReplyPost()
         {
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum);
-            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
             user.ChangeType(new Admin());
@@ -228,8 +234,8 @@ namespace UnitTests.ServerIntegrationTests
         public void TestDeletePost()
         {
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum);
-            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
             user.ChangeType(new Admin());
@@ -260,8 +266,8 @@ namespace UnitTests.ServerIntegrationTests
         public void TestEditPost()
         {
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum);
-            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
             user.ChangeType(new Admin());
@@ -292,8 +298,8 @@ namespace UnitTests.ServerIntegrationTests
         public void TestEditExpirationTimeOfModerator()
         {
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum);
-            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
 
@@ -313,7 +319,7 @@ namespace UnitTests.ServerIntegrationTests
             Assert.IsFalse(user.editExpirationTimeOfModerator(user2.getUsername(), DateTime.Today.AddMonths(2), null));
             Assert.IsFalse(user.editExpirationTimeOfModerator("", DateTime.Today.AddMonths(2), subForum));
 
-            IUser admin = new User("a1", "ap1", "a1@gmail.com", forum);
+            IUser admin = new User("a1", "ap1", "a1@gmail.com", forum, year);
             admin.ChangeType(new Admin());
             Assert.IsFalse(admin.editExpirationTimeOfModerator(user2.getUsername(), DateTime.Today.AddMonths(2), subForum));
             Assert.AreEqual(subForum.getModeratorByUserName(user2.getUsername()).expirationDate, DateTime.Today.AddMonths(3));

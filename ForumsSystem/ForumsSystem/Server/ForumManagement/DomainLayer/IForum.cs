@@ -20,7 +20,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
       //  public void EditForumProperties();
       //quick edit
-         bool RegisterToForum(string userName, string password, string Email);
+         bool RegisterToForum(string userName, string password, string Email, DateTime dateOfBirth);
         bool RegisterToForum(IUser user);
 
          void CreateSubForum(IUser creator, string subForumName);
