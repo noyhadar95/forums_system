@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
+using System.Net.Mail;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
@@ -23,15 +25,32 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             Loggers.Logger.GetInstance().AddActivityEntry(forumName + "created");
         }
         
-        public bool RegisterToForum(string userName, string password, string Email) //TODO: Need to add age
+        private string createLinkForRegistration(IUser user)
+        {
+            return "someLinkForUser";
+        }
+        private void SendMailWhenRegistered(IUser user)
+        {
+            PolicyParametersObject param = new PolicyParametersObject(Policies.Authentication);
+            if (policies != null && policies.CheckPolicy(param))
+            {
+                sendMail(user.getEmail(), user.getUsername(), "Successfully Registered To Forum: " + this.name,
+                   "Hello" + user.getUsername() + ",\n You have registered to the Forum: " + this.name + ". Please click on this link to  complete your registration: " + createLinkForRegistration(user));
+            }
+            
+
+            
+        }
+
+        public bool RegisterToForum(string userName, string password, string Email, DateTime dateOfBirth) //TODO: Need to add age
         {
             if (users.ContainsKey(userName))
                 return false;
             if (!CheckRegistrationPolicies(password))
                 return false;
 
-            IUser newUser = new User(userName, password, Email, this);
-            Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " Created");
+            IUser newUser = new User(userName, password, Email, this, dateOfBirth);
+
             return true;
 
         }
@@ -44,6 +63,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return false;
             users.Add(user.getUsername(), user);
             Loggers.Logger.GetInstance().AddActivityEntry("User: " + user.getUsername() + " Registered");
+            SendMailWhenRegistered(user);
             return true;
         }
 
@@ -159,5 +179,40 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return this.users.Count;
         }
+
+
+        public void sendMail(string email, string userName, string subject, string body)
+        {
+            var fromAddress = new MailAddress("TimTimTeam1@gmail.com","TimTimTeam");
+            var toAddress = new MailAddress(email, userName);
+            const string fromPassword = "TimTeamTim";
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
+            Loggers.Logger.GetInstance().AddActivityEntry("Email sent to: " + email);
+        }
+
+        
+
+        public void DeleteUser(string userName)
+        {
+            this.users.Remove(userName);
+        }
+
     }
 }

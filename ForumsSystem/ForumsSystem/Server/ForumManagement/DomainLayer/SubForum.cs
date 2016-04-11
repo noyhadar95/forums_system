@@ -52,6 +52,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (mod == null)
                 return false;
             mod.changeExpirationDate(newExpirationDate);
+            Loggers.Logger.GetInstance().AddActivityEntry("The expiration date of the moderator: " + user.getUsername() + " has been changed to " + newExpirationDate + " in subforum: " + this.name);
             return true;
         }
 
@@ -71,7 +72,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public bool removeThread(int threadNumber) //TODO need an identifier for threads in the future
         {
             int newThreadNumber = threadNumber - 1;
-            if (newThreadNumber < threads.Count)
+            if (newThreadNumber <= threads.Count)
                 return false;
             threads.RemoveAt(newThreadNumber);
             Loggers.Logger.GetInstance().AddActivityEntry("Thread removed from subforum: " + name);
@@ -98,7 +99,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public Thread getThread(int index)
         {
             int newIndex = index - 1;
-            if (newIndex > threads.Count)
+            if (newIndex >= threads.Count)
                 return null;
             else return threads.ElementAt(newIndex);
         }
@@ -115,6 +116,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             moderators.Remove(moderator);
             Loggers.Logger.GetInstance().AddActivityEntry("Moderator: " + moderator + "removes from subforum: " + this.name );
             return true;
+        }
+        public Thread GetThreadById(int id)
+        {
+            foreach (Thread t in threads.ToList<Thread>())
+            {
+                if (t.id == id)
+                    return t;
+            }
+            return null;
         }
     }
 }

@@ -25,7 +25,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private List<PrivateMessage> notifications;
         private List<IUser> friends;
         private List<IUser> waitingFriendsList;
+        private List<Post> postsNotifications;
         private bool isLoggedIn;
+        private bool emailAccepted;
 
         public User()
         {
@@ -41,8 +43,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
             this.isLoggedIn = false;
+            this.emailAccepted = false;
             this.dateOfBirth = new DateTime();
             this.notifications = new List<PrivateMessage>();
+            this.postsNotifications = new List<Post>();
+
         }
 
         public User(string userName,string password,string email,IForum forum,DateTime dateOfBirth)
@@ -62,7 +67,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.waitingFriendsList = new List<IUser>();
             this.forum.RegisterToForum(this);
             this.isLoggedIn = false;
+
             this.notifications = new List<PrivateMessage>();
+            this.emailAccepted = false;
+            this.postsNotifications = new List<Post>();
+
         }
 
         public List<PrivateMessage> getSentMessages()
@@ -126,15 +135,15 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
                 PolicyParametersObject param = new PolicyParametersObject(Policies.MinimumAge);
                 param.SetAgeOfUser((int)((dateOfBirth - DateTime.Today).TotalDays) / 365);
-                if (!forum.GetPolicy().CheckPolicy(param))
+                if (forum.GetPolicy()!=null&&!forum.GetPolicy().CheckPolicy(param))
                     return false;
                 param.SetPolicy(Policies.Password);
                 param.SetPassword(password);
-                if (!forum.GetPolicy().CheckPolicy(param))
+                if (forum.GetPolicy() != null && !forum.GetPolicy().CheckPolicy(param))
                     return false;
                 param.SetPolicy(Policies.UsersLoad);
                 param.SetNumOfUsers(forum.GetNumOfUsers());
-                if (!forum.GetPolicy().CheckPolicy(param))
+                if (forum.GetPolicy() != null && !forum.GetPolicy().CheckPolicy(param))
                     return false;
 
 
@@ -251,7 +260,13 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public void Login()
         {
-           this.isLoggedIn = true;
+
+            Policy policy = forum.GetPolicy();
+            if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)) || (policy.CheckIfPolicyExists(Policies.Authentication) && emailAccepted))
+            {
+                this.isLoggedIn = true;
+            }
+
         }
 
         public void LogOff()
@@ -263,6 +278,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             return this.isLoggedIn;
         }
+
 
         public bool SetForumProperties(IForum forum, Policy properties)
         {
@@ -289,6 +305,30 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.notifications = new List<PrivateMessage>();
             return notifications;
         }
+
+        public void AddPostNotification(Post post)
+        {
+            postsNotifications.Add(post);
+        }
+
+        public List<Post> GetPostNotifications()
+        {
+            List<Post> notifications = this.postsNotifications;
+            this.postsNotifications = new List<Post>();
+            return notifications;
+        }
+
+        public List<IUser> GetFriendsList()
+        {
+            return friends;
+        }
+
+        public void AcceptEmail()
+        {
+            this.emailAccepted = true;
+
+        }
+
         public bool IsMessageSent(string msgTitle, string msgContent)
         {
             foreach (PrivateMessage msg in sentMessages.ToList<PrivateMessage>())
@@ -299,7 +339,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return false;
         }
 
-        bool IsMessageReceived(string msgTitle, string msgContent)
+        public bool IsMessageReceived(string msgTitle, string msgContent)
         {
             foreach (PrivateMessage msg in receivedMessages.ToList<PrivateMessage>())
             {
@@ -308,6 +348,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             }
             return false;
         }
+    }
+
+
+      
     
 }
-}
+
+

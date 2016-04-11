@@ -20,18 +20,19 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
       //  public void EditForumProperties();
       //quick edit
-         bool RegisterToForum(string userName, string password, string Email);
+         bool RegisterToForum(string userName, string password, string Email, DateTime dateOfBirth);
         bool RegisterToForum(IUser user);
 
          void CreateSubForum(IUser creator, string subForumName);
 
          IUser Login(string userName, string password);
-
+        void sendMail(string email, string userName, string subject, string body);
          ISubForum getSubForum(string subForumName);
         IUser getUser(string username);
         bool isUserMember(string username);
          Policy GetPolicy();
         int GetNumOfUsers();
+        void DeleteUser(string userName);
 
     }
 }

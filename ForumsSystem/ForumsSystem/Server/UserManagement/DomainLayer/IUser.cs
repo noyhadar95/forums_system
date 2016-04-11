@@ -19,6 +19,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         Thread createThread(ISubForum subForum, string title, string content);
         bool editPost(string title, string content, Post post);
         bool deletePost(Post post);
+        void AddPostNotification(Post post);
+        List<Post> GetPostNotifications();
 
         ISubForum createSubForum(string subForumName, Dictionary<string, DateTime> users);
         bool appointModerator(string userName, DateTime expirationTime, ISubForum subForum);
@@ -34,6 +36,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         bool removeFriend(IUser friendToRemove);
         bool acceptFriend(IUser userToAccept);
         void removeFromWaitingFriendsList(IUser user);
+        List<IUser> GetFriendsList();
 
         List<PrivateMessage> getReceivedMessages();
         List<PrivateMessage> getSentMessages();
@@ -51,9 +54,12 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         void LogOff();
         bool isLogin();
 
+
         bool SetForumProperties(IForum forum, Policy properties);
         bool ChangeForumProperties(IForum forum, Policy properties);
         bool DeleteForumProperties(IForum forum, List<Policies> properties);
+
+        void AcceptEmail();
         bool IsMessageSent(string msgTitle, string msgContent);
         bool IsMessageReceived(string msgTitle, string msgContent);
     }

@@ -4,77 +4,115 @@ using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
 using System.Collections.Generic;
 
-namespace UnitTests.UserManagement.DomainLayer
+namespace UnitTests.ServerIntegrationTests
 {
     [TestClass]
-    public class UserTests
+    public class ForumTests
     {
         IForum forum;
+        IUser admin;
         IUser user;
         DateTime year;
         [TestInitialize()]
         public void Initialize()
         {
             DateTime today = DateTime.Today;
-            year = today.AddYears(-26);
-            forum = new Forum("testUser"); ;
-            user = new User("u1", "p1", "e1@gmail.com", forum,year);
+             year = today.AddYears(-20);
+            forum = new Forum("testForum");
+            admin = new User("admin", "admin", "admin@gmail.com", forum, year);
+            ForumsSystem.Server.UserManagement.DomainLayer.Type ad = new Admin();
+            admin.ChangeType(ad);
+            admin.Login();
+            user = new User("u1", "p1", "e1@gmail.com", forum, year);
             user.Login();
         }
-
-
         [TestCleanup()]
         public void Cleanup()
         {
             forum = null;
+            admin = null;
             user = null;
         }
 
         [TestMethod]
-        public void TestChangeType()
+        public void TestAdminCycle() //create sub forum, post and delete
         {
-            ForumsSystem.Server.UserManagement.DomainLayer.Type admin = new Admin();
-            user.ChangeType(admin);
-            Assert.IsTrue(user.getType() == admin);
+            string subforumName = "newSub";
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
+            moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
+            moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
+           ISubForum subforum =  admin.createSubForum(subforumName, moderators);
+            Assert.IsNotNull(subforum);
+
+            Thread thr =  admin.createThread(subforum, "Post1","Content1");
+            
+            Assert.IsNotNull(thr);
+
+            Post opening = thr.GetOpeningPost();
+            Post reply = user.postReply(opening, thr, "reply", "by admin");
+            Assert.IsNotNull(reply);
+            Assert.IsTrue(reply.getPublisher() == user);
+            Assert.IsTrue(opening.GetReplies().Contains(reply));
+
+            Assert.IsTrue(user.deletePost(reply));
+            Assert.IsFalse(thr.GetOpeningPost().GetReplies().Contains(reply));
+
+            Assert.IsTrue(admin.deletePost(opening));
+            Assert.IsFalse(subforum.getThread(1) != null);
+
+         
+
         }
 
         [TestMethod]
-        public void TestSendPrivateMessage()
+        public void TestAdminCycleWithEmail() //TODO - add acceptance
         {
-            IUser receiver = new User("u2", "p2", "u2@gmail.com", forum, year);
-            PrivateMessage privateMessage= user.SendPrivateMessage(receiver.getUsername(), "hi", "sending message");
-            Assert.IsTrue(user.getSentMessages().Contains(privateMessage));
-            Assert.IsTrue(receiver.getReceivedMessages().Contains(privateMessage));
+            Policy policy = new AuthenticationPolicy(Policies.Authentication);
+            forum.AddPolicy(policy);
+            string subforumName = "newSub";
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            IUser user1 = new User("m1", "mp1", "noyhada@post.bgu.ac.il", forum, year);
+            IUser user2 = new User("m2", "mp2", "nimrodh@post.bgu.ac.il", forum, year);
+            moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
+            moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
+            ISubForum subforum = admin.createSubForum(subforumName, moderators);
+            Assert.IsNotNull(subforum);
 
-            PrivateMessage empty = user.SendPrivateMessage(receiver.getUsername(), "", "");
-            Assert.IsNull(empty);
+            Thread thr = admin.createThread(subforum, "Post1", "Content1");
 
-            PrivateMessage noContent = user.SendPrivateMessage(receiver.getUsername(), "hi", "");
-            Assert.IsNotNull(noContent);
+            Assert.IsNotNull(thr);
+            user1.Login();
+            Assert.IsFalse(user1.isLogin());
 
-            user.LogOff();
-            Assert.IsNull(user.SendPrivateMessage(receiver.getUsername(), "hi", ""));
-            user.Login();
+            user1.AcceptEmail();
+            user1.Login();
+            Assert.IsTrue(user1.isLogin());
 
-            IForum forum2 = new Forum("f2");
-            IUser receiver2 = new User("cantReceive", "p3", "u3@gmail.com", forum2, year);
-            PrivateMessage privateMessage2 = user.SendPrivateMessage(receiver2.getUsername(), "hi", "sending message");
-            Assert.IsFalse(user.getSentMessages().Contains(privateMessage2));
-            Assert.IsFalse(receiver2.getReceivedMessages().Contains(privateMessage2));
-            Assert.IsNull(privateMessage2);
+            Post opening = thr.GetOpeningPost();
+            Post reply = user1.postReply(opening, thr, "reply", "by admin");
+            Assert.IsNotNull(reply);
+            Assert.IsTrue(reply.getPublisher() == user1);
+            Assert.IsTrue(opening.GetReplies().Contains(reply));
 
-            user.ChangeType(new Guest());
-            try
-            {
-                PrivateMessage excep = user.SendPrivateMessage(receiver2.getUsername(), "hi", "sending message");
-                Assert.Fail();
-            }
-            catch (Exception) { }
+            Assert.IsTrue(user1.deletePost(reply));
+            Assert.IsFalse(thr.GetOpeningPost().GetReplies().Contains(reply));
 
-            user.ChangeType(new Admin());
-            PrivateMessage privateMessagefromAdmin = user.SendPrivateMessage(receiver.getUsername(), "hi", "sending message");
-            Assert.IsTrue(user.getSentMessages().Contains(privateMessagefromAdmin));
-            Assert.IsTrue(receiver.getReceivedMessages().Contains(privateMessagefromAdmin));
+            Assert.IsTrue(admin.deletePost(opening));
+            Assert.IsFalse(subforum.getThread(1) != null);
+
+        }
+
+        [TestMethod]
+        public void TestPolicyRegistration()
+        {
+            string username = "user1";
+            string pass = "pass1";
+            string email = "tester@email.com";
+            Policy policy = new PasswordPolicy(Policies.Password, 8);
+            forum.AddPolicy(policy);
+            Assert.IsFalse(forum.RegisterToForum(username, pass, email,DateTime.Today.AddYears(-20)));
         }
 
         [TestMethod]
@@ -100,8 +138,8 @@ namespace UnitTests.UserManagement.DomainLayer
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
             try
             {
-               user.createSubForum("sub forum1", moderators);
-               Assert.Fail();
+                user.createSubForum("sub forum1", moderators);
+                Assert.Fail();
             }
             catch (Exception) { }
 
@@ -123,14 +161,16 @@ namespace UnitTests.UserManagement.DomainLayer
 
             moderators.Add("guest", DateTime.Today.AddDays(1));
             Assert.IsNull(user.createSubForum("sub forum2", moderators));
-                               
+
         }
 
         [TestMethod]
         public void TestFirstPost()
         {
+        
+            
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum , year);
             IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
@@ -284,6 +324,5 @@ namespace UnitTests.UserManagement.DomainLayer
             Assert.IsFalse(admin.editExpirationTimeOfModerator(user2.getUsername(), DateTime.Today.AddMonths(2), subForum));
             Assert.AreEqual(subForum.getModeratorByUserName(user2.getUsername()).expirationDate, DateTime.Today.AddMonths(3));
         }
-
     }
 }

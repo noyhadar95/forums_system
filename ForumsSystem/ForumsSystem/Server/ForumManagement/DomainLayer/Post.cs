@@ -15,6 +15,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private Thread thread;
         private string title;
         private string content;
+        private int id;
+        private static int nextId = 1;
 
         public Post(IUser publisher, Thread thread, string title, string content)
         {
@@ -24,12 +26,33 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.title = title;
             this.content = content;
             this.thread = thread;
+            this.id = nextId++;
 
         }
 
+        public int GetId()
+        {
+            return this.id;
+        }
 
+        public Post GetPostById(int id)
+        {
+            if(this.id==id)
+                return this;
+            if (replies.Count == 0)
+                return null;
+            Post res;
+            foreach (Post p in replies.ToList<Post>())
+            {
+                res = p.GetPostById(id);
+                if (res != null)
+                    return res;
+            }
+            return null;
+        }
         public bool DeletePost()
         {
+            Loggers.Logger.GetInstance().AddActivityEntry("The post was deleted");
             foreach (Post p in replies.ToList<Post>())
             {
                 p.DeletePost();
@@ -57,6 +80,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return false;
             reply.SetParent(this);
             this.replies.Add(reply);
+            Loggers.Logger.GetInstance().AddActivityEntry("A reply to the post was added");
             return true;
         }
 
@@ -93,5 +117,17 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return publisher;
         }
+        public int GetNumOfNestedReplies()
+        {
+            int res = replies.Count;
+            if (replies.Count == 0)
+                return res;
+            foreach (Post p in replies.ToList<Post>())
+            {
+                res += p.GetNumOfNestedReplies();
+            }
+            return res;
+        }
+
     }
 }

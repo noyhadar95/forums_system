@@ -10,6 +10,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
         private Post openingPost;
         private ISubForum subForum;
+
         public int id { get; set; }
         private static int nextId = 1;
 
@@ -17,8 +18,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             this.openingPost = null;
             this.subForum = subForum;
+
             this.id = nextId++;
         }
+
+
 
         public string GetTiltle()
         {
@@ -38,22 +42,27 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return false;
 
             this.openingPost = openingPost;
+            Loggers.Logger.GetInstance().AddActivityEntry("A new opening post: " + openingPost.Title + " was added to the thread");
             return true;
         }
 
         public void DeleteOpeningPost()
         {
-            this.openingPost = null;
-               
+            Loggers.Logger.GetInstance().AddActivityEntry("The opening post: " +this.openingPost.Title +" has been deleted");
+       this.openingPost = null;
+       
         }
 
         public ISubForum GetSubforum()
         {
             return this.subForum;
         }
-        public Post GetPostById(string id)
+        public Post GetPostById(int id)
         {
-            if (openingPost == null)
+            if(openingPost!=null)
+            return openingPost.GetPostById(id);
+            return null;
+         /*   if (openingPost == null)
                 return null;
 
             char[] delimiter = { '.' };
@@ -73,7 +82,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return null;//error in given id
             }
             
-            
+            */
+        }
+        public int GetNumOfNestedReplies()
+        {
+            return 1 + openingPost.GetNumOfNestedReplies();
         }
 
     }

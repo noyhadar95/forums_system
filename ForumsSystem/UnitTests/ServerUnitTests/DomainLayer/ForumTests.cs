@@ -10,11 +10,14 @@ namespace UnitTests.ServerUnitTests.DomainLayer
     {
         IForum forum;
         IUser admin;
+        DateTime year;
         [TestInitialize()]
         public void Initialize()
         {
+            DateTime today = DateTime.Today;
+            year = today.AddYears(-29);
             forum = new Forum("testForum");
-            admin = new User("admin", "admin", "admin@gmail.com", forum);
+            admin = new User("admin", "admin", "admin@gmail.com", forum,year);
         }
         [TestCleanup()]
         public void Cleanup() {
@@ -27,7 +30,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
             string username = "user1";
             string pass = "pass1";
             string email = "tester@email.com";
-            Assert.IsTrue( forum.RegisterToForum(username, pass, email));
+            Assert.IsTrue( forum.RegisterToForum(username, pass, email, year));
             IUser user = forum.Login(username, pass);
             Assert.IsNotNull(user);
         }
@@ -38,8 +41,8 @@ namespace UnitTests.ServerUnitTests.DomainLayer
             string username = "user1";
             string pass = "pass1";
             string email = "tester@email.com";
-            Assert.IsTrue(forum.RegisterToForum(username, pass, email));
-            Assert.IsFalse(forum.RegisterToForum(username, pass + "2", email + "2"));
+            Assert.IsTrue(forum.RegisterToForum(username, pass, email, year));
+            Assert.IsFalse(forum.RegisterToForum(username, pass + "2", email + "2", year));
          
         }
 
@@ -51,7 +54,19 @@ namespace UnitTests.ServerUnitTests.DomainLayer
             string email = "tester@email.com";
             Policy policy = new PasswordPolicy(Policies.Password, 8);
             forum.AddPolicy(policy);
-            Assert.IsFalse(forum.RegisterToForum(username, pass, email));
+            Assert.IsFalse(forum.RegisterToForum(username, pass, email, year));
+        }
+
+        [TestMethod]
+        public void TestEmailSending()
+        {
+                string username = "user1";
+                string pass = "pass1";
+                string email = "noyhada@post.bgu.ac.il";
+                Policy policy = new AuthenticationPolicy(Policies.Authentication);
+                forum.AddPolicy(policy);
+                Assert.IsTrue(forum.RegisterToForum(username, pass, email, year));
+            
         }
 
         [TestMethod]
