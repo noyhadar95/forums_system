@@ -55,7 +55,8 @@ namespace ForumsSystem.Server.ServiceLayer
         bool IsExistForum(string forumName);
         bool DeletePost(string forumName, string subForumName, int threadID, int postID);
         void DeleteForum(string forumName);
-        void DeleteUser(string userName);
+        void DeleteUser(string userName, string forumName);
+        int GetOpenningPostID(string forumName, string subForumName, int threadID)
 
 
     }

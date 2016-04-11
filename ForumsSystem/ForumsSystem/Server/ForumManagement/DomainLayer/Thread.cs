@@ -10,12 +10,16 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
         private Post openingPost;
         private ISubForum subForum;
+       
 
         public Thread(ISubForum subForum)
         {
             this.openingPost = null;
             this.subForum = subForum;
+           
         }
+
+       
 
         public string GetTiltle()
         {
@@ -48,9 +52,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return this.subForum;
         }
-        public Post GetPostById(string id)
+        public Post GetPostById(int id)
         {
-            if (openingPost == null)
+            return openingPost.GetPostById(id);
+         /*   if (openingPost == null)
                 return null;
 
             char[] delimiter = { '.' };
@@ -70,7 +75,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return null;//error in given id
             }
             
-            
+            */
         }
 
     }

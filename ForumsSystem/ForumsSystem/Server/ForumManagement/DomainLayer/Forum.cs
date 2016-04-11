@@ -159,5 +159,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return this.users.Count;
         }
+
+        public void DeleteUser(string userName)
+        {
+            this.users.Remove(userName);
+        }
     }
 }

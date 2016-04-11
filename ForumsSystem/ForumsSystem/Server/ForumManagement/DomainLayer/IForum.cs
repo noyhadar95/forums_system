@@ -32,6 +32,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         bool isUserMember(string username);
          Policy GetPolicy();
         int GetNumOfUsers();
+        void DeleteUser(string userName);
 
     }
 }

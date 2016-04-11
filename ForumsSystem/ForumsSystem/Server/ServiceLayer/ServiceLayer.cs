@@ -146,32 +146,60 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public bool IsModerator(string forumName, string subForumName, string username)
         {
-            throw new NotImplementedException();
+            SuperAdmin superAdmin = SuperAdmin.GetInstance();
+            ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
+            ISubForum subforum = sys.getForum(forumName).getSubForum(subForumName);
+            return subforum.isModerator(username);
         }
 
         public bool IsRegisteredToForum(string username, string forumName)
         {
-            throw new NotImplementedException();
+            SuperAdmin superAdmin = SuperAdmin.GetInstance();
+            ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
+            IForum forum = sys.getForum(forumName);
+            return forum.isUserMember(username);
         }
 
         public bool IsExistForum(string forumName)
         {
-            throw new NotImplementedException();
+            SuperAdmin superAdmin = SuperAdmin.GetInstance();
+            ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
+            IForum forum = sys.getForum(forumName);
+            if (forum == null)
+                return false;
+            return true;
         }
 
         public bool DeletePost(string forumName, string subForumName, int threadID, int postID)
         {
-            throw new NotImplementedException();
+            SuperAdmin superAdmin = SuperAdmin.GetInstance();
+            ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
+            Thread thread = sys.getForum(forumName).getSubForum(subForumName).getThread(threadID);
+            IUser user = thread.GetOpeningPost().getPublisher();
+            return user.deletePost(thread.GetPostById(postID));
         }
 
         public void DeleteForum(string forumName)
         {
-            throw new NotImplementedException();
+            SuperAdmin superAdmin = SuperAdmin.GetInstance();
+            ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
+            sys.removeForum(forumName);
         }
 
-        public void DeleteUser(string userName)
+        public void DeleteUser(string userName, string forumName)
         {
-            throw new NotImplementedException();
+            SuperAdmin superAdmin = SuperAdmin.GetInstance();
+            ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
+            IForum forum = sys.getForum(forumName);
+            forum.DeleteUser(userName);
+        }
+
+        public int GetOpenningPostID(string forumName, string subForumName, int threadID)
+        {
+            SuperAdmin superAdmin = SuperAdmin.GetInstance();
+            ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
+            Thread thread = sys.getForum(forumName).getSubForum(subForumName).getThread(threadID);
+            return thread.GetOpeningPost().GetId();
         }
     }
 }
