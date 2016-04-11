@@ -54,8 +54,13 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         void LogOff();
         bool isLogin();
 
+
         bool SetForumProperties(IForum forum, Policy properties);
         bool ChangeForumProperties(IForum forum, Policy properties);
         bool DeleteForumProperties(IForum forum, List<Policies> properties);
+
+        void AcceptEmail();
+
+
     }
 }
