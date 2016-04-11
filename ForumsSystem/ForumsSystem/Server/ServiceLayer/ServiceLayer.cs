@@ -119,14 +119,14 @@ namespace ForumsSystem.Server.ServiceLayer
             return SuperAdmin.GetInstance().Login(username, pass);
         }
 
-        public DateTime GetModeratorExpDate(string forumName, string subForumName, string username)
+        public DateTime GetModeratorExpDate(ISubForum subForum, string username)
         {
-            throw new NotImplementedException();
+           return subForum.getModeratorByUserName(username).expirationDate;
         }
 
-        public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
+        public int CountNestedReplies(ISubForum subforum, int threadID, string postID)
         {
-            throw new NotImplementedException();
+            return ((SubForum)subforum).GetThreadById(threadID).GetPostById(postID).GetNumOfNestedReplies();
         }
 
         public bool IsMsgSent(IUser user, string msgTitle, string msgContent)

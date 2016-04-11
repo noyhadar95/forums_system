@@ -93,5 +93,17 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return publisher;
         }
+        public int GetNumOfNestedReplies()
+        {
+            int res = replies.Count;
+            if (replies.Count == 0)
+                return res;
+            foreach (Post p in replies.ToList<Post>())
+            {
+                res += p.GetNumOfNestedReplies();
+            }
+            return res;
+        }
+
     }
 }

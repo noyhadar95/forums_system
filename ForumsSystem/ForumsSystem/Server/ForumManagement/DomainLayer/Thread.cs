@@ -10,7 +10,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
         private Post openingPost;
         private ISubForum subForum;
-        private int id { get; set; }
+        public int id { get; set; }
         private static int nextId = 1;
 
         public Thread(ISubForum subForum)
@@ -19,6 +19,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.subForum = subForum;
             this.id = nextId++;
         }
+
 
         public string GetTiltle()
         {
@@ -74,6 +75,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
             
             
+        }
+        public int GetNumOfNestedReplies()
+        {
+            return 1 + openingPost.GetNumOfNestedReplies();
         }
 
     }
