@@ -104,11 +104,6 @@ namespace ForumsSystem.Server.ServiceLayer
             return admin.appointModerator(username, expiratoinDate, subForum);
         }
 
-        public bool AddModerator(IUser admin, ISubForum subForum, string username)
-        {
-            throw new NotImplementedException();
-        }
-
         public void removeForum(string forumName)
         {
             SuperAdmin.GetInstance().removeForum(forumName);
@@ -121,7 +116,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public bool LoginSuperAdmin(string username, string pass)
         {
-            throw new NotImplementedException();
+            return SuperAdmin.GetInstance().Login(username, pass);
         }
 
         public DateTime GetModeratorExpDate(string forumName, string subForumName, string username)
@@ -134,14 +129,14 @@ namespace ForumsSystem.Server.ServiceLayer
             throw new NotImplementedException();
         }
 
-        public bool IsMsgSent(string username, string msgTitle, string msgContent)
+        public bool IsMsgSent(IUser user, string msgTitle, string msgContent)
         {
-            throw new NotImplementedException();
+           return user.IsMessageSent(msgTitle, msgContent);
         }
 
-        public bool IsMsgReceived(string username, string msgTitle, string msgContent)
+        public bool IsMsgReceived(IUser user, string msgTitle, string msgContent)
         {
-            throw new NotImplementedException();
+            return user.IsMessageReceived(msgTitle, msgContent);
         }
 
         public bool IsModerator(string forumName, string subForumName, string username)

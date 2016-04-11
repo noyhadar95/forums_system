@@ -42,7 +42,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
         IForum GetForum(string forumName);
 
-        bool AddModerator(IUser admin, ISubForum subForum, string username);
+        bool AddModerator(IUser admin, ISubForum subForum, string username, DateTime expiratoinDate);
         void removeForum(string forumName);
         bool ConfirmRegistration(string forumName, string username);
         bool LoginSuperAdmin(string username, string pass);

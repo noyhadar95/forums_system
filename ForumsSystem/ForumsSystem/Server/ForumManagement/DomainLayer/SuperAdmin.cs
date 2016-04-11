@@ -10,17 +10,20 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     public class SuperAdmin
     {
-       
-        private static SuperAdmin instance=null;
-        public string userName { get;  set; }
+
+        private static SuperAdmin instance = null;
+        public string userName { get; set; }
         public string password { get; set; }
+        private bool isLoggedIn { get; set; }
         public System forumSystem { get; private set; }
+
 
         private SuperAdmin(string userName, string password, System forumSystem)
         {
             this.userName = userName;
             this.password = password;
             this.forumSystem = forumSystem;
+            this.isLoggedIn = false;
         }
 
         public static SuperAdmin CreateSuperAdmin(string userName, string password, System forumSystem)
@@ -66,6 +69,20 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
 
             this.forumSystem.removeForum(forumName);
+        }
+
+        public bool Login(string username, string password)
+        {
+            if (this.userName.Equals(username) && this.password.Equals(password))
+            {
+                this.isLoggedIn = true;
+                return true;
+            }
+            return false;
+        }
+        public void Logout()
+        {
+            this.isLoggedIn = false;
         }
     }
 }
