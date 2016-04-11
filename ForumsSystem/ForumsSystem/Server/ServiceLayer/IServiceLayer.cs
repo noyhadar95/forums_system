@@ -46,8 +46,8 @@ namespace ForumsSystem.Server.ServiceLayer
         void removeForum(string forumName);
         bool ConfirmRegistration(string forumName, string username);
         bool LoginSuperAdmin(string username, string pass);
-        DateTime GetModeratorExpDate(string forumName, string subForumName, string username);
-        int CountNestedReplies(string forumName, string subForumName, int threadID, int postID);
+        DateTime GetModeratorExpDate(ISubForum subForum, string username);
+        int CountNestedReplies(ISubForum subforum, int threadID, int postID);
         bool IsMsgSent(IUser user, string msgTitle, string msgContent);
         bool IsMsgReceived(IUser user, string msgTitle, string msgContent);
         bool IsModerator(string forumName, string subForumName, string username);

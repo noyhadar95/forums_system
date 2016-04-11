@@ -124,7 +124,7 @@ namespace ForumsSystem.Server.ServiceLayer
            return subForum.getModeratorByUserName(username).expirationDate;
         }
 
-        public int CountNestedReplies(ISubForum subforum, int threadID, string postID)
+        public int CountNestedReplies(ISubForum subforum, int threadID, int postID)
         {
             return ((SubForum)subforum).GetThreadById(threadID).GetPostById(postID).GetNumOfNestedReplies();
         }
