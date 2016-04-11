@@ -15,7 +15,7 @@ namespace ForumsSystem.Server.ServiceLayer
         Thread AddThread(ISubForum subForum, IUser publisher, string title, string content);
         bool ChangeExpirationDate(IUser admin, DateTime newDate, string moderator, ISubForum subforum);
 
-        bool ChangeForumPropertiesbool ChangeForumProperties(IUser user, IForum forum, Policy properties);
+        bool ChangeForumProperties(IUser user, IForum forum, Policy properties);
 
         IForum CreateForum(SuperAdmin creator, string name, Policy properties, List<IUser> adminUsername);
 
