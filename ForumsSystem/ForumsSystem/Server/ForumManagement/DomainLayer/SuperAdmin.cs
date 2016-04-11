@@ -14,7 +14,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private static SuperAdmin instance = null;
         public string userName { get; set; }
         public string password { get; set; }
-        private bool isLoggedIn { get; set; }
+        public bool isLoggedIn { get; set; }
         public System forumSystem { get; private set; }
 
 

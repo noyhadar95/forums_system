@@ -10,7 +10,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
         private Post openingPost;
         private ISubForum subForum;
-        private int id { get; set; }
+        public int id { get; set; }
         private static int nextId = 1;
 
         public Thread(ISubForum subForum)

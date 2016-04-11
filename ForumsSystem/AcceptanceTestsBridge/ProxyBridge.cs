@@ -44,10 +44,10 @@ namespace AcceptanceTestsBridge
             return true;
         }
 
-        public bool CreateSubForum(string creator, string forumName, string subForumName, List<string> moderators, string properties)
+        public bool CreateSubForum(string creator, string forumName, string subForumName, Dictionary<string, DateTime> moderators)
         {
             if (realBridge != null)
-                return realBridge.CreateSubForum(creator, forumName, subForumName, moderators, properties);
+                return realBridge.CreateSubForum(creator, forumName, subForumName, moderators);
 
             return true;
         }
@@ -68,10 +68,10 @@ namespace AcceptanceTestsBridge
             return 1;
         }
 
-        public bool AddModerator(string forumName, string subForumName, string username)
+        public bool AddModerator(string forumName, string subForumName, string adminUsername, KeyValuePair<string, DateTime> newMod)
         {
             if (realBridge != null)
-                return realBridge.AddModerator(forumName, subForumName, username);
+                return realBridge.AddModerator(forumName, subForumName, adminUsername, newMod);
 
             return true;
         }
@@ -81,10 +81,10 @@ namespace AcceptanceTestsBridge
 
         #region Delete Methods
 
-        public void DeleteUser(string userName)
+        public void DeleteUser(string forumName, string userName)
         {
             if (realBridge != null)
-                realBridge.DeleteUser(userName);
+                realBridge.DeleteUser(forumName, userName);
 
         }
 
@@ -203,10 +203,10 @@ namespace AcceptanceTestsBridge
             return true;
         }
 
-        public bool EditModeratorExpDate(string forumName, string subForumName, string username, DateTime newDate)
+        public bool EditModeratorExpDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate)
         {
             if (realBridge != null)
-                return realBridge.EditModeratorExpDate(forumName, subForumName, username, newDate);
+                return realBridge.EditModeratorExpDate(forumName, subForumName, admin, moderator, newDate);
 
             return true;
         }

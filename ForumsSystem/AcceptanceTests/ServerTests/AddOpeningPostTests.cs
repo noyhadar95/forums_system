@@ -13,6 +13,10 @@ namespace AcceptanceTests.ServerTests
 
         }
 
+
+        /*
+
+
         // check add opening post where both title and content are not empty
         // check that the opening post has been posted successfully, by checking the return value
         // of the AddOpeningPost(..) method
@@ -25,8 +29,8 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string,DateTime> moderators = new Dictionary<string,DateTime>();
+            moderators.Add(username1, null);
             string subForumName = "sub forum 1";
             string subForumProps = "";
             string threadPublisher = "publisher1";
@@ -54,8 +58,8 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string,DateTime> moderators = new Dictionary<string,DateTime>();
+            moderators.Add(username1, null);
             string subForumName = "sub forum 1";
             string subForumProps = "";
             string threadPublisher = "publisher1";
@@ -83,8 +87,8 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string,DateTime> moderators = new Dictionary<string,DateTime>();
+            moderators.Add(username1, null);
             string subForumName = "sub forum 1";
             string subForumProps = "";
             string threadPublisher = "publisher1";
@@ -112,8 +116,8 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string,DateTime> moderators = new Dictionary<string,DateTime>();
+            moderators.Add(username1, null);
             string subForumName = "sub forum 1";
             string subForumProps = "";
             string threadPublisher = "publisher1";
@@ -131,5 +135,6 @@ namespace AcceptanceTests.ServerTests
             base.DeleteForum(forumName);
         }
 
+        */
     }
 }

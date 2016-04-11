@@ -13,21 +13,21 @@ namespace AcceptanceTestsBridge
 
         bool CreateForum(string creator, string forumName, List<UserStub> admins, string forumProperties);
 
-        bool CreateSubForum(string creator, string forumName, string subForumName, List<string> moderators, string properties);
+        bool CreateSubForum(string creator, string forumName, string subForumName, Dictionary<string, DateTime> moderators);
 
         // add thread also means adding the opening post of the thread
         int AddThread(string forumName, string subForumName, string publisher, string title, string content);
 
         int AddReplyPost(string forumName, string subForumName, int threadID, int postID, string title, string content);
 
-        bool AddModerator(string forumName, string subForumName, string username);
+        bool AddModerator(string forumName, string subForumName, string adminUsername, KeyValuePair<string, DateTime> newMod);
 
         #endregion
 
 
         #region Delete Methods
 
-        void DeleteUser(string userName);
+        void DeleteUser(string forumName, string userName);
 
         void DeleteForum(string forumName);
 
@@ -66,7 +66,7 @@ namespace AcceptanceTestsBridge
 
         bool SendPrivateMsg(string forumName, string senderUsername, string receiverUsername, string msgTitle, string msgContent);
 
-        bool EditModeratorExpDate(string forumName, string subForumName, string username, DateTime newDate);
+        bool EditModeratorExpDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate);
 
         DateTime GetModeratorExpDate(string forumName, string subForumName, string username);
 

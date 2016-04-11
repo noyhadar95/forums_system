@@ -20,23 +20,22 @@ namespace AcceptanceTests.ServerTests
         {
             string forumName = "forum1";
             string forumProperties = "";
-            string username = "user1";
+            string modUsername = "user1";
             DateTime dateOfBirth = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(modUsername, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             int year = 2016, month = 5, day = 15;
             DateTime newDate = new DateTime(year, month, day);
 
             // create a forum, sub-forum and a thread to add a post to.
-            base.CreateSubForum(forumName, forumProperties, subForumName, moderators, subForumProps);
+            base.CreateSubForum(forumName, forumProperties, subForumName, moderators);
 
             //TODO: maybe make user a moderator
 
-            bool res = bridge.EditModeratorExpDate(forumName, subForumName, username, newDate);
+            bool res = bridge.EditModeratorExpDate(forumName, subForumName, this.adminUserName1, modUsername, newDate);
             Assert.IsTrue(res);
-            DateTime updatedDate = bridge.GetModeratorExpDate(forumName, subForumName, username);
+            DateTime updatedDate = bridge.GetModeratorExpDate(forumName, subForumName, modUsername);
             // check that the date has been updated successfully
             Assert.IsTrue(updatedDate != null && updatedDate.Equals(newDate));
 

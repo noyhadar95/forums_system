@@ -36,9 +36,12 @@ namespace AcceptanceTestsBridge
             sl.CreateForum(creator, forumName, properties, newAdmins);
         }
 
-        public bool CreateSubForum(string creator, string forumName, string subForumName, List<string> moderators, string properties)
+        public bool CreateSubForum(string creator, string forumName, string subForumName, Dictionary<string, DateTime> moderators)
         {
-            sl.CreateSubForum(forum,creator,);
+            IForum forum = sl.GetForum(forumName);
+            IUser user = forum.getUser(creator);
+            ISubForum subForum = sl.CreateSubForum(user, subForumName, moderators);
+            return subForum != null;
         }
 
         public int AddThread(string forumName, string subForumName, string publisher, string title, string content)
@@ -46,36 +49,40 @@ namespace AcceptanceTestsBridge
             IForum forum = sl.GetForum(forumName);
             IUser threadPublisher = forum.getUser(publisher);
             ISubForum subForum = forum.getSubForum(subForumName);
-            return sl.AddThread(subForum, threadPublisher, title, content);
+            Thread thread = sl.AddThread(subForum, threadPublisher, title, content);
+            return thread.id;
         }
 
         public int AddReplyPost(string forumName, string subForumName, int threadID, int postID, string title, string content)
-        {sl.AddReply()
-            throw new NotImplementedException();
+        {
+            sl.AddReply();
         }
 
-        public bool AddModerator(string forumName, string subForumName, string username)
+        public bool AddModerator(string forumName, string subForumName, string adminUsername, KeyValuePair<string, DateTime> newMod)
         {
-            throw new NotImplementedException();
+            IForum forum = sl.GetForum(forumName);
+            IUser admin = forum.getUser(adminUsername);
+            ISubForum subForum = forum.getSubForum(subForumName);
+            return sl.AddModerator(admin, subForum, newMod.Key, newMod.Value);
         }
 
         #endregion
 
         #region Delete Methods
 
-        public void DeleteUser(string userName)
+        public void DeleteUser(string forumName, string userName)
         {
-            throw new NotImplementedException();
+            sl.DeleteUser(forumName, userName);
         }
 
         public void DeleteForum(string forumName)
         {
-            throw new NotImplementedException();
+            sl.DeleteForum(forumName)
         }
 
         public bool DeletePost(string forumName, string subForumName, int threadID, int postID)
         {
-            throw new NotImplementedException();
+            sl.DeletePost();
         }
 
         #endregion
@@ -85,37 +92,37 @@ namespace AcceptanceTestsBridge
 
         public bool IsExistForum(string forumName)
         {
-            throw new NotImplementedException();
+            return sl.IsExistForum(forumName);
         }
 
         public bool IsRegisteredToForum(string username, string forumName)
         {
-            throw new NotImplementedException();
+            return sl.IsRegisteredToForum(username, forumName);
         }
 
         public bool IsAdmin(string username, string forumName)
         {
-            throw new NotImplementedException();
+
         }
 
         public bool IsModerator(string forumName, string subForumName, string username)
         {
-            throw new NotImplementedException();
+            return sl.IsModerator(forumName, subForumName, username);
         }
 
         public bool IsExistThread(string forumName, string subForumName, int threadID)
         {
-            throw new NotImplementedException();
+
         }
 
         public bool IsMsgReceived(string username, string msgTitle, string msgContent)
         {
-            throw new NotImplementedException();
+            return sl.IsMsgReceived(username, msgTitle, msgContent);
         }
 
         public bool IsMsgSent(string username, string msgTitle, string msgContent)
         {
-            throw new NotImplementedException();
+            return sl.IsMsgSent(username, msgTitle, msgContent);
         }
 
         #endregion
@@ -134,32 +141,33 @@ namespace AcceptanceTestsBridge
         public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
         {
             IForum forum = sl.GetForum(forumName);
-            sl.RegisterToForum(forum, username, password, email, dateOfBirth);
+            return sl.RegisterToForum(new User(), forum, username, password, email, dateOfBirth);
         }
 
         public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
         {
-            throw new NotImplementedException();
+            return sl.CountNestedReplies(forumName, subForumName, threadID, postID);
         }
 
         public bool SendPrivateMsg(string forumName, string senderUsername, string receiverUsername, string msgTitle, string msgContent)
         {
             IForum forum = sl.GetForum(forumName);
             IUser sender = forum.getUser(senderUsername);
-            IUser receiver = forum.getUser(receiverUsername);
-            return sl.SendPrivateMessage(sender, receiver, msgTitle, msgContent);
+            PrivateMessage pm = sl.SendPrivateMessage(sender, receiverUsername, msgTitle, msgContent);
+            return pm != null;
         }
 
-        public bool EditModeratorExpDate(string forumName, string subForumName, string username, DateTime newDate)
+        public bool EditModeratorExpDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate)
         {
-            //TODO: get the moderator
-            sl.ChangeExpirationDate(newDate,);
-            return true;
+            IForum forum = sl.GetForum(forumName);
+            IUser adminUser = forum.getUser(admin);
+            ISubForum subForum = forum.getSubForum(subForumName);
+            return sl.ChangeExpirationDate(adminUser, newDate, moderator, subForum);
         }
 
         public DateTime GetModeratorExpDate(string forumName, string subForumName, string username)
         {
-            throw new NotImplementedException();
+            return sl.GetModeratorExpDate(forumName, subForumName, username);
         }
 
         public bool LoginUser(string forumName, string username, string pass)
@@ -171,7 +179,7 @@ namespace AcceptanceTestsBridge
 
         public bool LoginSuperAdmin(string username, string pass)
         {
-            throw new NotImplementedException();
+            return sl.LoginSuperAdmin(username, pass);
         }
 
         public bool InitializeSystem(string username, string pass)
@@ -181,7 +189,7 @@ namespace AcceptanceTestsBridge
 
         public bool ConfirmRegistration(string forumName, string username)
         {
-            throw new NotImplementedException();
+            return sl.ConfirmRegistration(forumName, username);
         }
 
 

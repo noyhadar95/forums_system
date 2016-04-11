@@ -27,15 +27,14 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and thread.
-            int threadID =base.AddThread(forumName, forumProperties, subForumName, moderators,
-               subForumProps, threadPublisher, title, content);
+            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
+               threadPublisher, title, content);
             string postID = 1;
 
             // add reply post
@@ -57,15 +56,14 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and thread.
             int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadPublisher);
+                threadPublisher);
             // add opening post
             int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
 
@@ -88,15 +86,14 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and thread.
             int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadPublisher);
+                 threadPublisher);
             // add opening post
             int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
 
@@ -119,15 +116,14 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and thread.
             int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadPublisher);
+                threadPublisher);
             // add opening post
             int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
 
@@ -154,15 +150,14 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and a thread to add a post to.
             int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadPublisher);
+                 threadPublisher);
             // add opening post
             int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
 
@@ -190,15 +185,14 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and a thread to add a post to.
             int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadPublisher);
+                threadPublisher);
             // add opening post
             int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
 

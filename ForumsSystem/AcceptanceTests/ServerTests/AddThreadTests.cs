@@ -13,12 +13,11 @@ namespace AcceptanceTests.ServerTests
 
         }
 
-
-        // check add opening post where both title and content are not empty
-        // check that the opening post has been posted successfully, by checking the return value
-        // of the AddOpeningPost(..) method
+        // check add thread where both title and content are not empty
+        // check that the thread has been added successfully, by checking the return value
+        // of the AddThread(..) method
         [TestMethod]
-        public void TestAddOpeningPost()
+        public void TestAddThreadSuccess()
         {
             string title = "title1";
             string content = "content1";
@@ -26,20 +25,17 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             string threadPublisher = "publisher1";
 
-            // create a forum, sub-forum and a thread to add a post to.
-            base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadPublisher);
+            // create a forum, sub-forum and a thread (opening post)
+            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
+                threadPublisher, title, content);
 
-            // add opening post
-            int res = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
             // check that res is not negative
-            Assert.IsTrue(res >= 0);
+            Assert.IsTrue(threadID >= 0);
 
             // cleanup
             base.DeleteForum(forumName);
@@ -47,7 +43,7 @@ namespace AcceptanceTests.ServerTests
 
         // check that it's possible to add a post with empty content and a valid title
         [TestMethod]
-        public void TestAddOpeningPostEmptyContent()
+        public void TestAddThreadEmptyContent()
         {
             string title = "title1";
             string content = ""; // empty content
@@ -55,20 +51,17 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             string threadPublisher = "publisher1";
 
-            // create a forum, sub-forum and a thread to add a post to.
+            // create a forum, sub-forum and a thread (opening post)
             int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadPublisher);
+                 threadPublisher, title, content);
 
-            // add opening post
-            int res = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
             // check that res is not negative
-            Assert.IsTrue(res >= 0);
+            Assert.IsTrue(threadID >= 0);
 
             // cleanup
             base.DeleteForum(forumName);
@@ -76,7 +69,7 @@ namespace AcceptanceTests.ServerTests
 
         // check that it's possible to add a post with empty title and a valid content
         [TestMethod]
-        public void TestAddOpeningPostEmptyTitle()
+        public void TestAddThreadEmptyTitle()
         {
             string title = ""; // empty title
             string content = "content1";
@@ -84,20 +77,17 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             string threadPublisher = "publisher1";
 
-            // create a forum, sub-forum and a thread to add a post to.
+            // create a forum, sub-forum and a thread (opening post)
             int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadPublisher);
+                 threadPublisher, title, content);
 
-            // add opening post
-            int res = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
             // check that res is not negative
-            Assert.IsTrue(res >= 0);
+            Assert.IsTrue(threadID >= 0);
 
             // cleanup
             base.DeleteForum(forumName);
@@ -105,7 +95,7 @@ namespace AcceptanceTests.ServerTests
 
         // check that it's not possible to add a post with empty title and empty content
         [TestMethod]
-        public void TestAddOpeningPostEmptyTitleContent()
+        public void TestAddThreadEmptyTitleContent()
         {
             string title = ""; // empty title
             string content = ""; // empty content
@@ -113,46 +103,22 @@ namespace AcceptanceTests.ServerTests
             string forumProperties = "";
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             string threadPublisher = "publisher1";
 
-            // create a forum, sub-forum and a thread to add a post to.
+            // create a forum, sub-forum and a thread (opening post)
             int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadPublisher);
+                 threadPublisher, title, content);
 
-            // add opening post
-            int res = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
             // check that res is negative, which means that the post havn't been added
-            Assert.IsTrue(res < 0);
+            Assert.IsTrue(threadID < 0);
 
             // cleanup
             base.DeleteForum(forumName);
         }
 
-
-
-        // test - success scenario. check that after adding a thread to a sub forum, 
-        // the thread is indeed being added to that sub forum.
-        [TestMethod]
-        public void TestAddThreadSuccess()
-        {
-            string forumName = "forum1";
-            string forumProperties = "";
-            string username1 = "user1";
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
-            string subForumName = "sub forum 1";
-            string subForumProps = "";
-            string threadPublisher = "publisher1";
-
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, subForumProps, threadPublisher);
-
-            // check that the thread has been added
-            Assert.IsTrue(bridge.IsExistThread(forumName, subForumName, threadID));
-        }
 
     }
 }

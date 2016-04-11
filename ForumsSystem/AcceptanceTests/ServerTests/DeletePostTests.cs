@@ -22,14 +22,12 @@ namespace AcceptanceTests.ServerTests
             string forumName = "forum1";
             string forumProperties = "";
             string username1 = "user1";
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             string threadPublisher = "publisher1";
 
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, subForumProps, threadPublisher);
-            int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
+            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, threadPublisher, title, content);
             // add reply post
             int replyPostID = bridge.AddReplyPost(forumName, subForumName, threadID, postID, title, content);
 
@@ -50,13 +48,12 @@ namespace AcceptanceTests.ServerTests
             string forumName = "forum1";
             string forumProperties = "";
             string username1 = "user1";
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             string threadPublisher = "publisher1";
 
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, subForumProps, threadPublisher);
+            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, threadPublisher);
             int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
             // add reply post and add 2 replies to it
             int replyPostID = bridge.AddReplyPost(forumName, subForumName, threadID, postID, title, content);
@@ -88,13 +85,12 @@ namespace AcceptanceTests.ServerTests
             string forumName = "forum1";
             string forumProperties = "";
             string username1 = "user1";
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, new DateTime());
             string subForumName = "sub forum 1";
-            string subForumProps = "";
             string threadPublisher = "publisher1";
 
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, subForumProps, threadPublisher);
+            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, threadPublisher);
             int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
 
             bool res = bridge.DeletePost(forumName, subForumName, threadID, postID);
