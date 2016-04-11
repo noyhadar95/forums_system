@@ -23,6 +23,7 @@ namespace AcceptanceTests.ServerTests
             string username = "user1";
             string pass = "passwd";
             string email = "user1@gmail.com";
+            DateTime dateOfBirth = DateTime.Now;
             List<string> moderators = new List<string>();
             moderators.Add(username);
             string subForumName = "sub forum 1";
@@ -32,7 +33,7 @@ namespace AcceptanceTests.ServerTests
 
             // create a forum, sub-forum and a thread to add a post to.
             CreateForum(forumName, forumProperties);
-            bridge.RegisterToForum(forumName, username, pass, email);
+            bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
             bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
 
             //TODO: maybe make user a moderator
@@ -41,7 +42,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(res);
             DateTime updatedDate = bridge.GetModeratorExpDate(forumName, subForumName, username);
             // check that the date has been updated successfully
-            Assert.IsTrue(updatedDate.Equals(newDate));
+            Assert.IsTrue(updatedDate != null && updatedDate.Equals(newDate));
 
         }
 

@@ -24,11 +24,12 @@ namespace AcceptanceTests.ServerTests
             string forumName = "forum1";
             string forumProperties = "";
             string email1 = "user1@gmail.com", email2 = "user2@gmail.com";
+            DateTime dateOfBirth1 = new DateTime(1995, 8, 2), dateOfBirth2 = new DateTime(1995, 8, 2);
 
             // create a forum and register 2 users to it
             base.CreateForum(forumName, forumProperties);
-            bridge.RegisterToForum(forumName, username1, pass1, email1);
-            bridge.RegisterToForum(forumName, username2, pass2, email2);
+            bridge.RegisterToForum(forumName, username1, pass1, email1, dateOfBirth1);
+            bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
 
             // send private msg
             bool res = bridge.SendPrivateMsg(forumName, username1, username2, msgTitle, msgContent);
@@ -51,11 +52,12 @@ namespace AcceptanceTests.ServerTests
             string forumName = "forum1";
             string forumProperties = "";
             string email1 = "user1@gmail.com", email2 = "user2@gmail.com";
+            DateTime dateOfBirth1 = new DateTime(1995, 8, 2), dateOfBirth2 = new DateTime(1995, 8, 2);
 
             // create a forum and register 2 users to it
             base.CreateForum(forumName, forumProperties);
-            bridge.RegisterToForum(forumName, username1, pass1, email1);
-            bridge.RegisterToForum(forumName, username2, pass2, email2);
+            bridge.RegisterToForum(forumName, username1, pass1, email1, dateOfBirth1);
+            bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
 
             // send private msg
             bool res = bridge.SendPrivateMsg(forumName, username1, username2, msgTitle, msgContent);

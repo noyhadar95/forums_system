@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class System
+    public class System
     {
         private SuperAdmin superAdmin;
         private Dictionary<string, IForum> forums; //name, forum

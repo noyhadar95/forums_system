@@ -26,112 +26,44 @@ namespace ForumsSystem.Server.ServiceLayer
             return true;
         }
 
-        public IForum CreateForum(IUser creator, string name, Policy properties, List<IUser> adminUsername)
+        public IForum CreateForum(SuperAdmin creator, string name, Policy properties, List<IUser> adminUsername)
         {
-            if (adminUsername.Count == 0)// there must be at least 1 admin
-                return null;
-
-            PolicyParametersObject param = new PolicyParametersObject(Policies.AdminAppointment);
-            foreach (IUser user in adminUsername.ToList<IUser>())
-            {
-                param.User = user;
-                if (!properties.CheckPolicy(param))//check if user can be an admin (Policies) 
-                    return null;
-            }
-
-            IForum forum = sys.createForum(name);
-            forum.AddPolicy(properties);
-            foreach (IUser user in adminUsername.ToList<IUser>())
-            {
-                user.ChangeType(new Admin());
-                forum.RegisterToForum(user);
-            }
-
-            return forum;
+            return creator.createForum(name, properties, adminUsername);
         }
 
-        public bool SetForumProperties(IForum forum, Policy properties)
+        public bool SetForumProperties(IUser user, IForum forum, Policy properties)
         {
-            forum.SetPolicy(properties);
-            return true;
+            return user.SetForumProperties(forum, properties);
         }
 
-        public bool ChangeForumProperties(IForum forum, Policy properties)
+        public bool ChangeForumProperties(IUser user,IForum forum, Policy properties)
         {
-            Policy temp = properties;
-            while (temp != null)
-            {
-                forum.RemovePolicy(temp.Type);
-                temp = temp.NextPolicy; // delete old ones
-            }
-            return forum.AddPolicy(properties); // add new ones
+            return user.ChangeForumProperties(forum, properties);
         }
 
-        public bool RegisterToForum(IForum forum, string userName, string password, string email, int age)
+        public bool RegisterToForum(IUser guest, IForum forum, string userName, string password, string email, DateTime dateOfBirth)
         {
-            // ----CHECK POLICIES----
-            PolicyParametersObject param = new PolicyParametersObject(Policies.MinimumAge);
-            param.SetAgeOfUser(age);
-            if (!forum.GetPolicy().CheckPolicy(param))
-                return false;
-            param.SetPolicy(Policies.Password);
-            param.SetPassword(password);
-            if (!forum.GetPolicy().CheckPolicy(param))
-                return false;
-            param.SetPolicy(Policies.UsersLoad);
-            param.SetNumOfUsers(forum.GetNumOfUsers());
-            if (!forum.GetPolicy().CheckPolicy(param))
-                return false;
-
-            return forum.RegisterToForum(userName, password, email);
+            return guest.RegisterToForum(userName, password, forum, email,dateOfBirth);
+           
         }
 
-        public ISubForum CreateSubForum(IForum forum, IUser creator, string name, List<IUser> moderators)
+        public ISubForum CreateSubForum( IUser creator, string name, Dictionary<string,DateTime> moderators)
         {
-            //----CHECK POLICIES----
-            //  if(creator.GetType()!=) TODO: check if admin
-            //return false;
 
-            if (moderators.Count == 0)
-                return null;
-            PolicyParametersObject param = new PolicyParametersObject(Policies.MaxModerators);
-            param.NumOfModerators = moderators.Count;
-            if (!forum.GetPolicy().CheckPolicy(param))
-                return null;
-            param.SetPolicy(Policies.ModeratorAppointment);
-            foreach (IUser user in moderators.ToList<IUser>())
-            {
-                param.User = user;
-                if (!forum.GetPolicy().CheckPolicy(param))
-                    return null;
-            }
-            ISubForum newSub = new SubForum(forum, creator, name);
-
-            foreach (IUser user in moderators.ToList<IUser>())
-            {
-                newSub.addModerator(creator, user, DateTime.Today);//TODO: get dates as args
-            }
-            return newSub;
+           return creator.createSubForum(name, moderators);
 
         }
 
-        public bool AddThread(ISubForum subForum, IUser publisher, string title, string content)
+        public Thread AddThread(ISubForum subForum, IUser publisher, string title, string content)
         {
-            //TODO: check that user is a member in the forum
-            Thread thread = subForum.createThread();
-            thread.AddOpeningPost(new Post(publisher, thread, title, content));
-            //TODO: notify;
-            // TODO: maybe return the result of post.AddReply(..);
-            return true;
+            return publisher.createThread(subForum, title, content);
+           
         }
 
-        public bool AddReply(Post post, IUser publisher, string title, string content)
+        public Post AddReply(Post post, IUser publisher, string title, string content)
         {
-            //TODO: check that user is a member in the forum
-            post.AddReply(new Post(publisher, post.Thread, title, content));
-            //TODO: notify
-            // TODO: maybe return the result of post.AddReply(..);
-            return true;
+            return publisher.postReply(post, post.Thread, title, content);
+            
         }
 
         public IUser MemberLogin(string username, string password, IForum forum)
@@ -139,51 +71,32 @@ namespace ForumsSystem.Server.ServiceLayer
             return forum.Login(username, password);
         }
 
-        public bool SendPrivateMessage(IUser from, IUser to, string title, string content)
+        public PrivateMessage SendPrivateMessage(IUser from, string to, string title, string content)
         {
-            if (!from.isInFriendsList(to))
-                return false; // private messages only between friends
-            PrivateMessage message = new PrivateMessage(title, content, from, to);
-            from.AddSentMessage(message);
-            to.AddReceivedMessage(message);
-            return true;
+            return from.SendPrivateMessage(to, title, content);
+
+           
         }
 
-        public bool ChangeExpirationDate(DateTime newDate, Moderator moderator)
+        public bool ChangeExpirationDate(IUser admin, DateTime newDate, string moderator,ISubForum subforum)
         {
-            if ((DateTime.Today - newDate).TotalMilliseconds > 0)
-                return false; // cant change to a date that already passed
-            moderator.changeExpirationDate(newDate);
-            //TODO: notify moderator
-            return true;
+           return admin.editExpirationTimeOfModerator(moderator, newDate, subforum);
         }
 
         public bool DeletePost(IUser deleter, Post post)
         {
-            //TODO: check that user can delete the post
-
-            bool res = post.DeletePost();
-            if (!res)
-                return false;
-            if (post.Thread.GetOpeningPost() == null)
-            {
-                return post.Thread.GetSubforum().removeThread(post.Thread);
-            }
-            return res;
+            return deleter.deletePost(post);
         }
 
-        public bool DeleteForumProperties(IForum forum, List<Policies> properties)
+        public bool DeleteForumProperties(IUser user,IForum forum, List<Policies> properties)
         {
-            foreach (Policies pol in properties.ToList<Policies>())
-            {
-                forum.RemovePolicy(pol);
-            }
-            return true;
+            return user.DeleteForumProperties(forum, properties);
+           
         }
 
         public IForum GetForum(string forumName)
         {
-            return sys.getForum(forumName);
+            return SuperAdmin.GetInstance().forumSystem.getForum(forumName);
         }
 
 

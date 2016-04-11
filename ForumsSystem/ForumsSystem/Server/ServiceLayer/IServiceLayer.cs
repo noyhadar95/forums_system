@@ -10,17 +10,16 @@ namespace ForumsSystem.Server.ServiceLayer
 
         #region Use Cases Methods
 
-        bool AddReply(Post post, IUser publisher, string title, string content);
+         Post AddReply(Post post, IUser publisher, string title, string content);
 
-        bool AddThread(ISubForum subForum, IUser publisher, string title, string content);
+        Thread AddThread(ISubForum subForum, IUser publisher, string title, string content);
+        bool ChangeExpirationDate(IUser admin, DateTime newDate, string moderator, ISubForum subforum);
 
-        bool ChangeExpirationDate(DateTime newDate, Moderator moderator);
+        bool ChangeForumProperties(IUser user, IForum forum, Policy properties);
 
-        bool ChangeForumProperties(IForum forum, Policy properties);
+        IForum CreateForum(SuperAdmin creator, string name, Policy properties, List<IUser> adminUsername);
 
-        IForum CreateForum(IUser creator, string name, Policy properties, List<IUser> adminUsername);
-
-        ISubForum CreateSubForum(IForum forum, IUser creator, string name, List<IUser> moderators);
+        ISubForum CreateSubForum(IUser creator, string name, Dictionary<string, DateTime> moderators);
 
         bool DeletePost(IUser deleter, Post post);
 
@@ -28,17 +27,18 @@ namespace ForumsSystem.Server.ServiceLayer
 
         IUser MemberLogin(string username, string password, IForum forum);
 
-        bool RegisterToForum(IForum forum, string userName, string password, string email, int age);
+        bool RegisterToForum(IUser guest, IForum forum, string userName, string password, string email, DateTime dateOfBirth);
 
-        bool SendPrivateMessage(IUser from, IUser to, string title, string content);
 
-        bool SetForumProperties(IForum forum, Policy properties);
+        PrivateMessage SendPrivateMessage(IUser from, string to, string title, string content);
+
+        bool SetForumProperties(IUser user, IForum forum, Policy properties);
 
         #endregion
 
 
         // other methods
-        bool DeleteForumProperties(IForum forum, List<Policies> properties);
+        bool DeleteForumProperties(IUser user,IForum forum, List<Policies> properties);
 
         IForum GetForum(string forumName);
 

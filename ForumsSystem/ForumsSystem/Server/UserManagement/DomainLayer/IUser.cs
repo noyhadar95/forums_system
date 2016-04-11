@@ -13,7 +13,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         PrivateMessage SendPrivateMessage(string reciever, string title, string content);
         void AddSentMessage(PrivateMessage privateMessage);
         void AddReceivedMessage(PrivateMessage privateMessage);
-        bool RegisterToForum(string userName, string password, IForum forum, string email);
+        bool RegisterToForum(string userName, string password, IForum forum, string email, DateTime dateOfBirth);
 
         Post postReply(Post parent, Thread thread, string title, string content);
         Thread createThread(ISubForum subForum, string title, string content);

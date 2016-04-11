@@ -3,30 +3,68 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ForumsSystem.Server.ForumManagement.DomainLayer;
+using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    class SuperAdmin
+    public class SuperAdmin
     {
        
-
+        private static SuperAdmin instance=null;
         public string userName { get;  set; }
         public string password { get; set; }
         public System forumSystem { get; private set; }
 
-        public SuperAdmin(string userName, string password, System forumSystem)
+        private SuperAdmin(string userName, string password, System forumSystem)
         {
             this.userName = userName;
             this.password = password;
             this.forumSystem = forumSystem;
         }
 
-        public Forum createForum(string forumName)
+        public static SuperAdmin CreateSuperAdmin(string userName, string password, System forumSystem)
         {
-            return this.forumSystem.createForum(forumName);
+            if (instance == null)
+            {
+                return new SuperAdmin(userName, password, forumSystem);
+            }
+            else
+                return instance;
+        }
+
+        public static SuperAdmin GetInstance()
+        {
+            return instance;
+        }
+
+        public Forum createForum(string forumName, Policy properties, List<IUser> adminUsername)
+        {
+            if (adminUsername.Count == 0)// there must be at least 1 admin
+                return null;
+
+            PolicyParametersObject param = new PolicyParametersObject(Policies.AdminAppointment);
+            foreach (IUser user in adminUsername.ToList<IUser>())
+            {
+                param.User = user;
+                if (!properties.CheckPolicy(param))//check if user can be an admin (Policies) 
+                    return null;
+            }
+
+            IForum forum = this.forumSystem.createForum(forumName);
+            forum.AddPolicy(properties);
+            foreach (IUser user in adminUsername.ToList<IUser>())
+            {
+                user.ChangeType(new Admin());
+                forum.RegisterToForum(user);
+            }
+
+            return (Forum)forum;
+
         }
         public void removeForum(string forumName)
         {
+
             this.forumSystem.removeForum(forumName);
         }
     }

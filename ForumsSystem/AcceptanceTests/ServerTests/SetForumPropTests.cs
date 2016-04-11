@@ -31,7 +31,7 @@ namespace AcceptanceTests.ServerTests
             admins.Add(user1);
 
             // create the forum with the specified properties
-            bool res = bridge.CreateForum(forumName, admins, forumProperties);
+            bool res = bridge.CreateForum(this.superAdminUsername, forumName, admins, forumProperties);
             Assert.IsTrue(res);
             // check that the forum now exists in the sytem
             Assert.IsTrue(bridge.IsExistForum(forumName));
