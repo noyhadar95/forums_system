@@ -24,6 +24,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private List<IUser> friends;
         private List<IUser> waitingFriendsList;
         private bool isLoggedIn;
+        private bool emailAccepted;
 
         public User()
         {
@@ -39,6 +40,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
             this.isLoggedIn = false;
+            this.emailAccepted = false;
         }
 
         public User(string userName,string password,string email,IForum forum)
@@ -57,6 +59,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.waitingFriendsList = new List<IUser>();
             this.forum.RegisterToForum(this);
             this.isLoggedIn = false;
+            this.emailAccepted = false;
         }
 
         public List<PrivateMessage> getSentMessages()
@@ -231,8 +234,12 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             if (type.Login(this))
             {
-                this.isLoggedIn = true;
-                return true;
+                Policy policy = forum.GetPolicy();
+                if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)) || (policy.CheckIfPolicyExists(Policies.Authentication) && emailAccepted))
+                {
+                    this.isLoggedIn = true;
+                    return true;
+                }
             }
             return false;
         }
@@ -245,6 +252,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public bool isLogin()
         {
             return this.isLoggedIn;
+        }
+
+        public void AcceptEmail()
+        {
+            this.emailAccepted = true;
         }
     }
 }

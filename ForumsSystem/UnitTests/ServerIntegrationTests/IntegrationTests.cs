@@ -27,6 +27,8 @@ namespace UnitTests.ServerIntegrationTests
         public void Cleanup()
         {
             forum = null;
+            admin = null;
+            user = null;
         }
 
         [TestMethod]
@@ -61,7 +63,42 @@ namespace UnitTests.ServerIntegrationTests
 
         }
 
+        [TestMethod]
+        public void TestAdminCycleWithEmail() //TODO - add acceptance
+        {
+            Policy policy = new AuthenticationPolicy(Policies.Authentication);
+            forum.AddPolicy(policy);
+            string subforumName = "newSub";
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            IUser user1 = new User("m1", "mp1", "noyhada@post.bgu.ac.il", forum);
+            IUser user2 = new User("m2", "mp2", "nimrodh@post.bgu.ac.il", forum);
+            moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
+            moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
+            ISubForum subforum = admin.createSubForum(subforumName, moderators);
+            Assert.IsNotNull(subforum);
 
+            Thread thr = admin.createThread(subforum, "Post1", "Content1");
+
+            Assert.IsNotNull(thr);
+            user1.Login();
+            Assert.IsFalse(user1.Login());
+
+            user1.AcceptEmail();
+            Assert.IsTrue(user1.Login());
+
+            Post opening = thr.GetOpeningPost();
+            Post reply = user1.postReply(opening, thr, "reply", "by admin");
+            Assert.IsNotNull(reply);
+            Assert.IsTrue(reply.getPublisher() == user1);
+            Assert.IsTrue(opening.GetReplies().Contains(reply));
+
+            Assert.IsTrue(user1.deletePost(reply));
+            Assert.IsFalse(thr.GetOpeningPost().GetReplies().Contains(reply));
+
+            Assert.IsTrue(admin.deletePost(opening));
+            Assert.IsFalse(subforum.getThread(1) != null);
+
+        }
 
         [TestMethod]
         public void TestPolicyRegistration()

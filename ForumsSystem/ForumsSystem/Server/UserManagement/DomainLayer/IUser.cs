@@ -48,5 +48,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         bool Login();
         void LogOff();
         bool isLogin();
+        void AcceptEmail();
+
     }
 }
