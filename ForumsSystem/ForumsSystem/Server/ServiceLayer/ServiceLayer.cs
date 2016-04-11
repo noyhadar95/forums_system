@@ -113,5 +113,65 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             SuperAdmin.GetInstance().removeForum(forumName);
         }
+
+        public bool ConfirmRegistration(string forumName, string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool LoginSuperAdmin(string username, string pass)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTime GetModeratorExpDate(string forumName, string subForumName, string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsMsgSent(string username, string msgTitle, string msgContent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsMsgReceived(string username, string msgTitle, string msgContent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsModerator(string forumName, string subForumName, string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsRegisteredToForum(string username, string forumName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsExistForum(string forumName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeletePost(string forumName, string subForumName, int threadID, int postID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteForum(string forumName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteUser(string userName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
