@@ -61,6 +61,19 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new Exception("permission denied");
         }
 
+        public override bool SetForumProperties(IForum forum, Policy properties)
+        {
+            throw new Exception("permission denied");
+        }
+
+        public override bool ChangeForumProperties(IForum forum, Policy properties)
+        {
+            throw new Exception("permission denied");
+        }
+        public override bool DeleteForumProperties(IForum forum, List<Policies> properties)
+        {
+            throw new Exception("permission denied");
+        }
 
     }
 }

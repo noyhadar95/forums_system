@@ -13,7 +13,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         PrivateMessage SendPrivateMessage(string reciever, string title, string content);
         void AddSentMessage(PrivateMessage privateMessage);
         void AddReceivedMessage(PrivateMessage privateMessage);
-        bool RegisterToForum(string userName, string password, IForum forum, string email);
+        bool RegisterToForum(string userName, string password, IForum forum, string email, DateTime dateOfBirth);
 
         Post postReply(Post parent, Thread thread, string title, string content);
         Thread createThread(ISubForum subForum, string title, string content);
@@ -44,9 +44,17 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         Type getType();
         void AddToreceivedMessages(PrivateMessage privateMessage);
         void AddTosentMessages(PrivateMessage privateMessage);
+        List<PrivateMessage> GetNotifications();
+        void AddNotification(PrivateMessage newMessage);
 
-        bool Login();
+        void Login();
         void LogOff();
         bool isLogin();
+
+        bool SetForumProperties(IForum forum, Policy properties);
+        bool ChangeForumProperties(IForum forum, Policy properties);
+        bool DeleteForumProperties(IForum forum, List<Policies> properties);
+        bool IsMessageSent(string msgTitle, string msgContent);
+        bool IsMessageReceived(string msgTitle, string msgContent);
     }
 }

@@ -80,7 +80,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             {
                 Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
                 if (users[userName].getPassword().Equals(password))
+                {
+                    users[userName].Login();
                     return users[userName];
+
+                }
                 else
                     return null;
             }
@@ -91,7 +95,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public bool InitForum()
         {
             sub_forums = new List<ISubForum>();
-            //policies?
+            policies = null;
             users = new Dictionary<string, IUser>();
 
             return true;

@@ -10,17 +10,16 @@ namespace ForumsSystem.Server.ServiceLayer
 
         #region Use Cases Methods
 
-        bool AddReply(Post post, IUser publisher, string title, string content);
+         Post AddReply(Post post, IUser publisher, string title, string content);
 
-        bool AddThread(ISubForum subForum, IUser publisher, string title, string content);
+        Thread AddThread(ISubForum subForum, IUser publisher, string title, string content);
+        bool ChangeExpirationDate(IUser admin, DateTime newDate, string moderator, ISubForum subforum);
 
-        bool ChangeExpirationDate(DateTime newDate, Moderator moderator);
+        bool ChangeForumProperties(IUser user, IForum forum, Policy properties);
 
-        bool ChangeForumProperties(IForum forum, Policy properties);
+        IForum CreateForum(SuperAdmin creator, string name, Policy properties, List<IUser> adminUsername);
 
-        IForum CreateForum(IUser creator, string name, Policy properties, List<IUser> adminUsername);
-
-        ISubForum CreateSubForum(IForum forum, IUser creator, string name, List<IUser> moderators);
+        ISubForum CreateSubForum(IUser creator, string name, Dictionary<string, DateTime> moderators);
 
         bool DeletePost(IUser deleter, Post post);
 
@@ -28,20 +27,36 @@ namespace ForumsSystem.Server.ServiceLayer
 
         IUser MemberLogin(string username, string password, IForum forum);
 
-        bool RegisterToForum(IForum forum, string userName, string password, string email, int age);
+        bool RegisterToForum(IUser guest, IForum forum, string userName, string password, string email, DateTime dateOfBirth);
 
-        bool SendPrivateMessage(IUser from, IUser to, string title, string content);
 
-        bool SetForumProperties(IForum forum, Policy properties);
+        PrivateMessage SendPrivateMessage(IUser from, string to, string title, string content);
+
+        bool SetForumProperties(IUser user, IForum forum, Policy properties);
 
         #endregion
 
 
         // other methods
-        bool DeleteForumProperties(IForum forum, List<Policies> properties);
+        bool DeleteForumProperties(IUser user,IForum forum, List<Policies> properties);
 
         IForum GetForum(string forumName);
 
-       
+        bool AddModerator(IUser admin, ISubForum subForum, string username, DateTime expiratoinDate);
+        void removeForum(string forumName);
+        bool ConfirmRegistration(string forumName, string username);
+        bool LoginSuperAdmin(string username, string pass);
+        DateTime GetModeratorExpDate(string forumName, string subForumName, string username);
+        int CountNestedReplies(string forumName, string subForumName, int threadID, int postID);
+        bool IsMsgSent(string username, string msgTitle, string msgContent);
+        bool IsMsgReceived(string username, string msgTitle, string msgContent);
+        bool IsModerator(string forumName, string subForumName, string username);
+        bool IsRegisteredToForum(string username, string forumName);
+        bool IsExistForum(string forumName);
+        bool DeletePost(string forumName, string subForumName, int threadID, int postID);
+        void DeleteForum(string forumName);
+        void DeleteUser(string userName);
+
+
     }
 }
