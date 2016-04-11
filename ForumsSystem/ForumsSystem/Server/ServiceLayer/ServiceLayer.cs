@@ -33,21 +33,12 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public bool SetForumProperties(IUser user, IForum forum, Policy properties)
         {
-            //TODO: fix this to use user
-            forum.SetPolicy(properties);
-            return true;
+            return user.SetForumProperties(forum, properties);
         }
 
-        public bool ChangeForumProperties(IForum forum, Policy properties)
+        public bool ChangeForumProperties(IUser user,IForum forum, Policy properties)
         {
-            //TODO: fix this to use user
-            Policy temp = properties;
-            while (temp != null)
-            {
-                forum.RemovePolicy(temp.Type);
-                temp = temp.NextPolicy; // delete old ones
-            }
-            return forum.AddPolicy(properties); // add new ones
+            return user.ChangeForumProperties(forum, properties);
         }
 
         public bool RegisterToForum(IUser guest, IForum forum, string userName, string password, string email, DateTime dateOfBirth)
@@ -97,14 +88,10 @@ namespace ForumsSystem.Server.ServiceLayer
             return deleter.deletePost(post);
         }
 
-        public bool DeleteForumProperties(IForum forum, List<Policies> properties)
+        public bool DeleteForumProperties(IUser user,IForum forum, List<Policies> properties)
         {
-            //TODO: pnina
-            foreach (Policies pol in properties.ToList<Policies>())
-            {
-                forum.RemovePolicy(pol);
-            }
-            return true;
+            return user.DeleteForumProperties(forum, properties);
+           
         }
 
         public IForum GetForum(string forumName)

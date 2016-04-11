@@ -41,7 +41,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
             this.isLoggedIn = false;
-            this.dateOfBirth = null;
+            this.dateOfBirth = new DateTime();
             this.notifications = new List<PrivateMessage>();
         }
 
