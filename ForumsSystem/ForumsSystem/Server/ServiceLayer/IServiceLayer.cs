@@ -42,6 +42,21 @@ namespace ForumsSystem.Server.ServiceLayer
 
         IForum GetForum(string forumName);
 
-       
+        bool AddModerator(IUser admin, ISubForum subForum, string username);
+        void removeForum(string forumName);
+        bool ConfirmRegistration(string forumName, string username);
+        bool LoginSuperAdmin(string username, string pass);
+        DateTime GetModeratorExpDate(string forumName, string subForumName, string username);
+        int CountNestedReplies(string forumName, string subForumName, int threadID, int postID);
+        bool IsMsgSent(string username, string msgTitle, string msgContent);
+        bool IsMsgReceived(string username, string msgTitle, string msgContent);
+        bool IsModerator(string forumName, string subForumName, string username);
+        bool IsRegisteredToForum(string username, string forumName);
+        bool IsExistForum(string forumName);
+        bool DeletePost(string forumName, string subForumName, int threadID, int postID);
+        void DeleteForum(string forumName);
+        void DeleteUser(string userName);
+
+
     }
 }
