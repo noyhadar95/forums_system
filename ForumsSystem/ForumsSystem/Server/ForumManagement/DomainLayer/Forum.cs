@@ -91,7 +91,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public bool InitForum()
         {
             sub_forums = new List<ISubForum>();
-            //policies?
+            policies = null;
             users = new Dictionary<string, IUser>();
 
             return true;

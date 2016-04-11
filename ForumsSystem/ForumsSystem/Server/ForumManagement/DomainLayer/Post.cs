@@ -39,6 +39,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             else//opening post
             {
                 this.Thread.DeleteOpeningPost();
+                this.Thread.GetSubforum().removeThread(this.Thread);
                 return true;
             }
         }

@@ -21,6 +21,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private Type type;
         private List<PrivateMessage> sentMessages;
         private List<PrivateMessage> receivedMessages;
+        private List<PrivateMessage> notifications;
         private List<IUser> friends;
         private List<IUser> waitingFriendsList;
         private bool isLoggedIn;
@@ -39,6 +40,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
             this.isLoggedIn = false;
+            this.notifications = new List<PrivateMessage>();
         }
 
         public User(string userName,string password,string email,IForum forum)
@@ -57,6 +59,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.waitingFriendsList = new List<IUser>();
             this.forum.RegisterToForum(this);
             this.isLoggedIn = false;
+            this.notifications = new List<PrivateMessage>();
         }
 
         public List<PrivateMessage> getSentMessages()
@@ -227,14 +230,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return type.editExpirationTimeOfModerator(this, userName, expirationTime, subForum);
         }
 
-        public bool Login()
+        public void Login()
         {
-            if (type.Login(this))
-            {
-                this.isLoggedIn = true;
-                return true;
-            }
-            return false;
+           this.isLoggedIn = true;
         }
 
         public void LogOff()
@@ -245,6 +243,32 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public bool isLogin()
         {
             return this.isLoggedIn;
+        }
+
+        public bool SetForumProperties(IForum forum, Policy properties)
+        {
+            return type.SetForumProperties(forum, properties);
+        }
+
+        public bool ChangeForumProperties(IForum forum, Policy properties)
+        {
+            return type.ChangeForumProperties(forum, properties);
+        }
+        public bool DeleteForumProperties(IForum forum, List<Policies> properties)
+        {
+            return type.DeleteForumProperties(forum, properties);
+        }
+
+        public void AddNotification(PrivateMessage newMessage)
+        {
+            notifications.Add(newMessage);
+        }
+
+        public List<PrivateMessage> GetNotifications()
+        {
+            List<PrivateMessage> notifications = this.notifications;
+            this.notifications = new List<PrivateMessage>();
+            return notifications;
         }
     }
 }

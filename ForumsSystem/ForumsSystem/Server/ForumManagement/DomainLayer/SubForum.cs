@@ -25,6 +25,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             Loggers.Logger.GetInstance().AddActivityEntry("SubForum: " + name + "created for Forum: " + ((Forum)forum).name + "by: " + creator.getUsername());
 
         }
+        public int numOfModerators()
+        {
+            return moderators.Count;
+        }
+
         public void addModerator(IUser admin, IUser user, DateTime expirationDate)
         {
             
