@@ -23,17 +23,17 @@ namespace AcceptanceTests.ServerTests
             string content = "content1";
             string forumName = "forum1";
             string forumProperties = "";
-            string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
+            string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             List<string> moderators = new List<string>();
             moderators.Add(username1);
             string subForumName = "sub forum 1";
             string subForumProps = "";
-            string threadName = "thread1";
+            string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and a thread to add a post to.
             int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadName);
+                subForumProps, threadPublisher);
 
             // add opening post
             int res = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
@@ -52,17 +52,17 @@ namespace AcceptanceTests.ServerTests
             string content = ""; // empty content
             string forumName = "forum1";
             string forumProperties = "";
-            string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
+            string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             List<string> moderators = new List<string>();
             moderators.Add(username1);
             string subForumName = "sub forum 1";
             string subForumProps = "";
-            string threadName = "thread1";
+            string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and a thread to add a post to.
             int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadName);
+                subForumProps, threadPublisher);
 
             // add opening post
             int res = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
@@ -81,17 +81,17 @@ namespace AcceptanceTests.ServerTests
             string content = "content1";
             string forumName = "forum1";
             string forumProperties = "";
-            string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
+            string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             List<string> moderators = new List<string>();
             moderators.Add(username1);
             string subForumName = "sub forum 1";
             string subForumProps = "";
-            string threadName = "thread1";
+            string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and a thread to add a post to.
             int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadName);
+                subForumProps, threadPublisher);
 
             // add opening post
             int res = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
@@ -110,17 +110,17 @@ namespace AcceptanceTests.ServerTests
             string content = ""; // empty content
             string forumName = "forum1";
             string forumProperties = "";
-            string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
+            string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             List<string> moderators = new List<string>();
             moderators.Add(username1);
             string subForumName = "sub forum 1";
             string subForumProps = "";
-            string threadName = "thread1";
+            string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and a thread to add a post to.
             int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadName);
+                subForumProps, threadPublisher);
 
             // add opening post
             int res = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);

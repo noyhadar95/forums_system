@@ -38,21 +38,19 @@ namespace AcceptanceTestsBridge
 
         public bool CreateSubForum(string creator, string forumName, string subForumName, List<string> moderators, string properties)
         {
-            sl.CreateSubForum(forum,creator,)
+            sl.CreateSubForum(forum,creator,);
         }
 
-        public int AddOpeningPost(string forumName, string subForumName, int threadID, string title, string content)
+        public int AddThread(string forumName, string subForumName, string publisher, string title, string content)
         {
-            throw new NotImplementedException();
-        }
-
-        public int AddThread(string forumName, string subForumName, string threadName)
-        {
-            sl.AddThread();
+            IForum forum = sl.GetForum(forumName);
+            IUser threadPublisher = forum.getUser(publisher);
+            ISubForum subForum = forum.getSubForum(subForumName);
+            return sl.AddThread(subForum, threadPublisher, title, content);
         }
 
         public int AddReplyPost(string forumName, string subForumName, int threadID, int postID, string title, string content)
-        {
+        {sl.AddReply()
             throw new NotImplementedException();
         }
 

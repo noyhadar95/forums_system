@@ -15,9 +15,8 @@ namespace AcceptanceTestsBridge
 
         bool CreateSubForum(string creator, string forumName, string subForumName, List<string> moderators, string properties);
 
-        int AddOpeningPost(string forumName, string subForumName, int threadID, string title, string content);
-
-        int AddThread(string forumName, string subForumName, string threadName);
+        // add thread also means adding the opening post of the thread
+        int AddThread(string forumName, string subForumName, string publisher, string title, string content);
 
         int AddReplyPost(string forumName, string subForumName, int threadID, int postID, string title, string content);
 

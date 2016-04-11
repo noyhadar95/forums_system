@@ -21,8 +21,6 @@ namespace AcceptanceTests.ServerTests
             string forumName = "forum1";
             string forumProperties = "";
             string username = "user1";
-            string pass = "passwd";
-            string email = "user1@gmail.com";
             DateTime dateOfBirth = DateTime.Now;
             List<string> moderators = new List<string>();
             moderators.Add(username);
@@ -32,9 +30,7 @@ namespace AcceptanceTests.ServerTests
             DateTime newDate = new DateTime(year, month, day);
 
             // create a forum, sub-forum and a thread to add a post to.
-            CreateForum(forumName, forumProperties);
-            bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
-            bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
+            base.CreateSubForum(forumName, forumProperties, subForumName, moderators, subForumProps);
 
             //TODO: maybe make user a moderator
 

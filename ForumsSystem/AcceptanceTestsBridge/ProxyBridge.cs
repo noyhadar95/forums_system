@@ -52,18 +52,10 @@ namespace AcceptanceTestsBridge
             return true;
         }
 
-        public int AddOpeningPost(string forumName, string subForumName, int threadID, string title, string content)
+        public int AddThread(string forumName, string subForumName, string publisher, string title, string content)
         {
             if (realBridge != null)
-                return realBridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
-
-            return 1;
-        }
-
-        public int AddThread(string forumName, string subForumName, string threadName)
-        {
-            if (realBridge != null)
-                return realBridge.AddThread(forumName, subForumName, threadName);
+                return realBridge.AddThread(forumName, subForumName, publisher, title, content);
 
             return 1;
         }

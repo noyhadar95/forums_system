@@ -26,9 +26,9 @@ namespace AcceptanceTests.ServerTests
             moderators.Add(username1);
             string subForumName = "sub forum 1";
             string subForumProps = "";
-            string threadName = "thread1";
+            string threadPublisher = "publisher1";
 
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, subForumProps, threadName);
+            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, subForumProps, threadPublisher);
             int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
             // add reply post
             int replyPostID = bridge.AddReplyPost(forumName, subForumName, threadID, postID, title, content);
@@ -54,9 +54,9 @@ namespace AcceptanceTests.ServerTests
             moderators.Add(username1);
             string subForumName = "sub forum 1";
             string subForumProps = "";
-            string threadName = "thread1";
+            string threadPublisher = "publisher1";
 
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, subForumProps, threadName);
+            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, subForumProps, threadPublisher);
             int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
             // add reply post and add 2 replies to it
             int replyPostID = bridge.AddReplyPost(forumName, subForumName, threadID, postID, title, content);
@@ -92,9 +92,9 @@ namespace AcceptanceTests.ServerTests
             moderators.Add(username1);
             string subForumName = "sub forum 1";
             string subForumProps = "";
-            string threadName = "thread1";
+            string threadPublisher = "publisher1";
 
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, subForumProps, threadName);
+            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators, subForumProps, threadPublisher);
             int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
 
             bool res = bridge.DeletePost(forumName, subForumName, threadID, postID);

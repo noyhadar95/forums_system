@@ -26,9 +26,7 @@ namespace AcceptanceTests.ServerTests
             string subForumName = "sub forum 123";
             string subForumProps = "";
 
-            base.CreateForum(forumName, forumProperties);
-
-            bool res = bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
+            bool res = base.CreateSubForum(forumName, forumProperties, subForumName, moderators, subForumProps);
             Assert.IsTrue(res);
 
             // check that the sub-forum now exists in the sytem
@@ -60,7 +58,7 @@ namespace AcceptanceTests.ServerTests
             // make sure username is not a valid user in the forum
             bridge.DeleteUser(username1);
 
-            bool res = bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
+            bool res = bridge.CreateSubForum(this.adminUserName1, forumName, subForumName, moderators, subForumProps);
 
             Assert.IsTrue(!res);
 

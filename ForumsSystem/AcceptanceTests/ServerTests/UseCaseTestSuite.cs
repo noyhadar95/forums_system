@@ -11,6 +11,10 @@ namespace AcceptanceTests.ServerTests
         protected IBridge bridge;
         protected string superAdminUsername = "superadmin";
         protected string superAdminPass = "superadminpass";
+        protected string adminUserName1 = "admin1"; // the username of the admin used to create sub forums for the tests
+        protected string adminPass1 = "adminPasswd"; // the password of the admin used to create sub forums for the tests
+        protected string adminEmail1 = "admin1@gmail.com"; // the email of the admin used to create sub forums for the tests
+
 
         public UseCaseTestSuite()
         {
@@ -26,9 +30,6 @@ namespace AcceptanceTests.ServerTests
 
         protected bool CreateForum(string forumName, string forumProperties)
         {
-            string adminUserName1 = "admin1";
-            string adminPass1 = "adminPasswd";
-            string adminEmail1 = "admin1@gmail.com";
             List<UserStub> admins = new List<UserStub>();
             UserStub user1 = new UserStub(adminUserName1, adminPass1, adminEmail1, forumName);
             admins.Add(user1);
@@ -58,16 +59,16 @@ namespace AcceptanceTests.ServerTests
                 bridge.RegisterToForum(forumName, mod, pass, email, dateOfBirth);
             }
 
-            return bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
+            return bridge.CreateSubForum(adminUserName1, forumName, subForumName, moderators, subForumProps);
         }
 
         // create a new forum called forumName, a new sub-forum called subForumName and than
         // a new thread in it.
         protected int AddThread(string forumName, string forumProperties, string subForumName, List<string> moderators,
-            string subForumProps, string threadName)
+            string subForumProps, string publisher)
         {
             CreateSubForum(forumName, forumProperties, subForumName, moderators, subForumProps);
-            return bridge.AddThread(forumName, subForumName, threadName);
+            return bridge.AddThread(forumName, subForumName, publisher);
 
         }
 
