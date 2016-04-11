@@ -10,13 +10,26 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     public class Type
     {
-        
 
-        
+
+
         //Admin only ---------------------------------------------------------
 
-        public virtual ISubForum createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string,DateTime> users)
+        public virtual ISubForum createSubForum(IUser callingUser, string subForumName, IForum forum, Dictionary<string, DateTime> users)
         {
+            if (users == null)
+                return null;
+            if (users.Count == 0)
+                return null;
+            //policies
+            PolicyParametersObject param = new PolicyParametersObject(Policies.MaxModerators);
+            param.NumOfModerators = users.Count;
+            if (forum.GetPolicy() != null) { 
+                if (!forum.GetPolicy().CheckPolicy(param))
+                    return null;
+             }
+            param.SetPolicy(Policies.ModeratorAppointment);
+
             if (!callingUser.isLogin())
                 return null;
             Dictionary<IUser, DateTime> moderators = new Dictionary<IUser, DateTime>();
@@ -32,6 +45,16 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             }
             if (forum.getSubForum(subForumName) != null)
                 return null;
+            // policies
+            if (forum.GetPolicy() != null)
+            {
+                foreach (IUser user in moderators.Keys)
+                {
+                    param.User = user;
+                    if (!forum.GetPolicy().CheckPolicy(param))
+                        return null;
+                }
+            }
             ISubForum subforum = new SubForum(forum, callingUser, subForumName);
             forum.addSubForum(subforum);
             foreach (KeyValuePair<IUser, DateTime> moderator in moderators)
@@ -51,6 +74,20 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (expirationTime != null && expirationTime.CompareTo(DateTime.Now) < 0)
                 return false; // expiration date should be after now
             IUser moderator = forum.getUser(userName);
+
+            // policies
+            PolicyParametersObject param = new PolicyParametersObject(Policies.MaxModerators);
+            param.NumOfModerators = subForum.numOfModerators()+1;
+            if (forum.GetPolicy() != null)
+            {
+                if (!forum.GetPolicy().CheckPolicy(param))
+                    return false;
+            }
+            param.SetPolicy(Policies.ModeratorAppointment);
+            param.User = moderator;
+            if (!forum.GetPolicy().CheckPolicy(param))
+                return false;
+
             subForum.addModerator(callingUser, moderator, expirationTime);
             return true;
         }
@@ -94,6 +131,33 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new NotImplementedException();
         }
 
+
+        public virtual bool SetForumProperties(IForum forum, Policy properties)
+        {
+            forum.SetPolicy(properties);
+            return true;
+        }
+
+        public virtual bool ChangeForumProperties(IForum forum, Policy properties)
+        {
+            Policy temp = properties;
+            while (temp != null)
+            {
+                forum.RemovePolicy(temp.Type); temp = temp.NextPolicy;//delete old ones
+            }
+            forum.AddPolicy(properties);//add new ones
+            return true;
+        }
+        public virtual bool DeleteForumProperties(IForum forum, List<Policies> properties)
+        {
+            foreach (Policies pol in properties.ToList<Policies>())
+            {
+                forum.RemovePolicy(pol);
+            }
+            return true;
+        }
+
+
         //in addition the admin should be able to get a report on the forum status
 
 
@@ -104,14 +168,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
 
         //Member---------------------------------------------------------------
-
-        public virtual bool Login(IUser callingUser)
-        {
-            IForum forum = callingUser.getForum();
-            if (forum.Login(callingUser.getUsername(), callingUser.getPassword()) == null)
-                return false;
-            return true;
-        }
+      
 
         public virtual Post postReply(IUser callingUser, Post parent, Thread thread, string title, string content)
         {
@@ -240,8 +297,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual void AddReceivedMessage(IUser callingUser, PrivateMessage privateMessage)
         {
-            
             callingUser.AddToreceivedMessages(privateMessage);
+            callingUser.AddNotification(privateMessage);
         }
 
         //---------------------------------------------------------------------

@@ -44,9 +44,15 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         Type getType();
         void AddToreceivedMessages(PrivateMessage privateMessage);
         void AddTosentMessages(PrivateMessage privateMessage);
+        List<PrivateMessage> GetNotifications();
+        void AddNotification(PrivateMessage newMessage);
 
-        bool Login();
+        void Login();
         void LogOff();
         bool isLogin();
+
+        bool SetForumProperties(IForum forum, Policy properties);
+        bool ChangeForumProperties(IForum forum, Policy properties);
+        bool DeleteForumProperties(IForum forum, List<Policies> properties);
     }
 }
