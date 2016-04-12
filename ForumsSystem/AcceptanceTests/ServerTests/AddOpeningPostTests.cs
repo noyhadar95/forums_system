@@ -26,7 +26,7 @@ namespace AcceptanceTests.ServerTests
             string title = "title1";
             string content = "content1";
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string,DateTime> moderators = new Dictionary<string,DateTime>();
@@ -55,7 +55,7 @@ namespace AcceptanceTests.ServerTests
             string title = "title1";
             string content = ""; // empty content
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string,DateTime> moderators = new Dictionary<string,DateTime>();
@@ -84,7 +84,7 @@ namespace AcceptanceTests.ServerTests
             string title = ""; // empty title
             string content = "content1";
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string,DateTime> moderators = new Dictionary<string,DateTime>();
@@ -113,7 +113,7 @@ namespace AcceptanceTests.ServerTests
             string title = ""; // empty title
             string content = ""; // empty content
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string,DateTime> moderators = new Dictionary<string,DateTime>();

@@ -62,5 +62,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         void AcceptEmail();
         bool IsMessageSent(string msgTitle, string msgContent);
         bool IsMessageReceived(string msgTitle, string msgContent);
+
+        bool SetForum(IForum forum);
     }
 }

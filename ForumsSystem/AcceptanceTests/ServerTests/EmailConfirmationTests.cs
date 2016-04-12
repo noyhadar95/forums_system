@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using AcceptanceTestsBridge;
 
 namespace AcceptanceTests.ServerTests
 {
@@ -11,20 +12,20 @@ namespace AcceptanceTests.ServerTests
         {
 
         }
-
+/*
         // test - check that email confirmation succeeds when the forum is defined "secured forum".
         [TestMethod]
         public void TestEmailConfirmationSecureForum()
         {
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username = "user1";
             string pass = "passwd";
             string email = "user1@gmail.com";
             DateTime dateOfBirth = DateTime.Now;
 
             // make sure the forum is defined as "secured forum".
-            base.CreateForum(forumName, forumProperties);
+            base.CreateForum(forumName, forumPolicy);
             bool res = bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
             Assert.IsTrue(res);
 
@@ -44,14 +45,14 @@ namespace AcceptanceTests.ServerTests
         public void TestEmailConfirmationBadUsername()
         {
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username = "user1", badUsername = "fakeuser";
             string pass = "passwd";
             string email = "user1@gmail.com";
             DateTime dateOfBirth = DateTime.Now;
 
             // make sure the forum is defined as "secured forum".
-            base.CreateForum(forumName, forumProperties);
+            base.CreateForum(forumName, forumPolicy);
             bool res = bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
             Assert.IsTrue(res);
 
@@ -67,7 +68,7 @@ namespace AcceptanceTests.ServerTests
             base.DeleteForum(forumName);
         }
 
-
+        */
 
 
     }

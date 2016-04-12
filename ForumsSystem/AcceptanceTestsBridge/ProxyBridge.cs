@@ -36,10 +36,10 @@ namespace AcceptanceTestsBridge
 
         #region Add/Create Methods
 
-        public bool CreateForum(string creator, string forumName, List<UserStub> admins, string forumProperties)
+        public bool CreateForum(string creator, string forumName, List<UserStub> admins, PoliciesStub forumPolicies)
         {
             if (realBridge != null)
-                return realBridge.CreateForum(creator, forumName, admins, forumProperties);
+                return realBridge.CreateForum(creator, forumName, admins, forumPolicies);
 
             return true;
         }
@@ -60,10 +60,10 @@ namespace AcceptanceTestsBridge
             return 1;
         }
 
-        public int AddReplyPost(string forumName, string subForumName, int threadID, int postID, string title, string content)
+        public int AddReplyPost(string forumName, string subForumName, int threadID, string publisher, int postID, string title, string content)
         {
             if (realBridge != null)
-                return realBridge.AddReplyPost(forumName, subForumName, threadID, postID, title, content);
+                return realBridge.AddReplyPost(forumName, subForumName, threadID, publisher, postID, title, content);
 
             return 1;
         }
@@ -95,10 +95,10 @@ namespace AcceptanceTestsBridge
 
         }
 
-        public bool DeletePost(string forumName, string subForumName, int threadID, int postID)
+        public bool DeletePost(string forumName, string subForumName, int threadID, string deleter, int postID)
         {
             if (realBridge != null)
-                return realBridge.DeletePost(forumName, subForumName, threadID, postID);
+                return realBridge.DeletePost(forumName, subForumName, threadID, deleter, postID);
 
             return true;
         }
@@ -148,18 +148,18 @@ namespace AcceptanceTestsBridge
             return true;
         }
 
-        public bool IsMsgReceived(string username, string msgTitle, string msgContent)
+        public bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent)
         {
             if (realBridge != null)
-                return realBridge.IsMsgReceived(username, msgTitle, msgContent);
+                return realBridge.IsMsgReceived(forumName, username, msgTitle, msgContent);
 
             return true;
         }
 
-        public bool IsMsgSent(string username, string msgTitle, string msgContent)
+        public bool IsMsgSent(string forumName, string username, string msgTitle, string msgContent)
         {
             if (realBridge != null)
-                return realBridge.IsMsgSent(username, msgTitle, msgContent);
+                return realBridge.IsMsgSent(forumName, username, msgTitle, msgContent);
 
             return true;
         }
@@ -171,10 +171,10 @@ namespace AcceptanceTestsBridge
         // ---------------------------------- Other Methods
 
 
-        public bool SetForumProperties(string forumName, string forumProperties)
+        public bool SetForumProperties(string forumName, string username, PoliciesStub forumPolicies)
         {
             if (realBridge != null)
-                return realBridge.SetForumProperties(forumName, forumProperties);
+                return realBridge.SetForumProperties(forumName, username, forumPolicies);
 
             return true;
         }
@@ -250,6 +250,15 @@ namespace AcceptanceTestsBridge
 
             return true;
         }
+
+        public int GetOpenningPostID(string forumName, string subForumName, int threadID)
+        {
+            if (realBridge != null)
+                return realBridge.GetOpenningPostID(forumName, subForumName, threadID);
+
+            return 1;
+        }
+
 
     }
 }

@@ -183,28 +183,35 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public void sendMail(string email, string userName, string subject, string body)
         {
-            var fromAddress = new MailAddress("TimTimTeam1@gmail.com","TimTimTeam");
-            var toAddress = new MailAddress(email, userName);
-            const string fromPassword = "TimTeamTim";
+            try
+            {
+                var fromAddress = new MailAddress("TimTimTeam1@gmail.com", "TimTimTeam");
+                var toAddress = new MailAddress(email, userName);
+                const string fromPassword = "TimTeamTim";
 
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-            using (var message = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                Body = body
-            })
-            {
-                smtp.Send(message);
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                };
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body
+                })
+                {
+                    smtp.Send(message);
+                }
+                Loggers.Logger.GetInstance().AddActivityEntry("Email sent to: " + email);
             }
-            Loggers.Logger.GetInstance().AddActivityEntry("Email sent to: " + email);
+            catch (Exception e)
+            {
+
+            }
         }
 
         

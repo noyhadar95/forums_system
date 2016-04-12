@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using AcceptanceTestsBridge;
 
 namespace AcceptanceTests.ServerTests
 {
@@ -22,16 +23,16 @@ namespace AcceptanceTests.ServerTests
             string title = "title1";
             string content = "content1";
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1, new DateTime());
+            moderators.Add(username1,  DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and a thread (opening post)
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
+            int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
                 threadPublisher, title, content);
 
             // check that res is not negative
@@ -48,16 +49,16 @@ namespace AcceptanceTests.ServerTests
             string title = "title1";
             string content = ""; // empty content
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1, new DateTime());
+            moderators.Add(username1,  DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and a thread (opening post)
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
+            int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
                  threadPublisher, title, content);
 
             // check that res is not negative
@@ -74,16 +75,16 @@ namespace AcceptanceTests.ServerTests
             string title = ""; // empty title
             string content = "content1";
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1, new DateTime());
+            moderators.Add(username1,  DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and a thread (opening post)
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
+            int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
                  threadPublisher, title, content);
 
             // check that res is not negative
@@ -100,16 +101,16 @@ namespace AcceptanceTests.ServerTests
             string title = ""; // empty title
             string content = ""; // empty content
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1, new DateTime());
+            moderators.Add(username1,  DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and a thread (opening post)
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
+            int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
                  threadPublisher, title, content);
 
             // check that res is negative, which means that the post havn't been added

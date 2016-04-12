@@ -39,7 +39,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.numOfComplaints = 0;
             this.sentMessages = new List<PrivateMessage>();
             this.receivedMessages = new List<PrivateMessage>();
-            this.type = new Guest();                            
+            this.type = new Guest();
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
             this.isLoggedIn = false;
@@ -50,7 +50,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         }
 
-        public User(string userName,string password,string email,IForum forum,DateTime dateOfBirth)
+        public User(string userName, string password, string email, IForum forum, DateTime dateOfBirth)
         {
             this.userName = userName;
             this.password = password;
@@ -62,7 +62,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.numOfComplaints = 0;
             this.sentMessages = new List<PrivateMessage>();
             this.receivedMessages = new List<PrivateMessage>();
-            this.type = new Member();                            
+            this.type = new Member();
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
             this.forum.RegisterToForum(this);
@@ -72,6 +72,39 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.emailAccepted = false;
             this.postsNotifications = new List<Post>();
 
+        }
+
+        public User(string userName, string password, string email, DateTime dateOfBirth)
+        {
+            this.userName = userName;
+            this.password = password;
+            this.forum = null;
+            this.email = email;
+            this.dateJoined = DateTime.Today;
+            this.dateOfBirth = dateOfBirth;
+            this.numOfMessages = 0;
+            this.numOfComplaints = 0;
+            this.sentMessages = new List<PrivateMessage>();
+            this.receivedMessages = new List<PrivateMessage>();
+            this.type = new Member();
+            this.friends = new List<IUser>();
+            this.waitingFriendsList = new List<IUser>();
+            this.isLoggedIn = false;
+
+            this.notifications = new List<PrivateMessage>();
+            this.emailAccepted = false;
+            this.postsNotifications = new List<Post>();
+        }
+
+        public bool SetForum(IForum forum)
+        {
+            if (this.forum == null)
+            {
+                this.forum = forum;
+                this.forum.RegisterToForum(this);
+                return true;
+            }
+            return false;
         }
 
         public List<PrivateMessage> getSentMessages()
@@ -94,7 +127,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public void addToWaitingFriendsList(IUser user)
         {
             waitingFriendsList.Add(user);
-        } 
+        }
         public void removeFromWaitingFriendsList(IUser user)
         {
             waitingFriendsList.Remove(user);
@@ -127,15 +160,17 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.type = type;
         }
 
-        
-        public bool RegisterToForum(string userName,string password,IForum forum,string email, DateTime dateOfBirth)
+
+        public bool RegisterToForum(string userName, string password, IForum forum, string email, DateTime dateOfBirth)
         {
+            if (forum == null)
+                return false;
             if (this.forum == null)
             {
 
                 PolicyParametersObject param = new PolicyParametersObject(Policies.MinimumAge);
                 param.SetAgeOfUser((int)((dateOfBirth - DateTime.Today).TotalDays) / 365);
-                if (forum.GetPolicy()!=null&&!forum.GetPolicy().CheckPolicy(param))
+                if (forum.GetPolicy() != null && !forum.GetPolicy().CheckPolicy(param))
                     return false;
                 param.SetPolicy(Policies.Password);
                 param.SetPassword(password);
@@ -160,7 +195,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return false;
         }
 
-       
+
         public PrivateMessage SendPrivateMessage(string reciever, string title, string content)
         {
             return type.SendPrivateMessage(this, reciever, title, content);
@@ -175,16 +210,16 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             type.AddReceivedMessage(this, privateMessage);
         }
-        
+
 
         public Post postReply(Post parent, Thread thread, string title, string content)
         {
-            return type.postReply(this,parent,thread,title,content);
+            return type.postReply(this, parent, thread, title, content);
         }
 
         public Thread createThread(ISubForum subForum, string title, string content)
         {
-            return type.createThread(this,subForum,title,content);
+            return type.createThread(this, subForum, title, content);
         }
 
         public bool editPost(string title, string content, Post post)
@@ -237,7 +272,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return type;
         }
 
-        public ISubForum createSubForum(string subForumName,Dictionary<string, DateTime> users)
+        public ISubForum createSubForum(string subForumName, Dictionary<string, DateTime> users)
         {
             IForum forum = this.forum;
             return type.createSubForum(this, subForumName, forum, users);
@@ -348,11 +383,12 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             }
             return false;
         }
+
     }
 
 
-      
-    
+
+
 }
 
 

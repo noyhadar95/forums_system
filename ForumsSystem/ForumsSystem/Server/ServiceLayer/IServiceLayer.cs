@@ -58,6 +58,7 @@ namespace ForumsSystem.Server.ServiceLayer
         void DeleteUser(string userName, string forumName);
         int GetOpenningPostID(string forumName, string subForumName, int threadID);
 
+        bool IsAdmin(string username, string forumName);
 
     }
 }

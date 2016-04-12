@@ -21,7 +21,7 @@ namespace AcceptanceTests.ServerTests
             string adminUserName1 = "adm1", adminUserName2 = "adm2";
             string adminPass1 = "root1", adminPass2 = "root2";
             string adminEmail1 = "adm1@gmail.com", adminEmail2 = "adm2@gmail.com";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             List<UserStub> admins = new List<UserStub>();
             UserStub user1 = new UserStub(adminUserName1, adminPass1, adminEmail1, forumName);
             UserStub user2 = new UserStub(adminUserName2, adminPass2, adminEmail2, forumName);
@@ -29,7 +29,7 @@ namespace AcceptanceTests.ServerTests
             admins.Add(user2);
 
             // create the forum
-            bool res = bridge.CreateForum(this.superAdminUsername, forumName, admins, forumProperties);
+            bool res = bridge.CreateForum(this.superAdminUsername, forumName, admins, forumPolicy);
             Assert.IsTrue(res);
             // check that the forum now exists in the sytem
             Assert.IsTrue(bridge.IsExistForum(forumName));

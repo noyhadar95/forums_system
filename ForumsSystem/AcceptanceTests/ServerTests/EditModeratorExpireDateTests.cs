@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using AcceptanceTestsBridge;
 
 namespace AcceptanceTests.ServerTests
 {
@@ -19,17 +20,17 @@ namespace AcceptanceTests.ServerTests
         public void TestEditModeratorExpireDate()
         {
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string modUsername = "user1";
             DateTime dateOfBirth = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(modUsername, new DateTime());
+            moderators.Add(modUsername,  DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             int year = 2016, month = 5, day = 15;
             DateTime newDate = new DateTime(year, month, day);
 
             // create a forum, sub-forum and a thread to add a post to.
-            base.CreateSubForum(forumName, forumProperties, subForumName, moderators);
+            base.CreateSubForum(forumName, forumPolicy, subForumName, moderators);
 
             //TODO: maybe make user a moderator
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using AcceptanceTestsBridge;
 
 namespace AcceptanceTests.ServerTests
 {
@@ -19,13 +20,13 @@ namespace AcceptanceTests.ServerTests
         public void TestForumRegistrationSuccess()
         {
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username = "user1";
             string pass = "passwd";
             string email = "user1@gmail.com";
             DateTime dateOfBirth = DateTime.Now;
 
-            base.CreateForum(forumName, forumProperties);
+            base.CreateForum(forumName, forumPolicy);
 
             bool res = bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
 

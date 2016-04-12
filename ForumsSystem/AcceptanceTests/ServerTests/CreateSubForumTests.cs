@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using AcceptanceTestsBridge;
 
 namespace AcceptanceTests.ServerTests
 {
@@ -19,13 +20,15 @@ namespace AcceptanceTests.ServerTests
         public void TestCreateSubForumSuccess()
         {
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user123";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1, new DateTime());
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 123";
 
-            bool res = base.CreateSubForum(forumName, forumProperties, subForumName, moderators);
+           
+
+            bool res = base.CreateSubForum(forumName, forumPolicy, subForumName, moderators);
             Assert.IsTrue(res);
 
             // check that the sub-forum now exists in the sytem
@@ -46,13 +49,13 @@ namespace AcceptanceTests.ServerTests
         public void TestCreateSubForumFailure()
         {
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user123";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1, new DateTime());
+            moderators.Add(username1,  DateTime.Today.AddDays(100));
             string subForumName = "sub forum 123";
 
-            base.CreateForum(forumName, forumProperties);
+            base.CreateForum(forumName, forumPolicy);
             // make sure username is not a valid user in the forum
             bridge.DeleteUser(forumName, username1);
 

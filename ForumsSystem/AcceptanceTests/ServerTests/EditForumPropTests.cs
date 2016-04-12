@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using AcceptanceTestsBridge;
 
 namespace AcceptanceTests.ServerTests
 {
@@ -19,14 +20,14 @@ namespace AcceptanceTests.ServerTests
         public void TestEditForumPropValid()
         {
             string forumName = "";
-            string forumProperties = "";
-            string newForumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
+            PoliciesStub newForumPolicy = PoliciesStub.MinimumAge;
 
-            base.CreateForum(forumName, forumProperties);
+            base.CreateForum(forumName, forumPolicy);
 
             //TODO: make sure forumProperties are valid
 
-            bool res = bridge.SetForumProperties(forumName, newForumProperties);
+            bool res = bridge.SetForumProperties(forumName, this.adminUserName1, newForumPolicy);
 
             Assert.IsTrue(res);
             //TODO: check that the forum props have changed
