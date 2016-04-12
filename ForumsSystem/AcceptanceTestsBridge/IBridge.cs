@@ -52,6 +52,8 @@ namespace AcceptanceTestsBridge
 
         bool IsMsgSent(string forumName, string username, string msgTitle, string msgContent);
 
+        bool IsForumHasPolicy(string forumName, PoliciesStub forumPolicy);
+
         #endregion
 
 
@@ -80,6 +82,9 @@ namespace AcceptanceTestsBridge
         bool ConfirmRegistration(string forumName, string username);
 
         int GetOpenningPostID(string forumName, string subForumName, int threadID);
+
+        
+
 
     }
 }

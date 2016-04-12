@@ -28,8 +28,8 @@ namespace AcceptanceTests.ServerTests
             bool res = bridge.SetForumProperties(forumName, this.adminUserName1, newForumPolicy);
 
             Assert.IsTrue(res);
-            //TODO: check that the forum props have changed
-            // Assert.IsTrue(newForumProperties == bridge.GetForumProps(forumName));
+            // check that the forum props have been changed to newForumPolicy
+            Assert.IsTrue(bridge.IsForumHasPolicy(forumName, newForumPolicy));
 
             // cleanup
             base.DeleteForum(forumName);
@@ -48,8 +48,8 @@ namespace AcceptanceTests.ServerTests
             bool res = bridge.SetForumProperties(forumName, this.adminUserName1, newForumPolicy);
 
             Assert.IsTrue(res);
-            //TODO: check that the forum props have changed
-            // Assert.IsTrue(newForumProperties == bridge.GetForumProps(forumName));
+            // check that the forum props have been changed to newForumPolicy
+            Assert.IsTrue(bridge.IsForumHasPolicy(forumName, newForumPolicy));
 
             // cleanup
             base.DeleteForum(forumName);
@@ -68,8 +68,8 @@ namespace AcceptanceTests.ServerTests
             bool res = bridge.SetForumProperties(forumName, this.adminUserName1, newForumPolicy);
 
             Assert.IsTrue(res);
-            //TODO: check that the forum props have changed
-            // Assert.IsTrue(newForumProperties == bridge.GetForumProps(forumName));
+            // check that the forum props have been changed to newForumPolicy
+            Assert.IsTrue(bridge.IsForumHasPolicy(forumName, newForumPolicy));
 
             // cleanup
             base.DeleteForum(forumName);

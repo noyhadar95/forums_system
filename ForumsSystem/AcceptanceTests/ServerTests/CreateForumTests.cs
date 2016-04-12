@@ -46,7 +46,6 @@ namespace AcceptanceTests.ServerTests
 
         
 
-        //TODO: add tests for success/failure forum properties
 
 
     }

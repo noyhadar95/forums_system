@@ -36,8 +36,8 @@ namespace AcceptanceTests.ServerTests
             // check that the forum now exists in the sytem
             Assert.IsTrue(bridge.IsExistForum(forumName));
 
-            //TODO: check that the forum props have been setto the above forumProperties
-            // Assert.IsTrue(forumProperties == bridge.GetForumProps(forumName));
+            // check that the forum props have been set to forumPolicy
+            Assert.IsTrue(bridge.IsForumHasPolicy(forumName,forumPolicy));
 
             // cleanup
             base.DeleteForum(forumName);

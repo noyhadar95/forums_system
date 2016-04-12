@@ -164,6 +164,14 @@ namespace AcceptanceTestsBridge
             return true;
         }
 
+        public bool IsForumHasPolicy(string forumName, PoliciesStub forumPolicy)
+        {
+            if (realBridge != null)
+                return realBridge.IsForumHasPolicy(forumName, forumPolicy);
+
+            return true;
+        }
+
         #endregion
 
 
@@ -258,6 +266,9 @@ namespace AcceptanceTestsBridge
 
             return 1;
         }
+
+
+       
 
 
     }

@@ -206,7 +206,7 @@ namespace AcceptanceTestsBridge
 
         public bool IsAdmin(string username, string forumName)
         {
-            return true;
+            return sl.IsAdmin(username, forumName);
         }
 
         public bool IsModerator(string forumName, string subForumName, string username)
@@ -233,6 +233,15 @@ namespace AcceptanceTestsBridge
             IForum forum = sl.GetForum(forumName);
             IUser user = forum.getUser(username);
             return sl.IsMsgSent(user, msgTitle, msgContent);
+        }
+
+        public bool IsForumHasPolicy(string forumName, PoliciesStub forumPolicy)
+        {
+            IForum forum = sl.GetForum(forumName);
+            Policy policy = forum.GetPolicy();
+            Policies expectedPolicy = ConvertPolicyStubToReal(forumPolicy);
+            bool res = policy.CheckIfPolicyExists(expectedPolicy);
+            return res;
         }
 
         #endregion
@@ -349,6 +358,8 @@ namespace AcceptanceTestsBridge
         {
             return sl.GetOpenningPostID(forumName, subForumName, threadID);
         }
+
+       
 
 
 

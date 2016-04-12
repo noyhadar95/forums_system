@@ -32,8 +32,6 @@ namespace AcceptanceTests.ServerTests
             // create a forum, sub-forum and a thread to add a post to.
             base.CreateSubForum(forumName, forumPolicy, subForumName, moderators);
 
-            //TODO: maybe make user a moderator
-
             bool res = bridge.EditModeratorExpDate(forumName, subForumName, this.adminUserName1, modUsername, newDate);
             Assert.IsTrue(res);
             DateTime updatedDate = bridge.GetModeratorExpDate(forumName, subForumName, modUsername);
@@ -45,9 +43,6 @@ namespace AcceptanceTests.ServerTests
         }
 
 
-        //TODO: tests for 
-        //      1. nonexistent moderator
-        //      2. bad date
 
 
     }
