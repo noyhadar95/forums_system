@@ -24,7 +24,7 @@ namespace AcceptanceTests.ServerTests
             string modUsername = "user1";
             DateTime dateOfBirth = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(modUsername,  DateTime.Today.AddDays(100));
+            moderators.Add(modUsername, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             int year = 2016, month = 5, day = 15;
             DateTime newDate = new DateTime(year, month, day);
@@ -40,6 +40,8 @@ namespace AcceptanceTests.ServerTests
             // check that the date has been updated successfully
             Assert.IsTrue(updatedDate != null && updatedDate.Equals(newDate));
 
+            // cleanup
+            base.DeleteForum(forumName);
         }
 
 

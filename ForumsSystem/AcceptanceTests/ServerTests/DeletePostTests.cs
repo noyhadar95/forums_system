@@ -24,7 +24,7 @@ namespace AcceptanceTests.ServerTests
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1,  DateTime.Today.AddDays(100));
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
 
@@ -52,7 +52,7 @@ namespace AcceptanceTests.ServerTests
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1,  DateTime.Today.AddDays(100));
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
 
@@ -90,7 +90,7 @@ namespace AcceptanceTests.ServerTests
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1,  DateTime.Today.AddDays(100));
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
 
@@ -101,7 +101,7 @@ namespace AcceptanceTests.ServerTests
             // check that the deletion is successfully done
             Assert.IsTrue(res);
             // check that the thread has been deleted
-            Assert.IsTrue(bridge.IsExistThread(forumName, subForumName, threadID));
+            Assert.IsTrue(!bridge.IsExistThread(forumName, subForumName, threadID));
 
             // cleanup
             base.DeleteForum(forumName);

@@ -13,6 +13,14 @@ namespace AcceptanceTestsBridge
     {
 
         private IServiceLayer sl;
+        // default values for policies params
+        private int numOfComplaints = 100;
+        private bool blockPassword = false;
+        private int numOfMessages = 0;
+        private int seniorityInDays = 0;
+        private int maxNumOfUsers = 200;
+        private int minAge = 1;
+        private int maxModerators = 20;
 
         public RealBridge()
         {
@@ -33,7 +41,43 @@ namespace AcceptanceTestsBridge
             }
             SuperAdmin superAdmin = SuperAdmin.GetInstance();
             Policies forumPol = ConvertPolicyStubToReal(forumPolicies);
-            Policy policy = new PasswordPolicy(forumPol, 6);
+            Policy policy;
+            switch (forumPol)
+            {
+                case Policies.Password:
+                    policy = new PasswordPolicy(forumPol, 2);
+                    break;
+                case Policies.Authentication:
+                    policy = new AuthenticationPolicy(forumPol);
+                    break;
+                case Policies.ModeratorSuspension:
+                    policy = new ModeratorSuspensionPolicy(forumPol, numOfComplaints);
+                    break;
+                case Policies.Confidentiality:
+                    policy = new ConfidentialityPolicy(forumPol, blockPassword);
+                    break;
+                case Policies.ModeratorAppointment:
+                    policy = new ModeratorAppointmentPolicy(forumPol, seniorityInDays, numOfMessages, numOfComplaints);
+                    break;
+                case Policies.AdminAppointment:
+                    policy = new AdminAppointmentPolicy(forumPol, seniorityInDays, numOfMessages, numOfComplaints);
+                    break;
+                case Policies.MemberSuspension:
+                    policy = new MemberSuspensionPolicy(forumPol, numOfComplaints);
+                    break;
+                case Policies.UsersLoad:
+                    policy = new UsersLoadPolicy(forumPol, maxNumOfUsers);
+                    break;
+                case Policies.MinimumAge:
+                    policy = new MinimumAgePolicy(forumPol, minAge);
+                    break;
+                case Policies.MaxModerators:
+                    policy = new MaxModeratorsPolicy(forumPol, maxModerators);
+                    break;
+                default:
+                    policy = new PasswordPolicy(forumPol, 2);
+                    break;
+            }
             IForum newForum = sl.CreateForum(superAdmin, forumName, policy, newAdmins);
             return newForum != null;
         }
@@ -172,8 +216,9 @@ namespace AcceptanceTestsBridge
 
         public bool IsExistThread(string forumName, string subForumName, int threadID)
         {
-            //TODO: implement
-            return true;
+            IForum forum = sl.GetForum(forumName);
+            ISubForum subForum = forum.getSubForum(subForumName);
+            return sl.IsExistThread(subForum, threadID);
         }
 
         public bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent)
@@ -202,7 +247,43 @@ namespace AcceptanceTestsBridge
             IForum forum = sl.GetForum(forumName);
             IUser user = forum.getUser(username);
             Policies forumPol = ConvertPolicyStubToReal(forumPolicies);
-            Policy policy = new PasswordPolicy(forumPol, 6);
+            Policy policy;
+            switch (forumPol)
+            {
+                case Policies.Password:
+                    policy = new PasswordPolicy(forumPol, 2);
+                    break;
+                case Policies.Authentication:
+                    policy = new AuthenticationPolicy(forumPol);
+                    break;
+                case Policies.ModeratorSuspension:
+                    policy = new ModeratorSuspensionPolicy(forumPol, numOfComplaints);
+                    break;
+                case Policies.Confidentiality:
+                    policy = new ConfidentialityPolicy(forumPol, blockPassword);
+                    break;
+                case Policies.ModeratorAppointment:
+                    policy = new ModeratorAppointmentPolicy(forumPol, seniorityInDays, numOfMessages, numOfComplaints);
+                    break;
+                case Policies.AdminAppointment:
+                    policy = new AdminAppointmentPolicy(forumPol, seniorityInDays, numOfMessages, numOfComplaints);
+                    break;
+                case Policies.MemberSuspension:
+                    policy = new MemberSuspensionPolicy(forumPol, numOfComplaints);
+                    break;
+                case Policies.UsersLoad:
+                    policy = new UsersLoadPolicy(forumPol, maxNumOfUsers);
+                    break;
+                case Policies.MinimumAge:
+                    policy = new MinimumAgePolicy(forumPol, minAge);
+                    break;
+                case Policies.MaxModerators:
+                    policy = new MaxModeratorsPolicy(forumPol, maxModerators);
+                    break;
+                default:
+                    policy = new PasswordPolicy(forumPol, 2);
+                    break;
+            }
             return sl.SetForumProperties(user, forum, policy);
         }
 

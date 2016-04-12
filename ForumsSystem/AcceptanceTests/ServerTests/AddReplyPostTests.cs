@@ -29,7 +29,7 @@ namespace AcceptanceTests.ServerTests
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1,  DateTime.Today.AddDays(100));
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
 
@@ -58,7 +58,7 @@ namespace AcceptanceTests.ServerTests
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1,  DateTime.Today.AddDays(100));
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
 
@@ -88,7 +88,7 @@ namespace AcceptanceTests.ServerTests
             string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1,  DateTime.Today.AddDays(100));
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
 
@@ -118,7 +118,7 @@ namespace AcceptanceTests.ServerTests
             string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1,  DateTime.Today.AddDays(100));
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
 
@@ -151,7 +151,7 @@ namespace AcceptanceTests.ServerTests
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1,  DateTime.Today.AddDays(100));
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
 
@@ -186,7 +186,7 @@ namespace AcceptanceTests.ServerTests
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1,  DateTime.Today.AddDays(100));
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
 

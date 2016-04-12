@@ -5,6 +5,12 @@ using System.Collections.Generic;
 
 namespace AcceptanceTests.ServerTests
 {
+    /* Class Description:
+     * The base class for all Use Case tests classes. This class contains
+     * methods for creating forum, sub forum and thread. It also has a method for deleting a forum
+     * every child class that inherits this one should call the base constructor in order to make 
+     * sure that the system is initialized, and that the proxy bridge instance is initialized too.
+     */
     [TestClass]
     public class UseCaseTestSuite
     {
@@ -43,7 +49,8 @@ namespace AcceptanceTests.ServerTests
             bridge.DeleteForum(forumName);
         }
 
-        // create a new forum called forumName and a new sub-forum called subForumName.
+        // create a new forum called forumName, register all moderators to the forum and create 
+        // a new sub-forum called subForumName with the given moderators list.
         protected bool CreateSubForum(string forumName, PoliciesStub forumPolicy, string subForumName, Dictionary<string, DateTime> moderators)
         {
             // create a forum

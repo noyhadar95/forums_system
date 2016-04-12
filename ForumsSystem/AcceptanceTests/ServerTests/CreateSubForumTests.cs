@@ -26,8 +26,6 @@ namespace AcceptanceTests.ServerTests
             moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 123";
 
-           
-
             bool res = base.CreateSubForum(forumName, forumPolicy, subForumName, moderators);
             Assert.IsTrue(res);
 
@@ -44,7 +42,7 @@ namespace AcceptanceTests.ServerTests
             base.DeleteForum(forumName);
         }
 
-        // test the failure scenario
+        // test the failure scenario - with bad moderators (i.e. usernames of users that are not in the forum)
         [TestMethod]
         public void TestCreateSubForumFailure()
         {
@@ -52,7 +50,7 @@ namespace AcceptanceTests.ServerTests
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user123";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
-            moderators.Add(username1,  DateTime.Today.AddDays(100));
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 123";
 
             base.CreateForum(forumName, forumPolicy);
@@ -66,10 +64,6 @@ namespace AcceptanceTests.ServerTests
             // cleanup
             base.DeleteForum(forumName);
         }
-
-
-        //TODO: test failure with bad props and with bad moderators (i.e. usernames of users that are not in the forum)
-
 
 
     }

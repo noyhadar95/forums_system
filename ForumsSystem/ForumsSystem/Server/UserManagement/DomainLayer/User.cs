@@ -65,7 +65,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.type = new Member();
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
-            this.forum.RegisterToForum(this);
+            Policy policy = forum.GetPolicy();
+            if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
+                this.forum.RegisterToForum(this);
+            else
+                this.forum.AddWaitingUser(this);
             this.isLoggedIn = false;
 
             this.notifications = new List<PrivateMessage>();
@@ -101,7 +105,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (this.forum == null)
             {
                 this.forum = forum;
-                this.forum.RegisterToForum(this);
+                Policy policy = forum.GetPolicy();
+                if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
+                    this.forum.RegisterToForum(this);
+                else
+                    this.forum.AddWaitingUser(this);
                 return true;
             }
             return false;
@@ -189,7 +197,14 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 this.dateJoined = DateTime.Today;
                 this.dateOfBirth = dateOfBirth;
                 type = new Member();
-                return forum.RegisterToForum(this);
+                     Policy policy = forum.GetPolicy();
+                     if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
+                         return forum.RegisterToForum(this);
+                     else
+                     {
+                         forum.AddWaitingUser(this);
+                         return true;
+                     }
             }
             else
                 return false;
@@ -361,6 +376,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public void AcceptEmail()
         {
             this.emailAccepted = true;
+            this.forum.RegisterToForum(this);
 
         }
 

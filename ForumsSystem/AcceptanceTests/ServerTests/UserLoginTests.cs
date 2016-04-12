@@ -27,6 +27,8 @@ namespace AcceptanceTests.ServerTests
             bool res = bridge.LoginUser(forumName, username, pass);
             Assert.IsTrue(res);
 
+            // cleanup
+            base.DeleteForum(forumName);
         }
 
         // test - the failure scenario where the user is not registered to a forum in the system
@@ -42,6 +44,8 @@ namespace AcceptanceTests.ServerTests
             bool res = bridge.LoginUser(forumName, username, pass);
             Assert.IsTrue(!res);
 
+            // cleanup
+            base.DeleteForum(forumName);
         }
 
 

@@ -39,13 +39,9 @@ namespace AcceptanceTests.ServerTests
             //TODO: check that the forum props have been setto the above forumProperties
             // Assert.IsTrue(forumProperties == bridge.GetForumProps(forumName));
 
-            // clean up
-            bridge.DeleteForum(forumName);
+            // cleanup
+            base.DeleteForum(forumName);
         }
-
-
-        //TODO: test invalid forum props
-
 
 
     }

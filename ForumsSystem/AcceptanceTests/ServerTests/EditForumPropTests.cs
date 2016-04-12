@@ -15,17 +15,15 @@ namespace AcceptanceTests.ServerTests
 
         }
 
-        // test the success main scenario with valid forum props
+        // test - edit forum props to MinimumAge policy
         [TestMethod]
-        public void TestEditForumPropValid()
+        public void TestEditForumPropMinAge()
         {
             string forumName = "";
             PoliciesStub forumPolicy = PoliciesStub.Password;
             PoliciesStub newForumPolicy = PoliciesStub.MinimumAge;
 
             base.CreateForum(forumName, forumPolicy);
-
-            //TODO: make sure forumProperties are valid
 
             bool res = bridge.SetForumProperties(forumName, this.adminUserName1, newForumPolicy);
 
@@ -37,7 +35,46 @@ namespace AcceptanceTests.ServerTests
             base.DeleteForum(forumName);
         }
 
-        //TODO: test invalid forum props
+        // test - edit forum props to MaxModerators policy
+        [TestMethod]
+        public void TestEditForumPropMaxModerators()
+        {
+            string forumName = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
+            PoliciesStub newForumPolicy = PoliciesStub.MaxModerators;
+
+            base.CreateForum(forumName, forumPolicy);
+
+            bool res = bridge.SetForumProperties(forumName, this.adminUserName1, newForumPolicy);
+
+            Assert.IsTrue(res);
+            //TODO: check that the forum props have changed
+            // Assert.IsTrue(newForumProperties == bridge.GetForumProps(forumName));
+
+            // cleanup
+            base.DeleteForum(forumName);
+        }
+
+        // // test - edit forum props to MemberSuspension policy
+        [TestMethod]
+        public void TestEditForumPropMemberSuspension()
+        {
+            string forumName = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
+            PoliciesStub newForumPolicy = PoliciesStub.MemberSuspension;
+
+            base.CreateForum(forumName, forumPolicy);
+
+            bool res = bridge.SetForumProperties(forumName, this.adminUserName1, newForumPolicy);
+
+            Assert.IsTrue(res);
+            //TODO: check that the forum props have changed
+            // Assert.IsTrue(newForumProperties == bridge.GetForumProps(forumName));
+
+            // cleanup
+            base.DeleteForum(forumName);
+        }
+
 
 
     }

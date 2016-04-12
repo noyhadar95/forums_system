@@ -22,7 +22,7 @@ namespace AcceptanceTestsBridge
             if (instance == null)
             {
                 instance = new ProxyBridge();
-                // TODO: set real bridge
+                // set real bridge
                 instance.SetRealBridge(new RealBridge());
             }
             return instance;

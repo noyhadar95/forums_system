@@ -34,5 +34,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         int GetNumOfUsers();
         void DeleteUser(string userName);
 
+        IUser GetWaitingUser(string username);
+        void AddWaitingUser(IUser user);
+        
     }
 }

@@ -16,6 +16,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private List<ISubForum> sub_forums;
         private Policy policies;
         private Dictionary<string, IUser> users;//username, user
+        private Dictionary<string, IUser> waiting_users;//username, user - waiting for confirmation
 
 
         public Forum(string forumName)
@@ -55,6 +56,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         }
 
+        
         public bool RegisterToForum(IUser user)
         {
             if (isUserMember(user.getUsername()))
@@ -63,7 +65,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return false;
             users.Add(user.getUsername(), user);
             Loggers.Logger.GetInstance().AddActivityEntry("User: " + user.getUsername() + " Registered");
-            SendMailWhenRegistered(user);
+            waiting_users.Remove(user.getUsername());
+             SendMailWhenRegistered(user);
             return true;
         }
 
@@ -117,7 +120,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             sub_forums = new List<ISubForum>();
             policies = null;
             users = new Dictionary<string, IUser>();
-
+            this.waiting_users = new Dictionary<string, IUser>();
             return true;
         }
 
@@ -221,5 +224,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.users.Remove(userName);
         }
 
+
+
+        public IUser GetWaitingUser(string username)
+        {
+            if (waiting_users.ContainsKey(username))
+                return waiting_users[username];
+            return null;
+        }
+
+        public void AddWaitingUser(IUser user)
+        {
+            waiting_users.Add(user.getUsername(), user);
+        }
     }
 }

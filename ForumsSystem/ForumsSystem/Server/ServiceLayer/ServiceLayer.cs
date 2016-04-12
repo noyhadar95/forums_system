@@ -21,8 +21,13 @@ namespace ForumsSystem.Server.ServiceLayer
         // initialize the system with the username and pass as the super admin login info
         public bool InitializeSystem(string username, string pass)
         {
-            SuperAdmin.CreateSuperAdmin(username, pass, sys);
-            return true;
+            if (username != null && username != "" && pass != null && pass != "")
+            {
+                SuperAdmin.CreateSuperAdmin(username, pass, sys);
+                return true;
+            }
+            else
+                return false;
         }
 
         public IForum CreateForum(SuperAdmin creator, string name, Policy properties, List<IUser> adminUsername)
@@ -111,7 +116,14 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public bool ConfirmRegistration(string forumName, string username)
         {
-            throw new NotImplementedException();
+            IForum forum = this.GetForum(forumName);
+            if (forum == null)
+                return false;
+            IUser user = forum.GetWaitingUser(username);
+            if (user == null)
+                return false;
+            user.AcceptEmail();
+            return true;
         }
 
         public bool LoginSuperAdmin(string username, string pass)
@@ -206,6 +218,10 @@ namespace ForumsSystem.Server.ServiceLayer
             ForumsSystem.Server.UserManagement.DomainLayer.Type type = user.getType();
             return (type is Admin);
 
+        }
+        public bool IsExistThread(ISubForum subForum, int threadID)
+        {
+            return subForum.GetThreadById(threadID) != null;
         }
     }
 }

@@ -57,8 +57,5 @@ namespace AcceptanceTests.ServerTests
         }
 
 
-
-        //TODO: make tests for failure: bad username, bad pass
-
     }
 }

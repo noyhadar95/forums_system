@@ -12,13 +12,13 @@ namespace AcceptanceTests.ServerTests
         {
 
         }
-/*
+
         // test - check that email confirmation succeeds when the forum is defined "secured forum".
         [TestMethod]
         public void TestEmailConfirmationSecureForum()
         {
             string forumName = "forum1";
-            PoliciesStub forumPolicy = PoliciesStub.Password;
+            PoliciesStub forumPolicy = PoliciesStub.Authentication;
             string username = "user1";
             string pass = "passwd";
             string email = "user1@gmail.com";
@@ -45,7 +45,7 @@ namespace AcceptanceTests.ServerTests
         public void TestEmailConfirmationBadUsername()
         {
             string forumName = "forum1";
-            PoliciesStub forumPolicy = PoliciesStub.Password;
+            PoliciesStub forumPolicy = PoliciesStub.Authentication;
             string username = "user1", badUsername = "fakeuser";
             string pass = "passwd";
             string email = "user1@gmail.com";
@@ -68,7 +68,7 @@ namespace AcceptanceTests.ServerTests
             base.DeleteForum(forumName);
         }
 
-        */
+
 
 
     }
