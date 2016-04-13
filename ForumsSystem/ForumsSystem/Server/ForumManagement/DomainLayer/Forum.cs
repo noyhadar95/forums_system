@@ -213,7 +213,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
             catch (Exception e)
             {
-
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed sending email to " + userName + " at address " + email);
             }
             
             
