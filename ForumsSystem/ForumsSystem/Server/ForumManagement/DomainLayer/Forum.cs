@@ -32,8 +32,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
         private void SendMailWhenRegistered(IUser user)
         {
-            PolicyParametersObject param = new PolicyParametersObject(Policies.Authentication);
-            if (policies != null && policies.CheckPolicy(param))
+            //PolicyParametersObject param = new PolicyParametersObject(Policies.Authentication);
+            if (policies != null && policies.CheckIfPolicyExists(Policies.Authentication))
             {
                 sendMail(user.getEmail(), user.getUsername(), "Successfully Registered To Forum: " + this.name,
                    "Hello" + user.getUsername() + ",\n You have registered to the Forum: " + this.name + ". Please click on this link to  complete your registration: " + createLinkForRegistration(user));
@@ -215,6 +215,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             {
 
             }
+            
+            
         }
 
         
