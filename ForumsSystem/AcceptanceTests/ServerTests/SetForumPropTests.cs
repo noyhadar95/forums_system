@@ -25,27 +25,23 @@ namespace AcceptanceTests.ServerTests
             string adminUserName1 = "admin123";
             string adminPass1 = "root123";
             string adminEmail1 = "admin123@gmail.com";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             List<UserStub> admins = new List<UserStub>();
             UserStub user1 = new UserStub(adminUserName1, adminPass1, adminEmail1, forumName);
             admins.Add(user1);
 
             // create the forum with the specified properties
-            bool res = bridge.CreateForum(this.superAdminUsername, forumName, admins, forumProperties);
+            bool res = bridge.CreateForum(this.superAdminUsername, forumName, admins, forumPolicy);
             Assert.IsTrue(res);
             // check that the forum now exists in the sytem
             Assert.IsTrue(bridge.IsExistForum(forumName));
 
-            //TODO: check that the forum props have been setto the above forumProperties
-            // Assert.IsTrue(forumProperties == bridge.GetForumProps(forumName));
+            // check that the forum props have been set to forumPolicy
+            Assert.IsTrue(bridge.IsForumHasPolicy(forumName,forumPolicy));
 
-            // clean up
-            bridge.DeleteForum(forumName);
+            // cleanup
+            base.DeleteForum(forumName);
         }
-
-
-        //TODO: test invalid forum props
-
 
 
     }

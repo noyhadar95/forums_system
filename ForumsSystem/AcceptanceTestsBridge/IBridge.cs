@@ -11,28 +11,27 @@ namespace AcceptanceTestsBridge
 
         #region Add/Create Methods
 
-        bool CreateForum(string creator, string forumName, List<UserStub> admins, string forumProperties);
+        bool CreateForum(string creator, string forumName, List<UserStub> admins, PoliciesStub forumPolicies);
 
-        bool CreateSubForum(string creator, string forumName, string subForumName, List<string> moderators, string properties);
+        bool CreateSubForum(string creator, string forumName, string subForumName, Dictionary<string, DateTime> moderators);
 
-        int AddOpeningPost(string forumName, string subForumName, int threadID, string title, string content);
+        // add thread also means adding the opening post of the thread
+        int AddThread(string forumName, string subForumName, string publisher, string title, string content);
 
-        int AddThread(string forumName, string subForumName, string threadName);
+        int AddReplyPost(string forumName, string subForumName, int threadID, string publisher, int postID, string title, string content);
 
-        int AddReplyPost(string forumName, string subForumName, int threadID, int postID, string title, string content);
-
-        bool AddModerator(string forumName, string subForumName, string username);
+        bool AddModerator(string forumName, string subForumName, string adminUsername, KeyValuePair<string, DateTime> newMod);
 
         #endregion
 
 
         #region Delete Methods
 
-        void DeleteUser(string userName);
+        void DeleteUser(string forumName, string userName);
 
         void DeleteForum(string forumName);
 
-        bool DeletePost(string forumName, string subForumName, int threadID, int postID);
+        bool DeletePost(string forumName, string subForumName, int threadID, string deleter, int postID);
 
         #endregion
 
@@ -49,16 +48,18 @@ namespace AcceptanceTestsBridge
 
         bool IsExistThread(string forumName, string subForumName, int threadID);
 
-        bool IsMsgReceived(string username, string msgTitle, string msgContent);
+        bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent);
 
-        bool IsMsgSent(string username, string msgTitle, string msgContent);
+        bool IsMsgSent(string forumName, string username, string msgTitle, string msgContent);
+
+        bool IsForumHasPolicy(string forumName, PoliciesStub forumPolicy);
 
         #endregion
 
 
         // Other Methods
 
-        bool SetForumProperties(string forumName, string forumProperties);
+        bool SetForumProperties(string forumName, string username, PoliciesStub forumPolicies);
 
         bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth);
 
@@ -67,7 +68,7 @@ namespace AcceptanceTestsBridge
 
         bool SendPrivateMsg(string forumName, string senderUsername, string receiverUsername, string msgTitle, string msgContent);
 
-        bool EditModeratorExpDate(string forumName, string subForumName, string username, DateTime newDate);
+        bool EditModeratorExpDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate);
 
         DateTime GetModeratorExpDate(string forumName, string subForumName, string username);
 
@@ -79,6 +80,10 @@ namespace AcceptanceTestsBridge
         bool InitializeSystem(string username, string pass);
 
         bool ConfirmRegistration(string forumName, string username);
+
+        int GetOpenningPostID(string forumName, string subForumName, int threadID);
+
+        
 
 
     }

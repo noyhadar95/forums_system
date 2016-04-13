@@ -22,7 +22,7 @@ namespace AcceptanceTestsBridge
             if (instance == null)
             {
                 instance = new ProxyBridge();
-                // TODO: set real bridge
+                // set real bridge
                 instance.SetRealBridge(new RealBridge());
             }
             return instance;
@@ -36,50 +36,42 @@ namespace AcceptanceTestsBridge
 
         #region Add/Create Methods
 
-        public bool CreateForum(string creator, string forumName, List<UserStub> admins, string forumProperties)
+        public bool CreateForum(string creator, string forumName, List<UserStub> admins, PoliciesStub forumPolicies)
         {
             if (realBridge != null)
-                return realBridge.CreateForum(creator, forumName, admins, forumProperties);
+                return realBridge.CreateForum(creator, forumName, admins, forumPolicies);
 
             return true;
         }
 
-        public bool CreateSubForum(string creator, string forumName, string subForumName, List<string> moderators, string properties)
+        public bool CreateSubForum(string creator, string forumName, string subForumName, Dictionary<string, DateTime> moderators)
         {
             if (realBridge != null)
-                return realBridge.CreateSubForum(creator, forumName, subForumName, moderators, properties);
+                return realBridge.CreateSubForum(creator, forumName, subForumName, moderators);
 
             return true;
         }
 
-        public int AddOpeningPost(string forumName, string subForumName, int threadID, string title, string content)
+        public int AddThread(string forumName, string subForumName, string publisher, string title, string content)
         {
             if (realBridge != null)
-                return realBridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
+                return realBridge.AddThread(forumName, subForumName, publisher, title, content);
 
             return 1;
         }
 
-        public int AddThread(string forumName, string subForumName, string threadName)
+        public int AddReplyPost(string forumName, string subForumName, int threadID, string publisher, int postID, string title, string content)
         {
             if (realBridge != null)
-                return realBridge.AddThread(forumName, subForumName, threadName);
+                return realBridge.AddReplyPost(forumName, subForumName, threadID, publisher, postID, title, content);
 
             return 1;
         }
 
-        public int AddReplyPost(string forumName, string subForumName, int threadID, int postID, string title, string content)
+        public bool AddModerator(string forumName, string subForumName, string adminUsername, KeyValuePair<string, DateTime> newMod)
         {
             if (realBridge != null)
-                return realBridge.AddReplyPost(forumName, subForumName, threadID, postID, title, content);
-
-            return 1;
-        }
-
-        public bool AddModerator(string forumName, string subForumName, string username)
-        {
-            if (realBridge != null)
-                return realBridge.AddModerator(forumName, subForumName, username);
+                return realBridge.AddModerator(forumName, subForumName, adminUsername, newMod);
 
             return true;
         }
@@ -89,10 +81,10 @@ namespace AcceptanceTestsBridge
 
         #region Delete Methods
 
-        public void DeleteUser(string userName)
+        public void DeleteUser(string forumName, string userName)
         {
             if (realBridge != null)
-                realBridge.DeleteUser(userName);
+                realBridge.DeleteUser(forumName, userName);
 
         }
 
@@ -103,10 +95,10 @@ namespace AcceptanceTestsBridge
 
         }
 
-        public bool DeletePost(string forumName, string subForumName, int threadID, int postID)
+        public bool DeletePost(string forumName, string subForumName, int threadID, string deleter, int postID)
         {
             if (realBridge != null)
-                return realBridge.DeletePost(forumName, subForumName, threadID, postID);
+                return realBridge.DeletePost(forumName, subForumName, threadID, deleter, postID);
 
             return true;
         }
@@ -156,18 +148,26 @@ namespace AcceptanceTestsBridge
             return true;
         }
 
-        public bool IsMsgReceived(string username, string msgTitle, string msgContent)
+        public bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent)
         {
             if (realBridge != null)
-                return realBridge.IsMsgReceived(username, msgTitle, msgContent);
+                return realBridge.IsMsgReceived(forumName, username, msgTitle, msgContent);
 
             return true;
         }
 
-        public bool IsMsgSent(string username, string msgTitle, string msgContent)
+        public bool IsMsgSent(string forumName, string username, string msgTitle, string msgContent)
         {
             if (realBridge != null)
-                return realBridge.IsMsgSent(username, msgTitle, msgContent);
+                return realBridge.IsMsgSent(forumName, username, msgTitle, msgContent);
+
+            return true;
+        }
+
+        public bool IsForumHasPolicy(string forumName, PoliciesStub forumPolicy)
+        {
+            if (realBridge != null)
+                return realBridge.IsForumHasPolicy(forumName, forumPolicy);
 
             return true;
         }
@@ -179,10 +179,10 @@ namespace AcceptanceTestsBridge
         // ---------------------------------- Other Methods
 
 
-        public bool SetForumProperties(string forumName, string forumProperties)
+        public bool SetForumProperties(string forumName, string username, PoliciesStub forumPolicies)
         {
             if (realBridge != null)
-                return realBridge.SetForumProperties(forumName, forumProperties);
+                return realBridge.SetForumProperties(forumName, username, forumPolicies);
 
             return true;
         }
@@ -211,10 +211,10 @@ namespace AcceptanceTestsBridge
             return true;
         }
 
-        public bool EditModeratorExpDate(string forumName, string subForumName, string username, DateTime newDate)
+        public bool EditModeratorExpDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate)
         {
             if (realBridge != null)
-                return realBridge.EditModeratorExpDate(forumName, subForumName, username, newDate);
+                return realBridge.EditModeratorExpDate(forumName, subForumName, admin, moderator, newDate);
 
             return true;
         }
@@ -258,6 +258,18 @@ namespace AcceptanceTestsBridge
 
             return true;
         }
+
+        public int GetOpenningPostID(string forumName, string subForumName, int threadID)
+        {
+            if (realBridge != null)
+                return realBridge.GetOpenningPostID(forumName, subForumName, threadID);
+
+            return 1;
+        }
+
+
+       
+
 
     }
 }

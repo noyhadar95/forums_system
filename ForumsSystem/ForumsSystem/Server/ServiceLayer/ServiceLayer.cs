@@ -21,9 +21,13 @@ namespace ForumsSystem.Server.ServiceLayer
         // initialize the system with the username and pass as the super admin login info
         public bool InitializeSystem(string username, string pass)
         {
-            sys.changeAdminUserName(username);
-            sys.changeAdminPassword(pass);
-            return true;
+            if (username != null && username != "" && pass != null && pass != "")
+            {
+                SuperAdmin.CreateSuperAdmin(username, pass, sys);
+                return true;
+            }
+            else
+                return false;
         }
 
         public IForum CreateForum(SuperAdmin creator, string name, Policy properties, List<IUser> adminUsername)
@@ -36,34 +40,34 @@ namespace ForumsSystem.Server.ServiceLayer
             return user.SetForumProperties(forum, properties);
         }
 
-        public bool ChangeForumProperties(IUser user,IForum forum, Policy properties)
+        public bool ChangeForumProperties(IUser user, IForum forum, Policy properties)
         {
             return user.ChangeForumProperties(forum, properties);
         }
 
         public bool RegisterToForum(IUser guest, IForum forum, string userName, string password, string email, DateTime dateOfBirth)
         {
-            return guest.RegisterToForum(userName, password, forum, email,dateOfBirth);
-           
+            return guest.RegisterToForum(userName, password, forum, email, dateOfBirth);
+
         }
 
-        public ISubForum CreateSubForum( IUser creator, string name, Dictionary<string,DateTime> moderators)
+        public ISubForum CreateSubForum(IUser creator, string name, Dictionary<string, DateTime> moderators)
         {
 
-           return creator.createSubForum(name, moderators);
+            return creator.createSubForum(name, moderators);
 
         }
 
         public Thread AddThread(ISubForum subForum, IUser publisher, string title, string content)
         {
             return publisher.createThread(subForum, title, content);
-           
+
         }
 
         public Post AddReply(Post post, IUser publisher, string title, string content)
         {
             return publisher.postReply(post, post.Thread, title, content);
-            
+
         }
 
         public IUser MemberLogin(string username, string password, IForum forum)
@@ -75,12 +79,12 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             return from.SendPrivateMessage(to, title, content);
 
-           
+
         }
 
-        public bool ChangeExpirationDate(IUser admin, DateTime newDate, string moderator,ISubForum subforum)
+        public bool ChangeExpirationDate(IUser admin, DateTime newDate, string moderator, ISubForum subforum)
         {
-           return admin.editExpirationTimeOfModerator(moderator, newDate, subforum);
+            return admin.editExpirationTimeOfModerator(moderator, newDate, subforum);
         }
 
         public bool DeletePost(IUser deleter, Post post)
@@ -88,18 +92,19 @@ namespace ForumsSystem.Server.ServiceLayer
             return deleter.deletePost(post);
         }
 
-        public bool DeleteForumProperties(IUser user,IForum forum, List<Policies> properties)
+        public bool DeleteForumProperties(IUser user, IForum forum, List<Policies> properties)
         {
             return user.DeleteForumProperties(forum, properties);
-           
+
         }
 
         public IForum GetForum(string forumName)
         {
+
             return SuperAdmin.GetInstance().forumSystem.getForum(forumName);
         }
 
-        public bool AddModerator(IUser admin, ISubForum subForum, string username,DateTime expiratoinDate)
+        public bool AddModerator(IUser admin, ISubForum subForum, string username, DateTime expiratoinDate)
         {
             return admin.appointModerator(username, expiratoinDate, subForum);
         }
@@ -111,7 +116,14 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public bool ConfirmRegistration(string forumName, string username)
         {
-            throw new NotImplementedException();
+            IForum forum = this.GetForum(forumName);
+            if (forum == null)
+                return false;
+            IUser user = forum.GetWaitingUser(username);
+            if (user == null)
+                return false;
+            user.AcceptEmail();
+            return true;
         }
 
         public bool LoginSuperAdmin(string username, string pass)
@@ -121,7 +133,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public DateTime GetModeratorExpDate(ISubForum subForum, string username)
         {
-           return subForum.getModeratorByUserName(username).expirationDate;
+            return subForum.getModeratorByUserName(username).expirationDate;
         }
 
         public int CountNestedReplies(ISubForum subforum, int threadID, int postID)
@@ -131,7 +143,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public bool IsMsgSent(IUser user, string msgTitle, string msgContent)
         {
-           return user.IsMessageSent(msgTitle, msgContent);
+            return user.IsMessageSent(msgTitle, msgContent);
         }
 
         public bool IsMsgReceived(IUser user, string msgTitle, string msgContent)
@@ -169,7 +181,7 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             SuperAdmin superAdmin = SuperAdmin.GetInstance();
             ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
-            Thread thread = sys.getForum(forumName).getSubForum(subForumName).getThread(threadID);
+            Thread thread = sys.getForum(forumName).getSubForum(subForumName).GetThreadById(threadID);
             IUser user = thread.GetOpeningPost().getPublisher();
             return user.deletePost(thread.GetPostById(postID));
         }
@@ -193,8 +205,23 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             SuperAdmin superAdmin = SuperAdmin.GetInstance();
             ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
-            Thread thread = sys.getForum(forumName).getSubForum(subForumName).getThread(threadID);
+            Thread thread = sys.getForum(forumName).getSubForum(subForumName).GetThreadById(threadID);
             return thread.GetOpeningPost().GetId();
+        }
+
+        public bool IsAdmin(string username, string forumName)
+        {
+            SuperAdmin superAdmin = SuperAdmin.GetInstance();
+            ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
+            IForum forum = sys.getForum(forumName);
+            IUser user = sys.getForum(forumName).getUser(username);
+            ForumsSystem.Server.UserManagement.DomainLayer.Type type = user.getType();
+            return (type is Admin);
+
+        }
+        public bool IsExistThread(ISubForum subForum, int threadID)
+        {
+            return subForum.GetThreadById(threadID) != null;
         }
     }
 }

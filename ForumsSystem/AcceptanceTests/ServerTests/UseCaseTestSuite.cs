@@ -5,12 +5,22 @@ using System.Collections.Generic;
 
 namespace AcceptanceTests.ServerTests
 {
+    /* Class Description:
+     * The base class for all Use Case tests classes. This class contains
+     * methods for creating forum, sub forum and thread. It also has a method for deleting a forum
+     * every child class that inherits this one should call the base constructor in order to make 
+     * sure that the system is initialized, and that the proxy bridge instance is initialized too.
+     */
     [TestClass]
     public class UseCaseTestSuite
     {
         protected IBridge bridge;
         protected string superAdminUsername = "superadmin";
         protected string superAdminPass = "superadminpass";
+        protected string adminUserName1 = "admin1"; // the username of the admin used to create sub forums for the tests
+        protected string adminPass1 = "adminPasswd"; // the password of the admin used to create sub forums for the tests
+        protected string adminEmail1 = "admin1@gmail.com"; // the email of the admin used to create sub forums for the tests
+
 
         public UseCaseTestSuite()
         {
@@ -20,21 +30,18 @@ namespace AcceptanceTests.ServerTests
 
         protected bool CreateForum(string forumName)
         {
-            string forumProperties = "";
-            return CreateForum(forumName, forumProperties);
+            PoliciesStub forumPolicy = PoliciesStub.Password;
+            return CreateForum(forumName, forumPolicy);
         }
 
-        protected bool CreateForum(string forumName, string forumProperties)
+        protected bool CreateForum(string forumName, PoliciesStub forumPolicy)
         {
-            string adminUserName1 = "admin1";
-            string adminPass1 = "adminPasswd";
-            string adminEmail1 = "admin1@gmail.com";
             List<UserStub> admins = new List<UserStub>();
             UserStub user1 = new UserStub(adminUserName1, adminPass1, adminEmail1, forumName);
             admins.Add(user1);
 
             // create the forum
-            return bridge.CreateForum(superAdminUsername, forumName, admins, forumProperties);
+            return bridge.CreateForum(superAdminUsername, forumName, admins, forumPolicy);
         }
 
         protected void DeleteForum(string forumName)
@@ -42,32 +49,36 @@ namespace AcceptanceTests.ServerTests
             bridge.DeleteForum(forumName);
         }
 
-        // create a new forum called forumName and a new sub-forum called subForumName.
-        protected bool CreateSubForum(string forumName, string forumProperties, string subForumName, List<string> moderators,
-            string subForumProps)
+        // create a new forum called forumName, register all moderators to the forum and create 
+        // a new sub-forum called subForumName with the given moderators list.
+        protected bool CreateSubForum(string forumName, PoliciesStub forumPolicy, string subForumName, Dictionary<string, DateTime> moderators)
         {
             // create a forum
-            CreateForum(forumName, forumProperties);
+            CreateForum(forumName, forumPolicy);
 
             // register all moderators-to-be to the forum
-            foreach (string mod in moderators)
+            foreach (KeyValuePair<string, DateTime> mod in moderators)
             {
-                string username = mod, pass = mod + "passwd", email = mod + "@gmail.com";
+                string username = mod.Key, pass = mod.Key + "passwd", email = mod.Key + "@gmail.com";
                 DateTime dateOfBirth = new DateTime(1995, 8, 2);
 
-                bridge.RegisterToForum(forumName, mod, pass, email, dateOfBirth);
+                bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
             }
-
-            return bridge.CreateSubForum(forumName, subForumName, moderators, subForumProps);
+            bridge.LoginUser(forumName, adminUserName1, adminPass1);
+            return bridge.CreateSubForum(adminUserName1, forumName, subForumName, moderators);
         }
 
         // create a new forum called forumName, a new sub-forum called subForumName and than
         // a new thread in it.
-        protected int AddThread(string forumName, string forumProperties, string subForumName, List<string> moderators,
-            string subForumProps, string threadName)
+        protected int AddThread(string forumName, PoliciesStub forumPolicy, string subForumName, Dictionary<string, DateTime> moderators,
+             string publisher, string title, string content)
         {
-            CreateSubForum(forumName, forumProperties, subForumName, moderators, subForumProps);
-            return bridge.AddThread(forumName, subForumName, threadName);
+            CreateSubForum(forumName, forumPolicy, subForumName, moderators);
+            string publisherPass = "publisherpassword", publisherEmail = "publisher1@gmail.com";
+            DateTime publisherDateOfBirth = DateTime.Today.AddYears(-25);
+            bridge.RegisterToForum(forumName, publisher, publisherPass, publisherEmail, publisherDateOfBirth);
+            bridge.LoginUser(forumName, publisher, publisherPass);
+            return bridge.AddThread(forumName, subForumName, publisher, title, content);
 
         }
 

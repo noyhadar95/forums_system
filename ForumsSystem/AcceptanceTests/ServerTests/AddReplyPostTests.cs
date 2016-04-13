@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using AcceptanceTestsBridge;
 
 namespace AcceptanceTests.ServerTests
 {
@@ -24,23 +25,21 @@ namespace AcceptanceTests.ServerTests
             string title = "title1";
             string content = "content1";
             string forumName = "forum1";
-            string forumProperties = "";
-            string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
+            string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
-            string subForumProps = "";
-            string threadName = "thread1";
+            string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and thread.
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadName);
-            // add opening post
-            int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
+            int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
+               threadPublisher, title, content);
+            int postID = bridge.GetOpenningPostID(forumName, subForumName, threadID);
 
             // add reply post
-            int res = bridge.AddReplyPost(forumName, subForumName, threadID, postID, title, content);
+            int res = bridge.AddReplyPost(forumName, subForumName, threadID, threadPublisher, postID, title, content);
             // check that res is not negative, which means that the post have been added
             Assert.IsTrue(res >= 0);
 
@@ -55,23 +54,22 @@ namespace AcceptanceTests.ServerTests
             string title = "title1";
             string content = ""; // empty content
             string forumName = "forum1";
-            string forumProperties = "";
-            string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
+            string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
-            string subForumProps = "";
-            string threadName = "thread1";
+            string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and thread.
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadName);
+            int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
+                threadPublisher, title, content);
             // add opening post
-            int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
+            int postID = bridge.GetOpenningPostID(forumName, subForumName, threadID);
 
             // add reply post
-            int res = bridge.AddReplyPost(forumName, subForumName, threadID, postID, title, content);
+            int res = bridge.AddReplyPost(forumName, subForumName, threadID, threadPublisher, postID, title, content);
             // check that res is not negative, which means that the post have been added
             Assert.IsTrue(res >= 0);
 
@@ -86,23 +84,22 @@ namespace AcceptanceTests.ServerTests
             string title = ""; // empty title
             string content = "content1";
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
-            string subForumProps = "";
-            string threadName = "thread1";
+            string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and thread.
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadName);
+            int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
+                 threadPublisher, title, content);
             // add opening post
-            int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
+            int postID = bridge.GetOpenningPostID(forumName, subForumName, threadID);
 
             // add reply post
-            int res = bridge.AddReplyPost(forumName, subForumName, threadID, postID, title, content);
+            int res = bridge.AddReplyPost(forumName, subForumName, threadID, threadPublisher, postID, title, content);
             // check that res is not negative, which means that the post have been added
             Assert.IsTrue(res >= 0);
 
@@ -117,23 +114,21 @@ namespace AcceptanceTests.ServerTests
             string title = ""; // empty title
             string content = ""; // empty content
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
-            string subForumProps = "";
-            string threadName = "thread1";
+            string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and thread.
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadName);
-            // add opening post
-            int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
+            int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
+                threadPublisher, "thread title", "cont");
+            int postID = bridge.GetOpenningPostID(forumName, subForumName, threadID);
 
             // add reply post
-            int res = bridge.AddReplyPost(forumName, subForumName, threadID, postID, title, content);
+            int res = bridge.AddReplyPost(forumName, subForumName, threadID, threadPublisher, postID, title, content);
             // check that res is negative, which means that the post havn't been added
             Assert.IsTrue(res < 0);
 
@@ -152,26 +147,25 @@ namespace AcceptanceTests.ServerTests
             string title = "title1";
             string content = "content1";
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
-            string subForumProps = "";
-            string threadName = "thread1";
+            string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and a thread to add a post to.
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadName);
-            // add opening post
-            int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
+            int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
+                 threadPublisher, title, content);
+            int postID = bridge.GetOpenningPostID(forumName, subForumName, threadID);
+
 
             // add reply post
-            int replyPostID = bridge.AddReplyPost(forumName, subForumName, threadID, postID, title, content);
+            int replyPostID = bridge.AddReplyPost(forumName, subForumName, threadID, threadPublisher, postID, title, content);
 
             // add reply post to the first reply
-            int res = bridge.AddReplyPost(forumName, subForumName, threadID, replyPostID, title, content);
+            int res = bridge.AddReplyPost(forumName, subForumName, threadID, threadPublisher, replyPostID, title, content);
             Assert.IsTrue(res >= 0);
 
             // cleanup
@@ -188,29 +182,28 @@ namespace AcceptanceTests.ServerTests
             string title = "title1";
             string content = "content1";
             string forumName = "forum1";
-            string forumProperties = "";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
-            List<string> moderators = new List<string>();
-            moderators.Add(username1);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
-            string subForumProps = "";
-            string threadName = "thread1";
+            string threadPublisher = "publisher1";
 
             // create a forum, sub-forum and a thread to add a post to.
-            int threadID = base.AddThread(forumName, forumProperties, subForumName, moderators,
-                subForumProps, threadName);
+            int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
+                threadPublisher, title, content);
             // add opening post
-            int postID = bridge.AddOpeningPost(forumName, subForumName, threadID, title, content);
+            int postID = bridge.GetOpenningPostID(forumName, subForumName, threadID);
 
             // add reply post
-            bridge.AddReplyPost(forumName, subForumName, threadID, postID, title, content);
+            bridge.AddReplyPost(forumName, subForumName, threadID, threadPublisher, postID, title, content);
 
             // add second reply post to the opening reply
-            int replyPostID = bridge.AddReplyPost(forumName, subForumName, threadID, postID, title, content);
+            int replyPostID = bridge.AddReplyPost(forumName, subForumName, threadID, threadPublisher, postID, title, content);
 
             // add reply nest 2 to the second reply to the opening
-            int res = bridge.AddReplyPost(forumName, subForumName, threadID, replyPostID, title, content);
+            int res = bridge.AddReplyPost(forumName, subForumName, threadID, threadPublisher, replyPostID, title, content);
             Assert.IsTrue(res >= 0);
 
             // cleanup

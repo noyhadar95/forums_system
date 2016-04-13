@@ -16,6 +16,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private List<ISubForum> sub_forums;
         private Policy policies;
         private Dictionary<string, IUser> users;//username, user
+        private Dictionary<string, IUser> waiting_users;//username, user - waiting for confirmation
 
 
         public Forum(string forumName)
@@ -31,8 +32,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
         private void SendMailWhenRegistered(IUser user)
         {
-            PolicyParametersObject param = new PolicyParametersObject(Policies.Authentication);
-            if (policies != null && policies.CheckPolicy(param))
+            //PolicyParametersObject param = new PolicyParametersObject(Policies.Authentication);
+            if (policies != null && policies.CheckIfPolicyExists(Policies.Authentication))
             {
                 sendMail(user.getEmail(), user.getUsername(), "Successfully Registered To Forum: " + this.name,
                    "Hello" + user.getUsername() + ",\n You have registered to the Forum: " + this.name + ". Please click on this link to  complete your registration: " + createLinkForRegistration(user));
@@ -55,6 +56,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         }
 
+        
         public bool RegisterToForum(IUser user)
         {
             if (isUserMember(user.getUsername()))
@@ -63,7 +65,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return false;
             users.Add(user.getUsername(), user);
             Loggers.Logger.GetInstance().AddActivityEntry("User: " + user.getUsername() + " Registered");
-            SendMailWhenRegistered(user);
+            waiting_users.Remove(user.getUsername());
+             SendMailWhenRegistered(user);
             return true;
         }
 
@@ -117,7 +120,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             sub_forums = new List<ISubForum>();
             policies = null;
             users = new Dictionary<string, IUser>();
-
+            this.waiting_users = new Dictionary<string, IUser>();
             return true;
         }
 
@@ -183,28 +186,38 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public void sendMail(string email, string userName, string subject, string body)
         {
-            var fromAddress = new MailAddress("TimTimTeam1@gmail.com","TimTimTeam");
-            var toAddress = new MailAddress(email, userName);
-            const string fromPassword = "TimTeamTim";
+            try
+            {
+                var fromAddress = new MailAddress("TimTimTeam1@gmail.com", "TimTimTeam");
+                var toAddress = new MailAddress(email, userName);
+                const string fromPassword = "TimTeamTim";
 
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-            using (var message = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                Body = body
-            })
-            {
-                smtp.Send(message);
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                };
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body
+                })
+                {
+                    smtp.Timeout = 10;
+                    smtp.Send(message);
+                }
+                Loggers.Logger.GetInstance().AddActivityEntry("Email sent to: " + email);
             }
-            Loggers.Logger.GetInstance().AddActivityEntry("Email sent to: " + email);
+            catch (Exception e)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed sending email to " + userName + " at address " + email);
+            }
+            
+            
         }
 
         
@@ -214,5 +227,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.users.Remove(userName);
         }
 
+
+
+        public IUser GetWaitingUser(string username)
+        {
+            if (waiting_users.ContainsKey(username))
+                return waiting_users[username];
+            return null;
+        }
+
+        public void AddWaitingUser(IUser user)
+        {
+            waiting_users.Add(user.getUsername(), user);
+        }
     }
 }

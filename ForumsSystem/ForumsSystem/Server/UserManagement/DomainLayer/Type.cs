@@ -69,7 +69,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (!callingUser.isLogin())
                 return false;
             IForum forum = subForum.getForum();
-            if (forum.isUserMember(userName))
+            if (!forum.isUserMember(userName))
                 return false; // moderator should be member in the forum
             if (expirationTime != null && expirationTime.CompareTo(DateTime.Now) < 0)
                 return false; // expiration date should be after now
@@ -174,7 +174,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             if (!callingUser.isLogin())
                 return null;
-            if ((title == null | title == "") & (content == null || content ==""))
+            if ((title == null || title == "") & (content == null || content ==""))
                 return null;
             if (thread == null)
                 return null;
@@ -205,7 +205,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return null;
             if ((title == null || title =="") & (content == null || content == ""))
                 return null;
-            Thread thread = new Thread(subForum);
+            Thread thread = subForum.createThread();
             Post openingPost = new Post(callingUser, thread, title, content);
             if (thread.AddOpeningPost(openingPost))
             {

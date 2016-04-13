@@ -53,11 +53,14 @@ namespace ForumsSystem.Server.ServiceLayer
         bool IsModerator(string forumName, string subForumName, string username);
         bool IsRegisteredToForum(string username, string forumName);
         bool IsExistForum(string forumName);
+        bool IsExistThread(ISubForum subForum, int threadID);
         bool DeletePost(string forumName, string subForumName, int threadID, int postID);
         void DeleteForum(string forumName);
         void DeleteUser(string userName, string forumName);
         int GetOpenningPostID(string forumName, string subForumName, int threadID);
 
+        bool IsAdmin(string username, string forumName);
+        
 
     }
 }

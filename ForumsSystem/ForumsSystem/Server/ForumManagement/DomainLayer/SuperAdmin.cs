@@ -14,7 +14,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private static SuperAdmin instance = null;
         public string userName { get; set; }
         public string password { get; set; }
-        private bool isLoggedIn { get; set; }
+        public bool isLoggedIn { get; set; }
         public System forumSystem { get; private set; }
 
 
@@ -30,9 +30,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if (instance == null)
             {
-                return new SuperAdmin(userName, password, forumSystem);
+                instance= new SuperAdmin(userName, password, forumSystem);
             }
-            else
+            
                 return instance;
         }
 
@@ -58,8 +58,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             forum.AddPolicy(properties);
             foreach (IUser user in adminUsername.ToList<IUser>())
             {
+                user.SetForum(forum);
                 user.ChangeType(new Admin());
-                forum.RegisterToForum(user);
             }
 
             return (Forum)forum;

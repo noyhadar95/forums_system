@@ -14,6 +14,10 @@ namespace AcceptanceTestsBridge
         private string forumName; // a user belongs to a forum
 
         public string Username { get { return username; } set { username = value; } }
+        public string Password { get { return password; } set { password = value; } }
+
+        public string Email { get { return email; } set { email = value; } }
+
 
         public UserStub(string username, string password, string email, string forumName)
         {
