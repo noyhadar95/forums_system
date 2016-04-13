@@ -77,16 +77,15 @@ namespace UnitTests.ServerIntegrationTests
             IUser user2 = new User("m2", "mp2", "nimrodh@post.bgu.ac.il", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
+            user1.AcceptEmail();
+            user2.AcceptEmail();
             ISubForum subforum = admin.createSubForum(subforumName, moderators);
             Assert.IsNotNull(subforum);
 
             Thread thr = admin.createThread(subforum, "Post1", "Content1");
 
             Assert.IsNotNull(thr);
-            user1.Login();
-            Assert.IsFalse(user1.isLogin());
 
-            user1.AcceptEmail();
             user1.Login();
             Assert.IsTrue(user1.isLogin());
 
