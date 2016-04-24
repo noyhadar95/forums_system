@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ForumsSystem.Server.ServiceLayer;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using System.Xml.Linq;
 
 namespace AcceptanceTestsBridge
 {
@@ -359,9 +360,40 @@ namespace AcceptanceTestsBridge
             return sl.GetOpenningPostID(forumName, subForumName, threadID);
         }
 
-       
+        public bool ShouldTear(string className,string methodName)
+        {
+            try {
+                XDocument doc = XDocument.Load
+                    ("C:\\Users\\omerh\\Documents\\GitHub\\forums_system\\ForumsSystem\\AcceptanceTests\\ServerTests\\AddModeratorTestsData.xml");
 
+                var classVals = doc.Descendants(className);
+                var methodVals = classVals.ToArray()[0].Element(methodName);
+                if (methodVals == null)
+                    return true;
+                string val = methodVals.Value;
+                if (string.Equals(val, "true", StringComparison.CurrentCultureIgnoreCase))
+                    return true;
+                return false;
+            }
+            catch(Exception e)
+            {
+                return true;
+            }
+        }
 
+        public void AddFriend(string user1, string user2)
+        {
+            throw new NotImplementedException();
+        }
 
+        public bool IsExistNotificationOfPost(string user, int postId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EditPost(string editor, int postId, string newTitle, string newContent)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

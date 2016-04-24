@@ -208,7 +208,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 })
                 {
                     smtp.Timeout = 10;
-                    smtp.Send(message);
+                    //smtp.Send(message);
                 }
                 Loggers.Logger.GetInstance().AddActivityEntry("Email sent to: " + email);
             }

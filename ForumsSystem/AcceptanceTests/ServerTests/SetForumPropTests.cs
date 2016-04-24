@@ -40,7 +40,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(bridge.IsForumHasPolicy(forumName,forumPolicy));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
 

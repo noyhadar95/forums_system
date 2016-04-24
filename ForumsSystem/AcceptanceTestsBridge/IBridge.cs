@@ -45,7 +45,7 @@ namespace AcceptanceTestsBridge
         bool IsAdmin(string username, string forumName);
 
         bool IsModerator(string forumName, string subForumName, string username);
-
+     
         bool IsExistThread(string forumName, string subForumName, int threadID);
 
         bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent);
@@ -83,8 +83,13 @@ namespace AcceptanceTestsBridge
 
         int GetOpenningPostID(string forumName, string subForumName, int threadID);
 
-        
+        bool ShouldTear(string className, string methodName);
 
-
+        void AddFriend(string user1, string user2);
+        bool IsExistNotificationOfPost(string user, int postId);
+        void EditPost(string editor, int postId, string newTitle, string newContent);
+        void DeletePost(string deleter, int postId);
+        bool RemoveModerator(string forumName, string subForumName, string remover, string moderator);
+        int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string email);
     }
 }

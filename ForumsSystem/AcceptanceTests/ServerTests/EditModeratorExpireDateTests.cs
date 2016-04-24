@@ -39,7 +39,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(updatedDate != null && updatedDate.Equals(newDate));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
 

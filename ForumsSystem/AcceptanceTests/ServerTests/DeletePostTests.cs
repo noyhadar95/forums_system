@@ -39,7 +39,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(res);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // test - delete reply post with replies to it, need to delete all of it's replies
@@ -77,7 +77,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(countNestedRepliesAfter == countNestedRepliesBefore - countRepliesToDelete);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // test - delete opening post, check that the thread of the opening post is deleted too.
@@ -104,7 +104,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(!bridge.IsExistThread(forumName, subForumName, threadID));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
     }

@@ -28,7 +28,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(res);
 
             // cleanup
-            base.DeleteForum(forumName);
+                base.Cleanup(forumName);
         }
 
         // test - the failure scenario where the user is not registered to a forum in the system
@@ -45,7 +45,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(!res);
 
             // cleanup
-            base.DeleteForum(forumName);
+                base.Cleanup(forumName);
         }
 
 

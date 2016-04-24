@@ -35,7 +35,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(bridge.IsRegisteredToForum(username, forumName));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // test failure scenario for registration with invalid info: forum doesn't exist
@@ -49,7 +49,7 @@ namespace AcceptanceTests.ServerTests
             DateTime dateOfBirth = DateTime.Now;
 
             // make sure forum doesn't exist
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
 
             bool res = bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
             Assert.IsTrue(!res);

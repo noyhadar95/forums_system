@@ -39,7 +39,7 @@ namespace AcceptanceTests.ServerTests
             }
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // test the failure scenario - with bad moderators (i.e. usernames of users that are not in the forum)
@@ -62,7 +62,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(!res);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
 

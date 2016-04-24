@@ -36,7 +36,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(bridge.IsRegisteredToForum(username, forumName));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // test - check that email confirmation fails with username that didnt ask to 
@@ -65,7 +65,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(!bridge.IsRegisteredToForum(badUsername, forumName));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
 

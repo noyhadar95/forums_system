@@ -268,8 +268,27 @@ namespace AcceptanceTestsBridge
         }
 
 
-       
+        public bool ShouldTear(string className, string methodName)
+        {
+            if (realBridge != null)
+                return realBridge.ShouldTear(className, methodName);
+            return true;//TODO: implement
+                
+        }
 
+        public void AddFriend(string user1, string user2)
+        {
+            throw new NotImplementedException();
+        }
 
+        public bool IsExistNotificationOfPost(string user, int postId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EditPost(string editor, int postId, string newTitle, string newContent)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

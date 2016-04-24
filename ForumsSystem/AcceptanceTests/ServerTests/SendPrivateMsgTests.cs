@@ -42,7 +42,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(res);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // test - send a private message to another user in the same forum, check that
@@ -73,7 +73,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(res);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
     }

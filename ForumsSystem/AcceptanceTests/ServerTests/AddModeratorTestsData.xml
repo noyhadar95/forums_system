@@ -1,0 +1,5 @@
+<cleanupConfig>
+  <AddModeratorTests>
+    <TestAddModerator>true</TestAddModerator>
+  </AddModeratorTests>
+</cleanupConfig>

@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AcceptanceTestsBridge;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace AcceptanceTests.ServerTests
 {
@@ -43,10 +45,21 @@ namespace AcceptanceTests.ServerTests
             // create the forum
             return bridge.CreateForum(superAdminUsername, forumName, admins, forumPolicy);
         }
-
-        protected void DeleteForum(string forumName)
+        private void DeleteForum(string forumName)
         {
             bridge.DeleteForum(forumName);
+        }
+        protected void Cleanup(string forumName)
+        {
+            StackTrace stackTrace = new System.Diagnostics.StackTrace();
+            StackFrame frame = stackTrace.GetFrames()[1];
+            MethodBase method = frame.GetMethod();
+            string methodName = method.Name;
+            string className = method.DeclaringType.Name;
+          //  string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+         //  string className = this.GetType().Name;
+            if (bridge.ShouldTear(className, methodName))
+                DeleteForum(forumName);
         }
 
         // create a new forum called forumName, register all moderators to the forum and create 

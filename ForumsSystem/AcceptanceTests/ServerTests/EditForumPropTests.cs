@@ -32,7 +32,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(bridge.IsForumHasPolicy(forumName, newForumPolicy));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // test - edit forum props to MaxModerators policy
@@ -52,7 +52,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(bridge.IsForumHasPolicy(forumName, newForumPolicy));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // // test - edit forum props to MemberSuspension policy
@@ -72,7 +72,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(bridge.IsForumHasPolicy(forumName, newForumPolicy));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
 

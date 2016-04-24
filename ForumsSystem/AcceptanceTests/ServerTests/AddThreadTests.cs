@@ -39,7 +39,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(threadID >= 0);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // check that it's possible to add a post with empty content and a valid title
@@ -65,7 +65,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(threadID >= 0);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // check that it's possible to add a post with empty title and a valid content
@@ -91,7 +91,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(threadID >= 0);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // check that it's not possible to add a post with empty title and empty content
@@ -117,7 +117,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(threadID < 0);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
 
