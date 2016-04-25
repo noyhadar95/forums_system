@@ -55,6 +55,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
 
             IForum forum = this.forumSystem.createForum(forumName);
+            if (forum == null)
+                return null;
+
             forum.AddPolicy(properties);
             foreach (IUser user in adminUsername.ToList<IUser>())
             {

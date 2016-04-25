@@ -395,5 +395,40 @@ namespace AcceptanceTestsBridge
         {
             throw new NotImplementedException();
         }
+
+        public void DeletePost(string deleter, int postId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool RemoveModerator(string forumName, string subForumName, string remover, string moderator)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> GetListOfModerators(string forumName, string subForumName, string adminUserName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Tuple<int, string, string>> GetPostsInForumByModerator(string forumName, string subForumName, string adminUserName, string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetNumOfForums()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

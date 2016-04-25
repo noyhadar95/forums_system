@@ -41,7 +41,6 @@ namespace AcceptanceTestsBridge
         bool IsExistForum(string forumName);
 
         bool IsRegisteredToForum(string username, string forumName);
-
         bool IsAdmin(string username, string forumName);
 
         bool IsModerator(string forumName, string subForumName, string username);
@@ -91,5 +90,9 @@ namespace AcceptanceTestsBridge
         void DeletePost(string deleter, int postId);
         bool RemoveModerator(string forumName, string subForumName, string remover, string moderator);
         int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string email);
+        List<string> GetListOfModerators(string forumName, string subForumName, string adminUserName);
+        List<Tuple<int, string, string>> GetPostsInForumByModerator(string forumName,string subForumName, string adminUserName, string email);
+        int GetNumOfForums();//only superadmin can use this
+        Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo();//<email,List<forum,username>> - only superadmin can use this
     }
 }

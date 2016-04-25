@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.LoadTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -68,6 +71,8 @@
     <Compile Include="ServerTests\SuperAdminLoginTests.cs" />
     <Compile Include="ServerTests\SendPrivateMsgTests.cs" />
     <Compile Include="ServerTests\SetForumPropTests.cs" />
+    <Compile Include="ServerTests\AdminServicesTests.cs" />
+    <Compile Include="ServerTests\SuperAdminServicesTests.cs" />
     <Compile Include="ServerTests\UseCaseTestSuite.cs" />
     <Compile Include="ServerTests\UserLoginTests.cs" />
   </ItemGroup>
@@ -79,6 +84,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ServerTests\AddModeratorTestsData.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ServerTests\LoadTest1.loadtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
