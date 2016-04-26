@@ -1,0 +1,20 @@
+﻿<Window x:Class="ForumsSystemClient.PresentationLayer.ThreadWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
+        mc:Ignorable="d"
+        Title="ThreadWindow" Height="450" Width="750">
+    <Grid>
+        <ListView x:Name="listView" HorizontalAlignment="Left" Height="156" Margin="110,85,0,0" VerticalAlignment="Top" Width="344">
+            <ListView Height="80" Width="281">
+                <ListItem/>
+                <ListView Height="45" Width="241">
+                    <ListItem/>
+                </ListView>
+            </ListView>
+            <ListItem/>
+        </ListView>
+    </Grid>
+</Window>
