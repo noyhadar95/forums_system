@@ -89,13 +89,39 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestRemoveModeratorBeforeExipartionFailureAdmin()
         {
-            Assert.Fail();//TODO:check if we choose to implement that way
+            Assert.Fail("Not Yet Implemented");//TODO:check if we choose to implement that way
         }
         //test an attempt to remove the only moderator of a subforum
         [TestMethod]
         public void TestRemoveModeratorBeforeExipartionFailureOnlyModerator()
         {
-            Assert.Fail();
+
+            string forumName = "forum1";
+            PoliciesStub forumPolicy = PoliciesStub.Password;
+            string username1 = "user1";
+            DateTime dateOfBirth1 = DateTime.Now, dateOfBirth2 = DateTime.Now;
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, DateTime.Today.AddDays(100));
+            string subForumName = "sub forum 1";
+
+            try
+            {
+                // create a forum, sub-forum and a thread to add a post to.
+                base.CreateSubForum(forumName, forumPolicy, subForumName, moderators);
+                //try to remove the only moderator:
+                bool res = bridge.RemoveModerator(forumName, subForumName, this.adminUserName1, username1);
+
+                Assert.IsFalse(res);
+                Assert.IsTrue(bridge.IsModerator(forumName, subForumName, username1));
+            }
+            catch (Exception e)
+            {
+                Assert.Fail();
+            }
+            finally
+            {
+                base.Cleanup(forumName);
+            }
         }
 
         [TestMethod]
