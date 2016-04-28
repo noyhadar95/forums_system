@@ -9,7 +9,7 @@ namespace ForumsSystemClient.CommunicationLayer
     class CL
     {
 
-        public List<string> getForumsList()
+        public List<string> GetForumsList()
         {
             List<string> res = new List<string>();
             res.Add("forum1");
@@ -18,7 +18,7 @@ namespace ForumsSystemClient.CommunicationLayer
             return res;
         }
 
-        public List<string> getSubForumsList(string forumName)
+        public List<string> GetSubForumsList(string forumName)
         {
             List<string> res = new List<string>();
             res.Add("subforum1");
@@ -28,7 +28,7 @@ namespace ForumsSystemClient.CommunicationLayer
         }
 
         // return a list of titles of all threads in the subforum.
-        public List<string> getThreadsList(string forumName, string subForumName)
+        public List<string> GetThreadsList(string forumName, string subForumName)
         {
             List<string> res = new List<string>();
             res.Add("thread1");
@@ -37,7 +37,14 @@ namespace ForumsSystemClient.CommunicationLayer
             return res;
         }
 
-        public bool registerToForum(string forumName, string username, string password, string email, DateTime dob)
+        public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dob)
+        {
+            // TODO: implement
+
+            return true;
+        }
+
+        public bool MemberLogin(string forumName, string username, string password)
         {
             // TODO: implement
 

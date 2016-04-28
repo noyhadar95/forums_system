@@ -29,7 +29,7 @@ namespace ForumsSystemClient.PresentationLayer
             InitializeComponent();
 
             cl = new CL();
-            List<string> items = cl.getThreadsList(forumName, subForumName);
+            List<string> items = cl.GetThreadsList(forumName, subForumName);
             threadsListView.ItemsSource = items;
 
             this.forumName = forumName;

@@ -27,7 +27,7 @@ namespace ForumsSystemClient.PresentationLayer
             InitializeComponent();
 
             cl = new CL();
-            List<string> items = cl.getForumsList();
+            List<string> items = cl.GetForumsList();
             forumsListView.ItemsSource = items;
 
         }
