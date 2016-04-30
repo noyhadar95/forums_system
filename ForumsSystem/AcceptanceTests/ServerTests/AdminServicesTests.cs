@@ -17,7 +17,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestRemoveModeratorBeforeExipartionSuccess()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string username2 = "user2", pass2 = "passwd2", email2 = "user2@gmail.com";
@@ -53,7 +53,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestRemoveModeratorBeforeExipartionFailure()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string username2 = "user2", pass2 = "passwd2", email2 = "user2@gmail.com";
@@ -96,7 +96,7 @@ namespace AcceptanceTests.ServerTests
         public void TestRemoveModeratorBeforeExipartionFailureOnlyModerator()
         {
 
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now, dateOfBirth2 = DateTime.Now;
@@ -127,7 +127,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestGetNumOfPostsOfMemberInForum()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string username2 = "user2", pass2 = "passwd2", email2 = "user2@gmail.com";
@@ -179,7 +179,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestModeratorsList()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string username2 = "user2", pass2 = "passwd2", email2 = "user2@gmail.com";
@@ -218,7 +218,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestModeratorsAppointmentsDetails()//date,admin,subforum
         {
-            /* string forumName = "forum1";
+            /* string forumName = GetNextForum();
              PoliciesStub forumPolicy = PoliciesStub.Password;
              string username1 = "user1";
              string username2 = "user2", pass2 = "passwd2", email2 = "user2@gmail.com";
@@ -252,12 +252,14 @@ namespace AcceptanceTests.ServerTests
              {
                  base.Cleanup(forumName);
              }
-         }
+             */
+            Assert.Fail("Not Yet Implemented");
+        }
 
          [TestMethod]
          public void TestModeratorsPosts()
          {
-             string forumName = "forum1";
+             string forumName = GetNextForum();
              PoliciesStub forumPolicy = PoliciesStub.Password;
              string username1 = "user1";
              string username2 = "user2", pass2 = "passwd2", email2 = "user2@gmail.com";
@@ -302,8 +304,8 @@ namespace AcceptanceTests.ServerTests
              finally
              {
                  base.Cleanup(forumName);
-             }*/
-            Assert.Fail("Not Yet Implemented");
+             }
+            
         }
     }
 }

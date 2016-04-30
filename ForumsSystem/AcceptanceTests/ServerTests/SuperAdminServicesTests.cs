@@ -18,7 +18,7 @@ namespace AcceptanceTests.ServerTests
         public void TestNumberOfForums()
         {
             int numOfForums;
-            string forumName1 = "forum1", forumName2 = "forum2";
+            string forumName1 = GetNextForum(), forumName2 = GetNextForum();
             string adminUserName1 = "adm1", adminUserName2 = "adm2";
             string adminPass1 = "root1", adminPass2 = "root2";
             string adminEmail1 = "adm1@gmail.com", adminEmail2 = "adm2@gmail.com";
@@ -55,7 +55,7 @@ namespace AcceptanceTests.ServerTests
         public void TestNumberOfForumsSameForum()//test a case when trying to register twice the same forum
         {
             int numOfForums;
-            string forumName1 = "forum1";
+            string forumName1 = GetNextForum();
             string adminUserName1 = "adm1", adminUserName2 = "adm2";
             string adminPass1 = "root1", adminPass2 = "root2";
             string adminEmail1 = "adm1@gmail.com", adminEmail2 = "adm2@gmail.com";
@@ -92,7 +92,7 @@ namespace AcceptanceTests.ServerTests
         {
             Dictionary<string, List<Tuple<string, string>>> multipleUsersInfo;//<email,List<forum,username>>
             List<Tuple<string, string>> temp;
-                string forumName1 = "forum1", forumName2 = "forum2";
+                string forumName1 = GetNextForum(), forumName2 = GetNextForum();
             string adminUserName1 = "adm1", adminUserName2 = "adm2";
             string adminPass1 = "root1", adminPass2 = "root2";
             string adminEmail1 = "adm1@gmail.com", adminEmail2 = "adm2@gmail.com";

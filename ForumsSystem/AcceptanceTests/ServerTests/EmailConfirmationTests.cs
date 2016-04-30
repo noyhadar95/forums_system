@@ -17,7 +17,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestEmailConfirmationSecureForum()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Authentication;
             string username = "user1";
             string pass = "passwd";
@@ -44,7 +44,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestEmailConfirmationBadUsername()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Authentication;
             string username = "user1", badUsername = "fakeuser";
             string pass = "passwd";

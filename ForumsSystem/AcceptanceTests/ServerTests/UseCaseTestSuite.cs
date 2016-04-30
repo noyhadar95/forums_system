@@ -22,7 +22,7 @@ namespace AcceptanceTests.ServerTests
         protected string adminUserName1 = "admin1"; // the username of the admin used to create sub forums for the tests
         protected string adminPass1 = "adminPasswd"; // the password of the admin used to create sub forums for the tests
         protected string adminEmail1 = "admin1@gmail.com"; // the email of the admin used to create sub forums for the tests
-
+        protected static int forumIndex = 1;
 
         public UseCaseTestSuite()
         {
@@ -93,6 +93,10 @@ namespace AcceptanceTests.ServerTests
             bridge.LoginUser(forumName, publisher, publisherPass);
             return bridge.AddThread(forumName, subForumName, publisher, title, content);
 
+        }
+        protected static string GetNextForum()
+        {
+            return "forum" + forumIndex++;
         }
 
     }

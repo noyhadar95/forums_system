@@ -19,7 +19,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestCreateSubForumSuccess()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user123";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
@@ -46,7 +46,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestCreateSubForumFailure()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user123";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();

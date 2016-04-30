@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4FCE9397-79D3-4F51-9823-054C2A433F46}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AcceptanceTests</RootNamespace>
     <AssemblyName>AcceptanceTests</AssemblyName>
@@ -33,6 +33,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>AcceptanceTests.ServerTests.LoadTest</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.LoadTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -67,6 +70,7 @@
     <Compile Include="ServerTests\EmailConfirmationTests.cs" />
     <Compile Include="ServerTests\ForumRegistrationTests.cs" />
     <Compile Include="ServerTests\InitializeSystemTests.cs" />
+    <Compile Include="ServerTests\LoadTest.cs" />
     <Compile Include="ServerTests\PostNotificationsTests.cs" />
     <Compile Include="ServerTests\SuperAdminLoginTests.cs" />
     <Compile Include="ServerTests\SendPrivateMsgTests.cs" />
@@ -87,6 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ServerTests\LoadTest1.loadtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ServerTests\LoadTest2.loadtest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

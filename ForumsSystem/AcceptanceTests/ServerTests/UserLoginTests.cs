@@ -17,7 +17,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestUserLoginSuccess()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username = "user1", pass = "passwd", email = "user1@gmail.com";
             DateTime dateOfBirth = new DateTime(1995, 8, 2);
@@ -35,7 +35,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestUserLoginNotRegistered()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username = "user1", pass = "passwd", email = "user1@gmail.com";
 

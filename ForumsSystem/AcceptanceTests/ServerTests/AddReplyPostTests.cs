@@ -24,7 +24,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
@@ -53,7 +53,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = ""; // empty content
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
@@ -83,7 +83,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = ""; // empty title
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now;
@@ -113,7 +113,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = ""; // empty title
             string content = ""; // empty content
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now;
@@ -146,7 +146,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
@@ -181,7 +181,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;

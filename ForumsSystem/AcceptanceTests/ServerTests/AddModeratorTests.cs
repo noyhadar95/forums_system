@@ -21,7 +21,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestAddModerator()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string username2 = "user2", pass2 = "passwd2", email2 = "user2@gmail.com";

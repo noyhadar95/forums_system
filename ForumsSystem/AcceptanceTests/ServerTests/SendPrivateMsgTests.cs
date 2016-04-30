@@ -22,7 +22,7 @@ namespace AcceptanceTests.ServerTests
             string username1 = "username1", username2 = "username2";
             string pass1 = "passwd1", pass2 = "passwd2";
             string msgTitle = "title1", msgContent = "hello user2";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string email1 = "user1@gmail.com", email2 = "user2@gmail.com";
             DateTime dateOfBirth1 = new DateTime(1995, 8, 2), dateOfBirth2 = new DateTime(1995, 8, 2);
@@ -53,7 +53,7 @@ namespace AcceptanceTests.ServerTests
             string username1 = "username1", username2 = "username2";
             string pass1 = "passwd1", pass2 = "passwd2";
             string msgTitle = "title1", msgContent = "hello user2";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string email1 = "user1@gmail.com", email2 = "user2@gmail.com";
             DateTime dateOfBirth1 = new DateTime(1995, 8, 2), dateOfBirth2 = new DateTime(1995, 8, 2);

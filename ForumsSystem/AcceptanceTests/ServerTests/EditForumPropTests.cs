@@ -19,7 +19,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestEditForumPropMinAge()
         {
-            string forumName = "";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             PoliciesStub newForumPolicy = PoliciesStub.MinimumAge;
 
@@ -39,7 +39,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestEditForumPropMaxModerators()
         {
-            string forumName = "";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             PoliciesStub newForumPolicy = PoliciesStub.MaxModerators;
 
@@ -59,7 +59,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestEditForumPropMemberSuspension()
         {
-            string forumName = "";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             PoliciesStub newForumPolicy = PoliciesStub.MemberSuspension;
 

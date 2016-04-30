@@ -19,7 +19,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestForumRegistrationSuccess()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username = "user1";
             string pass = "passwd";
@@ -42,7 +42,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestForumRegistrationBadForumName()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             string username = "user1";
             string pass = "passwd";
             string email = "user1@gmail.com";

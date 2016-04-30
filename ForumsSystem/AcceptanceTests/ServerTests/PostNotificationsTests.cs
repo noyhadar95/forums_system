@@ -20,7 +20,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string friend1 = "friend1";
@@ -64,7 +64,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string friend1 = "friend1";
@@ -110,7 +110,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string friend1 = "friend1";
@@ -160,7 +160,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string friend1 = "friend1";
@@ -209,7 +209,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string friend1 = "friend1";
@@ -258,7 +258,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string friend1 = "friend1";
