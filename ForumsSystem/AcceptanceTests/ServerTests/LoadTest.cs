@@ -21,7 +21,13 @@ namespace AcceptanceTests.ServerTests
                 //error creating the forum
                 return;
             }
-            numOfusers = int.Parse(args[0]);
+            try {
+                numOfusers = int.Parse(args[0]);
+            }
+            catch(Exception e)
+            {
+                numOfusers = 100;
+            }
             int userIndex = 1;
             for (; userIndex<= numOfusers; userIndex++)
             {
