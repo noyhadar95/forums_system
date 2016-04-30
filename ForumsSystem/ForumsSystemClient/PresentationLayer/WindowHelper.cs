@@ -16,5 +16,13 @@ namespace ForumsSystemClient.PresentationLayer
             newWin.Show();
             oldWin.Close();
         }
+
+        // show newWin without closing oldWin.
+        public static void ShowWindow(Window oldWin, Window newWin)
+        {
+            newWin.Left = oldWin.Left;
+            newWin.Top = oldWin.Top;
+            newWin.Show();
+        }
     }
 }

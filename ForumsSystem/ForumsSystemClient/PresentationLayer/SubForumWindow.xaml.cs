@@ -47,8 +47,8 @@ namespace ForumsSystemClient.PresentationLayer
             var item = (sender as ListView).SelectedItem;
             if (item != null)
             {
-                //Window newWin = new
-                //WindowHelper.SwitchWindow(this,);
+                Window newWin = new ThreadWindow();
+                WindowHelper.SwitchWindow(this, newWin);
             }
         }
     }

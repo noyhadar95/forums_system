@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -22,6 +23,8 @@ namespace ForumsSystemClient.PresentationLayer
     {
         private CL cl;
         private string forumName;
+        private string loggedUsername;
+        private string badLoginMsg = "your username/password are incorrect";
 
         public ForumWindow(string forumName)
         {
@@ -29,6 +32,7 @@ namespace ForumsSystemClient.PresentationLayer
 
             this.forumName = forumName;
             Title = forumName;
+            loggedUsername = "";
 
             // initialize different types grids (user,admin,login)
             userGrid.Visibility = Visibility.Hidden;
@@ -68,32 +72,28 @@ namespace ForumsSystemClient.PresentationLayer
         {
             string username = usernameTB.Text;
             string password = passwordBox.Password;
-            if (username == "")
+            if (username == "" || password == "")
             {
-                MessageBox.Show("please enter a username");
-                return;
-            }
-            if (password == "")
-            {
-                MessageBox.Show("please enter a password");
+                ShowBadLoginMsg();
                 return;
             }
             // fields are not empty try to login
             bool isSuccess = cl.MemberLogin(forumName, username, password);
             if (!isSuccess)
             {
-                MessageBox.Show("invalid login information, please try again");
+                ShowBadLoginMsg();
                 return;
             }
             else
             {
-                // user is logged in, get tyoe of user and change window accordingly.
+                // user is logged in, get type of user and change window accordingly.
                 string type = "user";
                 loginGrid.Visibility = Visibility.Hidden;
                 usernameTB.Text = "";
                 passwordBox.Password = "";
 
-                welcomeLbl.Content = "welcome " + username;
+                this.loggedUsername = username;
+                welcomeTextBlock.Text = "welcome " + username;
                 //TODO: handle type
                 userGrid.Visibility = Visibility.Visible;
                 if (type == "admin")
@@ -104,11 +104,28 @@ namespace ForumsSystemClient.PresentationLayer
             }
         }
 
+        private void ShowBadLoginMsg()
+        {
+            badLoginLbl.Content = badLoginMsg;
+            // Make the bad login message fadeaway animation.
+            DoubleAnimation animate = new DoubleAnimation();
+            animate.From = 1.0;
+            animate.To = 0;
+            animate.Duration = TimeSpan.FromSeconds(3);
+            badLoginLbl.BeginAnimation(OpacityProperty, animate);
+        }
+
         private void logoutBtn_Click(object sender, RoutedEventArgs e)
         {
             loginGrid.Visibility = Visibility.Visible;
             userGrid.Visibility = Visibility.Hidden;
             // TODO: handle other types
+        }
+
+        private void sendMsgBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Window sendPrMsgWin = new SendPrMsgWindow(forumName, loggedUsername);
+            WindowHelper.ShowWindow(this, sendPrMsgWin);
         }
     }
 }

@@ -19,14 +19,15 @@
             <Button x:Name="registerBtn" Content="register" HorizontalAlignment="Left" Margin="217,50,0,0" VerticalAlignment="Top" Width="74" Click="registerBtn_Click"/>
             <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="73,50,0,0" VerticalAlignment="Top" Height="22" Width="120"/>
         </Grid>
-        <Grid x:Name="adminGrid" HorizontalAlignment="Left" Height="140" Margin="10,269,0,0" VerticalAlignment="Top" Width="118">
+        <Grid x:Name="adminGrid" HorizontalAlignment="Left" Height="140" Margin="10,269,0,0" VerticalAlignment="Top" Width="171">
             <Button x:Name="addSubForumBtn" Content="add sub forum" HorizontalAlignment="Left" Margin="6,10,0,0" VerticalAlignment="Top" Width="102"/>
         </Grid>
-        <Grid x:Name="userGrid" HorizontalAlignment="Left" Height="163" Margin="10,118,0,0" VerticalAlignment="Top" Width="118">
+        <Grid x:Name="userGrid" HorizontalAlignment="Left" Height="163" Margin="10,118,0,0" VerticalAlignment="Top" Width="171">
             <Button x:Name="logoutBtn" Content="logout" HorizontalAlignment="Left" Margin="5,54,0,0" VerticalAlignment="Top" Width="75" Click="logoutBtn_Click"/>
-            <Label x:Name="welcomeLbl" Content="welcome" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="75"/>
-            <Button x:Name="button" Content="send private msg" HorizontalAlignment="Left" Margin="5,101,0,0" VerticalAlignment="Top" Width="103" Height="28"/>
+            <Button x:Name="sendMsgBtn" Content="send private msg" HorizontalAlignment="Left" Margin="5,101,0,0" VerticalAlignment="Top" Width="103" Height="28" Click="sendMsgBtn_Click"/>
+            <TextBlock x:Name="welcomeTextBlock" HorizontalAlignment="Left" Margin="5,10,0,0" TextWrapping="Wrap" Text="Welcome" VerticalAlignment="Top"/>
         </Grid>
+        <Label x:Name="badLoginLbl" Content="" HorizontalAlignment="Left" Margin="88,92,0,0" VerticalAlignment="Top" Foreground="#FFEC350C" FontWeight="Bold"/>
 
     </Grid>
 </Window>
