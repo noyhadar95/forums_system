@@ -27,6 +27,8 @@ namespace ForumsSystemClient.PresentationLayer
         {
             InitializeComponent();
 
+            WindowHelper.SetWindowBGImg(this);
+
             cl = new CL();
             this.forumName = forumName;
         }

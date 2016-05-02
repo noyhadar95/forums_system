@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="ThreadWindow" Height="450" Width="750">
     <Grid>
-        <ListView x:Name="listView" HorizontalAlignment="Left" Height="156" Margin="10,48,0,0" VerticalAlignment="Top" Width="344">
+        <ListView x:Name="listView" HorizontalAlignment="Left" Height="134" Margin="10,48,0,0" VerticalAlignment="Top" Width="300">
             <ListView Height="80" Width="281">
                 <ListItem/>
                 <ListView Height="45" Width="241">
@@ -16,12 +16,13 @@
             </ListView>
             <ListItem/>
         </ListView>
-        <TreeView x:Name="postsTreeView" HorizontalAlignment="Left" Height="333" Margin="380,48,0,0" VerticalAlignment="Top" Width="318" Loaded="postsTreeView_Loaded">
+        <TreeView x:Name="postsTreeView" HorizontalAlignment="Left" Height="333" Margin="372,48,0,0" VerticalAlignment="Top" Width="326" Loaded="postsTreeView_Loaded">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="IsExpanded" Value="True"/>
                 </Style>
             </TreeView.ItemContainerStyle>
         </TreeView>
+        <Button x:Name="backBtn" Content="back" HorizontalAlignment="Left" Margin="20,370,0,0" VerticalAlignment="Top" Width="75" Click="backBtn_Click"/>
     </Grid>
 </Window>

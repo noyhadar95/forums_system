@@ -24,5 +24,12 @@ namespace ForumsSystemClient.PresentationLayer
             newWin.Top = oldWin.Top;
             newWin.Show();
         }
+
+        public static void SetWindowBGImg(Window win)
+        {
+            Style style = Application.Current.FindResource("WindowStyle") as Style;
+            win.Style = style;
+        }
+
     }
 }

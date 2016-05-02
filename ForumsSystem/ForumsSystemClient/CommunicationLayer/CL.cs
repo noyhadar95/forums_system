@@ -37,6 +37,13 @@ namespace ForumsSystemClient.CommunicationLayer
             return res;
         }
 
+        public bool IsInitialized()
+        {
+            // TODO: implement
+
+            return true;
+        }
+
         public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dob)
         {
             // TODO: implement

@@ -21,12 +21,21 @@ namespace ForumsSystemClient.PresentationLayer
     public partial class ThreadWindow : Window
     {
         private CL cl;
+        private string forumName;
+        private string subForumName;
+        private double postBorderOffset = 10;
+        private double contentTitleOffset = 20; // the offset from the title of the post to it's content
 
-        public ThreadWindow()
+
+        public ThreadWindow(string forumName, string subForumName)
         {
             InitializeComponent();
 
+            WindowHelper.SetWindowBGImg(this);
+
             cl = new CL();
+            this.forumName = forumName;
+            this.subForumName = subForumName;
         }
 
         private void postsTreeView_Loaded(object sender, RoutedEventArgs e)
@@ -93,7 +102,7 @@ namespace ForumsSystemClient.PresentationLayer
         // post, calling recursively on post.children
         private void CreatePostTVItem(TreeViewItem item, Post post)
         {
-            item.Header = CreatePostGrid(post);
+            item.Header = CreatePostBorder(post);
             List<TreeViewItem> childs = new List<TreeViewItem>();
             item.ItemsSource = childs;
             foreach (Post p in post.GetNestedPosts())
@@ -105,24 +114,42 @@ namespace ForumsSystemClient.PresentationLayer
         }
 
         // return a grid with ListView that contains 2 TextBlocks
-        private Grid CreatePostGrid(Post post)
+        private Border CreatePostBorder(Post post)
         {
             TextBlock titlTB = new TextBlock();
             titlTB.Text = post.Title;
+            titlTB.Margin = new Thickness(postBorderOffset, postBorderOffset / 2, postBorderOffset, postBorderOffset);
+            Separator seperator = new Separator();
+            seperator.Margin = new Thickness(0, titlTB.Margin.Top+5, 0, postBorderOffset);
             TextBlock contentTB = new TextBlock();
             contentTB.MaxWidth = postsTreeView.Width;
             contentTB.TextWrapping = TextWrapping.WrapWithOverflow;
             contentTB.Text = post.Content;
+            contentTB.Margin = new Thickness(postBorderOffset, seperator.Margin.Top + contentTitleOffset, postBorderOffset, postBorderOffset);
 
-            ListView listView = new ListView();
-            List<object> list = new List<object>();
-            list.Add(titlTB);
-            list.Add(contentTB);
+            //ListView listView = new ListView();
+            //List<object> list = new List<object>();
+            //list.Add(titlTB);
+            //list.Add(contentTB);
 
-            listView.ItemsSource = list;
+            //listView.ItemsSource = list;
             Grid grid = new Grid();
-            grid.Children.Add(listView);
-            return grid;
+            grid.Children.Add(titlTB);
+            grid.Children.Add(seperator);
+            grid.Children.Add(contentTB);
+            //grid.Children.Add(listView);
+
+            Border border = new Border();
+            border.BorderThickness = new Thickness(0.3);
+            border.BorderBrush = Brushes.Black;
+            border.Child = grid;
+
+            return border;
+        }
+
+        private void backBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new SubForumWindow(forumName, subForumName));
         }
     }
 }

@@ -9,7 +9,7 @@
     <Grid>
         <ListView x:Name="forumsListView" HorizontalAlignment="Left" Height="285" Margin="121,86,0,0" VerticalAlignment="Top" Width="446" PreviewMouseLeftButtonUp="forumsListView_PreviewMouseLeftButtonUp">
 
-
+            
         </ListView>
         <Label x:Name="chooseForumLbl" Content="choose a forum to enter" HorizontalAlignment="Left" Margin="121,33,0,0" VerticalAlignment="Top" Width="146"/>
     </Grid>

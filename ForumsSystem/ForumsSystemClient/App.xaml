@@ -4,6 +4,55 @@
              xmlns:local="clr-namespace:ForumsSystemClient"
              StartupUri="PresentationLayer/MainWindow.xaml">
     <Application.Resources>
-         
+
+        <Style x:Key="WindowStyle" TargetType="Window">
+            <Setter Property="Background" >
+                <Setter.Value>
+                    <ImageBrush ImageSource="PresentationLayer/Images/background.jpg"  />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style  TargetType="Button">
+            <Setter Property="Background" >
+                <Setter.Value>
+                    <SolidColorBrush Color="Azure" Opacity="0.5" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style  TargetType="TextBox">
+            <Setter Property="Background" >
+                <Setter.Value>
+                    <SolidColorBrush Color="Azure" Opacity="0.8" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style  TargetType="PasswordBox">
+            <Setter Property="Background" >
+                <Setter.Value>
+                    <SolidColorBrush Color="Azure" Opacity="0.8" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style  TargetType="ListView">
+            <Setter Property="Background" >
+                <Setter.Value>
+                    <SolidColorBrush Color="Azure" Opacity="0.5" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style  TargetType="TreeView">
+            <Setter Property="Background" >
+                <Setter.Value>
+                    <SolidColorBrush Color="Azure" Opacity="0.5" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Application.Resources>
 </Application>

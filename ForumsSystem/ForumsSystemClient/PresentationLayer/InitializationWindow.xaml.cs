@@ -16,40 +16,33 @@ using System.Windows.Shapes;
 namespace ForumsSystemClient.PresentationLayer
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for InitializationWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class InitializationWindow : Window
     {
         private CL cl;
 
-        public MainWindow()
+        public InitializationWindow()
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
-
-            // check if the system is initialized
-            if (cl.IsInitialized())
-            {
-
-            }
-
-
-            List<string> items = cl.GetForumsList();
-            forumsListView.ItemsSource = items;
-
         }
 
-        private void forumsListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void button_Click(object sender, RoutedEventArgs e)
         {
-            var item = (sender as ListView).SelectedItem;
-            if (item != null)
+            string username = usernameTB.Text;
+            string password = passwordBox.Password;
+
+            if (username == "" || password == "")
             {
-                Window newWin = new ForumWindow((string)item);
-                WindowHelper.SwitchWindow(this, newWin);
+                MessageBox.Show("please enter valid information");
+                return;
             }
+            //cl.InitializeSystem(username, password);
+            // TODO:switch window
         }
     }
 }

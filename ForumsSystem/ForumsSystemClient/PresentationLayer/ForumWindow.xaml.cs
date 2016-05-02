@@ -30,6 +30,8 @@ namespace ForumsSystemClient.PresentationLayer
         {
             InitializeComponent();
 
+            WindowHelper.SetWindowBGImg(this);
+
             this.forumName = forumName;
             Title = forumName;
             loggedUsername = "";
@@ -44,6 +46,8 @@ namespace ForumsSystemClient.PresentationLayer
             cl = new CL();
             List<string> items = cl.GetSubForumsList(forumName);
             subForumsListView.ItemsSource = items;
+
+            //this.Resources = Application.Current.Resources[ForumsSystemStyle];
 
 
         }

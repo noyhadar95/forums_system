@@ -28,6 +28,8 @@ namespace ForumsSystemClient.PresentationLayer
         {
             InitializeComponent();
 
+            WindowHelper.SetWindowBGImg(this);
+
             cl = new CL();
             List<string> items = cl.GetThreadsList(forumName, subForumName);
             threadsListView.ItemsSource = items;
@@ -47,7 +49,7 @@ namespace ForumsSystemClient.PresentationLayer
             var item = (sender as ListView).SelectedItem;
             if (item != null)
             {
-                Window newWin = new ThreadWindow();
+                Window newWin = new ThreadWindow(forumName, subForumName);
                 WindowHelper.SwitchWindow(this, newWin);
             }
         }
