@@ -24,9 +24,11 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
         {
             DateTime now = DateTime.Now;
             DateTime next = now.AddMinutes(10);
-            da.AddActivity(now, "test1");
-            da.AddActivity(next, "test2");
-            var d = da.GetActivityByDate(next);
+            da.AddLog(now, "test1");
+            da.AddLog(next, "test2");
+            var d = da.GetLogByDate(next);
+            da.DeleteLog(now);
+            da.DeleteLog(next);
 
         }
     }
