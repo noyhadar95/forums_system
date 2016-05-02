@@ -58,7 +58,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         {
             Connect_to_DB();
             OleDbCommand sql = new OleDbCommand();
-            sql.CommandText = "Delete From [Forums] Where [ForumName]=" + name;
+            sql.CommandText = "Delete From [Forums] Where [ForumName]='" + name+"'";
 
             connect_me.TakeAction(sql);
             sql = null;

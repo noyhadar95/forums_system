@@ -62,8 +62,13 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\Connect.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_ActivityLog.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Connection.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Forum.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Policy.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_SuperAdmin.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Users.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\UserType.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\AdminAppointmentPolicy.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\ConfidentialityPolicy.cs" />

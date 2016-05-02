@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 {
-    class DAL_Policy: DAL_Connection //TODO: THIS NEEDS MAJOR CHANGES
+    public class DAL_Policy: DAL_Connection //TODO: THIS NEEDS MAJOR CHANGES
     {
         
         public void createPolicy(int policyID, int type, int nextPolicyId)
@@ -36,7 +36,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         }
 
 
-        public bool EditPolicy(string forumName)
+       /* public bool EditPolicy(string forumName)
         {
             Connect_to_DB();
             OleDbCommand sql = new OleDbCommand();
@@ -48,7 +48,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             return true;
         }
 
-
+    */
 
     }
 }

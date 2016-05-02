@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 {
-    class UserType
+    public class UserType
     {
         public enum UserTypes
         {
