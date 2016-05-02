@@ -37,15 +37,15 @@ namespace AcceptanceTests.ServerTests
                    threadPublisher, title, content);
                 int postID = bridge.GetOpenningPostID(forumName, subForumName, threadID);
                 //add the friends to the user
-                bridge.AddFriend(threadPublisher, friend1);
-                bridge.AddFriend(threadPublisher, friend2);
+                bridge.AddFriend(forumName, threadPublisher, friend1);
+                bridge.AddFriend(forumName, threadPublisher, friend2);
 
                 // add reply post
                 int res = bridge.AddReplyPost(forumName, subForumName, threadID, threadPublisher, postID, title, content);
 
                 //now check that the friends of the user received a notification about the post
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(friend1, res));
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(friend2, res));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend1, res));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend2, res));
 
             }
             catch (Exception e)
@@ -77,8 +77,8 @@ namespace AcceptanceTests.ServerTests
             try
             {
                 //add the friends to the user
-                bridge.AddFriend(threadPublisher, friend1);
-                bridge.AddFriend(threadPublisher, friend2);
+                bridge.AddFriend(forumName, threadPublisher, friend1);
+                bridge.AddFriend(forumName, threadPublisher, friend2);
 
                 // create a forum, sub-forum and thread.
                 int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
@@ -86,8 +86,8 @@ namespace AcceptanceTests.ServerTests
                 int postID = bridge.GetOpenningPostID(forumName, subForumName, threadID);
 
                 //now check that the friends of the user received a notification about the post
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(friend1, postID));//TODO: maybe thread id?
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(friend2, postID));//TODO: same same
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend1, postID));//TODO: maybe thread id?
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend2, postID));//TODO: same same
 
             }
             catch (Exception e)
@@ -136,12 +136,12 @@ namespace AcceptanceTests.ServerTests
                 int reply11 = bridge.AddReplyPost(forumName, subForumName, threadID, friend2, postID, title, content);
 
                 //edit a post
-                bridge.EditPost(threadPublisher, postID, title, content);
+                bridge.EditPost(forumName,subForumName,threadID, threadPublisher, postID, title, content);
 
                 //now check that the users received a notification about the edition
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(friend1, postID));
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(friend2, postID));
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(friend11, postID));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName,friend1, postID));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend2, postID));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend11, postID));
             }
             catch (Exception e)
             {
@@ -182,16 +182,16 @@ namespace AcceptanceTests.ServerTests
                 int reply2 = bridge.AddReplyPost(forumName, subForumName, threadID, friend2, reply1, title, content);
 
                 //edit a post
-                bridge.EditPost(friend1, reply1, title, content);
+                bridge.EditPost(forumName,subForumName,threadID,friend1, reply1, title, content);
 
                 //now check that the thread publisher received a notification about the edition
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(threadPublisher, reply1));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, threadPublisher, reply1));
 
                 //edit a post
-                bridge.EditPost(friend2, reply2, title, content);
+                bridge.EditPost(forumName, subForumName, threadID,friend2, reply2, title, content);
 
                 //now check that the thread publisher received a notification about the edition
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(threadPublisher, reply2));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, threadPublisher, reply2));
             }
             catch (Exception e)
             {
@@ -235,12 +235,12 @@ namespace AcceptanceTests.ServerTests
                 int reply11 = bridge.AddReplyPost(forumName, subForumName, threadID, friend2, postID, title, content);
 
                 //delete a post
-                bridge.DeletePost(friend1, reply1);
+                bridge.DeletePost(forumName,subForumName,threadID,friend1, reply1);
 
                 //now check that the users received a notification about the edition
-                Assert.IsFalse(bridge.IsExistNotificationOfPost(friend2, reply1));//notify only those who commented the deleted post
-                Assert.IsFalse(bridge.IsExistNotificationOfPost(threadPublisher, reply1));
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(friend11, reply1));
+                Assert.IsFalse(bridge.IsExistNotificationOfPost(forumName, friend2, reply1));//notify only those who commented the deleted post
+                Assert.IsFalse(bridge.IsExistNotificationOfPost(forumName, threadPublisher, reply1));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend11, reply1));
             }
             catch (Exception e)
             {
@@ -284,12 +284,12 @@ namespace AcceptanceTests.ServerTests
                 int reply11 = bridge.AddReplyPost(forumName, subForumName, threadID, friend2, postID, title, content);
 
                 //delete a post
-                bridge.DeletePost(threadPublisher, postID);
+                bridge.DeletePost(forumName,subForumName,threadID,threadPublisher, postID);
 
                 //now check that the users received a notification about the edition
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(friend1, reply1));
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(friend2, reply1));
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(friend11, reply1));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName,friend1, reply1));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend2, reply1));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend11, reply1));
             }
             catch (Exception e)
             {

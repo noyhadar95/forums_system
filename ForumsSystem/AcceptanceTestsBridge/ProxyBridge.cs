@@ -268,62 +268,77 @@ namespace AcceptanceTestsBridge
         }
 
 
-        public bool ShouldTear(string className, string methodName)
+        public bool ShouldCleanup(string className, string methodName)
         {
             if (realBridge != null)
-                return realBridge.ShouldTear(className, methodName);
+                return realBridge.ShouldCleanup(className, methodName);
             return true;//TODO: implement
-                
+
         }
 
-        public void AddFriend(string user1, string user2)
+        public void AddFriend(string forumName, string username1, string username2)
         {
-            throw new NotImplementedException();
+            if (realBridge != null)
+                realBridge. AddFriend( forumName,  username1,  username2);
+            return;
         }
 
-        public bool IsExistNotificationOfPost(string user, int postId)
-        {
-            throw new NotImplementedException();
+        public bool IsExistNotificationOfPost(string forumName, string username, int postId)
+        
+            {
+            if (realBridge != null)
+                return realBridge.IsExistNotificationOfPost( forumName,  username,  postId);
+            return true;
         }
 
-        public void EditPost(string editor, int postId, string newTitle, string newContent)
+        public void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent)
         {
-            throw new NotImplementedException();
-        }
-
-        public void DeletePost(string deleter, int postId)
-        {
-            throw new NotImplementedException();
+            if (realBridge != null)
+                realBridge.EditPost( forumName,  subForumName,  threadId,  editor,  postId,  newTitle,  newContent);
+            return;
         }
 
         public bool RemoveModerator(string forumName, string subForumName, string remover, string moderator)
         {
-            throw new NotImplementedException();
+            if (realBridge != null)
+                return realBridge.RemoveModerator(forumName, subForumName, remover, moderator);
+            return true;
         }
 
         public int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string email)
         {
-            throw new NotImplementedException();
+            if (realBridge != null)
+                return realBridge.GetNumOfPostsInForumByMember(forumName, adminUserName, email);
+            return 1;
         }
 
         public List<string> GetListOfModerators(string forumName, string subForumName, string adminUserName)
         {
-            throw new NotImplementedException();
+            if (realBridge != null)
+                return realBridge.GetListOfModerators(forumName, subForumName, adminUserName);
+            return null;
         }
 
         public List<Tuple<int, string, string>> GetPostsInForumByModerator(string forumName, string subForumName, string adminUserName, string email)
         {
-            throw new NotImplementedException();
+            if (realBridge != null)
+                return realBridge.GetPostsInForumByModerator(forumName, subForumName, adminUserName, email);
+            return null;
         }
 
         public int GetNumOfForums()
         {
-            throw new NotImplementedException();
+            if (realBridge != null)
+                return realBridge.GetNumOfForums();
+            return 1;
         }
 
         public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo()
         {
-            throw new NotImplementedException();
+            if (realBridge != null)
+                return realBridge.GetMultipleUsersInfo();
+            return null;
         }
+
     }
 }

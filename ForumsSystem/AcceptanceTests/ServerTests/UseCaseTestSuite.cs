@@ -58,7 +58,7 @@ namespace AcceptanceTests.ServerTests
             string className = method.DeclaringType.Name;
           //  string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
          //  string className = this.GetType().Name;
-            if (bridge.ShouldTear(className, methodName))
+            if (bridge.ShouldCleanup(className, methodName))
                 DeleteForum(forumName);
         }
 

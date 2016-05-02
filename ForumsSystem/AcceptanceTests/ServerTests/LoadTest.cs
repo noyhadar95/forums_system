@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AcceptanceTests.ServerTests
@@ -14,20 +15,32 @@ namespace AcceptanceTests.ServerTests
         private static Random rand = new Random();
         static void Main(string[] args)
         {
-            string forumName = "LoadTestForum";
             bridge = ProxyBridge.GetInstance();
+            Console.WriteLine("Starting Load Test...");
+            Console.WriteLine("Initializing System...");
+            if (!bridge.InitializeSystem("superadmin", "superadminpass"))
+            {
+                Console.WriteLine("Error While Initializing System - Stopping");
+                return;
+            }
+            Console.WriteLine("System Initialized");
+            string forumName = "LoadTestForum";
+            Console.WriteLine("Creating Forum...");
             if (!CreateForum(forumName))
             {
-                //error creating the forum
+                Console.WriteLine("Error While Creating Forum - Stopping");
                 return;
             }
             try {
                 numOfusers = int.Parse(args[0]);
+                Console.WriteLine(numOfusers+" Users In The Forum");
             }
             catch(Exception e)
             {
                 numOfusers = 100;
+                Console.WriteLine(numOfusers + " Users In The Forum - Default Value");
             }
+            Console.WriteLine("Creating Users...");
             int userIndex = 1;
             for (; userIndex<= numOfusers; userIndex++)
             {
@@ -36,20 +49,29 @@ namespace AcceptanceTests.ServerTests
                 bridge.ConfirmRegistration(forumName, "user" + userIndex);
                 bridge.LoginUser(forumName, "user" + userIndex, "pass" + userIndex);
             }
+            
+            Console.WriteLine("Users Created");
             //create message
             //read message
             //wait 10 seconds
 
 
             //start task for each user:
-            Task task;
-            userIndex = 1;
-            while (userIndex<=numOfusers)
-            {
-                Task.Run(() => UserTask(forumName, userIndex));
-                userIndex++;
-            }
 
+            Thread[] threads = new Thread[numOfusers];
+            userIndex = 1;
+            for (; userIndex<=numOfusers; userIndex++)
+            {
+                int temp = userIndex;
+                Console.WriteLine("!"+userIndex);
+                threads[userIndex-1] = new Thread(() => UserTask(forumName, temp));
+                threads[userIndex - 1].Start();
+            }
+            for (int i = 0; i < threads.Length; i++)
+            {
+                threads[i].Join();
+            }
+            Console.ReadLine();
 
         }
 
@@ -75,17 +97,24 @@ namespace AcceptanceTests.ServerTests
 
         private static void UserTask(string forumName, int sender)
         {
-            int receiver = GetUserIndex(sender);
-            bridge.SendPrivateMsg(forumName, "user" + sender, "user" + receiver, sender + " to " + receiver, sender + " to " + receiver);
-            //TODO:read message if exists
-            Task.Delay(10 * 1000);
+            for (int i = 0; i < 20; i++)
+            {
+
+
+                int receiver = GetUserIndex(sender);
+                Console.WriteLine(sender + " to " + receiver);
+                bridge.SendPrivateMsg(forumName, "user" + sender, "user" + receiver, sender + " to " + receiver, sender + " to " + receiver);
+                //TODO:read message if exists
+                //Task.Delay(10000);
+                Thread.Sleep(10 * 1000);
+            }
         }
 
         private static int GetUserIndex(int sender)
         {
-            int temp=rand.Next(numOfusers+1);
+            int temp=rand.Next(1,numOfusers+1);
             while (temp == sender)
-                temp = rand.Next(numOfusers + 1);
+                temp = rand.Next(1,numOfusers+1);
             return temp;
         }
     }

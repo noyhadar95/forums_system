@@ -143,14 +143,14 @@ namespace AcceptanceTests.ServerTests
                 // create a forum, sub-forum and a thread to add a post to.
                 base.CreateSubForum(forumName, forumPolicy, subForumName, moderators);
                 bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
-                int numOfposts = bridge.GetNumOfPostsInForumByMember(forumName, this.adminUserName1, email2);
+                int numOfposts = bridge.GetNumOfPostsInForumByMember(forumName, this.adminUserName1, username2);
                 Assert.IsTrue(numOfposts == 0);
                 int threadId=bridge.AddThread(forumName, subForumName, username2, title, content);
-                numOfposts = bridge.GetNumOfPostsInForumByMember(forumName, this.adminUserName1, email2);
+                numOfposts = bridge.GetNumOfPostsInForumByMember(forumName, this.adminUserName1, username2);
                 Assert.IsTrue(numOfposts == 1);
                 int postId = bridge.GetOpenningPostID(forumName, subForumName, threadId);
                 bridge.AddReplyPost(forumName, subForumName, threadId, username2, postId, title, content);
-                numOfposts = bridge.GetNumOfPostsInForumByMember(forumName, this.adminUserName1, email2);
+                numOfposts = bridge.GetNumOfPostsInForumByMember(forumName, this.adminUserName1, username2);
                 Assert.IsTrue(numOfposts == 2);
 
                 //and now check that it works with more than 1 subforum
@@ -158,11 +158,11 @@ namespace AcceptanceTests.ServerTests
                 bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
 
                 threadId = bridge.AddThread(forumName, subForumName2, username2, title, content);
-                numOfposts = bridge.GetNumOfPostsInForumByMember(forumName, this.adminUserName1, email2);
+                numOfposts = bridge.GetNumOfPostsInForumByMember(forumName, this.adminUserName1, username2);
                 Assert.IsTrue(numOfposts == 3);
                 postId = bridge.GetOpenningPostID(forumName, subForumName2, threadId);
                 bridge.AddReplyPost(forumName, subForumName2, threadId, username2, postId, title, content);
-                numOfposts = bridge.GetNumOfPostsInForumByMember(forumName, this.adminUserName1, email2);
+                numOfposts = bridge.GetNumOfPostsInForumByMember(forumName, this.adminUserName1, username2);
                 Assert.IsTrue(numOfposts == 4);
 
             }
@@ -275,25 +275,25 @@ namespace AcceptanceTests.ServerTests
              {
                  // create a forum, sub-forum and a thread to add a post to.
                  base.CreateSubForum(forumName, forumPolicy, subForumName, moderators);
-                 List<Tuple<int,string,string>> posts = bridge.GetPostsInForumByModerator(forumName, subForumName, this.adminUserName1, email2);
+                 List<Tuple<int,string,string>> posts = bridge.GetPostsInForumByModerator(forumName, subForumName, this.adminUserName1, username2);
                  Assert.IsTrue(posts.Count==0);
                  int threadId = bridge.AddThread(forumName, subForumName, username2, title, content);
-                 posts = bridge.GetPostsInForumByModerator(forumName, subForumName, this.adminUserName1, email2);
+                 posts = bridge.GetPostsInForumByModerator(forumName, subForumName, this.adminUserName1, username2);
                  Assert.IsTrue(posts.Count == 1);
                  int postId = bridge.GetOpenningPostID(forumName, subForumName, threadId);
                  Assert.IsTrue(posts.ToArray()[0].Item1 == postId);
                  bridge.AddReplyPost(forumName, subForumName, threadId, username2, postId, title, content);
-                 posts = bridge.GetPostsInForumByModerator(forumName, subForumName, this.adminUserName1, email2);
+                 posts = bridge.GetPostsInForumByModerator(forumName, subForumName, this.adminUserName1, username2);
                  Assert.IsTrue(posts.Count == 2);
 
                  //and now check that it works with more than 1 subforum
                  base.CreateSubForum(forumName, forumPolicy, subForumName2, moderators);
                  threadId = bridge.AddThread(forumName, subForumName2, username2, title, content);
-                 posts = bridge.GetPostsInForumByModerator(forumName, subForumName2, this.adminUserName1, email2);
+                 posts = bridge.GetPostsInForumByModerator(forumName, subForumName2, this.adminUserName1, username2);
                  Assert.IsTrue(posts.Count == 3);
                  postId = bridge.GetOpenningPostID(forumName, subForumName2, threadId);
                  bridge.AddReplyPost(forumName, subForumName2, threadId, username2, postId, title, content);
-                 posts = bridge.GetPostsInForumByModerator(forumName, subForumName2, this.adminUserName1, email2);
+                 posts = bridge.GetPostsInForumByModerator(forumName, subForumName2, this.adminUserName1, username2);
                  Assert.IsTrue(posts.Count == 4);
 
              }

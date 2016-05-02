@@ -82,12 +82,12 @@ namespace AcceptanceTestsBridge
 
         int GetOpenningPostID(string forumName, string subForumName, int threadID);
 
-        bool ShouldTear(string className, string methodName);
+        bool ShouldCleanup(string className, string methodName);
 
-        void AddFriend(string user1, string user2);
-        bool IsExistNotificationOfPost(string user, int postId);
-        void EditPost(string editor, int postId, string newTitle, string newContent);
-        void DeletePost(string deleter, int postId);
+        void AddFriend(string forumName, string username1, string username2);
+        bool IsExistNotificationOfPost(string forumName, string username, int postId);
+        void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent);
+       
         bool RemoveModerator(string forumName, string subForumName, string remover, string moderator);
         int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string email);
         List<string> GetListOfModerators(string forumName, string subForumName, string adminUserName);

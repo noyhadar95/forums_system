@@ -360,7 +360,13 @@ namespace AcceptanceTestsBridge
             return sl.GetOpenningPostID(forumName, subForumName, threadID);
         }
 
-        public bool ShouldTear(string className,string methodName)
+        //===============================================================
+        //===============================================================
+        //===============================================================
+        //===============================================================
+
+
+        public bool ShouldCleanup(string className,string methodName)
         {
             try {
                 XDocument doc = XDocument.Load
@@ -381,54 +387,102 @@ namespace AcceptanceTestsBridge
             }
         }
 
-        public void AddFriend(string user1, string user2)
+        public void AddFriend(string forumName, string username1, string username2)
         {
-            throw new NotImplementedException();
+            IForum forum = sl.GetForum(forumName);
+            IUser user1 = forum.getUser(username1);
+            IUser user2 = forum.getUser(username2);
+            sl.AddFriend(user1, user2);
         }
 
-        public bool IsExistNotificationOfPost(string user, int postId)
+        public bool IsExistNotificationOfPost(string forumName,string username, int postId)
         {
-            throw new NotImplementedException();
+            IForum forum = sl.GetForum(forumName);
+            IUser user = forum.getUser(username);
+            Post[] notifications = user.GetPostNotifications().ToArray();
+            Post temp;
+            for (int i = 0; i < notifications.Length; i++)
+            {
+                temp = notifications[i];
+                if (temp.GetId() == postId)
+                    return true;
+            }
+            return false;
         }
 
-        public void EditPost(string editor, int postId, string newTitle, string newContent)
+        public void EditPost(string forumName,string subForumName,int threadId,string editor, int postId, string newTitle, string newContent)
         {
-            throw new NotImplementedException();
+            if (newTitle == "" && newContent == "")
+                return;//illegal post
+
+            IForum forum = sl.GetForum(forumName);
+            ISubForum subforum= forum.getSubForum(subForumName);
+            Thread thread= subforum.GetThreadById(threadId);
+            Post post = thread.GetPostById(postId);
+            post.Title = newTitle;
+            post.Content = newContent;
         }
 
-        public void DeletePost(string deleter, int postId)
+      /*  public void DeletePost(string forumName, string subForumName, int threadId, string deleter, int postId)
         {
-            throw new NotImplementedException();
+            IForum forum = sl.GetForum(forumName);
+            IUser user = forum.getUser(deleter);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            Thread thread = subforum.GetThreadById(threadId);
+            Post post = thread.GetPostById(postId);
+        }
+        */
+        public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
+        {
+            IForum forum = sl.GetForum(forumName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            IUser user = forum.getUser(remover);
+            IUser moderator = forum.getUser(moderatorName);
+            if (!moderator.CanBeDeletedBy(user))
+                return false;
+            return subforum.removeModerator(moderatorName);
         }
 
-        public bool RemoveModerator(string forumName, string subForumName, string remover, string moderator)
+        public int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string username)
         {
-            throw new NotImplementedException();
-        }
-
-        public int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string email)
-        {
-            throw new NotImplementedException();
+            IForum forum = sl.GetForum(forumName);
+            IUser admin = forum.getUser(adminUserName);
+            IUser user = forum.getUser(username);
+            if (!sl.IsAdmin(adminUserName, forumName))//only admin can get num of posts by user
+                return -1;
+            return forum.GetNumOfPostsByUser(username);
         }
 
         public List<string> GetListOfModerators(string forumName, string subForumName, string adminUserName)
         {
-            throw new NotImplementedException();
+            IForum forum = sl.GetForum(forumName);
+            IUser admin = forum.getUser(adminUserName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            if (!sl.IsAdmin(adminUserName, forumName))//only admin can get list of moderators
+                return null;
+            return subforum.GetModeratorsList();
         }
-
-        public List<Tuple<int, string, string>> GetPostsInForumByModerator(string forumName, string subForumName, string adminUserName, string email)
+    
+        //TUPLE: postId,title,content
+        public List<Tuple<int, string, string>> GetPostsInForumByModerator(string forumName, string subForumName, string adminUserName, string moderatorName)
         {
-            throw new NotImplementedException();
+            IForum forum = sl.GetForum(forumName);
+            IUser admin = forum.getUser(adminUserName);
+            IUser moderator = forum.getUser(moderatorName);
+            if (!sl.IsAdmin(adminUserName,forumName))//only admin can get posts of moderator
+                return null;
+            return forum.GetPostsByModerator(moderatorName);
         }
 
         public int GetNumOfForums()
         {
-            throw new NotImplementedException();
+            return sl.GetNumOfForums();
         }
 
         public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo()
         {
-            throw new NotImplementedException();
+            Dictionary<string, List<Tuple<string, string>>> multipleUsersInfo;//<email,List<forum,username>>
+            return sl.GetMultipleUsersInfo();
         }
     }
 }
