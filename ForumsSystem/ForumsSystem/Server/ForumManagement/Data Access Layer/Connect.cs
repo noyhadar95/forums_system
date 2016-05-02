@@ -47,24 +47,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
             return (dt);
         }
-        public DataSet SearchByName(string sql1, string sql2)
-        {
-            DataSet ds = new DataSet();
-
-            OleDbCommand cmd = new OleDbCommand(sql1, this.my_con);
-
-            OleDbDataAdapter d = new OleDbDataAdapter(cmd);
-
-            d.Fill(ds, "users");
-
-            OleDbCommand cmd2 = new OleDbCommand(sql2, this.my_con);
-
-            d.DeleteCommand = cmd2;
-
-            d.Fill(ds, "users");
-
-            return ds;
-        }
+       
         //------------------------------------------------------------------
         public void TakeAction(OleDbCommand cmmd)
         {

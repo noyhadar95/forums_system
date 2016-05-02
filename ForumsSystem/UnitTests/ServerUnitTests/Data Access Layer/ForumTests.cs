@@ -21,7 +21,7 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
         [TestMethod]
         public void Test1()
         {
-            dl.CreateForum("test", 1);
+            dl.CreateForum("test", -1);
         }
 
 
