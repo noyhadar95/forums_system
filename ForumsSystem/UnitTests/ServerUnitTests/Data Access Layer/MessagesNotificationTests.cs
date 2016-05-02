@@ -6,12 +6,12 @@ using System.Data;
 namespace UnitTests.ServerUnitTests.Data_Access_Layer
 {
     [TestClass]
-    public class FriendsTests
+    public class MessagesNotificationTests
     {
         DAL_Forum dl;
         DAL_Users du;
         DAL_Friends df;
-        string forumName = "testFriendForum";
+        string forumName = "test";
         [TestInitialize()]
         public void Initialize()
         {
@@ -21,7 +21,7 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
 
             dl.CreateForum(forumName, -1);
             du.CreateUser(forumName, "User1", "Pass1", "User1@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member);
-            du.CreateUser(forumName, "User2", "Pass1", "User2@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member);
+            du.CreateUser(forumName, "User2", "Pass2", "User2@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member);
 
         }
         [TestCleanup()]

@@ -68,6 +68,8 @@
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Forum.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Friends.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Log.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Messages.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_MessagesNotification.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Policy.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_SuperAdmin.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Users.cs" />

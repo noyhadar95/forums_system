@@ -57,6 +57,8 @@
     <Compile Include="ServerUnitTests\Data Access Layer\ActivityLogsTest.cs" />
     <Compile Include="ServerUnitTests\Data Access Layer\ForumTests.cs" />
     <Compile Include="ServerUnitTests\Data Access Layer\FriendsTests.cs" />
+    <Compile Include="ServerUnitTests\Data Access Layer\MessagesNotificationTests.cs" />
+    <Compile Include="ServerUnitTests\Data Access Layer\MessagesTests.cs" />
     <Compile Include="ServerUnitTests\Data Access Layer\UserTests.cs" />
     <Compile Include="ServerUnitTests\DomainLayer\ForumTests.cs" />
     <Compile Include="ServerUnitTests\DomainLayer\PolicyTests.cs" />
