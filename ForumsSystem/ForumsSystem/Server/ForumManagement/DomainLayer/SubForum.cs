@@ -126,5 +126,45 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
             return null;
         }
+
+        public List<Tuple<int, string, string>> GetPostsByUser(string moderatorName)
+        {
+            List<Tuple<int, string, string>> posts = new List<Tuple<int, string, string>>();
+            List<Tuple<int, string, string>> threadPosts;
+            foreach (Thread thread in threads.ToList<Thread>())
+            {
+                 threadPosts= thread.GetPostsByUser(moderatorName);
+                foreach (Tuple<int, string, string> post in threadPosts)
+                {
+                    posts.Add(post);
+                }
+            }
+            return posts;
+        }
+
+        public List<string> GetModeratorsList()
+        {
+            List<string> res = new List<string>();
+            foreach (KeyValuePair<string, Moderator> mod in moderators?? new Dictionary<string, Moderator>())
+            {
+                res.Add(mod.Key);
+            }
+            return res;
+        }
+
+        public int GetNumOfPostsByUser(string username)
+        {
+            int posts = 0;
+            int threadPosts;
+            foreach (Thread thread in threads.ToList<Thread>())
+            {
+                threadPosts = thread.GetNumOfPostsByUser(username);
+                posts += threadPosts;
+            }
+            return posts;
+        public List<Thread> GetThreads()
+        {
+            return threads;
+        }
     }
 }

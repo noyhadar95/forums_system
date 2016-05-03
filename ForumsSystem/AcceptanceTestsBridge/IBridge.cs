@@ -41,11 +41,10 @@ namespace AcceptanceTestsBridge
         bool IsExistForum(string forumName);
 
         bool IsRegisteredToForum(string username, string forumName);
-
         bool IsAdmin(string username, string forumName);
 
         bool IsModerator(string forumName, string subForumName, string username);
-
+     
         bool IsExistThread(string forumName, string subForumName, int threadID);
 
         bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent);
@@ -83,8 +82,17 @@ namespace AcceptanceTestsBridge
 
         int GetOpenningPostID(string forumName, string subForumName, int threadID);
 
-        
+        bool ShouldCleanup(string className, string methodName);
 
-
+        void AddFriend(string forumName, string username1, string username2);
+        bool IsExistNotificationOfPost(string forumName, string username, int postId);
+        void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent);
+       
+        bool RemoveModerator(string forumName, string subForumName, string remover, string moderator);
+        int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string email);
+        List<string> GetListOfModerators(string forumName, string subForumName, string adminUserName);
+        List<Tuple<int, string, string>> GetPostsInForumByModerator(string forumName,string subForumName, string adminUserName, string email);
+        int GetNumOfForums();//only superadmin can use this
+        Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo();//<email,List<forum,username>> - only superadmin can use this
     }
 }

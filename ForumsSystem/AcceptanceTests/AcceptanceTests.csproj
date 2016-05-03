@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4FCE9397-79D3-4F51-9823-054C2A433F46}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AcceptanceTests</RootNamespace>
     <AssemblyName>AcceptanceTests</AssemblyName>
@@ -34,7 +34,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>AcceptanceTests.ServerTests.LoadTest</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.LoadTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -45,7 +51,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -62,9 +70,13 @@
     <Compile Include="ServerTests\EmailConfirmationTests.cs" />
     <Compile Include="ServerTests\ForumRegistrationTests.cs" />
     <Compile Include="ServerTests\InitializeSystemTests.cs" />
+    <Compile Include="ServerTests\LoadTest.cs" />
+    <Compile Include="ServerTests\PostNotificationsTests.cs" />
     <Compile Include="ServerTests\SuperAdminLoginTests.cs" />
     <Compile Include="ServerTests\SendPrivateMsgTests.cs" />
     <Compile Include="ServerTests\SetForumPropTests.cs" />
+    <Compile Include="ServerTests\AdminServicesTests.cs" />
+    <Compile Include="ServerTests\SuperAdminServicesTests.cs" />
     <Compile Include="ServerTests\UseCaseTestSuite.cs" />
     <Compile Include="ServerTests\UserLoginTests.cs" />
   </ItemGroup>
@@ -73,6 +85,17 @@
       <Project>{d1d70200-d8d2-4a3e-8719-ffeb78327624}</Project>
       <Name>AcceptanceTestsBridge</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ServerTests\AddModeratorTestsData.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ServerTests\LoadTest1.loadtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ServerTests\LoadTest2.loadtest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

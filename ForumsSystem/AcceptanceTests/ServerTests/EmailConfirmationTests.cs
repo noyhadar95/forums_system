@@ -17,7 +17,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestEmailConfirmationSecureForum()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Authentication;
             string username = "user1";
             string pass = "passwd";
@@ -36,7 +36,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(bridge.IsRegisteredToForum(username, forumName));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // test - check that email confirmation fails with username that didnt ask to 
@@ -44,7 +44,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestEmailConfirmationBadUsername()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Authentication;
             string username = "user1", badUsername = "fakeuser";
             string pass = "passwd";
@@ -65,7 +65,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(!bridge.IsRegisteredToForum(badUsername, forumName));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
 

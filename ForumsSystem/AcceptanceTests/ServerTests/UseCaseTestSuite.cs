@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AcceptanceTestsBridge;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace AcceptanceTests.ServerTests
 {
@@ -20,7 +22,7 @@ namespace AcceptanceTests.ServerTests
         protected string adminUserName1 = "admin1"; // the username of the admin used to create sub forums for the tests
         protected string adminPass1 = "adminPasswd"; // the password of the admin used to create sub forums for the tests
         protected string adminEmail1 = "admin1@gmail.com"; // the email of the admin used to create sub forums for the tests
-
+        protected static int forumIndex = 1;
 
         public UseCaseTestSuite()
         {
@@ -43,10 +45,21 @@ namespace AcceptanceTests.ServerTests
             // create the forum
             return bridge.CreateForum(superAdminUsername, forumName, admins, forumPolicy);
         }
-
-        protected void DeleteForum(string forumName)
+        private void DeleteForum(string forumName)
         {
             bridge.DeleteForum(forumName);
+        }
+        protected void Cleanup(string forumName)
+        {
+            StackTrace stackTrace = new System.Diagnostics.StackTrace();
+            StackFrame frame = stackTrace.GetFrames()[1];
+            MethodBase method = frame.GetMethod();
+            string methodName = method.Name;
+            string className = method.DeclaringType.Name;
+          //  string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+         //  string className = this.GetType().Name;
+            if (bridge.ShouldCleanup(className, methodName))
+                DeleteForum(forumName);
         }
 
         // create a new forum called forumName, register all moderators to the forum and create 
@@ -80,6 +93,10 @@ namespace AcceptanceTests.ServerTests
             bridge.LoginUser(forumName, publisher, publisherPass);
             return bridge.AddThread(forumName, subForumName, publisher, title, content);
 
+        }
+        protected static string GetNextForum()
+        {
+            return "forum" + forumIndex++;
         }
 
     }

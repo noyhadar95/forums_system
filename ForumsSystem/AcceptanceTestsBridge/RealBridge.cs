@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ForumsSystem.Server.ServiceLayer;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using System.Xml.Linq;
 
 namespace AcceptanceTestsBridge
 {
@@ -359,9 +360,128 @@ namespace AcceptanceTestsBridge
             return sl.GetOpenningPostID(forumName, subForumName, threadID);
         }
 
-       
+        //===============================================================
+        //===============================================================
+        //===============================================================
+        //===============================================================
 
 
+        public bool ShouldCleanup(string className,string methodName)
+        {
+            try {
+                XDocument doc = XDocument.Load
+                    ("C:\\Users\\omerh\\Documents\\GitHub\\forums_system\\ForumsSystem\\AcceptanceTests\\ServerTests\\AddModeratorTestsData.xml");
 
+                var classVals = doc.Descendants(className);
+                var methodVals = classVals.ToArray()[0].Element(methodName);
+                if (methodVals == null)
+                    return true;
+                string val = methodVals.Value;
+                if (string.Equals(val, "true", StringComparison.CurrentCultureIgnoreCase))
+                    return true;
+                return false;
+            }
+            catch(Exception e)
+            {
+                return true;
+            }
+        }
+
+        public void AddFriend(string forumName, string username1, string username2)
+        {
+            IForum forum = sl.GetForum(forumName);
+            IUser user1 = forum.getUser(username1);
+            IUser user2 = forum.getUser(username2);
+            sl.AddFriend(user1, user2);
+        }
+
+        public bool IsExistNotificationOfPost(string forumName,string username, int postId)
+        {
+            IForum forum = sl.GetForum(forumName);
+            IUser user = forum.getUser(username);
+            Post[] notifications = user.GetPostNotifications().ToArray();
+            Post temp;
+            for (int i = 0; i < notifications.Length; i++)
+            {
+                temp = notifications[i];
+                if (temp.GetId() == postId)
+                    return true;
+            }
+            return false;
+        }
+
+        public void EditPost(string forumName,string subForumName,int threadId,string editor, int postId, string newTitle, string newContent)
+        {
+            if (newTitle == "" && newContent == "")
+                return;//illegal post
+
+            IForum forum = sl.GetForum(forumName);
+            ISubForum subforum= forum.getSubForum(subForumName);
+            Thread thread= subforum.GetThreadById(threadId);
+            Post post = thread.GetPostById(postId);
+            post.Title = newTitle;
+            post.Content = newContent;
+        }
+
+      /*  public void DeletePost(string forumName, string subForumName, int threadId, string deleter, int postId)
+        {
+            IForum forum = sl.GetForum(forumName);
+            IUser user = forum.getUser(deleter);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            Thread thread = subforum.GetThreadById(threadId);
+            Post post = thread.GetPostById(postId);
+        }
+        */
+        public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
+        {
+            IForum forum = sl.GetForum(forumName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            //IUser user = forum.getUser(remover);
+            IUser moderator = forum.getUser(moderatorName);
+            if (!moderator.CanBeDeletedBy(remover))
+                return false;
+            return subforum.removeModerator(moderatorName);
+        }
+
+        public int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string username)
+        {
+            IForum forum = sl.GetForum(forumName);
+            IUser admin = forum.getUser(adminUserName);
+            IUser user = forum.getUser(username);
+            if (!sl.IsAdmin(adminUserName, forumName))//only admin can get num of posts by user
+                return -1;
+            return forum.GetNumOfPostsByUser(username);
+        }
+
+        public List<string> GetListOfModerators(string forumName, string subForumName, string adminUserName)
+        {
+            IForum forum = sl.GetForum(forumName);
+            IUser admin = forum.getUser(adminUserName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            if (!sl.IsAdmin(adminUserName, forumName))//only admin can get list of moderators
+                return null;
+            return subforum.GetModeratorsList();
+        }
+    
+        //TUPLE: postId,title,content
+        public List<Tuple<int, string, string>> GetPostsInForumByModerator(string forumName, string subForumName, string adminUserName, string moderatorName)
+        {
+            IForum forum = sl.GetForum(forumName);
+            IUser admin = forum.getUser(adminUserName);
+            IUser moderator = forum.getUser(moderatorName);
+            if (!sl.IsAdmin(adminUserName,forumName))//only admin can get posts of moderator
+                return null;
+            return forum.GetPostsByModerator(moderatorName);
+        }
+
+        public int GetNumOfForums()
+        {
+            return sl.GetNumOfForums();
+        }
+
+        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo()
+        {
+            return sl.GetMultipleUsersInfo();
+        }
     }
 }

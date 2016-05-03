@@ -19,7 +19,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestEditForumPropMinAge()
         {
-            string forumName = "";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             PoliciesStub newForumPolicy = PoliciesStub.MinimumAge;
 
@@ -32,14 +32,14 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(bridge.IsForumHasPolicy(forumName, newForumPolicy));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // test - edit forum props to MaxModerators policy
         [TestMethod]
         public void TestEditForumPropMaxModerators()
         {
-            string forumName = "";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             PoliciesStub newForumPolicy = PoliciesStub.MaxModerators;
 
@@ -52,14 +52,14 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(bridge.IsForumHasPolicy(forumName, newForumPolicy));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // // test - edit forum props to MemberSuspension policy
         [TestMethod]
         public void TestEditForumPropMemberSuspension()
         {
-            string forumName = "";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             PoliciesStub newForumPolicy = PoliciesStub.MemberSuspension;
 
@@ -72,7 +72,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(bridge.IsForumHasPolicy(forumName, newForumPolicy));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
 

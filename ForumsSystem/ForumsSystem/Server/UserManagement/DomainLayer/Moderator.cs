@@ -25,5 +25,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             this.expirationDate = expirationDate;
         }
+        public bool CanBeDeletedBy(string user)
+        {
+            return appointer.getUsername().Equals(user);
+        }
     }
 }

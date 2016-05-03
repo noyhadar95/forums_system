@@ -8,17 +8,20 @@ namespace AcceptanceTests.ServerTests
     [TestClass]
     public class AddModeratorTests : UseCaseTestSuite
     {
+
         public AddModeratorTests()
             : base()
         {
 
         }
 
+       
+
         // test - check that add moderator with correct info works successfully
         [TestMethod]
         public void TestAddModerator()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string username2 = "user2", pass2 = "passwd2", email2 = "user2@gmail.com";
@@ -36,7 +39,10 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(bridge.IsModerator(forumName, subForumName, username2));
 
             // cleanup
-            base.DeleteForum(forumName);
+            //string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+            //string className = this.GetType().Name;
+            //if (bridge.ShouldTear(className, methodName))
+                base.Cleanup(forumName);
         }
     }
 }

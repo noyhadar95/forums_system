@@ -21,7 +21,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestSetForumPropValid()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             string adminUserName1 = "admin123";
             string adminPass1 = "root123";
             string adminEmail1 = "admin123@gmail.com";
@@ -40,7 +40,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(bridge.IsForumHasPolicy(forumName,forumPolicy));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
 

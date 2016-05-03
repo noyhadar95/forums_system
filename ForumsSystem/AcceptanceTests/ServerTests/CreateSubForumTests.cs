@@ -19,7 +19,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestCreateSubForumSuccess()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user123";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
@@ -39,14 +39,14 @@ namespace AcceptanceTests.ServerTests
             }
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // test the failure scenario - with bad moderators (i.e. usernames of users that are not in the forum)
         [TestMethod]
         public void TestCreateSubForumFailure()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user123";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
@@ -62,7 +62,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(!res);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
 

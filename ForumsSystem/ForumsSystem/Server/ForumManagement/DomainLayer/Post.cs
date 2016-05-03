@@ -129,5 +129,19 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return res;
         }
 
+        public List<Post> GetNestedPostsByMember(string memberUserName)
+        {
+            List<Post> posts = new List<Post>();
+            if(publisher.getUsername() == memberUserName)
+                posts.Add(this);
+            if (replies.Count == 0)
+                return posts;
+            foreach (Post p in replies.ToList<Post>())
+            {
+                posts.AddRange(p.GetNestedPostsByMember(memberUserName));
+            }
+            return posts;
+        }
+
     }
 }

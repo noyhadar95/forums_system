@@ -19,7 +19,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestEditModeratorExpireDate()
         {
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string modUsername = "user1";
             DateTime dateOfBirth = DateTime.Now;
@@ -39,7 +39,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(updatedDate != null && updatedDate.Equals(newDate));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
 

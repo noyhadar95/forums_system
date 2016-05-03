@@ -20,7 +20,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
@@ -39,7 +39,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(res);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // test - delete reply post with replies to it, need to delete all of it's replies
@@ -48,7 +48,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
@@ -77,7 +77,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(countNestedRepliesAfter == countNestedRepliesBefore - countRepliesToDelete);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // test - delete opening post, check that the thread of the opening post is deleted too.
@@ -86,7 +86,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
@@ -104,7 +104,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(!bridge.IsExistThread(forumName, subForumName, threadID));
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
     }

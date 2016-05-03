@@ -24,7 +24,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
@@ -44,7 +44,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(res >= 0);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // check that it's possible to add a post with empty content and a valid title
@@ -53,7 +53,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = ""; // empty content
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
@@ -74,7 +74,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(res >= 0);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // check that it's possible to add a post with empty title and a valid content
@@ -83,7 +83,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = ""; // empty title
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now;
@@ -104,7 +104,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(res >= 0);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         // check that it's not possible to add a post with empty title and empty content
@@ -113,7 +113,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = ""; // empty title
             string content = ""; // empty content
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1", pass1 = "passwd", email = "user1@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now;
@@ -133,7 +133,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(res < 0);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
         # endregion
@@ -146,7 +146,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
@@ -169,7 +169,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(res >= 0);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
 
@@ -181,7 +181,7 @@ namespace AcceptanceTests.ServerTests
         {
             string title = "title1";
             string content = "content1";
-            string forumName = "forum1";
+            string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             DateTime dateOfBirth1 = DateTime.Now;
@@ -207,7 +207,7 @@ namespace AcceptanceTests.ServerTests
             Assert.IsTrue(res >= 0);
 
             // cleanup
-            base.DeleteForum(forumName);
+            base.Cleanup(forumName);
         }
 
 

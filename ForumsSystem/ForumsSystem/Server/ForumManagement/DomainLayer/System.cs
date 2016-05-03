@@ -52,6 +52,35 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 Loggers.Logger.GetInstance().AddActivityEntry("The forum: " + forumName + " has been removed");
             } 
         }
+        public  Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo()
+        {
+            Dictionary<string, List<Tuple<string, string>>> info =
+                new Dictionary<string, List<Tuple<string, string>>>(); //<email,List<forum,username>>
+            Dictionary<string, IForum> currForums = new Dictionary<string, IForum>();
+            foreach (KeyValuePair<string, IForum> item in forums)
+            {
+                currForums.Add(item.Key, item.Value);
+            }
+            foreach (KeyValuePair<string, IForum> item in currForums)
+            {
+                IForum currForum = item.Value;
+                foreach (KeyValuePair<string, string> user in currForum.GetAllUsers() ?? new Dictionary<string, string>())//<username,email>
+                {
+                    List<Tuple<string, string>> userInfo = null;
+                    if (!info.TryGetValue(user.Value, out userInfo))//if mail does not exist
+                        info.Add(user.Value, new List<Tuple<string, string>>());//add it
+                    //add the new user
+                    info.TryGetValue(user.Value, out userInfo);
+                    userInfo.Add(new Tuple<string, string>(item.Key, user.Key));
+
+                }
+            }
+            return info;
+        }
+        public int GetNumOfForums()
+        {
+            return forums.Count;
+        }
 
     }
 }
