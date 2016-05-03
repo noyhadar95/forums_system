@@ -232,9 +232,12 @@ namespace ForumsSystem.Server.ServiceLayer
                 return null;
         }
 
-        public int GetNumOfForums()
+        public int GetNumOfForums(string userName, string password)
         {
-            return sys.GetNumOfForums();
+            if (SuperAdmin.GetInstance().userName == userName && SuperAdmin.GetInstance().password == password)
+                return sys.GetNumOfForums();
+            else
+                return -1;
         }
     }
 }
