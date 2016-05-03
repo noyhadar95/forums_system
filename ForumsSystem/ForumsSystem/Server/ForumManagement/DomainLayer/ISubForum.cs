@@ -24,5 +24,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         bool isModerator(string userName);
         int numOfModerators();
         Thread GetThreadById(int id);
+        List<Tuple<int, string, string>> GetPostsByUser(string moderatorName);
+        List<string> GetModeratorsList();
+        int GetNumOfPostsByUser(string username);
     }
 }

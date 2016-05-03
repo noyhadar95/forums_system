@@ -436,9 +436,9 @@ namespace AcceptanceTestsBridge
         {
             IForum forum = sl.GetForum(forumName);
             ISubForum subforum = forum.getSubForum(subForumName);
-            IUser user = forum.getUser(remover);
+            //IUser user = forum.getUser(remover);
             IUser moderator = forum.getUser(moderatorName);
-            if (!moderator.CanBeDeletedBy(user))
+            if (!moderator.CanBeDeletedBy(remover))
                 return false;
             return subforum.removeModerator(moderatorName);
         }
@@ -481,7 +481,6 @@ namespace AcceptanceTestsBridge
 
         public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo()
         {
-            Dictionary<string, List<Tuple<string, string>>> multipleUsersInfo;//<email,List<forum,username>>
             return sl.GetMultipleUsersInfo();
         }
     }

@@ -223,5 +223,15 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             return subForum.GetThreadById(threadID) != null;
         }
+
+        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo()
+        {
+            return sys.GetMultipleUsersInfo();
+        }
+
+        public int GetNumOfForums()
+        {
+            return sys.GetNumOfForums();
+        }
     }
 }

@@ -89,5 +89,42 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return 1 + openingPost.GetNumOfNestedReplies();
         }
 
+        public List<Tuple<int, string, string>> GetPostsByUser(string moderatorName)
+        {
+            List<Tuple<int, string, string>> posts = new List<Tuple<int, string, string>>();
+            Queue<Post> queue = new Queue<Post>();
+            queue.Enqueue(this.openingPost);
+            Post currPost;
+            while (queue.Count>0)
+            {
+                currPost = queue.Dequeue();
+                if (currPost.getPublisher().Equals(moderatorName))
+                    posts.Add(new Tuple<int, string, string>(currPost.GetId(), currPost.Title, currPost.Content));
+                foreach (Post item in currPost.GetReplies() ?? new List<Post>())
+                {
+                    queue.Enqueue(item);
+                }
+            }
+            return posts;
+        }
+        public int GetNumOfPostsByUser(string username)
+        {
+            int posts = 0;
+            Queue<Post> queue = new Queue<Post>();
+            queue.Enqueue(this.openingPost);
+            Post currPost;
+            while (queue.Count > 0)
+            {
+                currPost = queue.Dequeue();
+                if (currPost.getPublisher().Equals(username))
+                    posts++;
+                foreach (Post item in currPost.GetReplies() ?? new List<Post>())
+                {
+                    queue.Enqueue(item);
+                }
+            }
+            return posts;
+        }
+        
     }
 }

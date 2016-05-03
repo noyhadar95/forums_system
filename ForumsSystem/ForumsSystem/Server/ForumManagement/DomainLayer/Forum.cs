@@ -240,5 +240,49 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             waiting_users.Add(user.getUsername(), user);
         }
+
+        public Dictionary<string, string> GetAllUsers()
+        {
+            if (this.users == null)
+                return null;
+            Dictionary<string, string> users = new Dictionary<string, string>();
+            foreach (KeyValuePair<string,IUser> user in this.users)
+            {
+                users.Add(user.Key, user.Value.getEmail());
+            }
+            return users;
+        }
+
+        public List<Tuple<int, string, string>> GetPostsByModerator(string moderatorName)
+        {
+            
+            List<Tuple<int, string, string>> posts = new List<Tuple<int, string, string>>();
+            List<Tuple<int, string, string>> subforumPosts;
+            if (!isUserMember(moderatorName))
+                return posts;
+            foreach (ISubForum subforum in sub_forums)
+            {
+                subforumPosts = subforum.GetPostsByUser(moderatorName);
+                foreach (Tuple<int, string, string> post in subforumPosts)
+                {
+                    posts.Add(post);
+                }
+            }
+            return posts;
+        }
+
+        public int GetNumOfPostsByUser(string username)
+        {
+            int posts = 0;
+            int subforumPosts;
+            if (!isUserMember(username))
+                return posts;
+            foreach (ISubForum subforum in sub_forums)
+            {
+                subforumPosts = subforum.GetNumOfPostsByUser(username);
+                posts += subforumPosts;
+            }
+            return posts;
+        }
     }
 }

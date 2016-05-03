@@ -60,7 +60,6 @@ namespace ForumsSystem.Server.ServiceLayer
         int GetOpenningPostID(string forumName, string subForumName, int threadID);
 
         bool IsAdmin(string username, string forumName);
-        
-
+        Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo();
     }
 }
