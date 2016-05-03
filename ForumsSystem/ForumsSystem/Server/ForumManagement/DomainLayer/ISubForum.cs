@@ -24,5 +24,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         bool isModerator(string userName);
         int numOfModerators();
         Thread GetThreadById(int id);
+
+        List<Thread> GetThreads();
     }
 }

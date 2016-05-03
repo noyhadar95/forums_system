@@ -126,5 +126,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
             return null;
         }
+
+        public List<Thread> GetThreads()
+        {
+            return threads;
+        }
     }
 }

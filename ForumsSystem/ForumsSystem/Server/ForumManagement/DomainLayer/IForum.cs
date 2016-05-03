@@ -10,9 +10,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     public interface IForum
     {
          bool InitForum(); //Needs to get Admins
-
+        string getName();
         void addSubForum(ISubForum subForum);
 
+        List<ISubForum> GetSubForums();
             bool AddPolicy(Policy policy);
         void SetPolicy(Policy policy);
 

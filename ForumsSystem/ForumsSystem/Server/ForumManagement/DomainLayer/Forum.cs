@@ -26,6 +26,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             Loggers.Logger.GetInstance().AddActivityEntry(forumName + "created");
         }
         
+        public string getName()
+        {
+            return name;
+        }
+
+        public List<ISubForum> GetSubForums()
+        {
+            return sub_forums;
+        }
         private string createLinkForRegistration(IUser user)
         {
             return "someLinkForUser";
