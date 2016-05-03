@@ -56,5 +56,10 @@ namespace ForumsSystemClient.PresentationLayer
         {
             WindowHelper.SwitchWindow(this, new SuperAdminLoginWindow());
         }
+
+        private void createForumBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new AddForumWindow());
+        }
     }
 }

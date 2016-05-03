@@ -21,7 +21,7 @@
         <Grid x:Name="adminGrid" HorizontalAlignment="Left" Height="140" Margin="10,260,0,0" VerticalAlignment="Top" Width="171">
             <Button x:Name="addSubForumBtn" Content="add sub forum" HorizontalAlignment="Left" Margin="6,10,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="addSubForumBtn_Click"/>
         </Grid>
-        <Grid x:Name="userGrid" HorizontalAlignment="Left" Height="163" Margin="10,118,0,0" VerticalAlignment="Top" Width="171">
+        <Grid x:Name="userGrid" HorizontalAlignment="Left" Height="142" Margin="10,118,0,0" VerticalAlignment="Top" Width="171">
             <Button x:Name="logoutBtn" Content="logout" HorizontalAlignment="Left" Margin="5,54,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="logoutBtn_Click"/>
             <Button x:Name="sendMsgBtn" Content="send private msg" HorizontalAlignment="Left" Margin="5,101,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="sendMsgBtn_Click"/>
             <TextBlock x:Name="welcomeTextBlock" HorizontalAlignment="Left" Margin="5,10,0,0" TextWrapping="Wrap" Text="Welcome" VerticalAlignment="Top"/>

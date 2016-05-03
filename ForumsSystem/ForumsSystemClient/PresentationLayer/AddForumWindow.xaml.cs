@@ -17,36 +17,34 @@ using System.Windows.Shapes;
 namespace ForumsSystemClient.PresentationLayer
 {
     /// <summary>
-    /// Interaction logic for AddSubForumWindow.xaml
+    /// Interaction logic for AddForumWindow.xaml
     /// </summary>
-    public partial class AddSubForumWindow : Window
+    public partial class AddForumWindow : Window
     {
         private CL cl;
         private string forumName;
-        private ObservableCollection<string> notModeratorsLVItems;
-        private ObservableCollection<string> moderatorsLVItems;
+        private ObservableCollection<string> notAdminsLVItems;
+        private ObservableCollection<string> adminsLVItems;
 
-        public AddSubForumWindow(string forumName)
+        public AddForumWindow()
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
 
-            this.forumName = forumName;
             cl = new CL();
             List<string> usersList = cl.GetUsersInForum(forumName);
-            notModeratorsLVItems = new ObservableCollection<string>(usersList);
-            moderatorsLVItems = new ObservableCollection<string>();
+            notAdminsLVItems = new ObservableCollection<string>(usersList);
+            adminsLVItems = new ObservableCollection<string>();
 
-            notModeratorsListView.ItemsSource = notModeratorsLVItems;
-            moderatorsListView.ItemsSource = moderatorsLVItems;
-
+            notAdminsListView.ItemsSource = notAdminsLVItems;
+            adminsListView.ItemsSource = adminsLVItems;
         }
 
         private void moveRightBtn_Click(object sender, RoutedEventArgs e)
         {
             // move username from left to right
-            var selectedItems = notModeratorsListView.SelectedItems;
+            var selectedItems = notAdminsListView.SelectedItems;
             List<string> selectedItemsCopy = new List<string>();
             foreach (string item in selectedItems)
             {
@@ -54,16 +52,15 @@ namespace ForumsSystemClient.PresentationLayer
             }
             foreach (string selectedItem in selectedItemsCopy)
             {
-                moderatorsLVItems.Add(selectedItem);
-                notModeratorsLVItems.Remove(selectedItem);
+                adminsLVItems.Add(selectedItem);
+                notAdminsLVItems.Remove(selectedItem);
             }
-
         }
 
         private void moveLeftBtn_Click(object sender, RoutedEventArgs e)
         {
             // move username from right to left
-            var selectedItems = moderatorsListView.SelectedItems;
+            var selectedItems = adminsListView.SelectedItems;
             List<string> selectedItemsCopy = new List<string>();
             foreach (string item in selectedItems)
             {
@@ -71,30 +68,30 @@ namespace ForumsSystemClient.PresentationLayer
             }
             foreach (string selectedItem in selectedItemsCopy)
             {
-                notModeratorsLVItems.Add(selectedItem);
-                moderatorsLVItems.Remove(selectedItem);
+                notAdminsLVItems.Add(selectedItem);
+                adminsLVItems.Remove(selectedItem);
             }
         }
 
         private void submitBtn_Click(object sender, RoutedEventArgs e)
         {
-            string subForumName = nameTB.Text;
+            string forumName = nameTB.Text;
 
-            if (subForumName == "")
+            if (forumName == "")
             {
-                MessageBox.Show("please enter the name of the sub forum");
+                MessageBox.Show("please enter the name of the forum");
                 return;
             }
 
-            //List<string> moderators = new List<string>(moderatorsLVItems)
-            //cl.CreateSubForum(creator, subForumName, moderators);
+            //List<string> admins = new List<string>(adminsLVItems)
+            //cl.CreateForum(creator, forumName, admins);
 
-            WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
+            WindowHelper.SwitchWindow(this, new MainWindow());
         }
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
-            WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
+            WindowHelper.SwitchWindow(this, new MainWindow());
         }
     }
 }
