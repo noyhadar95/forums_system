@@ -61,6 +61,25 @@
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\Connect.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_ActivityLog.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Connection.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_ErrorLogs.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Forum.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Friends.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Log.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Messages.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_MessagesNotification.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Moderators.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Notification.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Policy.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Posts.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_PostsNotification.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_SubForums.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_SuperAdmin.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Threads.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Users.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\UserType.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\AdminAppointmentPolicy.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\ConfidentialityPolicy.cs" />
@@ -105,6 +124,12 @@
   <ItemGroup>
     <Content Include="bin\Debug\ForumsSystem.vshost.exe" />
     <Content Include="obj\Debug\ForumsSystem.csproj.FileListAbsolute.txt" />
+    <Content Include="Server\ForumManagement\Data Access Layer\Database\ForumSystemDB.accdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Server\ForumManagement\Data Access Layer\Database\ForumSystemDB.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="obj\Debug\TempPE\" />

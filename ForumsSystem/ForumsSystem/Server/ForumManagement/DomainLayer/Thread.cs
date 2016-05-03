@@ -12,7 +12,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private ISubForum subForum;
 
         public int id { get; set; }
-        private static int nextId = 1;
+        private static int nextId = 1;//TODO: Change the way we get nextID
 
         public Thread(ISubForum subForum)
         {
