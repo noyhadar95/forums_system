@@ -233,5 +233,12 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             return sys.GetNumOfForums();
         }
+
+        public List<PrivateMessage> GetNotifications(string forumName, string username)
+        {
+            IForum forum = sys.getForum(forumName);
+            IUser user = sys.getForum(forumName).getUser(username);
+            return user.GetNotifications();
+        }
     }
 }

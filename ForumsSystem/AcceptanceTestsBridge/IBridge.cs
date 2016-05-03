@@ -94,5 +94,6 @@ namespace AcceptanceTestsBridge
         List<Tuple<int, string, string>> GetPostsInForumByModerator(string forumName,string subForumName, string adminUserName, string email);
         int GetNumOfForums();//only superadmin can use this
         Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo();//<email,List<forum,username>> - only superadmin can use this
+        List<string> GetNotifications(string forumName, string username);
     }
 }

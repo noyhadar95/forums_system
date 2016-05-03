@@ -483,5 +483,18 @@ namespace AcceptanceTestsBridge
         {
             return sl.GetMultipleUsersInfo();
         }
+
+        public List<string> GetNotifications(string forumName, string username)
+        {
+            List<PrivateMessage>notif= sl.GetNotifications(forumName, username);
+            List<string> res = new List<string>();
+            if (notif == null)
+                return res;
+            foreach (PrivateMessage msg in notif)
+            {
+                res.Add(msg.title);
+            }
+            return res;
+        }
     }
 }

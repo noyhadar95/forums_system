@@ -340,5 +340,11 @@ namespace AcceptanceTestsBridge
             return null;
         }
 
+        public List<string> GetNotifications(string forumName, string username)
+        {
+            if (realBridge != null)
+                return realBridge.GetNotifications(forumName, username);
+            return null;
+        }
     }
 }
