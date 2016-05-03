@@ -12,7 +12,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private ISubForum subForum;
 
         public int id { get; set; }
-        private static int nextId = 1;
+        private static int nextId = 1;//TODO: Change the way we get nextID
 
         public Thread(ISubForum subForum)
         {
@@ -21,8 +21,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
             this.id = nextId++;
         }
-
-
 
         public string GetTiltle()
         {
@@ -89,7 +87,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return 1 + openingPost.GetNumOfNestedReplies();
         }
 
-        public List<Tuple<int, string, string>> GetPostsByUser(string moderatorName)
+       /* public List<Tuple<int, string, string>> GetPostsByUser(string moderatorName)
         {
             List<Tuple<int, string, string>> posts = new List<Tuple<int, string, string>>();
             Queue<Post> queue = new Queue<Post>();
@@ -106,7 +104,27 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 }
             }
             return posts;
+        }*/
+
+        public List<Post> GetPostsByUser(string moderatorName)
+        {
+            List<Post> posts = new List<Post>();
+            Queue<Post> queue = new Queue<Post>();
+            queue.Enqueue(this.openingPost);
+            Post currPost;
+            while (queue.Count > 0)
+            {
+                currPost = queue.Dequeue();
+                if (currPost.getPublisher().Equals(moderatorName))
+                    posts.Add(currPost);
+                foreach (Post item in currPost.GetReplies() ?? new List<Post>())
+                {
+                    queue.Enqueue(item);
+                }
+            }
+            return posts;
         }
+
         public int GetNumOfPostsByUser(string username)
         {
             int posts = 0;

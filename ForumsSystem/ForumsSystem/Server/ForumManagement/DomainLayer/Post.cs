@@ -16,7 +16,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private string title;
         private string content;
         private int id;
-        private static int nextId = 1;
+        private static int nextId = 1;//TODO: Change the way to initialize this
 
         public Post(IUser publisher, Thread thread, string title, string content)
         {

@@ -63,5 +63,9 @@ namespace ForumsSystem.Server.ServiceLayer
         Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo();
         int GetNumOfForums();
         List<PrivateMessage> GetNotifications(string forumName, string username);
+        int GetNumOfForums(string userName, string password);
+
+        Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfoBySuperAdmin(string userName, string password);
+
     }
 }
