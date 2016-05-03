@@ -37,7 +37,25 @@ namespace ForumsSystemClient.CommunicationLayer
             return res;
         }
 
+        public List<string> GetUsersInForum(string forumName)
+        {
+            // TODO: implement
+
+            List<string> list = new List<string>();
+            list.Add("user1");
+            list.Add("user2");
+            list.Add("user3");
+            return list;
+        }
+
         public bool IsInitialized()
+        {
+            // TODO: implement
+
+            return true;
+        }
+
+        public bool LoginSuperAdmin(string username, string password)
         {
             // TODO: implement
 
@@ -49,6 +67,11 @@ namespace ForumsSystemClient.CommunicationLayer
             // TODO: implement
 
             return true;
+        }
+
+        public void InitializeSystem(string username, string password)
+        {
+            // TODO: implement
         }
 
         public bool MemberLogin(string forumName, string username, string password)
@@ -84,6 +107,9 @@ namespace ForumsSystemClient.CommunicationLayer
             p1.AddNestedPost(p12);
             p1.AddNestedPost(p13);
             p1.AddNestedPost(p14);
+
+            Post p121=new Post("title", "content content content");
+            p12.AddNestedPost(p121);
 
             list.Add(p1);
             list.Add(new Post("title", "content content content"));

@@ -16,13 +16,13 @@ using System.Windows.Shapes;
 namespace ForumsSystemClient.PresentationLayer
 {
     /// <summary>
-    /// Interaction logic for InitializationWindow.xaml
+    /// Interaction logic for SuperAdminLoginWindow.xaml
     /// </summary>
-    public partial class InitializationWindow : Window
+    public partial class SuperAdminLoginWindow : Window
     {
         private CL cl;
 
-        public InitializationWindow()
+        public SuperAdminLoginWindow()
         {
             InitializeComponent();
 
@@ -31,18 +31,28 @@ namespace ForumsSystemClient.PresentationLayer
             cl = new CL();
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void cancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new MainWindow());
+        }
+
+        private void loginBtn_Click(object sender, RoutedEventArgs e)
         {
             string username = usernameTB.Text;
             string password = passwordBox.Password;
 
             if (username == "" || password == "")
             {
-                MessageBox.Show("please enter valid information");
+                MessageBox.Show("Missing login information, please try again");
                 return;
             }
-            cl.InitializeSystem(username, password);
-            WindowHelper.SwitchWindow(this, new MainWindow());
+
+            bool success = cl.LoginSuperAdmin(username, password);
+            if (success)
+            {
+                WindowHelper.SwitchWindow(this, new MainWindow());
+            }
+
         }
     }
 }

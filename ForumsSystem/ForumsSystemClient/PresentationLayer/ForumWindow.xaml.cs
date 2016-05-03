@@ -47,8 +47,6 @@ namespace ForumsSystemClient.PresentationLayer
             List<string> items = cl.GetSubForumsList(forumName);
             subForumsListView.ItemsSource = items;
 
-            //this.Resources = Application.Current.Resources[ForumsSystemStyle];
-
 
         }
 
@@ -101,8 +99,11 @@ namespace ForumsSystemClient.PresentationLayer
                 //TODO: handle type
                 userGrid.Visibility = Visibility.Visible;
                 if (type == "admin")
+                {
                     adminGrid.Visibility = Visibility.Visible;
 
+                }
+                adminGrid.Visibility = Visibility.Visible;
 
 
             }
@@ -130,6 +131,11 @@ namespace ForumsSystemClient.PresentationLayer
         {
             Window sendPrMsgWin = new SendPrMsgWindow(forumName, loggedUsername);
             WindowHelper.ShowWindow(this, sendPrMsgWin);
+        }
+
+        private void addSubForumBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new AddSubForumWindow(forumName));
         }
     }
 }

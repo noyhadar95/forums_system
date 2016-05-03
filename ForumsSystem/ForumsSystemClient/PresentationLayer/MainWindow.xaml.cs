@@ -31,9 +31,9 @@ namespace ForumsSystemClient.PresentationLayer
             cl = new CL();
 
             // check if the system is initialized
-            if (cl.IsInitialized())
+            if (!cl.IsInitialized())
             {
-
+                WindowHelper.SwitchWindow(this, new InitializationWindow());
             }
 
 
@@ -50,6 +50,11 @@ namespace ForumsSystemClient.PresentationLayer
                 Window newWin = new ForumWindow((string)item);
                 WindowHelper.SwitchWindow(this, newWin);
             }
+        }
+
+        private void superAdminLoginBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new SuperAdminLoginWindow());
         }
     }
 }

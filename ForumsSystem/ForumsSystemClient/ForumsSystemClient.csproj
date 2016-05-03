@@ -63,6 +63,9 @@
   <ItemGroup>
     <Compile Include="CommunicationLayer\CL.cs" />
     <Compile Include="CommunicationLayer\Post.cs" />
+    <Compile Include="PresentationLayer\AddSubForumWindow.xaml.cs">
+      <DependentUpon>AddSubForumWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\ForumWindow.xaml.cs">
       <DependentUpon>ForumWindow.xaml</DependentUpon>
     </Compile>
@@ -80,6 +83,9 @@
     </Compile>
     <Compile Include="PresentationLayer\SubForumWindow.xaml.cs">
       <DependentUpon>SubForumWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\SuperAdminLoginWindow.xaml.cs">
+      <DependentUpon>SuperAdminLoginWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLayer\ThreadWindow.xaml.cs">
       <DependentUpon>ThreadWindow.xaml</DependentUpon>
@@ -112,6 +118,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="PresentationLayer\AddSubForumWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLayer\ForumWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -136,6 +146,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PresentationLayer\SuperAdminLoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLayer\ThreadWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,6 +157,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="PresentationLayer\Images\background.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PresentationLayer\Images\background2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PresentationLayer\Images\expand_minus.png" />
+    <Resource Include="PresentationLayer\Images\expand_plus.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
