@@ -10,7 +10,10 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 {
     public class DAL_Messages : DAL_Connection
     {
-
+        /// <summary>
+        /// Gets the current maximum id of messages
+        /// </summary>
+        /// <returns></returns>
         public int getMaxId()
         {
             Connect_to_DB();
@@ -19,7 +22,6 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             DataTable tb = connect_me.DownloadData(sql, "Messages");
             if (tb.Rows.Count == 0)
                 return 0;
-            var t = tb.Rows[0][0].ToString();
             if (tb.Rows[0][0] == null || tb.Rows[0][0].ToString() == "")
                 return 0;
             return (int)tb.Rows[0][0];
@@ -96,6 +98,19 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
 
             return connect_me.DownloadData2(cmd, "Messages");
+        }
+
+        public void DeleteMessage(int messageId)
+        {
+            Connect_to_DB();
+            string sql = "DELETE FROM [Messages] WHERE ID=@p1";
+
+            OleDbCommand cmd = new OleDbCommand(sql);
+
+            cmd.Parameters.AddWithValue("@p1", messageId);
+         
+            connect_me.TakeAction(cmd);
+
         }
 
         //TODO: Can delete message? - if so what happens

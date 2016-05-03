@@ -30,7 +30,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         public DataTable GetUsersNotifications(string forumName, string userName)
         {
             Connect_to_DB();
-            string sql = "Select * From MessagesNotification WHERE ForumName=@p1 AND UserName=@p2";
+            string sql = "Select * From MessagesNotification WHERE Forum=@p1 AND UserName=@p2";
 
             OleDbCommand cmd = new OleDbCommand(sql);
 
@@ -51,7 +51,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
          {
              Connect_to_DB();
              OleDbCommand cmd = new OleDbCommand();
-             cmd.CommandText = "Delete From [MessagesNotification] Where [ForumName]=@p1 AND [UserName]=@p2 AND [Message]=@p3";
+             cmd.CommandText = "Delete From [MessagesNotification] Where [Forum]=@p1 AND [UserName]=@p2 AND [Message]=@p3";
 
 
              cmd.Parameters.AddWithValue("@p1", forumName);

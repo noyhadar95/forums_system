@@ -19,7 +19,7 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
             dl = new DAL_Forum();
             du = new DAL_Users();
             dm = new DAL_Messages();
-            dl.DeleteForum(forumName);
+           
             dl.CreateForum(forumName, -1);
             du.CreateUser(forumName, "User1", "Pass1", "User1@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member);
             du.CreateUser(forumName, "User2", "Pass1", "User2@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member);
@@ -38,16 +38,18 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
         [TestMethod]
         public void TestCreateAndGetMessage()
         {
-            dm.CreateMessage(forumName, "User1", "User2","Title1","Much content");
+            int id = dm.CreateMessage(forumName, "User1", "User2","Title1","Much content");
             DataTable d = dm.GetUsersMessages(forumName, "User1");
             Assert.IsTrue(d.Rows.Count == 1);
             d = dm.GetUsersMessages(forumName, "User2");
             Assert.IsTrue(d.Rows.Count == 1);
+
+            dm.DeleteMessage(id);
         }
         [TestMethod]
         public void TestCorrectRecieverAndSender()
         {
-            dm.CreateMessage(forumName, "User1", "User2", "Title1", "Much content");
+            int id = dm.CreateMessage(forumName, "User1", "User2", "Title1", "Much content");
             DataTable d = dm.GetUsersMessages(forumName, "User1");
             Assert.IsTrue(d.Rows.Count == 1);
             d = dm.GetUsersMessages(forumName, "User2");
@@ -63,6 +65,8 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
             Assert.IsTrue(d.Rows.Count == 0);
             d = dm.GetUsersRecievedMessages(forumName, "User2");
             Assert.IsTrue(d.Rows.Count == 1);
+
+            dm.DeleteMessage(id);
 
         }
 
