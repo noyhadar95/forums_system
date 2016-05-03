@@ -73,6 +73,7 @@
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Moderators.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Notification.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Policy.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_PolicyParameter.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Posts.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_PostsNotification.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_SubForums.cs" />
