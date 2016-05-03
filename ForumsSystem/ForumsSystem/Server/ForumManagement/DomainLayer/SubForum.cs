@@ -162,6 +162,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 posts += threadPosts;
             }
             return posts;
+        public List<Thread> GetThreads()
+        {
+            return threads;
         }
     }
 }

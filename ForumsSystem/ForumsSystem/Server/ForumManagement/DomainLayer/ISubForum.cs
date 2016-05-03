@@ -27,5 +27,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         List<Tuple<int, string, string>> GetPostsByUser(string moderatorName);
         List<string> GetModeratorsList();
         int GetNumOfPostsByUser(string username);
+        List<Thread> GetThreads();
     }
 }

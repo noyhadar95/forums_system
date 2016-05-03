@@ -75,5 +75,19 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new Exception("permission denied");
         }
 
+        public override bool CancelModeratorAppointment(IUser callingUser, ISubForum subforum, string userName)
+        {
+            throw new Exception("permission denied");
+        }
+
+        public override int ReportNumOfPostsInSubForum(IUser callingUser, ISubForum subforum)
+        {
+            throw new Exception("permission denied");
+        }
+
+        public override List<Post> ReportPostsByMember(IUser callingUser, string memberUserName)
+        {
+            throw new Exception("permission denied");
+        }
     }
 }

@@ -153,9 +153,53 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             foreach (Policies pol in properties.ToList<Policies>())
             {
                 forum.RemovePolicy(pol);
-            }
+            } 
             return true;
         }
+
+
+        public virtual bool CancelModeratorAppointment(IUser callingUser, ISubForum subforum, string userName)
+        {
+            IForum forum = subforum.getForum();
+            if (callingUser.getForum().getName() != forum.getName())
+                return false;
+            subforum.removeModerator(userName);
+            return true;
+        }
+
+        public virtual int ReportNumOfPostsInSubForum(IUser callingUser, ISubForum subforum)
+        {
+            int count = 0;
+            IForum forum = subforum.getForum();
+            if (callingUser.getForum().getName() != forum.getName())
+                return -1;
+            List<Thread> threads = subforum.GetThreads();
+            foreach(Thread thread in threads)
+            {
+                Post openningPost = thread.GetOpeningPost();
+                count += openningPost.GetNumOfNestedReplies()+1;
+            }
+            return count;
+        }
+
+        public virtual List<Post> ReportPostsByMember(IUser callingUser, string memberUserName)
+        {
+            List<Post> posts = new List<Post>();
+            if (!callingUser.getForum().isUserMember(memberUserName))
+                return null;
+            List<ISubForum> subForums = callingUser.getForum().GetSubForums();
+            foreach (ISubForum subforum in subForums)
+            {
+                List<Thread> threads = subforum.GetThreads();
+                foreach (Thread thread in threads)
+                {
+                    Post openningPost = thread.GetOpeningPost();
+                    posts.AddRange(openningPost.GetNestedPostsByMember(memberUserName));
+                }
+            }
+            return posts;
+        }
+
 
 
         //in addition the admin should be able to get a report on the forum status
