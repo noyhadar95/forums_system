@@ -400,6 +400,20 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return false;
         }
 
+        public List<Post> ReportPostsByMember(string memberUserName)
+        {
+            return type.ReportPostsByMember(this,memberUserName);
+        }
+
+        public int ReportNumOfPostsByMember(string memberUserName)
+        {
+            return type.ReportNumOfPostsByMember(this,memberUserName);
+        }
+
+        public List<string> GetModeratorsList(ISubForum subforum)
+        {
+            return type.GetModeratorsList(this, subforum);
+        }
     }
 
 

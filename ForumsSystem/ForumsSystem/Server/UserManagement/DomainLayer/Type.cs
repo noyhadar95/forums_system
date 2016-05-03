@@ -187,20 +187,26 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             List<Post> posts = new List<Post>();
             if (!callingUser.getForum().isUserMember(memberUserName))
                 return null;
-            List<ISubForum> subForums = callingUser.getForum().GetSubForums();
-            foreach (ISubForum subforum in subForums)
-            {
-                List<Thread> threads = subforum.GetThreads();
-                foreach (Thread thread in threads)
-                {
-                    Post openningPost = thread.GetOpeningPost();
-                    posts.AddRange(openningPost.GetNestedPostsByMember(memberUserName));
-                }
-            }
-            return posts;
+            IForum forum = callingUser.getForum();
+            return forum.GetPostsByMember(memberUserName);
         }
 
+        public virtual int ReportNumOfPostsByMember(IUser callingUser, string memberUserName)
+        {
+            List<Post> posts = new List<Post>();
+            if (!callingUser.getForum().isUserMember(memberUserName))
+                return 0;
+            IForum forum = callingUser.getForum();
+            return forum.GetNumOfPostsByUser(memberUserName);
+        }
 
+        public virtual List<string> GetModeratorsList(IUser callingUser,ISubForum subforum)
+        {
+            IForum forum = subforum.getForum();
+            if (callingUser.getForum().getName() != forum.getName())
+                return null;
+            return subforum.GetModeratorsList();
+        }
 
         //in addition the admin should be able to get a report on the forum status
 
@@ -212,7 +218,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
 
         //Member---------------------------------------------------------------
-      
+
 
         public virtual Post postReply(IUser callingUser, Post parent, Thread thread, string title, string content)
         {

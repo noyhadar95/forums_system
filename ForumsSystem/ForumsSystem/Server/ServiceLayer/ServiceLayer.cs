@@ -224,9 +224,12 @@ namespace ForumsSystem.Server.ServiceLayer
             return subForum.GetThreadById(threadID) != null;
         }
 
-        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo()
+        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfoBySuperAdmin(string userName, string password)
         {
-            return sys.GetMultipleUsersInfo();
+            if (SuperAdmin.GetInstance().userName == userName && SuperAdmin.GetInstance().password == password)
+                return sys.GetMultipleUsersInfo();
+            else
+                return null;
         }
 
         public int GetNumOfForums()

@@ -447,10 +447,14 @@ namespace AcceptanceTestsBridge
         {
             IForum forum = sl.GetForum(forumName);
             IUser admin = forum.getUser(adminUserName);
-            IUser user = forum.getUser(username);
-            if (!sl.IsAdmin(adminUserName, forumName))//only admin can get num of posts by user
+            try
+            {
+                return admin.ReportNumOfPostsByMember(username);
+            }
+            catch (Exception)
+            {
                 return -1;
-            return forum.GetNumOfPostsByUser(username);
+            }
         }
 
         public List<string> GetListOfModerators(string forumName, string subForumName, string adminUserName)
@@ -458,9 +462,14 @@ namespace AcceptanceTestsBridge
             IForum forum = sl.GetForum(forumName);
             IUser admin = forum.getUser(adminUserName);
             ISubForum subforum = forum.getSubForum(subForumName);
-            if (!sl.IsAdmin(adminUserName, forumName))//only admin can get list of moderators
+            try
+            {
+                return admin.GetModeratorsList(subforum);
+            }
+            catch (Exception)
+            {
                 return null;
-            return subforum.GetModeratorsList();
+            }
         }
     
         //TUPLE: postId,title,content
@@ -468,10 +477,21 @@ namespace AcceptanceTestsBridge
         {
             IForum forum = sl.GetForum(forumName);
             IUser admin = forum.getUser(adminUserName);
-            IUser moderator = forum.getUser(moderatorName);
-            if (!sl.IsAdmin(adminUserName,forumName))//only admin can get posts of moderator
+            try
+            {
+                List<Post> posts = admin.ReportPostsByMember(moderatorName);
+                List<Tuple<int, string, string>> res = new List<Tuple<int, string, string>>();
+                foreach (Post post in posts)
+                {
+                    res.Add(new Tuple<int, string, string>(post.GetId(), post.Title, post.Content));
+                }
+                return res;
+            }
+            catch (Exception)
+            {
                 return null;
-            return forum.GetPostsByModerator(moderatorName);
+            }
+            
         }
 
         public int GetNumOfForums()
@@ -479,9 +499,9 @@ namespace AcceptanceTestsBridge
             return sl.GetNumOfForums();
         }
 
-        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo()
+        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo(string userName,string password)
         {
-            return sl.GetMultipleUsersInfo();
+            return sl.GetMultipleUsersInfoBySuperAdmin(userName,password);
         }
     }
 }

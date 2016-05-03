@@ -64,5 +64,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         bool IsMessageReceived(string msgTitle, string msgContent);
 
         bool SetForum(IForum forum);
+   
+        List<Post> ReportPostsByMember(string memberUserName);
+
+        int ReportNumOfPostsByMember(string memberUserName);
+
+        List<string> GetModeratorsList(ISubForum subforum);
     }
 }
