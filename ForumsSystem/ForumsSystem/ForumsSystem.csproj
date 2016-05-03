@@ -70,6 +70,7 @@
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Log.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Messages.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_MessagesNotification.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Moderators.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Notification.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Policy.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Posts.cs" />
