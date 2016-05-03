@@ -78,6 +78,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             cmd.CommandText = "Delete From [Forums] Where [ForumName]=@p1 AND [SubForumName]=@p2";
 
             cmd.Parameters.AddWithValue("@p1", forumName);
+            cmd.Parameters.AddWithValue("@p2", subForumName);
 
             connect_me.TakeAction(cmd);
             cmd = null;

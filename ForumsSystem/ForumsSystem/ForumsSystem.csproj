@@ -70,8 +70,13 @@
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Log.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Messages.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_MessagesNotification.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Notification.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Policy.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Posts.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_PostsNotification.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_SubForums.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_SuperAdmin.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Threads.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Users.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\UserType.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\AdminAppointmentPolicy.cs" />
