@@ -1,9 +1,11 @@
-﻿using System;
+﻿using ForumsSystem.Server.ForumManagement.DomainLayer;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,13 +19,14 @@ namespace ForumsSystem.Server.CommunicationLayer
         const int SERVER_PORT_NO = 5000;
         const string delimeter = "$|deli|$";
         const string SERVER_IP = "132.72.225.97";
-
+        private static ServiceLayer.IServiceLayer sl;
         private static Dictionary<Tuple<string, string>, string> halfClients; //not yet subscribed
 
         private static Dictionary<Tuple<string, string>, string> clients; //<Forum,Username> Ip address
         public static void StartServer()
         {
             clients = new Dictionary<Tuple<string, string>, string>();
+            sl = new ServiceLayer.ServiceLayer();
                 //---listen at the specified IP and port no.---
                 IPAddress localAdd = IPAddress.Parse(SERVER_IP);
                 TcpListener listener = new TcpListener(localAdd, SERVER_PORT_NO);
@@ -149,18 +152,33 @@ namespace ForumsSystem.Server.CommunicationLayer
 
             for (int i = 1; i < items.Length; i+=2)
             {
-
+                parameters.Add(StringToObject(items[i], items[i + 1]));
             }
 
             TcpClient client = ((ThreadParameter)tp).client;
-            if (method.Equals("MemberLogin"){//check if login then Halfsubscribe
-                HalfSubscribeClient(client, ((ThreadParameter)tp).param, ((ThreadParameter)tp).param);
+            if (method.Equals("MemberLogin")){//check if login then Halfsubscribe
+                string username = (string)parameters.ElementAt(0);
+                Forum f = (Forum)parameters.ElementAt(2);
+                string forumName = f.getName();
+                HalfSubscribeClient(client, forumName, username);
             }
-            if (method.Equals("MemberLogout"))//TODO:check if logout then unsubscribe
-                UnSubscribeClient();
+            if (method.Equals("MemberLogout"))
+            {//TODO:check if logout then unsubscribe
+                string username = (string)parameters.ElementAt(0);
+                Forum f = (Forum)parameters.ElementAt(2);
+                string forumName = f.getName();
+                UnSubscribeClient(forumName, username);
+            }
 
+            //
+            Type thisType = typeof(ServiceLayer.ServiceLayer);
+            MethodInfo theMethod = thisType.GetMethod(method);
+            Object returnObj = theMethod.Invoke(sl, parameters.ToArray());
 
-                string returnValue = ((ThreadParameter)tp).param + "HAHA";
+            string pType = returnObj.GetType().ToString();
+            pType = pType.Substring(pType.LastIndexOf('.') + 1);
+
+            string returnValue = pType + delimeter + ObjectToString(returnObj);
            
 
             //---write back the text to the client---
@@ -181,9 +199,12 @@ namespace ForumsSystem.Server.CommunicationLayer
 
         }
 
-        public static Object StringToObject(string str, string classType)
+        public static Object StringToObject(string classType, string str)
         {
-            Type type = Type.GetType("ForumsSystem.Server.ForumManagement.DomainLayer." + classType);
+            string addition = "ForumsSystem.Server.ForumManagement.DomainLayer.";
+            if (classType == "String" || classType == "Integer" || classType == "Boolean" || classType == "string" || classType == "int" || classType == "bool")
+                addition = "System.";
+            Type type = Type.GetType(addition + classType);
             XmlSerializer serializer = new XmlSerializer(type);
             StringReader reader = new StringReader(str);
             return serializer.Deserialize(reader);

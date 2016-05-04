@@ -20,6 +20,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         MaxModerators=9,
         ModeratorSeniority=10,
         PasswordValidity=11,
-        ModeratorPermissionToDelete=12;
+        ModeratorPermissionToDelete=12
     }
 }

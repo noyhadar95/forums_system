@@ -21,7 +21,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestAddPolicy()//1
         {
             policy = new UsersLoadPolicy(Policies.UsersLoad, 400);
-            policy.AddPolicy(new PasswordPolicy(Policies.Password, 8));
+            policy.AddPolicy(new PasswordPolicy(Policies.Password, 8,100));
             Assert.IsTrue(policy.CheckIfPolicyExists(Policies.Password));
 
         }
@@ -30,12 +30,12 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestRemovePolicy()//2
         {
             policy = new UsersLoadPolicy(Policies.UsersLoad, 400);
-            policy.AddPolicy(new PasswordPolicy(Policies.Password, 8));
+            policy.AddPolicy(new PasswordPolicy(Policies.Password, 8,100));
             Assert.IsTrue(policy.CheckIfPolicyExists(Policies.Password));
             policy = policy.RemovePolicy(Policies.Password);//test removal from end
             Assert.IsFalse(policy.CheckIfPolicyExists(Policies.Password));
             policy.AddPolicy(new MinimumAgePolicy(Policies.MinimumAge ,16));
-            policy.AddPolicy(new PasswordPolicy(Policies.Password, 8));
+            policy.AddPolicy(new PasswordPolicy(Policies.Password, 8,100));
             policy = policy.RemovePolicy(Policies.MinimumAge);//test removal from middle
             Assert.IsFalse(policy.CheckIfPolicyExists(Policies.MinimumAge));
             policy = policy.RemovePolicy(Policies.UsersLoad);//test removal from head
@@ -48,9 +48,9 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestDoubleAddPolicy()//3 test AddPolicy with a policy that already exists
         {
             policy = new UsersLoadPolicy(Policies.UsersLoad, 400);
-            policy.AddPolicy(new PasswordPolicy(Policies.Password, 8));
+            policy.AddPolicy(new PasswordPolicy(Policies.Password, 8,100));
             Assert.IsTrue(policy.CheckIfPolicyExists(Policies.Password));
-            Assert.IsFalse(policy.AddPolicy(new PasswordPolicy(Policies.Password, 12)));
+            Assert.IsFalse(policy.AddPolicy(new PasswordPolicy(Policies.Password, 12,100)));
             
         }
 
@@ -69,7 +69,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         [TestMethod]
         public void TestPasswordPolicy()//5
         {
-            policy = new PasswordPolicy(Policies.Password, 8);
+            policy = new PasswordPolicy(Policies.Password, 8,100);
             PolicyParametersObject param = new PolicyParametersObject(Policies.Password);
             param.SetPassword("12345678");
             Assert.IsTrue(policy.CheckPolicy(param));
