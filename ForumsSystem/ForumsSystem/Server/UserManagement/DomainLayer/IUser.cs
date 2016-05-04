@@ -51,7 +51,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         void AddNotification(PrivateMessage newMessage);
 
         void Login();
-        void LogOff();
+        void Logout();
         bool isLogin();
 
 
