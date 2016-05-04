@@ -86,6 +86,7 @@
     <Compile Include="Server\ForumManagement\DomainLayer\Forum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\IForum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\ISubForum.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\ModeratorSeniorityPolicy.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\SuperAdmin.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\System.cs" />
     <Compile Include="Server\ServiceLayer\IServiceLayer.cs" />

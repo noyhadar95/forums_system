@@ -9,7 +9,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     public interface IUser
     {
-        void ChangeType(Type type); 
+        void ChangeType(Type type);
         PrivateMessage SendPrivateMessage(string reciever, string title, string content);
         void AddSentMessage(PrivateMessage privateMessage);
         void AddReceivedMessage(PrivateMessage privateMessage);
@@ -64,5 +64,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         bool IsMessageReceived(string msgTitle, string msgContent);
 
         bool SetForum(IForum forum);
-    }
+
+        void SetPassword(string password);
+
+        DateTime GetDateOfPassLastChange();
+
+
+        }
 }
