@@ -30,14 +30,14 @@ namespace AcceptanceTests.ServerTests
             admins.Add(user2);
             try
             {
-                numOfForums = bridge.GetNumOfForums();
+                numOfForums = bridge.GetNumOfForums(this.superAdminUsername,this.superAdminPass);
                 Assert.IsTrue(numOfForums == 0);
                 // create the forum
                 bridge.CreateForum(this.superAdminUsername, forumName1, admins, forumPolicy);
-                numOfForums = bridge.GetNumOfForums();
+                numOfForums = bridge.GetNumOfForums(this.superAdminUsername, this.superAdminPass);
                 Assert.IsTrue(numOfForums == 1);
                 bridge.CreateForum(this.superAdminUsername, forumName2, admins, forumPolicy);
-                numOfForums = bridge.GetNumOfForums();
+                numOfForums = bridge.GetNumOfForums(this.superAdminUsername, this.superAdminPass);
                 Assert.IsTrue(numOfForums == 2);
             }
             catch (Exception e)
@@ -67,14 +67,14 @@ namespace AcceptanceTests.ServerTests
             admins.Add(user2);
             try
             {
-                numOfForums = bridge.GetNumOfForums();
+                numOfForums = bridge.GetNumOfForums(this.superAdminUsername, this.superAdminPass);
                 Assert.IsTrue(numOfForums == 0);
                 // create the forum
                 bridge.CreateForum(this.superAdminUsername, forumName1, admins, forumPolicy);
-                numOfForums = bridge.GetNumOfForums();
+                numOfForums = bridge.GetNumOfForums(this.superAdminUsername, this.superAdminPass);
                 Assert.IsTrue(numOfForums == 1);
                 bridge.CreateForum(this.superAdminUsername, forumName1, admins, forumPolicy);
-                numOfForums = bridge.GetNumOfForums();
+                numOfForums = bridge.GetNumOfForums(this.superAdminUsername, this.superAdminPass);
                 Assert.IsTrue(numOfForums == 1);
             }
             catch (Exception e)
@@ -117,7 +117,7 @@ namespace AcceptanceTests.ServerTests
                 bridge.RegisterToForum(forumName2, user12, pass1, email1, dob1);
                 bridge.ConfirmRegistration(forumName2, user12);
                 //check the info
-                multipleUsersInfo = bridge.GetMultipleUsersInfo();
+                multipleUsersInfo = bridge.GetMultipleUsersInfo(this.superAdminUsername,this.superAdminPass);
                 Assert.IsTrue(multipleUsersInfo.ContainsKey(email1));
                 Assert.IsTrue(multipleUsersInfo.TryGetValue(email1, out temp));
                 Assert.IsTrue(temp.Count == 2);
@@ -125,13 +125,13 @@ namespace AcceptanceTests.ServerTests
                 Assert.IsTrue(temp.Contains(new Tuple<string, string>(forumName2, user12)));//TODO: check this (contains?)
                 temp = null;
                 //register user 2 to forums 1 and 2
-                bridge.RegisterToForum(forumName1, user11, pass1, email1, dob1);
-                bridge.ConfirmRegistration(forumName1, user11);
-                bridge.RegisterToForum(forumName2, user12, pass1, email1, dob1);
-                bridge.ConfirmRegistration(forumName2, user12);
+                bridge.RegisterToForum(forumName1, user21, pass2, email2, dob2);
+                bridge.ConfirmRegistration(forumName1, user21);
+                bridge.RegisterToForum(forumName2, user22, pass2, email2, dob2);
+                bridge.ConfirmRegistration(forumName2, user22);
                 //check the info
                 //first check that info about user 1 is still there
-                multipleUsersInfo = bridge.GetMultipleUsersInfo();
+                multipleUsersInfo = bridge.GetMultipleUsersInfo(this.superAdminUsername, this.superAdminPass);
                 Assert.IsTrue(multipleUsersInfo.ContainsKey(email1));
                 Assert.IsTrue(multipleUsersInfo.TryGetValue(email1, out temp));
                 Assert.IsTrue(temp.Count == 2);
@@ -139,7 +139,7 @@ namespace AcceptanceTests.ServerTests
                 Assert.IsTrue(temp.Contains(new Tuple<string, string>(forumName2, user12)));//TODO: check this (contains?)
                 temp = null;
                 //now check the info about user 2
-                multipleUsersInfo = bridge.GetMultipleUsersInfo();
+                multipleUsersInfo = bridge.GetMultipleUsersInfo(this.superAdminUsername, this.superAdminPass);
                 Assert.IsTrue(multipleUsersInfo.ContainsKey(email2));
                 Assert.IsTrue(multipleUsersInfo.TryGetValue(email2, out temp));
                 Assert.IsTrue(temp.Count == 2);

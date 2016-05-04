@@ -64,7 +64,7 @@ namespace AcceptanceTests.ServerTests
 
         // create a new forum called forumName, register all moderators to the forum and create 
         // a new sub-forum called subForumName with the given moderators list.
-        protected bool CreateSubForum(string forumName, PoliciesStub forumPolicy, string subForumName, Dictionary<string, DateTime> moderators)
+        protected bool CreateSubForumByAdmin1(string forumName, PoliciesStub forumPolicy, string subForumName, Dictionary<string, DateTime> moderators)
         {
             // create a forum
             CreateForum(forumName, forumPolicy);
@@ -76,6 +76,8 @@ namespace AcceptanceTests.ServerTests
                 DateTime dateOfBirth = new DateTime(1995, 8, 2);
 
                 bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
+                bridge.ConfirmRegistration(forumName, username);
+                //.AddModerator(forumName, subForumName, this.adminUserName1, mod);
             }
             bridge.LoginUser(forumName, adminUserName1, adminPass1);
             return bridge.CreateSubForum(adminUserName1, forumName, subForumName, moderators);
@@ -86,7 +88,7 @@ namespace AcceptanceTests.ServerTests
         protected int AddThread(string forumName, PoliciesStub forumPolicy, string subForumName, Dictionary<string, DateTime> moderators,
              string publisher, string title, string content)
         {
-            CreateSubForum(forumName, forumPolicy, subForumName, moderators);
+            CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
             string publisherPass = "publisherpassword", publisherEmail = "publisher1@gmail.com";
             DateTime publisherDateOfBirth = DateTime.Today.AddYears(-25);
             bridge.RegisterToForum(forumName, publisher, publisherPass, publisherEmail, publisherDateOfBirth);

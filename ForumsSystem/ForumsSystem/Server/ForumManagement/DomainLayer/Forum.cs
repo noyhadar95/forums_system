@@ -64,8 +64,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return true;
 
         }
-
-        
+  
         public bool RegisterToForum(IUser user)
         {
             if (isUserMember(user.getUsername()))
@@ -192,7 +191,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return this.users.Count;
         }
 
-
         public void sendMail(string email, string userName, string subject, string body)
         {
             try
@@ -227,16 +225,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
             
             
-        }
-
-        
+        }    
 
         public void DeleteUser(string userName)
         {
             this.users.Remove(userName);
         }
-
-
 
         public IUser GetWaitingUser(string username)
         {
@@ -262,17 +256,17 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return users;
         }
 
-        public List<Tuple<int, string, string>> GetPostsByModerator(string moderatorName)
+        public List<Post> GetPostsByMember(string userName)
         {
-            
-            List<Tuple<int, string, string>> posts = new List<Tuple<int, string, string>>();
-            List<Tuple<int, string, string>> subforumPosts;
-            if (!isUserMember(moderatorName))
+
+            List<Post> posts = new List<Post>();
+            List<Post> subforumPosts;
+            if (!isUserMember(userName))
                 return posts;
             foreach (ISubForum subforum in sub_forums)
             {
-                subforumPosts = subforum.GetPostsByUser(moderatorName);
-                foreach (Tuple<int, string, string> post in subforumPosts)
+                subforumPosts = subforum.GetPostsByUser(userName);
+                foreach (Post post in subforumPosts)
                 {
                     posts.Add(post);
                 }
