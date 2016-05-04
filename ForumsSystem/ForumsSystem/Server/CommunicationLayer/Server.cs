@@ -15,6 +15,7 @@ namespace ForumsSystem.Server.CommunicationLayer
     {
         const int CLIENT_PORT_NO = 4000;
         const int SERVER_PORT_NO = 5000;
+        const string delimeter = "$|deli|$";
         const string SERVER_IP = "132.72.225.97";
 
         private static Dictionary<Tuple<string, string>, string> halfClients; //not yet subscribed
@@ -138,11 +139,28 @@ namespace ForumsSystem.Server.CommunicationLayer
         }
         public static void task(Object tp)
         {
-            //check if login then Halfsubscribe
+            string textFromClient = ((ThreadParameter)tp).param;
+            string[] seperators = new string[] { delimeter };
+            string[] items = textFromClient.Split(seperators, StringSplitOptions.None);
+
+
+            string method = items[0];
+            List<Object> parameters = new List<object>();
+
+            for (int i = 1; i < items.Length; i+=2)
+            {
+
+            }
+
             TcpClient client = ((ThreadParameter)tp).client;
-            HalfSubscribeClient(client,((ThreadParameter)tp).param, ((ThreadParameter)tp).param);
-            //check if logout then unsubscribe
-            string returnValue = ((ThreadParameter)tp).param + "HAHA";
+            if (method.Equals("MemberLogin"){//check if login then Halfsubscribe
+                HalfSubscribeClient(client, ((ThreadParameter)tp).param, ((ThreadParameter)tp).param);
+            }
+            if (method.Equals("MemberLogout"))//TODO:check if logout then unsubscribe
+                UnSubscribeClient();
+
+
+                string returnValue = ((ThreadParameter)tp).param + "HAHA";
            
 
             //---write back the text to the client---
@@ -165,7 +183,7 @@ namespace ForumsSystem.Server.CommunicationLayer
 
         public static Object StringToObject(string str, string classType)
         {
-            Type type = Type.GetType("ForumsSystem.Server.ForumManagement.DomainLayer" + classType);
+            Type type = Type.GetType("ForumsSystem.Server.ForumManagement.DomainLayer." + classType);
             XmlSerializer serializer = new XmlSerializer(type);
             StringReader reader = new StringReader(str);
             return serializer.Deserialize(reader);
