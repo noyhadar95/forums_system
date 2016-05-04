@@ -115,7 +115,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             while (queue.Count > 0)
             {
                 currPost = queue.Dequeue();
-                if (currPost.getPublisher().Equals(moderatorName))
+                if (currPost.getPublisher().getUsername().Equals(moderatorName))
                     posts.Add(currPost);
                 foreach (Post item in currPost.GetReplies() ?? new List<Post>())
                 {
@@ -134,7 +134,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             while (queue.Count > 0)
             {
                 currPost = queue.Dequeue();
-                if (currPost.getPublisher().Equals(username))
+                if (currPost.getPublisher().getUsername().Equals(username))
                     posts++;
                 foreach (Post item in currPost.GetReplies() ?? new List<Post>())
                 {

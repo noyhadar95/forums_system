@@ -246,5 +246,14 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user = sys.getForum(forumName).getUser(username);
             return user.GetNotifications();
         }
+
+        public void AddFriend(string forumName, string username1, string username2)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user1 = forum.getUser(username1);
+            IUser user2 = forum.getUser(username2);
+            user1.addFriend(user2);
+            user2.acceptFriend(user1);
+        }
     }
 }

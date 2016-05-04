@@ -389,10 +389,10 @@ namespace AcceptanceTestsBridge
 
         public void AddFriend(string forumName, string username1, string username2)
         {
-            IForum forum = sl.GetForum(forumName);
-            IUser user1 = forum.getUser(username1);
-            IUser user2 = forum.getUser(username2);
-            sl.AddFriend(user1, user2);
+            //IForum forum = sl.GetForum(forumName);
+            //IUser user1 = forum.getUser(username1);
+            //IUser user2 = forum.getUser(username2);
+            sl.AddFriend(forumName, username1, username2);
         }
 
         public bool IsExistNotificationOfPost(string forumName,string username, int postId)
@@ -436,10 +436,13 @@ namespace AcceptanceTestsBridge
         {
             IForum forum = sl.GetForum(forumName);
             ISubForum subforum = forum.getSubForum(subForumName);
+            Moderator moderator = subforum.getModeratorByUserName(moderatorName);
             //IUser user = forum.getUser(remover);
-            IUser moderator = forum.getUser(moderatorName);
-            if (!moderator.CanBeDeletedBy(remover))
+            //IUser moderator = forum.getUser(moderatorName);
+            if (moderator == null)
                 return false;
+          //  if (!moderator.CanBeDeletedBy(remover))
+          //      return false;
             return subforum.removeModerator(moderatorName);
         }
 
@@ -473,7 +476,7 @@ namespace AcceptanceTestsBridge
         }
     
         //TUPLE: postId,title,content
-        public List<Tuple<int, string, string>> GetPostsInForumByModerator(string forumName, string subForumName, string adminUserName, string moderatorName)
+        public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string subForumName, string adminUserName, string moderatorName)
         {
             IForum forum = sl.GetForum(forumName);
             IUser admin = forum.getUser(adminUserName);
@@ -494,9 +497,9 @@ namespace AcceptanceTestsBridge
             
         }
 
-        public int GetNumOfForums()
+        public int GetNumOfForums(string username, string password)
         {
-            return sl.GetNumOfForums();
+            return sl.GetNumOfForums(username, password);
         }
 
         public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo(string userName,string password)

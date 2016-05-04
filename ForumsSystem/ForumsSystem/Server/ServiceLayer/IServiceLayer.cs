@@ -60,12 +60,12 @@ namespace ForumsSystem.Server.ServiceLayer
         int GetOpenningPostID(string forumName, string subForumName, int threadID);
 
         bool IsAdmin(string username, string forumName);
-        Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo();
-        int GetNumOfForums();
+        //Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo();
+       // int GetNumOfForums();
         List<PrivateMessage> GetNotifications(string forumName, string username);
         int GetNumOfForums(string userName, string password);
 
         Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfoBySuperAdmin(string userName, string password);
-
+        void AddFriend(string forumName, string username1, string username2);
     }
 }

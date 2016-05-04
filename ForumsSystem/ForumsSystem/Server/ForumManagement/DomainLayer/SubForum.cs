@@ -111,8 +111,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public bool removeModerator(string moderator)
         {
-            if (!moderator.Contains(moderator))
+            if (!moderators.ContainsKey(moderator))
                 return false; // username is not moderator of this sub forum
+            if (moderators.Count == 1)
+                return false;
             moderators.Remove(moderator);
             Loggers.Logger.GetInstance().AddActivityEntry("Moderator: " + moderator + "removes from subforum: " + this.name );
             return true;

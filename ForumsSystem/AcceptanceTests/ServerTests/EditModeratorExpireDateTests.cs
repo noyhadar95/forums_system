@@ -30,7 +30,7 @@ namespace AcceptanceTests.ServerTests
             DateTime newDate = new DateTime(year, month, day);
 
             // create a forum, sub-forum and a thread to add a post to.
-            base.CreateSubForum(forumName, forumPolicy, subForumName, moderators);
+            base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
 
             bool res = bridge.EditModeratorExpDate(forumName, subForumName, this.adminUserName1, modUsername, newDate);
             Assert.IsTrue(res);
