@@ -111,8 +111,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public bool removeModerator(string moderator)
         {
-            if (!moderator.Contains(moderator))
+            if (!moderators.ContainsKey(moderator))
                 return false; // username is not moderator of this sub forum
+            if (moderators.Count == 1)
+                return false;
             moderators.Remove(moderator);
             Loggers.Logger.GetInstance().AddActivityEntry("Moderator: " + moderator + "removes from subforum: " + this.name );
             return true;
@@ -127,14 +129,14 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return null;
         }
 
-        public List<Tuple<int, string, string>> GetPostsByUser(string moderatorName)
+        public List<Post> GetPostsByUser(string moderatorName)
         {
-            List<Tuple<int, string, string>> posts = new List<Tuple<int, string, string>>();
-            List<Tuple<int, string, string>> threadPosts;
+            List<Post> posts = new List<Post>();
+            List<Post> threadPosts;
             foreach (Thread thread in threads.ToList<Thread>())
             {
-                 threadPosts= thread.GetPostsByUser(moderatorName);
-                foreach (Tuple<int, string, string> post in threadPosts)
+                threadPosts = thread.GetPostsByUser(moderatorName);
+                foreach (Post post in threadPosts)
                 {
                     posts.Add(post);
                 }
@@ -162,6 +164,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 posts += threadPosts;
             }
             return posts;
+        }
         public List<Thread> GetThreads()
         {
             return threads;

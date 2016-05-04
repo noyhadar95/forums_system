@@ -31,7 +31,7 @@ namespace AcceptanceTests.ServerTests
             string subForumName = "sub forum 1";
 
             // create a forum, sub-forum and a thread to add a post to.
-            base.CreateSubForum(forumName, forumPolicy, subForumName, moderators);
+            base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
             bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
             KeyValuePair<string, DateTime> newMod = new KeyValuePair<string, DateTime>(username2, DateTime.Today.AddDays(100));
             bool res = bridge.AddModerator(forumName, subForumName, this.adminUserName1, newMod);
