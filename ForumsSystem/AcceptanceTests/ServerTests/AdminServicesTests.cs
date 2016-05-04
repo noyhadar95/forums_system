@@ -99,6 +99,7 @@ namespace AcceptanceTests.ServerTests
             DateTime dateOfBirth1 = DateTime.Now, dateOfBirth2 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
             moderators.Add(username1, DateTime.Today.AddDays(100));
+            moderators.Add(username2, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string adminUserName1 = "ad1", adminPass1 = "pass", adminEmail1 = adminUserName1 + "@gmail.com";
             string adminUserName2 = "ad1", adminPass2 = "pass", adminEmail2 = adminUserName2 + "@gmail.com";
@@ -118,8 +119,8 @@ namespace AcceptanceTests.ServerTests
                 // create a forum, sub-forum and a thread to add a post to.
                 base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
                 bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
-                KeyValuePair<string, DateTime> newMod = new KeyValuePair<string, DateTime>(username2, DateTime.Today.AddDays(100));
-                bridge.AddModerator(forumName, subForumName, adminUserName1, newMod);
+                //KeyValuePair<string, DateTime> newMod = new KeyValuePair<string, DateTime>(username2, DateTime.Today.AddDays(100));
+                //bridge.AddModerator(forumName, subForumName, adminUserName1, newMod);
                 //remove the moderator:
                 bool res = bridge.RemoveModerator(forumName, subForumName, adminUserName2, username2);
 
