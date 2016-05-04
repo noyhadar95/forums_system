@@ -66,9 +66,13 @@
     <Compile Include="PresentationLayer\AddForumWindow.xaml.cs">
       <DependentUpon>AddForumWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\AddReplyWindow.xaml.cs">
+      <DependentUpon>AddReplyWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\AddSubForumWindow.xaml.cs">
       <DependentUpon>AddSubForumWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\AlignStackPanel.cs" />
     <Compile Include="PresentationLayer\ForumWindow.xaml.cs">
       <DependentUpon>ForumWindow.xaml</DependentUpon>
     </Compile>
@@ -125,6 +129,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PresentationLayer\AddReplyWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLayer\AddSubForumWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -177,6 +185,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="PresentationLayer\Images\Background_8.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PresentationLayer\Images\background3.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
