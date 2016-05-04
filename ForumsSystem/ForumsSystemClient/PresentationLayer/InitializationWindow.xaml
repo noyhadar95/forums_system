@@ -1,0 +1,18 @@
+﻿<Window x:Class="ForumsSystemClient.PresentationLayer.InitializationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
+        mc:Ignorable="d"
+        Title="InitializationWindow" Height="450" Width="750">
+    <Grid>
+        <TextBox x:Name="usernameTB" HorizontalAlignment="Left" Height="23" Margin="344,105,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="usernameLbl" Content="username" HorizontalAlignment="Left" Margin="214,101,0,0" VerticalAlignment="Top" Height="27"/>
+        <Label x:Name="passwordLbl" Content="password" HorizontalAlignment="Left" Margin="214,194,0,0" VerticalAlignment="Top" Height="32"/>
+        <Button x:Name="button" Content="Initialize System" HorizontalAlignment="Left" Margin="290,286,0,0" VerticalAlignment="Top" Width="108" Height="29" Click="button_Click"/>
+        <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="344,197,0,0" VerticalAlignment="Top" Height="23" Width="120"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="103,32,0,0" TextWrapping="WrapWithOverflow" Text="Enter username and password for the super admin of the system" VerticalAlignment="Top" Height="39" Width="554" FontSize="16"/>
+
+    </Grid>
+</Window>
