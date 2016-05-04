@@ -314,14 +314,17 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             Policy policy = forum.GetPolicy();
             if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)) || (policy.CheckIfPolicyExists(Policies.Authentication) && emailAccepted))
             {
+                Server.CommunicationLayer.Server.SubscribeClient(this.userName, this.forum.getName());
                 this.isLoggedIn = true;
             }
 
         }
 
-        public void LogOff()
+        public void Logout()
         {
+            Server.CommunicationLayer.Server.UnSubscribeClient(this.userName, this.forum.getName());
             this.isLoggedIn = false;
+
         }
 
         public bool isLogin()

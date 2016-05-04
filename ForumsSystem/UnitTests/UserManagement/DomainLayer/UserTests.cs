@@ -52,7 +52,7 @@ namespace UnitTests.UserManagement.DomainLayer
             PrivateMessage noContent = user.SendPrivateMessage(receiver.getUsername(), "hi", "");
             Assert.IsNotNull(noContent);
 
-            user.LogOff();
+            user.Logout();
             Assert.IsNull(user.SendPrivateMessage(receiver.getUsername(), "hi", ""));
             user.Login();
 
