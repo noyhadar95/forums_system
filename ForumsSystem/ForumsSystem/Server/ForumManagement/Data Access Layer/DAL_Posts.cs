@@ -100,6 +100,18 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             connect_me.TakeAction(cmd);
             cmd = null;
         }
+
+        public void EditPost(int postId, string title, string content)
+        {
+            Connect_to_DB();
+            OleDbCommand sql = new OleDbCommand();
+
+            sql.CommandText = "Update Posts Set [Title]='" + title + "', [Content]='" + content + " Where [PostID]=" + postId ;
+
+            connect_me.TakeAction(sql);
+            sql = null;
+
+        }
     }
 
 }
