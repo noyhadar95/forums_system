@@ -30,6 +30,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private bool isLoggedIn;
         private bool emailAccepted;
         private DAL_Users dal_users = new DAL_Users();
+        private DateTime dateOfPassLastchange;
 
         public User()
         {
@@ -49,6 +50,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.dateOfBirth = new DateTime();
             this.notifications = new List<PrivateMessage>();
             this.postsNotifications = new List<Post>();
+            this.dateOfPassLastchange = new DateTime(); 
 
         }
 
@@ -56,6 +58,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             this.userName = userName;
             this.password = password;
+            this.dateOfPassLastchange = DateTime.Today;
             this.forum = forum;
             this.email = email;
             this.dateJoined = DateTime.Today;
@@ -90,6 +93,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             this.userName = userName;
             this.password = password;
+            this.dateOfPassLastchange = DateTime.Today;
             this.forum = null;
             this.email = email;
             this.dateJoined = DateTime.Today;
@@ -215,6 +219,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
                 this.userName = userName;
                 this.password = password;
+                this.dateOfPassLastchange = DateTime.Today;
                 this.forum = forum;
                 this.email = email;
                 this.dateJoined = DateTime.Today;
@@ -439,6 +444,18 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public List<string> GetModeratorsList(ISubForum subforum)
         {
             return type.GetModeratorsList(this, subforum);
+        }
+
+        public void SetPassword(string password)
+        {
+
+            this.password = password;
+            this.dateOfPassLastchange = DateTime.Today;
+        }
+        public DateTime GetDateOfPassLastChange()
+        {
+
+            return this.dateOfPassLastchange;
         }
     }
 
