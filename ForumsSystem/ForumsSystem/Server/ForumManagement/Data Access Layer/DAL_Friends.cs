@@ -30,7 +30,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         public DataTable GetUsersFriends(string forumName, string userName)
         {
             Connect_to_DB();
-            string sql = "Select * From Friends WHERE ForumName=@p1 AND UserName=@p2";
+            string sql = "Select * From Friends WHERE ForumName=@p1 AND (UserName=@p2 OR FriendUserName=@p2) AND Accepted=true";
 
             OleDbCommand cmd = new OleDbCommand(sql);
 
@@ -40,12 +40,26 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
             return connect_me.DownloadData2(cmd, "Friends");
         }
+        public DataTable GetUsersWaitingFriends(string forumName, string userName)
+        {
+            Connect_to_DB();
+            string sql = "Select * From Friends WHERE ForumName=@p1 AND FriendUserName=@p2 AND Accepted=false";
 
+            OleDbCommand cmd = new OleDbCommand(sql);
+
+            cmd.Parameters.AddWithValue("@p1", forumName);
+            cmd.Parameters.AddWithValue("@p2", userName);
+
+
+            return connect_me.DownloadData2(cmd, "Friends");
+        }
         public void RemoveFriend(string forumName, string userName, string friendUserName)
         {
             Connect_to_DB();
             OleDbCommand cmd = new OleDbCommand();
-            cmd.CommandText = "Delete From [Friends] Where [ForumName]=@p1 AND [UserName]=@p2 AND [FriendUserName]=@p3";
+            cmd.CommandText = "Delete From [Friends] Where [ForumName]=@p1 AND"+
+                "(([UserName]=@p2 AND [FriendUserName]=@p3) OR ([UserName]=@p3 AND [FriendUserName]=@p2)";
+
 
 
             cmd.Parameters.AddWithValue("@p1", forumName);

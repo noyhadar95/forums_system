@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
@@ -28,6 +29,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private List<Post> postsNotifications;
         private bool isLoggedIn;
         private bool emailAccepted;
+        private DAL_Users dal_users = new DAL_Users();
 
         public User()
         {
@@ -66,15 +68,21 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.friends = new List<IUser>();
             this.waitingFriendsList = new List<IUser>();
             Policy policy = forum.GetPolicy();
+            dal_users.CreateUser(this.forum.getName(), this.userName, this.password, this.email,
+                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member);
             if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
                 this.forum.RegisterToForum(this);
             else
+            {
                 this.forum.AddWaitingUser(this);
+                dal_users.changeUserWaitingStatus(this.forum.getName(), this.userName, true);
+            }
             this.isLoggedIn = false;
 
             this.notifications = new List<PrivateMessage>();
             this.emailAccepted = false;
             this.postsNotifications = new List<Post>();
+            
 
         }
 
@@ -105,11 +113,16 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (this.forum == null)
             {
                 this.forum = forum;
+                dal_users.CreateUser("", this.userName, this.password, this.email,
+               this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member);
                 Policy policy = forum.GetPolicy();
                 if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
                     this.forum.RegisterToForum(this);
                 else
+                {
                     this.forum.AddWaitingUser(this);
+                    dal_users.changeUserWaitingStatus(this.forum.getName(), this.userName, true);
+                }
                 return true;
             }
             return false;
@@ -166,6 +179,16 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public void ChangeType(Type type)
         {
             this.type = type;
+            if (type is Guest)
+                dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.dateJoined,
+                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Guest);
+            else if (type is Member)
+                dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.dateJoined,
+                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member);
+            else if (type is Admin)
+                dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.dateJoined,
+                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Admin);
+
         }
 
 
@@ -197,12 +220,15 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 this.dateJoined = DateTime.Today;
                 this.dateOfBirth = dateOfBirth;
                 type = new Member();
-                     Policy policy = forum.GetPolicy();
+                dal_users.CreateUser(this.forum.getName(), this.userName, this.password, this.email,
+                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member);
+                Policy policy = forum.GetPolicy();
                      if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
                          return forum.RegisterToForum(this);
                      else
                      {
                          forum.AddWaitingUser(this);
+                         dal_users.changeUserWaitingStatus(this.forum.getName(), this.userName, true);
                          return true;
                      }
             }
