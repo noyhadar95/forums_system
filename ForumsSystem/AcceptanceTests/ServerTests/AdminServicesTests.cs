@@ -55,7 +55,7 @@ namespace AcceptanceTests.ServerTests
         {
             string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
-            string username1 = "user1";
+            string username1 = "user1", pass1 = "passwd2", email1 = "user2@gmail.com";
             string username2 = "user2", pass2 = "passwd2", email2 = "user2@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now, dateOfBirth2 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
@@ -64,6 +64,9 @@ namespace AcceptanceTests.ServerTests
 
             try
             {
+                base.CreateForum(forumName, forumPolicy);
+                bridge.RegisterToForum(forumName, username1, pass1, email1, dateOfBirth1);
+                bridge.LoginUser(forumName, username1, pass1);
                 // create a forum, sub-forum and a thread to add a post to.
                 base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
                 bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
@@ -89,7 +92,48 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestRemoveModeratorBeforeExipartionFailureAdmin()
         {
-            Assert.Fail("Not Yet Implemented");//TODO:check if we choose to implement that way
+            string forumName = GetNextForum();
+            PoliciesStub forumPolicy = PoliciesStub.Password;
+            string username1 = "user1", pass1 = "passwd2", email1 = "user2@gmail.com";
+            string username2 = "user2", pass2 = "passwd2", email2 = "user2@gmail.com";
+            DateTime dateOfBirth1 = DateTime.Now, dateOfBirth2 = DateTime.Now;
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            moderators.Add(username1, DateTime.Today.AddDays(100));
+            string subForumName = "sub forum 1";
+            string adminUserName1 = "ad1", adminPass1 = "pass", adminEmail1 = adminUserName1 + "@gmail.com";
+            string adminUserName2 = "ad1", adminPass2 = "pass", adminEmail2 = adminUserName2 + "@gmail.com";
+            List<UserStub> admins = new List<UserStub>();
+            UserStub user1 = new UserStub(adminUserName1, adminPass1, adminEmail1, forumName);
+            UserStub user2 = new UserStub(adminUserName2, adminPass2, adminEmail2, forumName);
+            admins.Add(user1);
+            admins.Add(user2);
+
+            try
+            {
+                bridge.CreateForum(this.superAdminUsername, forumName, admins, forumPolicy);
+                bridge.RegisterToForum(forumName, username1, pass1, email1, dateOfBirth1);
+                bridge.LoginUser(forumName, username1, pass1);
+                bridge.LoginUser(forumName, adminUserName1, adminPass1);
+                bridge.LoginUser(forumName, adminUserName2, adminPass2);
+                // create a forum, sub-forum and a thread to add a post to.
+                base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
+                bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
+                KeyValuePair<string, DateTime> newMod = new KeyValuePair<string, DateTime>(username2, DateTime.Today.AddDays(100));
+                bridge.AddModerator(forumName, subForumName, adminUserName1, newMod);
+                //remove the moderator:
+                bool res = bridge.RemoveModerator(forumName, subForumName, adminUserName2, username2);
+
+                Assert.IsFalse(res);
+                Assert.IsTrue(bridge.IsModerator(forumName, subForumName, username2));
+            }
+            catch (Exception e)
+            {
+                Assert.Fail();
+            }
+            finally
+            {
+                base.Cleanup(forumName);
+            }
         }
         //test an attempt to remove the only moderator of a subforum
         [TestMethod]
@@ -129,7 +173,7 @@ namespace AcceptanceTests.ServerTests
         {
             string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
-            string username1 = "user1";
+            string username1 = "user1", pass1 = "passwd1", email1 = "user1@gmail.com";
             string username2 = "user2", pass2 = "passwd2", email2 = "user2@gmail.com";
             DateTime dateOfBirth1 = DateTime.Now, dateOfBirth2 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
@@ -140,6 +184,13 @@ namespace AcceptanceTests.ServerTests
             string content = "content";
             try
             {
+                CreateForum(forumName);
+                bridge.RegisterToForum(forumName, username1, pass1, email1, dateOfBirth1);
+                bridge.ConfirmRegistration(forumName, username1);
+                bridge.LoginUser(forumName, username1, pass1);
+                bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
+                bridge.ConfirmRegistration(forumName, username2);
+                bridge.LoginUser(forumName, username2, pass2);
                 // create a forum, sub-forum and a thread to add a post to.
                 base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
                 bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
@@ -218,7 +269,7 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestModeratorsAppointmentsDetails()//date,admin,subforum
         {
-            /* string forumName = GetNextForum();
+             string forumName = GetNextForum();
              PoliciesStub forumPolicy = PoliciesStub.Password;
              string username1 = "user1";
              string username2 = "user2", pass2 = "passwd2", email2 = "user2@gmail.com";
@@ -231,7 +282,7 @@ namespace AcceptanceTests.ServerTests
              try
              {
                  // create a forum, sub-forum and a thread to add a post to.
-                 base.CreateSubForum(forumName, forumPolicy, subForumName, moderators);
+                 base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
                  bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
                  KeyValuePair<string, DateTime> newMod = new KeyValuePair<string, DateTime>(username2, DateTime.Today.AddDays(100));
                  bridge.AddModerator(forumName, subForumName, this.adminUserName1, newMod);
@@ -239,10 +290,11 @@ namespace AcceptanceTests.ServerTests
                  newMod = new KeyValuePair<string, DateTime>(username3, DateTime.Today.AddDays(100));
                  bridge.AddModerator(forumName, subForumName, this.adminUserName1, newMod);
                  Tuple<string,string,DateTime,string> moderatorsList = bridge.GetModeratorAppointmentsDetails(forumName, subForumName, this.adminUserName1,username1);
-                 Assert.IsTrue(moderatorsList.Count == 3);
+                /* Assert.IsTrue(moderatorsList.Count == 3);
                  Assert.IsTrue(moderatorsList.Contains(username1));
                  Assert.IsTrue(moderatorsList.Contains(username2));
                  Assert.IsTrue(moderatorsList.Contains(username3));
+                 */
              }
              catch (Exception e)
              {
@@ -252,7 +304,7 @@ namespace AcceptanceTests.ServerTests
              {
                  base.Cleanup(forumName);
              }
-             */
+             
             Assert.Fail("Not Yet Implemented");
         }
         [TestMethod]

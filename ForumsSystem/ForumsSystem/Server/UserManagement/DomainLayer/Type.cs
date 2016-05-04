@@ -113,7 +113,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             if (!callingUser.isLogin())
                 return false;
-            return subForum.removeModerator(userName);
+            return subForum.removeModerator(callingUser.getUsername(), userName);
         }
 
         public virtual void suspendModerator(IUser callingUser, string userName, ISubForum subForum)
@@ -163,7 +163,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             IForum forum = subforum.getForum();
             if (callingUser.getForum().getName() != forum.getName())
                 return false;
-            subforum.removeModerator(userName);
+            subforum.removeModerator(callingUser.getUsername(), userName);
             return true;
         }
 
