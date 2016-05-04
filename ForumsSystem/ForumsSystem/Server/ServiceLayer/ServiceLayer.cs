@@ -224,14 +224,36 @@ namespace ForumsSystem.Server.ServiceLayer
             return subForum.GetThreadById(threadID) != null;
         }
 
-        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo()
+        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfoBySuperAdmin(string userName, string password)
         {
-            return sys.GetMultipleUsersInfo();
+            if (SuperAdmin.GetInstance().userName == userName && SuperAdmin.GetInstance().password == password)
+                return sys.GetMultipleUsersInfo();
+            else
+                return null;
         }
 
-        public int GetNumOfForums()
+        public int GetNumOfForums(string userName, string password)
         {
-            return sys.GetNumOfForums();
+            if (SuperAdmin.GetInstance().userName == userName && SuperAdmin.GetInstance().password == password)
+                return sys.GetNumOfForums();
+            else
+                return -1;
+        }
+
+        public List<PrivateMessage> GetNotifications(string forumName, string username)
+        {
+            IForum forum = sys.getForum(forumName);
+            IUser user = sys.getForum(forumName).getUser(username);
+            return user.GetNotifications();
+        }
+
+        public void AddFriend(string forumName, string username1, string username2)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user1 = forum.getUser(username1);
+            IUser user2 = forum.getUser(username2);
+            user1.addFriend(user2);
+            user2.acceptFriend(user1);
         }
     }
 }

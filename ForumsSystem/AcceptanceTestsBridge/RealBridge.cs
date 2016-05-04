@@ -389,10 +389,10 @@ namespace AcceptanceTestsBridge
 
         public void AddFriend(string forumName, string username1, string username2)
         {
-            IForum forum = sl.GetForum(forumName);
-            IUser user1 = forum.getUser(username1);
-            IUser user2 = forum.getUser(username2);
-            sl.AddFriend(user1, user2);
+            //IForum forum = sl.GetForum(forumName);
+            //IUser user1 = forum.getUser(username1);
+            //IUser user2 = forum.getUser(username2);
+            sl.AddFriend(forumName, username1, username2);
         }
 
         public bool IsExistNotificationOfPost(string forumName,string username, int postId)
@@ -436,10 +436,13 @@ namespace AcceptanceTestsBridge
         {
             IForum forum = sl.GetForum(forumName);
             ISubForum subforum = forum.getSubForum(subForumName);
+            Moderator moderator = subforum.getModeratorByUserName(moderatorName);
             //IUser user = forum.getUser(remover);
-            IUser moderator = forum.getUser(moderatorName);
-            if (!moderator.CanBeDeletedBy(remover))
+            //IUser moderator = forum.getUser(moderatorName);
+            if (moderator == null)
                 return false;
+          //  if (!moderator.CanBeDeletedBy(remover))
+          //      return false;
             return subforum.removeModerator(moderatorName);
         }
 
@@ -447,10 +450,14 @@ namespace AcceptanceTestsBridge
         {
             IForum forum = sl.GetForum(forumName);
             IUser admin = forum.getUser(adminUserName);
-            IUser user = forum.getUser(username);
-            if (!sl.IsAdmin(adminUserName, forumName))//only admin can get num of posts by user
+            try
+            {
+                return admin.ReportNumOfPostsByMember(username);
+            }
+            catch (Exception)
+            {
                 return -1;
-            return forum.GetNumOfPostsByUser(username);
+            }
         }
 
         public List<string> GetListOfModerators(string forumName, string subForumName, string adminUserName)
@@ -458,30 +465,59 @@ namespace AcceptanceTestsBridge
             IForum forum = sl.GetForum(forumName);
             IUser admin = forum.getUser(adminUserName);
             ISubForum subforum = forum.getSubForum(subForumName);
-            if (!sl.IsAdmin(adminUserName, forumName))//only admin can get list of moderators
+            try
+            {
+                return admin.GetModeratorsList(subforum);
+            }
+            catch (Exception)
+            {
                 return null;
-            return subforum.GetModeratorsList();
+            }
         }
     
         //TUPLE: postId,title,content
-        public List<Tuple<int, string, string>> GetPostsInForumByModerator(string forumName, string subForumName, string adminUserName, string moderatorName)
+        public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string subForumName, string adminUserName, string moderatorName)
         {
             IForum forum = sl.GetForum(forumName);
             IUser admin = forum.getUser(adminUserName);
-            IUser moderator = forum.getUser(moderatorName);
-            if (!sl.IsAdmin(adminUserName,forumName))//only admin can get posts of moderator
+            try
+            {
+                List<Post> posts = admin.ReportPostsByMember(moderatorName);
+                List<Tuple<int, string, string>> res = new List<Tuple<int, string, string>>();
+                foreach (Post post in posts)
+                {
+                    res.Add(new Tuple<int, string, string>(post.GetId(), post.Title, post.Content));
+                }
+                return res;
+            }
+            catch (Exception)
+            {
                 return null;
-            return forum.GetPostsByModerator(moderatorName);
+            }
+            
         }
 
-        public int GetNumOfForums()
+        public int GetNumOfForums(string username, string password)
         {
-            return sl.GetNumOfForums();
+            return sl.GetNumOfForums(username, password);
         }
 
-        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo()
+        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo(string userName,string password)
         {
-            return sl.GetMultipleUsersInfo();
+            return sl.GetMultipleUsersInfoBySuperAdmin(userName,password);
+        }
+
+        public List<string> GetNotifications(string forumName, string username)
+        {
+            List<PrivateMessage>notif= sl.GetNotifications(forumName, username);
+            List<string> res = new List<string>();
+            if (notif == null)
+                return res;
+            foreach (PrivateMessage msg in notif)
+            {
+                res.Add(msg.title);
+            }
+            return res;
         }
     }
 }

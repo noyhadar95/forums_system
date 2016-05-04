@@ -30,12 +30,22 @@ namespace AcceptanceTests.ServerTests
             moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
             string threadPublisher = "publisher1";
+            string adminUserName1 = "adm1";
+            string adminPass1 = "root1";
+            string adminEmail1 = "adm1@gmail.com";
+            UserStub user1 = new UserStub(adminUserName1, adminPass1, adminEmail1, forumName);
+            List<UserStub> admins = new List<UserStub>();
+            admins.Add(user1);
             try
             {
+             //   bridge.CreateForum(this.superAdminUsername, forumName,admins, forumPolicy);
                 // create a forum, sub-forum and thread.
                 int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
                    threadPublisher, title, content);
                 int postID = bridge.GetOpenningPostID(forumName, subForumName, threadID);
+                bridge.RegisterToForum(forumName, friend1, "passpasspass", friend1 + "@gmail.com", DateTime.Today.AddYears(-30));
+                bridge.RegisterToForum(forumName, friend2, "passpasspass", friend2 + "@gmail.com", DateTime.Today.AddYears(-30));
+
                 //add the friends to the user
                 bridge.AddFriend(forumName, threadPublisher, friend1);
                 bridge.AddFriend(forumName, threadPublisher, friend2);

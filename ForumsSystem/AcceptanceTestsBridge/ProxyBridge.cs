@@ -319,26 +319,32 @@ namespace AcceptanceTestsBridge
             return null;
         }
 
-        public List<Tuple<int, string, string>> GetPostsInForumByModerator(string forumName, string subForumName, string adminUserName, string email)
+        public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string subForumName, string adminUserName, string email)
         {
             if (realBridge != null)
-                return realBridge.GetPostsInForumByModerator(forumName, subForumName, adminUserName, email);
+                return realBridge.GetPostsInForumByUser(forumName, subForumName, adminUserName, email);
             return null;
         }
 
-        public int GetNumOfForums()
+        public int GetNumOfForums(string username, string password)
         {
             if (realBridge != null)
-                return realBridge.GetNumOfForums();
+                return realBridge.GetNumOfForums(username, password);
             return 1;
         }
 
-        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo()
+        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo(string userName, string password)
         {
             if (realBridge != null)
-                return realBridge.GetMultipleUsersInfo();
+                return realBridge.GetMultipleUsersInfo(userName, password);
             return null;
         }
 
+        public List<string> GetNotifications(string forumName, string username)
+        {
+            if (realBridge != null)
+                return realBridge.GetNotifications(forumName, username);
+            return null;
+        }
     }
 }

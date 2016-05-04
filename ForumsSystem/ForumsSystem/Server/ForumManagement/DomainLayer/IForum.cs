@@ -38,7 +38,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         IUser GetWaitingUser(string username);
         void AddWaitingUser(IUser user);
         Dictionary<string,string> GetAllUsers();
-        List<Tuple<int, string, string>> GetPostsByModerator(string moderatorName);
+        List<Post> GetPostsByMember(string moderatorName);
         int GetNumOfPostsByUser(string username);
     }
 }

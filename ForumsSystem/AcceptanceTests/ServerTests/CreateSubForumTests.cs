@@ -26,7 +26,7 @@ namespace AcceptanceTests.ServerTests
             moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 123";
 
-            bool res = base.CreateSubForum(forumName, forumPolicy, subForumName, moderators);
+            bool res = base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
             Assert.IsTrue(res);
 
             // check that the sub-forum now exists in the sytem

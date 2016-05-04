@@ -104,6 +104,7 @@ namespace AcceptanceTests.ServerTests
                 int receiver = GetUserIndex(sender);
                 Console.WriteLine(sender + " to " + receiver);
                 bridge.SendPrivateMsg(forumName, "user" + sender, "user" + receiver, sender + " to " + receiver, sender + " to " + receiver);
+                bridge.GetNotifications(forumName, "user" + sender);
                 //TODO:read message if exists
                 //Task.Delay(10000);
                 Thread.Sleep(10 * 1000);
