@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="ServerIntegrationTests\IntegrationTests.cs" />
     <Compile Include="ServerUnitTests\Data Access Layer\ActivityLogsTest.cs" />
+    <Compile Include="ServerUnitTests\Data Access Layer\ErrorLogTests.cs" />
     <Compile Include="ServerUnitTests\Data Access Layer\ForumTests.cs" />
     <Compile Include="ServerUnitTests\Data Access Layer\FriendsTests.cs" />
     <Compile Include="ServerUnitTests\Data Access Layer\MessagesNotificationTests.cs" />

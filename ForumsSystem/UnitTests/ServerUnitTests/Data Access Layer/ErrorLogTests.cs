@@ -5,18 +5,18 @@ using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 namespace UnitTests.ServerUnitTests.Data_Access_Layer
 {
     [TestClass]
-    public class ActivityLogsTest
+    public class ErrorLogTests
     {
-        DAL_ActivityLog da;
+        DAL_ErrorLogs de;
         [TestInitialize()]
         public void Initialize()
         {
-            da = new DAL_ActivityLog();
+            de = new DAL_ErrorLogs();
         }
         [TestCleanup()]
         public void Cleanup()
         {
-            da = null;
+            de = null;
         }
 
         [TestMethod]
@@ -24,12 +24,12 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
         {
             DateTime now = DateTime.Now;
             DateTime next = now.AddMinutes(10);
-            da.AddLog(now, "test1");
-            da.AddLog(next, "test2");
-            var d = da.GetLogByDate(next);
+            de.AddLog(now, "test1");
+            de.AddLog(next, "test2");
+            var d = de.GetLogByDate(next);
             Assert.IsTrue(d.Rows.Count >= 2);
-            da.DeleteLog(now);
-            da.DeleteLog(next);
+            de.DeleteLog(now);
+            de.DeleteLog(next);
 
         }
     }
