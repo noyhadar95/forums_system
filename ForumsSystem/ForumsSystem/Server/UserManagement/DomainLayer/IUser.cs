@@ -71,7 +71,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         int ReportNumOfPostsByMember(string memberUserName);
 
         List<string> GetModeratorsList(ISubForum subforum);
-    }
+    
 
 
         void SetPassword(string password);

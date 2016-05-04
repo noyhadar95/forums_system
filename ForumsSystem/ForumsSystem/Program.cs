@@ -11,11 +11,7 @@ namespace ForumsSystem
     {
         static void Main(string[] args)
         {
-            //Server.CommunicationLayer.Server.StartServer();
-
-            Forum f = new Forum("test");
-            string s =Server.CommunicationLayer.Server.ObjectToString(f);
-            Forum f2 = (Forum)Server.CommunicationLayer.Server.StringToObject(s, "Forum");
+            Server.CommunicationLayer.Server.StartServer();
         }
     }
 }

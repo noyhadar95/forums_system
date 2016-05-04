@@ -104,8 +104,11 @@ namespace ForumsSystemClient.CommunicationLayer
             string textToSend = methodName;
             foreach (Object param in methodParameter)
             {
-                textToSend += delimeter + methodParameter.GetType();
-                textToSend += delimeter + ObjectToString(methodParameter);
+                string pType = param.GetType().ToString();
+                pType = pType.Substring(pType.LastIndexOf('.') + 1);
+
+                textToSend += delimeter + pType;
+                textToSend += delimeter + ObjectToString(param);
             }
             if(methodName == "MemberLogin")
             {
@@ -135,7 +138,12 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public static Object StringToObject(string classType, string str)
         {
-            Type type = Type.GetType("ForumsSystemClient.Resources." + classType);
+            string addition = "ForumsSystemClient.Resources.";
+            if (classType == "String" || classType == "Integer" || classType == "Boolean" || classType == "string" || classType == "int" || classType == "bool")
+                addition = "System.";
+            Type type = Type.GetType(addition + classType);
+
+
             XmlSerializer serializer = new XmlSerializer(type);
             StringReader reader = new StringReader(str);
             return serializer.Deserialize(reader);

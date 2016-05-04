@@ -46,7 +46,7 @@ namespace AcceptanceTestsBridge
             switch (forumPol)
             {
                 case Policies.Password:
-                    policy = new PasswordPolicy(forumPol, 2);
+                    policy = new PasswordPolicy(forumPol, 2,100);
                     break;
                 case Policies.Authentication:
                     policy = new AuthenticationPolicy(forumPol);
@@ -76,7 +76,7 @@ namespace AcceptanceTestsBridge
                     policy = new MaxModeratorsPolicy(forumPol, maxModerators);
                     break;
                 default:
-                    policy = new PasswordPolicy(forumPol, 2);
+                    policy = new PasswordPolicy(forumPol, 2,100);
                     break;
             }
             IForum newForum = sl.CreateForum(superAdmin, forumName, policy, newAdmins);
@@ -261,7 +261,7 @@ namespace AcceptanceTestsBridge
             switch (forumPol)
             {
                 case Policies.Password:
-                    policy = new PasswordPolicy(forumPol, 2);
+                    policy = new PasswordPolicy(forumPol, 2,100);
                     break;
                 case Policies.Authentication:
                     policy = new AuthenticationPolicy(forumPol);
@@ -291,7 +291,7 @@ namespace AcceptanceTestsBridge
                     policy = new MaxModeratorsPolicy(forumPol, maxModerators);
                     break;
                 default:
-                    policy = new PasswordPolicy(forumPol, 2);
+                    policy = new PasswordPolicy(forumPol, 2,100);
                     break;
             }
             return sl.SetForumProperties(user, forum, policy);
