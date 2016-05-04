@@ -23,8 +23,12 @@ namespace ForumsSystemClient.PresentationLayer
         private CL cl;
         private string forumName;
         private string subForumName;
+        private List<Post> posts;
         private double firstLevelItemOffset = 70; // offset of the items in the first level of the treeview
         private Dictionary<Button, StackPanel> btnSPParents;
+        private Dictionary<Border, Post> borderPostDict;
+        private bool isAddReplyMode = false;
+        private Button addReplyModeCancelBtn = null; // save the cancel button, so we will be able to exit add-reply-mode when another reply-button is clicked
 
         public ThreadWindow(string forumName, string subForumName)
         {
@@ -36,12 +40,13 @@ namespace ForumsSystemClient.PresentationLayer
             this.forumName = forumName;
             this.subForumName = subForumName;
             btnSPParents = new Dictionary<Button, StackPanel>();
+            borderPostDict = new Dictionary<Border, Post>();
         }
 
         private void postsTreeView_Loaded(object sender, RoutedEventArgs e)
         {
             string threadID = "";
-            List<Post> posts = cl.GetPosts(threadID);
+            posts = cl.GetPosts(threadID);
 
             // Get TreeView reference and add the items for the posts.
             var tree = sender as TreeView;
@@ -118,6 +123,9 @@ namespace ForumsSystemClient.PresentationLayer
             border.BorderBrush = Brushes.Black;
             border.Child = sp;
 
+            // save the created border with it's associated post
+            borderPostDict.Add(border, post);
+
             return border;
         }
 
@@ -130,7 +138,7 @@ namespace ForumsSystemClient.PresentationLayer
             return border;
         }
 
-        private Border CreateReplyBorder()
+        private Border CreateAddReplyBorder(StackPanel parentSP)
         {
             Border border = new Border();
             StackPanel sp = new StackPanel();
@@ -147,25 +155,115 @@ namespace ForumsSystemClient.PresentationLayer
             addReplyBtn.Content = "add reply";
             cancelBtn.Content = "cancel";
 
+            // save the cancel button in field
+            addReplyModeCancelBtn = cancelBtn;
+
+            // set buttons click handlers
+            addReplyBtn.Click += new RoutedEventHandler(addReplyBtn_Click);
+            cancelBtn.Click += new RoutedEventHandler(cancelBtn_Click);
+            btnSPParents.Add(addReplyBtn, parentSP);
+            btnSPParents.Add(cancelBtn, parentSP);
+
+            // set buttons margins
+            addReplyBtn.Margin = new Thickness(5);
+            cancelBtn.Margin = new Thickness(5);
+
+            // set horizontal stack panel for subject label and title text box
             horizontalSubjectSP.Children.Add(subjectTextBlock);
             horizontalSubjectSP.Children.Add(titleTextBox);
+            horizontalSubjectSP.Orientation = Orientation.Horizontal;
 
+            // set horizontal stack panel for buttons
             horizontalBtnsSP.Children.Add(addReplyBtn);
             horizontalBtnsSP.Children.Add(cancelBtn);
+            horizontalBtnsSP.Orientation = Orientation.Horizontal;
 
+            // add elements to the root stack panel
             sp.Children.Add(horizontalSubjectSP);
             sp.Children.Add(contentTextBox);
             sp.Children.Add(horizontalBtnsSP);
 
+            border.Child = sp;
             return border;
         }
 
         private void replyBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (isAddReplyMode)
+            {
+                // cancel the current add reply mode in order to start a new one.
+                StackPanel cancelBtnParentSP = btnSPParents[addReplyModeCancelBtn];
+                cancelBtnParentSP.Children.RemoveAt(cancelBtnParentSP.Children.Count - 1);
+                isAddReplyMode = false;
+                addReplyModeCancelBtn = null;
+
+                postsTreeView.Items.Refresh();
+            }
+
             Button btn = (Button)e.OriginalSource;
             StackPanel parentSP = btnSPParents[btn];
+            // send parentSP as parameter so it could be bounded to the buttons inside
+            // the add reply border, this method also sets the field addReplyModeCancelBtn
+            Border b = CreateAddReplyBorder(parentSP);
+            parentSP.Children.Add(b);
 
-            WindowHelper.SwitchWindow(this, new AddReplyWindow(forumName, subForumName,parentSP));
+            isAddReplyMode = true;
+
+            postsTreeView.Items.Refresh();
+        }
+
+        private void addReplyBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)e.OriginalSource;
+            //StackPanel addReplySP = (StackPanel)(btn.Parent as AlignStackPanel).Parent;
+            StackPanel parentSP = btnSPParents[btn];
+            Border addReplySPBorder= (Border)(parentSP.Children[parentSP.Children.Count -1]);
+            StackPanel addReplySP =(StackPanel)addReplySPBorder.Child;
+
+            // retrieve title of reply
+            if (!(addReplySP.Children[0] is AlignStackPanel))
+            {
+                MessageBox.Show("there was an error while adding your reply, please try again");
+                return;
+            }
+            AlignStackPanel horizontalTitleSP = ((AlignStackPanel)addReplySP.Children[0]);
+            if (!(horizontalTitleSP.Children[1] is TextBox))
+            {
+                MessageBox.Show("there was an error while adding your reply, please try again");
+                return;
+            }
+            string replyTitle = ((TextBox)horizontalTitleSP.Children[1]).Text;
+
+            // retrieve content of reply
+            if (!(addReplySP.Children[1] is TextBox))
+            {
+                MessageBox.Show("there was an error while adding your reply, please try again");
+                return;
+            }
+            string replyContent = ((TextBox)addReplySP.Children[1]).Text;
+
+            // retrieve the parent border
+            if (!(parentSP.Parent is Border))
+            {
+                MessageBox.Show("there was an error while adding your reply, please try again");
+                return;
+            }
+            Border parentBorder = (Border)parentSP.Parent;
+            Post parentPost = borderPostDict[parentBorder];
+            //cl.AddReply(parentPost, publisher, replyTitle, replyContent);
+
+            // TODO: reload the tree veiw
+        }
+
+        private void cancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)e.OriginalSource;
+            StackPanel parentSP = btnSPParents[btn];
+            parentSP.Children.RemoveAt(parentSP.Children.Count - 1);
+            isAddReplyMode = false;
+            addReplyModeCancelBtn = null;
+
+            postsTreeView.Items.Refresh();
         }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
