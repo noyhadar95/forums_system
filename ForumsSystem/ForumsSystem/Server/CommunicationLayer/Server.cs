@@ -74,8 +74,8 @@ namespace ForumsSystem.Server.CommunicationLayer
 
         public static void SubscribeClient(string forumName, string userName)
         {
-            clients[new Tuple<string, string>(forumName, userName)] = halfClients[new Tuple<string, string>(forumName, userName)];
-            halfClients.Remove(new Tuple<string, string>(forumName, userName));
+            //clients[new Tuple<string, string>(forumName, userName)] = halfClients[new Tuple<string, string>(forumName, userName)];
+            //halfClients.Remove(new Tuple<string, string>(forumName, userName));
         }
         public static void UnSubscribeClient(string forumName, string userName)
         {
@@ -83,7 +83,7 @@ namespace ForumsSystem.Server.CommunicationLayer
         }
 
 
-        public static void notifyClient(string forumName, string userName)
+        public static void notifyClient(string forumName, string userName, Object notification)
         {
             Tuple<string, string> clientTuple = new Tuple<string, string>(forumName, userName);
             if (!clients.ContainsKey(clientTuple))
