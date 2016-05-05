@@ -34,7 +34,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             
             Moderator mod = new Moderator(admin,user, expirationDate);
-            moderators.Add(user.getUsername(), mod);
+            moderators[user.getUsername()]= mod;
             Loggers.Logger.GetInstance().AddActivityEntry("Moderator: " + user.getUsername() + "added to subforum: " + this.name + " by: " + admin.getUsername());
         }
 
@@ -109,11 +109,14 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return this.forum;
         }
 
-        public bool removeModerator(string moderator)
+        public bool removeModerator(string remover, string moderator)
         {
             if (!moderators.ContainsKey(moderator))
                 return false; // username is not moderator of this sub forum
             if (moderators.Count == 1)
+                return false;
+            Moderator mod = getModeratorByUserName(moderator);
+            if (!mod.CanBeDeletedBy(remover))
                 return false;
             moderators.Remove(moderator);
             Loggers.Logger.GetInstance().AddActivityEntry("Moderator: " + moderator + "removes from subforum: " + this.name );

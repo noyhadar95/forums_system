@@ -20,7 +20,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         IUser getCreator();
         Thread getThread(int num);
         IForum getForum();
-        bool removeModerator(string moderator);
+        bool removeModerator(string remover, string moderator);
         bool isModerator(string userName);
         int numOfModerators();
         Thread GetThreadById(int id);

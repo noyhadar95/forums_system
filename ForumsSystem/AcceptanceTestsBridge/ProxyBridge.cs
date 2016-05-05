@@ -346,5 +346,13 @@ namespace AcceptanceTestsBridge
                 return realBridge.GetNotifications(forumName, username);
             return null;
         }
+
+        public Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1)
+        {
+            if (realBridge != null)
+                return realBridge.GetModeratorAppointmentsDetails(forumName, subForumName, adminUserName1, username1);
+            return null;
+        }
     }
+    
 }

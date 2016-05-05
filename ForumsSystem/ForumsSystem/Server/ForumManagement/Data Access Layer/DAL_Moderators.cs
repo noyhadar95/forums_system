@@ -88,6 +88,22 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             connect_me.TakeAction(cmd);
             cmd = null;
         }
+
+        public void EditExpirationTime(string forumName,string subForumName, string userName, DateTime expirationTime)
+        {
+            Connect_to_DB();
+            OleDbCommand cmd = new OleDbCommand();
+
+            cmd.CommandText = "Update Moderators Set [ExpirationDate]=@p1 Where [ForumName]=@p2 AND [SubForumName]=@p3 AND UserName=@p4";
+
+            cmd.Parameters.AddWithValue("@p1", expirationTime);
+            cmd.Parameters.AddWithValue("@p2", forumName);
+            cmd.Parameters.AddWithValue("@p3", subForumName);
+            cmd.Parameters.AddWithValue("@p4", userName);
+
+            connect_me.TakeAction(cmd);
+            cmd = null;
+        }
     }
 }
 

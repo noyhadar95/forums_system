@@ -59,6 +59,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CommunicationLayer\Client.cs" />
+    <Compile Include="Resources\Forum.cs" />
+    <Compile Include="Resources\Moderator.cs" />
+    <Compile Include="Resources\Policy.cs" />
+    <Compile Include="Resources\Post.cs" />
+    <Compile Include="Resources\PrivateMessage.cs" />
+    <Compile Include="Resources\SubForum.cs" />
+    <Compile Include="Resources\Thread.cs" />
+    <Compile Include="Resources\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommunicationLayer\CL.cs" />

@@ -30,7 +30,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public Forum createForum(string forumName)
         {
             if (forums.ContainsKey(forumName))
-                return null;
+                return (Forum)forums[forumName];
             Forum forum = new Forum(forumName);
             forums.Add(forumName, forum);
             Loggers.Logger.GetInstance().AddActivityEntry("A new forum: " + forumName + " has been created");

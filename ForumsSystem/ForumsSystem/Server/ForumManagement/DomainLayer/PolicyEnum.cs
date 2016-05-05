@@ -17,6 +17,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             MemberSuspension=6,
             UsersLoad=7,
             MinimumAge=8,
-        MaxModerators=9
+        MaxModerators=9,
+        ModeratorSeniority=10,
+        PasswordValidity=11,
+        ModeratorPermissionToDelete=12
     }
 }

@@ -9,7 +9,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     public interface IUser
     {
-        void ChangeType(Type type); 
+        void ChangeType(Type type);
         PrivateMessage SendPrivateMessage(string reciever, string title, string content);
         void AddSentMessage(PrivateMessage privateMessage);
         void AddReceivedMessage(PrivateMessage privateMessage);
@@ -51,7 +51,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         void AddNotification(PrivateMessage newMessage);
 
         void Login();
-        void LogOff();
+        void Logout();
         bool isLogin();
 
 
@@ -64,11 +64,21 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         bool IsMessageReceived(string msgTitle, string msgContent);
 
         bool SetForum(IForum forum);
+
    
         List<Post> ReportPostsByMember(string memberUserName);
 
         int ReportNumOfPostsByMember(string memberUserName);
 
         List<string> GetModeratorsList(ISubForum subforum);
-    }
+    
+
+
+        void SetPassword(string password);
+
+        DateTime GetDateOfPassLastChange();
+
+
+        }
+
 }

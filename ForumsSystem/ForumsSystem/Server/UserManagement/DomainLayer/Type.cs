@@ -4,14 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     public class Type
     {
 
-
+        private DAL_Friends dal_friends = new DAL_Friends();
+        private DAL_Messages dal_messages = new DAL_Messages();
+        private DAL_Posts dal_posts = new DAL_Posts();
+        private DAL_Threads dal_threads = new DAL_Threads();
+        private DAL_SubForums dal_subForums = new DAL_SubForums();
+        private DAL_Moderators dal_moderators = new DAL_Moderators();
 
         //Admin only ---------------------------------------------------------
 
@@ -56,10 +61,13 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 }
             }
             ISubForum subforum = new SubForum(forum, callingUser, subForumName);
+            dal_subForums.CreateSubForum(forum.getName(), subForumName, callingUser.getUsername());
             forum.addSubForum(subforum);
             foreach (KeyValuePair<IUser, DateTime> moderator in moderators)
             {
                 subforum.addModerator(callingUser, moderator.Key, moderator.Value);
+                dal_moderators.CreateModerator(forum.getName(), subForumName, moderator.Key.getUsername(),
+                    moderator.Value, callingUser.getUsername());
             }
             return subforum;
         }
@@ -89,6 +97,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return false;
 
             subForum.addModerator(callingUser, moderator, expirationTime);
+            dal_moderators.CreateModerator(callingUser.getForum().getName(), subForum.getName(),
+                moderator.getUsername(), expirationTime, callingUser.getUsername());
             return true;
         }
 
@@ -106,6 +116,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (moderator.appointer != callingUser)
                 return false;
             moderator.changeExpirationDate(expirationTime);
+            dal_moderators.EditExpirationTime(callingUser.getForum().getName(), subForum.getName(), userName, expirationTime);
             return true;
         }
 
@@ -113,7 +124,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             if (!callingUser.isLogin())
                 return false;
-            return subForum.removeModerator(userName);
+
+            dal_moderators.DeleteModerator(callingUser.getForum().getName(), subForum.getName(), userName);
+
+            return subForum.removeModerator(callingUser.getUsername(), userName);
+
         }
 
         public virtual void suspendModerator(IUser callingUser, string userName, ISubForum subForum)
@@ -163,7 +178,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             IForum forum = subforum.getForum();
             if (callingUser.getForum().getName() != forum.getName())
                 return false;
-            subforum.removeModerator(userName);
+            subforum.removeModerator(callingUser.getUsername(), userName);
             return true;
         }
 
@@ -233,6 +248,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             Post reply = new Post(callingUser, thread, title, content);
             if (parent.AddReply(reply))
             {
+                dal_posts.CreatePost(reply.GetId(), callingUser.getUsername(), callingUser.getForum().getName(),
+                    parent.GetId(), thread.id, title, content);
                 List<IUser> friends = callingUser.GetFriendsList();
                 foreach (IUser friend in friends)
                 {
@@ -259,6 +276,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             Post openingPost = new Post(callingUser, thread, title, content);
             if (thread.AddOpeningPost(openingPost))
             {
+                dal_threads.CreateThread(thread.id, openingPost.GetId(), callingUser.getForum().getName(), subForum.getName());
                 List<IUser> friends = callingUser.GetFriendsList();
                 foreach (IUser friend in friends)
                 {
@@ -279,6 +297,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return false;
             post.Content = content;
             post.Title = title;
+            dal_posts.EditPost(post.GetId(), title, content);
             return true;
         }
 
@@ -289,7 +308,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (post == null)
                 return false;
             if (post.getPublisher() == callingUser)
+            {
+                dal_posts.DeletePost(post.GetId());
                 return post.DeletePost();
+            }
             return false; // user can't delete other user's posts
         }
 
@@ -298,6 +320,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (!callingUser.isLogin())
                 throw new Exception("user should login first");
             friend.addToWaitingFriendsList(callingUser);
+            dal_friends.addFriend(callingUser.getForum().getName(), callingUser.getUsername(), friend.getUsername());
         }
 
         public virtual bool removeFriend(IUser callingUser,IUser friendToRemove)
@@ -308,6 +331,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return false;
             callingUser.removeFromFriendList(friendToRemove);
             friendToRemove.removeFromFriendList(callingUser);
+            dal_friends.RemoveFriend(callingUser.getForum().getName(), callingUser.getUsername(), friendToRemove.getUsername());
             return true;
         }
 
@@ -320,6 +344,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             callingUser.removeFromWaitingFriendsList(userToAccept);
             callingUser.addToFriendsList(userToAccept);
             userToAccept.addToFriendsList(callingUser);
+            dal_friends.AcceptFriend(callingUser.getForum().getName(), userToAccept.getUsername(), callingUser.getUsername());
             return true;
         }
 
@@ -351,6 +376,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             PrivateMessage privateMessage = new PrivateMessage(title, content, callingUser, reciever);
             reciever.AddReceivedMessage(privateMessage);
             callingUser.AddSentMessage(privateMessage);
+            dal_messages.CreateMessage(callingUser.getForum().getName(), callingUser.getUsername(), recieverUserName, title, content);
             return privateMessage;
         }
 
