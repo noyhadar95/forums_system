@@ -74,8 +74,8 @@ namespace ForumsSystem.Server.CommunicationLayer
 
         public static void SubscribeClient(string forumName, string userName)
         {
-            //clients[new Tuple<string, string>(forumName, userName)] = halfClients[new Tuple<string, string>(forumName, userName)];
-            //halfClients.Remove(new Tuple<string, string>(forumName, userName));
+            clients[new Tuple<string, string>(forumName, userName)] = halfClients[new Tuple<string, string>(forumName, userName)];
+            halfClients.Remove(new Tuple<string, string>(forumName, userName));
         }
         public static void UnSubscribeClient(string forumName, string userName)
         {
@@ -89,11 +89,12 @@ namespace ForumsSystem.Server.CommunicationLayer
             if (!clients.ContainsKey(clientTuple))
                 return;
             string ip = clients[clientTuple];
-            
-                //---data to send to the server---
-                string textToSend = "Sent from server";
 
+            //---data to send to the server---
+            string pType = notification.GetType().ToString();
+            pType = pType.Substring(pType.LastIndexOf('.') + 1);
 
+            string textToSend = pType + delimeter + ObjectToString(notification);
 
                 //---create a TCPClient object at the IP and port no.---
                 TcpClient client = new TcpClient(ip, CLIENT_PORT_NO);
