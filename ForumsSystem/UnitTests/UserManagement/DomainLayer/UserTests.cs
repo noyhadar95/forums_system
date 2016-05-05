@@ -14,8 +14,7 @@ namespace UnitTests.UserManagement.DomainLayer
         IUser user;
         DateTime year;
         DAL_Forum dal_forum = new DAL_Forum();
-        DAL_Users dal_users = new DAL_Users();
-
+        
         [TestInitialize()]
         public void Initialize()
         {
@@ -31,7 +30,6 @@ namespace UnitTests.UserManagement.DomainLayer
         public void Cleanup()
         {
             dal_forum.DeleteForum(forum.getName());
-            //dal_users.DeleteUser(user.getUsername(), forum.getName());
             forum = null;
             user = null;
         }
@@ -81,10 +79,9 @@ namespace UnitTests.UserManagement.DomainLayer
             PrivateMessage privateMessagefromAdmin = user.SendPrivateMessage(receiver.getUsername(), "hi", "sending message");
             Assert.IsTrue(user.getSentMessages().Contains(privateMessagefromAdmin));
             Assert.IsTrue(receiver.getReceivedMessages().Contains(privateMessagefromAdmin));
-
-            dal_users.deleteUser(receiver.getUsername(), forum.getName());
+            
             dal_forum.DeleteForum(forum2.getName());
-            dal_users.deleteUser(receiver2.getUsername(), forum2.getName());
+            
         }
 
         [TestMethod]
@@ -98,6 +95,8 @@ namespace UnitTests.UserManagement.DomainLayer
             IForum forum2 = new Forum("f2");
             Assert.IsFalse(user.RegisterToForum("u2", "p2", forum2, "u2@gmail.com", year));
             Assert.IsFalse(forum2.isUserMember(user.getUsername()));
+
+            dal_forum.DeleteForum("f2");
         }
 
         [TestMethod]
