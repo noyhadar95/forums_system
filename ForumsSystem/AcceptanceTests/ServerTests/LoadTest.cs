@@ -13,6 +13,8 @@ namespace AcceptanceTests.ServerTests
         private static IBridge bridge;
         private static int numOfusers;
         private static Random rand = new Random();
+        private static int numOfRounds = 20;
+        private static int[] notifications;
         static void Main(string[] args)
         {
             bridge = ProxyBridge.GetInstance();
@@ -40,6 +42,7 @@ namespace AcceptanceTests.ServerTests
                 numOfusers = 100;
                 Console.WriteLine(numOfusers + " Users In The Forum - Default Value");
             }
+            notifications = new int[numOfusers+1];
             Console.WriteLine("Creating Users...");
             int userIndex = 1;
             for (; userIndex<= numOfusers; userIndex++)
@@ -48,6 +51,7 @@ namespace AcceptanceTests.ServerTests
                 bridge.RegisterToForum(forumName, "user" + userIndex, "pass" + userIndex, "user" + userIndex + "@gmail.com", DateTime.Today.AddYears(-30));
                 bridge.ConfirmRegistration(forumName, "user" + userIndex);
                 bridge.LoginUser(forumName, "user" + userIndex, "pass" + userIndex);
+                notifications[userIndex] = 0;
             }
             
             Console.WriteLine("Users Created");
@@ -71,6 +75,11 @@ namespace AcceptanceTests.ServerTests
             {
                 threads[i].Join();
             }
+            Console.WriteLine("Total Notifications: "+notifications.Sum());
+            if(notifications.Sum()==numOfusers*numOfRounds)
+                Console.WriteLine("LOAD TEST PASSED");
+            else
+                Console.WriteLine("LOAD TEST FAILED");
             Console.ReadLine();
 
         }
@@ -97,18 +106,19 @@ namespace AcceptanceTests.ServerTests
 
         private static void UserTask(string forumName, int sender)
         {
-            for (int i = 0; i < 20; i++)
+            notifications[sender] = 0;
+            for (int i = 0; i < numOfRounds; i++)
             {
 
 
                 int receiver = GetUserIndex(sender);
                 Console.WriteLine(sender + " to " + receiver);
                 bridge.SendPrivateMsg(forumName, "user" + sender, "user" + receiver, sender + " to " + receiver, sender + " to " + receiver);
-                bridge.GetNotifications(forumName, "user" + sender);
-                //TODO:read message if exists
-                //Task.Delay(10000);
+                notifications[sender] += bridge.GetNotifications(forumName, "user" + sender).Count;
                 Thread.Sleep(10 * 1000);
             }
+            notifications[sender] += bridge.GetNotifications(forumName, "user" + sender).Count;
+            Console.WriteLine(sender+" received "+notifications[sender] + " notifications");
         }
 
         private static int GetUserIndex(int sender)
