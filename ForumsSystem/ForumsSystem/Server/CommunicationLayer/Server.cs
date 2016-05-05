@@ -83,17 +83,18 @@ namespace ForumsSystem.Server.CommunicationLayer
         }
 
 
-        public static void notifyClient(string forumName, string userName)
+        public static void notifyClient(string forumName, string userName, Object notification)
         {
             Tuple<string, string> clientTuple = new Tuple<string, string>(forumName, userName);
             if (!clients.ContainsKey(clientTuple))
                 return;
             string ip = clients[clientTuple];
-            
-                //---data to send to the server---
-                string textToSend = "Sent from server";
 
+            //---data to send to the server---
+            string pType = notification.GetType().ToString();
+            pType = pType.Substring(pType.LastIndexOf('.') + 1);
 
+            string textToSend = pType + delimeter + ObjectToString(notification);
 
                 //---create a TCPClient object at the IP and port no.---
                 TcpClient client = new TcpClient(ip, CLIENT_PORT_NO);

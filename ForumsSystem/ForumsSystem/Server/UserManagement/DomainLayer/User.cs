@@ -345,7 +345,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             Policy policy = forum.GetPolicy();
             if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)) || (policy.CheckIfPolicyExists(Policies.Authentication) && emailAccepted))
             {
-                Server.CommunicationLayer.Server.SubscribeClient(this.userName, this.forum.getName());
+                Server.CommunicationLayer.Server.SubscribeClient(this.forum.getName(),this.userName );
                 this.isLoggedIn = true;
             }
 

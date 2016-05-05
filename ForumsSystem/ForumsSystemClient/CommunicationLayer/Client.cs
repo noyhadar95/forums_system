@@ -71,10 +71,20 @@ namespace ForumsSystemClient.CommunicationLayer
 
                 //---convert the data received into a string---
                 string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                string[] seperators = new string[] { delimeter };
+                string[] items = dataReceived.Split(seperators, StringSplitOptions.None);
+
+                //TODO: MAKE THIS WORK ---------------------
+                List<Object> parameters = new List<object>();
+
+                for (int i = 1; i < items.Length; i += 2)
+                {
+                    parameters.Add(StringToObject(items[i], items[i + 1]));
+                }
 
                 Console.WriteLine("Received : " + dataReceived);
 
-                //TODO: Handle notification
+                //TODO: Handle notification------------------
 
             }
             //  listener.Stop   
