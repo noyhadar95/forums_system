@@ -113,24 +113,37 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
         }
 
-        //TODO: Can delete message? - if so what happens
-       /* public void RemoveFriend(string forumName, string userName, string friendUserName)
+        public void DeleteAllMessagesFromForum(string forumName)
         {
             Connect_to_DB();
-            OleDbCommand cmd = new OleDbCommand();
-            cmd.CommandText = "Delete From [Friends] Where [ForumName]=@p1 AND [UserName]=@p2 AND [FriendUserName]=@p3";
+            string sql = "DELETE FROM [Messages] WHERE Forum=@p1";
 
+            OleDbCommand cmd = new OleDbCommand(sql);
 
             cmd.Parameters.AddWithValue("@p1", forumName);
-            cmd.Parameters.AddWithValue("@p2", userName);
-            cmd.Parameters.AddWithValue("@p3", friendUserName);
-
 
             connect_me.TakeAction(cmd);
-            cmd = null;
+
         }
-        */
-  
+
+        //TODO: Can delete message? - if so what happens
+        /* public void RemoveFriend(string forumName, string userName, string friendUserName)
+         {
+             Connect_to_DB();
+             OleDbCommand cmd = new OleDbCommand();
+             cmd.CommandText = "Delete From [Friends] Where [ForumName]=@p1 AND [UserName]=@p2 AND [FriendUserName]=@p3";
+
+
+             cmd.Parameters.AddWithValue("@p1", forumName);
+             cmd.Parameters.AddWithValue("@p2", userName);
+             cmd.Parameters.AddWithValue("@p3", friendUserName);
+
+
+             connect_me.TakeAction(cmd);
+             cmd = null;
+         }
+         */
+
 
 
 

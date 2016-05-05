@@ -38,6 +38,9 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             
             connect_me.TakeAction(cmd);
 
+            DAL_Users du = new DAL_Users();
+            du.CreateUser(name, "Deleted", "Deleted4Ever", "Deleted", DateTime.Now, DateTime.Now, 0, UserType.UserTypes.Member);
+
         }
 
         public DataTable GetForum(string name)
@@ -55,7 +58,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         }
 
         public void DeleteForum(string name)
-        {
+        { 
             Connect_to_DB();
             OleDbCommand sql = new OleDbCommand();
             sql.CommandText = "Delete From [Forums] Where [ForumName]='" + name+"'";

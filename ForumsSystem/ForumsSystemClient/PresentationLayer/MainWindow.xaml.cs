@@ -40,10 +40,6 @@ namespace ForumsSystemClient.PresentationLayer
             List<string> items = cl.GetForumsList();
             forumsListView.ItemsSource = items;
 
-
-            bool ans = (bool)CommunicationLayer.Client.SendRequest("InitializeSystem", "superadmin", "pass");
-
-
         }
 
         private void forumsListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ForumsSystemClient.Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace ForumsSystemClient.CommunicationLayer
 {
     class CL
     {
+
+        bool serverWorks = false;
 
         public List<string> GetForumsList()
         {
@@ -20,11 +23,20 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public List<string> GetSubForumsList(string forumName)
         {
-            List<string> res = new List<string>();
-            res.Add("subforum1");
-            res.Add("subforum2");
-            res.Add("subforum3");
-            return res;
+            if (!serverWorks)
+            {
+                List<string> res = new List<string>();
+                res.Add("subforum1");
+                res.Add("subforum2");
+                res.Add("subforum3");
+                return res;
+            }
+            else
+            {
+                Forum f = (Forum)Client.SendRequest("GetForum", forumName);
+                
+            }
+            return null;
         }
 
         // return a list of titles of all threads in the subforum.
