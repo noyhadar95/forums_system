@@ -34,6 +34,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
         */
 
+
         private string password;
 
         private int numOfUsers;
@@ -43,6 +44,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private IUser user;
 
         private int numOfModerators;
+
+        private int moderatorSeniority;
+
+        private int passwordValidity;
+
+        private Boolean moderatorDeletePermission; 
 
         public IUser User { get { return this.user; } set { this.user = value; } }
         public int NumOfModerators { get { return this.numOfModerators; } set { this.numOfModerators = value; } }
@@ -54,6 +61,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public void SetPassword(string newPassword)
         {
             password = newPassword;
+
         }
 
         public int GetNumOfUsers()
@@ -74,5 +82,47 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.ageOfUser = ageOfUser;
         }
 
+        public int GetModeratorSeniority()
+        {
+
+            return moderatorSeniority;
+
+        }
+
+        public void SetModeratorSeniority(int moderatorSeniority)
+        {
+
+            this.moderatorSeniority = moderatorSeniority;
+
+        }
+
+        
+
+             public int GetPasswordValidity()
+        {
+
+            return passwordValidity;
+
+        }
+
+        public void SetPasswordValidity(int passwordValidity)
+        {
+
+            this.passwordValidity = passwordValidity;
+
+        }
+
+        public Boolean GetModeratorDeletePermission()
+        {
+            return this.moderatorDeletePermission;
+        }
+
+
+        public void SetModeratorDeletePermission(Boolean moderatorDeletePermission)
+        {
+
+            this.moderatorDeletePermission = moderatorDeletePermission;
+
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             cmd.Parameters.AddWithValue("@p6", DateOfBirth);
             cmd.Parameters.AddWithValue("@p7", numOfComplaints);
             cmd.Parameters.AddWithValue("@p8", type);
-            cmd.Parameters.AddWithValue("@p8", false);
+            cmd.Parameters.AddWithValue("@p9", false);
 
             connect_me.TakeAction(cmd);
 

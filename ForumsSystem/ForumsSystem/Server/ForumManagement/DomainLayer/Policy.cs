@@ -7,7 +7,7 @@ using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    public abstract class Policy
+    public abstract class Policy 
     {
         protected Policies type;
         private Policy nextPolicy;

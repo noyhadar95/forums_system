@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 {
-    class DAL_ErrorLogs : DAL_Log
+    public class DAL_ErrorLogs : DAL_Log
     {
         public DAL_ErrorLogs()
         {

@@ -12,13 +12,16 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     public class Forum : IForum
     {
 
-        public string name { get; private set; }
-        private List<ISubForum> sub_forums;
-        private Policy policies;
-        private Dictionary<string, IUser> users;//username, user
-        private Dictionary<string, IUser> waiting_users;//username, user - waiting for confirmation
+        public string name { get;  set; }
+        private List<ISubForum> sub_forums { get; set; }
+        private Policy policies { get; set; }
+        private Dictionary<string, IUser> users { get; set; }//username, user
+        private Dictionary<string, IUser> waiting_users { get; set; }//username, user - waiting for confirmation
 
+        private Forum()
+        {
 
+        }
         public Forum(string forumName)
         {
             this.name = forumName;

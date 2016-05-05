@@ -109,7 +109,7 @@ namespace UnitTests.ServerIntegrationTests
             string username = "user1";
             string pass = "pass1";
             string email = "tester@email.com";
-            Policy policy = new PasswordPolicy(Policies.Password, 8);
+            Policy policy = new PasswordPolicy(Policies.Password, 8,100);
             forum.AddPolicy(policy);
             Assert.IsFalse(forum.RegisterToForum(username, pass, email,DateTime.Today.AddYears(-20)));
         }

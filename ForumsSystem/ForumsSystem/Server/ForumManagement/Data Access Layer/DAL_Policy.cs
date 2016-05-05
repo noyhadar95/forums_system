@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.OleDb;
 using System.IO;
 using System.Linq;
@@ -10,9 +11,27 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 {
     public class DAL_Policy: DAL_Connection //TODO: THIS NEEDS MAJOR CHANGES
     {
-        
-        public void createPolicy(int policyID, int type, int nextPolicyId)
+
+        /// <summary>
+        /// Gets the current maximum id of Policies
+        /// </summary>
+        /// <returns></returns>
+        public int getMaxId()
         {
+            Connect_to_DB();
+            string sql = "Select MAX(PolicyId) AS MaxId From Policies";
+
+            DataTable tb = connect_me.DownloadData(sql, "Policies");
+            if (tb.Rows.Count == 0)
+                return 0;
+            if (tb.Rows[0][0] == null || tb.Rows[0][0].ToString() == "")
+                return 0;
+            return (int)tb.Rows[0][0];
+        }
+
+        public int createPolicy(int type, int nextPolicyId)
+        {
+            int policyID = getMaxId() + 1;
 
             Connect_to_DB();
             string sql = "Insert into [Policies] values(@p1,@p2,@p3)";
@@ -32,23 +51,26 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
             connect_me.TakeAction(cmd);
 
+            return policyID;
+
 
         }
 
-
-       /* public bool EditPolicy(string forumName)
+        public void DeletePolicy(int policyId)
         {
             Connect_to_DB();
-            OleDbCommand sql = new OleDbCommand();
-            sql.CommandText = "Update Visit Set [DateOfVisit]='" + visit.DateofVisit.ToShortDateString() + "', [AssignedDoctor]=" + visit.AssignedDoctor + ", [PatientID]=" + visit.PatientID + ", [DoctorNotes]'=" + visit.DoctorNotes + "', [TreatmentsMade]='" + visit.TreatmentsMade + "' Where [ID]=" + visit.VisitID;
+            OleDbCommand cmd = new OleDbCommand();
+            cmd.CommandText = "Delete From [Policies] Where [PolicyId]=@p1";
 
-            connect_me.TakeAction(sql);
-            sql = null;
+            cmd.Parameters.AddWithValue("@p1", policyId);
 
-            return true;
+            connect_me.TakeAction(cmd);
+            cmd = null;
         }
 
-    */
+
+
+
 
     }
 }
