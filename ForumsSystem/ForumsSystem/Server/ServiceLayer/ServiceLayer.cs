@@ -30,8 +30,14 @@ namespace ForumsSystem.Server.ServiceLayer
                 return false;
         }
 
-        public IForum CreateForum(SuperAdmin creator, string name, Policy properties, List<IUser> adminUsername)
+        public IForum CreateForum(string creatorName,string password, string name, Policy properties, List<IUser> adminUsername)
         {
+            SuperAdmin creator;
+            if (!SuperAdmin.GetInstance().userName.Equals(creatorName))
+                return null;
+            if (!SuperAdmin.GetInstance().password.Equals(creatorName))
+                return null;
+            creator = SuperAdmin.GetInstance();
             return creator.createForum(name, properties, adminUsername);
         }
 
@@ -51,27 +57,35 @@ namespace ForumsSystem.Server.ServiceLayer
 
         }
 
-        public ISubForum CreateSubForum(IUser creator, string name, Dictionary<string, DateTime> moderators)
+        public ISubForum CreateSubForum(string creatorName, string forumName, string subforumName, Dictionary<string, DateTime> moderators)
         {
-
-            return creator.createSubForum(name, moderators);
+            IUser creator = GetForum(forumName).getUser(creatorName);
+            return creator.createSubForum(subforumName, moderators);
 
         }
 
-        public Thread AddThread(ISubForum subForum, IUser publisher, string title, string content)
+        public Thread AddThread(string forumName, string subForumName, string publisherName, string title, string content)
         {
+            IForum forum = GetForum(forumName);
+            ISubForum subForum = forum.getSubForum(subForumName);
+            IUser publisher = forum.getUser(publisherName);
+            if (publisher == null)
+                return null;
             return publisher.createThread(subForum, title, content);
 
         }
 
-        public Post AddReply(Post post, IUser publisher, string title, string content)
+        public Post AddReply(string forumName, string subForumName, int threadID, string publisherName, int postID, string title, string content)
         {
+            Post post = GetForum(forumName).getSubForum(subForumName).getThread(threadID).GetPostById(postID);
+            IUser publisher = GetForum(forumName).getUser(publisherName);
             return publisher.postReply(post, post.Thread, title, content);
 
         }
 
-        public IUser MemberLogin(string username, string password, IForum forum)
+        public IUser MemberLogin(string username, string password, string forumName)
         {
+            IForum forum = GetForum(forumName);
             return forum.Login(username, password);
         }
 
@@ -104,8 +118,11 @@ namespace ForumsSystem.Server.ServiceLayer
             return SuperAdmin.GetInstance().forumSystem.getForum(forumName);
         }
 
-        public bool AddModerator(IUser admin, ISubForum subForum, string username, DateTime expiratoinDate)
+        public bool AddModerator(string forumName, string subForumName, string adminUsername, string username, DateTime expiratoinDate)
         {
+            IForum forum = GetForum(forumName);
+            IUser admin = forum.getUser(adminUsername);
+            ISubForum subForum = forum.getSubForum(subForumName);
             return admin.appointModerator(username, expiratoinDate, subForum);
         }
 
@@ -177,8 +194,9 @@ namespace ForumsSystem.Server.ServiceLayer
             return true;
         }
 
-        public bool DeletePost(string forumName, string subForumName, int threadID, int postID)
+        public bool DeletePost(string forumName, string subForumName,string deleter, int threadID, int postID)
         {
+            //TODO: fix this to user deleter parameter!!!
             SuperAdmin superAdmin = SuperAdmin.GetInstance();
             ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
             Thread thread = sys.getForum(forumName).getSubForum(subForumName).GetThreadById(threadID);
@@ -253,12 +271,20 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user1 = forum.getUser(username1);
             IUser user2 = forum.getUser(username2);
             user1.addFriend(user2);
-            user2.acceptFriend(user1);
+            user2.acceptFriend(user1);//TODO: probably need to remove this!
         }
 
         public Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1)
         {
             throw new NotImplementedException();
+        }
+
+        public List<Post> GetPosts(string forumName,string subforumName,int threadId)
+        {
+            Thread thread = sys.getForum(forumName).getSubForum(subforumName).GetThreadById(threadId);
+            List<Post> res= thread.GetOpeningPost().GetReplies();
+            res.Insert(0, thread.GetOpeningPost());
+            return res;
         }
     }
 }
