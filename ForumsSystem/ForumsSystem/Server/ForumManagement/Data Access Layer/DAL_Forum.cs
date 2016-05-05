@@ -39,8 +39,16 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             connect_me.TakeAction(cmd);
 
             DAL_Users du = new DAL_Users();
-            du.CreateUser(name, "Deleted", "Deleted4Ever", "Deleted", DateTime.Now, DateTime.Now, 0, UserType.UserTypes.Member);
+            du.CreateUser(name, "Deleted", "Deleted4Ever", "Deleted", DateTime.Now, DateTime.Now, 0, UserType.UserTypes.Member,DateTime.Now);
 
+        }
+
+        public void DeleteAll()
+        {
+            Connect_to_DB();
+            string sql = "Delete * From Forums";
+            OleDbCommand cmd = new OleDbCommand(sql);
+            connect_me.TakeAction(cmd);
         }
 
         public DataTable GetForum(string name)

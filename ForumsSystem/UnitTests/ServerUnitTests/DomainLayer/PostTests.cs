@@ -2,12 +2,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace UnitTests.ServerUnitTests.DomainLayer
 {
     [TestClass]
     public class PostTests
     {
+        DAL_Forum dal_forum = new DAL_Forum();
         Post post;
         DateTime year;
 
@@ -25,6 +27,8 @@ namespace UnitTests.ServerUnitTests.DomainLayer
             Post reply = new Post(user,thread, "title1", "content1");
             post.AddReply(reply);
             Assert.IsTrue(post.NumOfReplies() == 1);
+
+            dal_forum.DeleteForum("name");
         }
 
         [TestMethod]
@@ -41,6 +45,8 @@ namespace UnitTests.ServerUnitTests.DomainLayer
             Assert.IsTrue(post.NumOfReplies() == 1);
             Assert.IsTrue(reply.DeletePost());
             Assert.IsTrue(post.NumOfReplies() == 0);
+
+            dal_forum.DeleteForum("name");
         }
 
         [TestMethod]
@@ -59,6 +65,8 @@ namespace UnitTests.ServerUnitTests.DomainLayer
             Assert.IsTrue(post.NumOfReplies() == 1);
             Assert.IsTrue(reply.DeletePost());
             Assert.IsTrue(post.NumOfReplies() == 0);
+
+            dal_forum.DeleteForum("name");
         }
 
         [TestMethod]
@@ -87,6 +95,8 @@ namespace UnitTests.ServerUnitTests.DomainLayer
             post.AddReply(reply);
             Assert.IsTrue(post.NumOfReplies() == 1);
             Assert.IsTrue(post.GetReply(0) == reply);
+
+            dal_forum.DeleteForum("name");
         }
 
         [TestMethod]
@@ -99,6 +109,8 @@ namespace UnitTests.ServerUnitTests.DomainLayer
             
             post = new Post(user, thread, "title", "content");
             Assert.IsTrue(thread == post.Thread);
+
+            dal_forum.DeleteForum("name");
         }
     }
 }

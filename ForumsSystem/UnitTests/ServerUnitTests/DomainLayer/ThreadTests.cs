@@ -2,12 +2,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace UnitTests.ServerUnitTests.DomainLayer
 {
     [TestClass]
     public class ThreadTests
     {
+        DAL_Forum dal_forum = new DAL_Forum();
         DateTime year;
         [TestMethod]
         public void TestAddOpeningPost()//1
@@ -24,6 +26,8 @@ namespace UnitTests.ServerUnitTests.DomainLayer
             Assert.IsTrue(thread.GetTiltle().Equals("title"));
             Assert.IsFalse(thread.AddOpeningPost(new Post(user, thread, "new one", "content")));
             Assert.IsTrue(thread.GetTiltle().Equals("title"));
+
+            dal_forum.DeleteForum("forum");
         }
 
         [TestMethod]
@@ -48,17 +52,21 @@ namespace UnitTests.ServerUnitTests.DomainLayer
             thread.GetOpeningPost().AddReply(rep1);
             Post test = thread.GetPostById(rep1.GetId());
             Assert.IsTrue(test == rep1);
-           /* test = thread.GetPostById("3.1");
-            Assert.IsTrue(test == null);
-            test = thread.GetPostById("1.4");
-            Assert.IsTrue(test == null);
-            thread.GetPostById("1").AddReply(rep2);
-            thread.GetPostById("1.2").AddReply(rep21);
-            thread.GetPostById("1.2").AddReply(rep22);
-            thread.GetPostById("1.2").AddReply(rep23);
-            test = thread.GetPostById("1.2.3");
-            Assert.IsTrue(test == rep23);
-            */
+
+            dal_forum.DeleteForum("forum");
+
+
+            /* test = thread.GetPostById("3.1");
+             Assert.IsTrue(test == null);
+             test = thread.GetPostById("1.4");
+             Assert.IsTrue(test == null);
+             thread.GetPostById("1").AddReply(rep2);
+             thread.GetPostById("1.2").AddReply(rep21);
+             thread.GetPostById("1.2").AddReply(rep22);
+             thread.GetPostById("1.2").AddReply(rep23);
+             test = thread.GetPostById("1.2.3");
+             Assert.IsTrue(test == rep23);
+             */
         }
     }
 }

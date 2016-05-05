@@ -15,23 +15,16 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         {
 
             Connect_to_DB();
-            string sql = "Insert into [Users] values(@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8,@p9,@p10)";
+         
+            OleDbCommand sql = new OleDbCommand();
 
-            OleDbCommand cmd = new OleDbCommand(sql);
+            sql.CommandText = "Insert into [Users] values ('"+ForumName+
+                "','"+userName+"', '" + password + "', '" + email +
+                "',#" + dateJoined.ToShortDateString() +
+                "#, #" + DateOfBirth.ToShortDateString() + "#, " + numOfComplaints + 
+                ", " + (int)type + ","+false+" ,#" + dateLastPasswordChanged + "# )";
 
-            cmd.Parameters.AddWithValue("@p1", ForumName);
-            cmd.Parameters.AddWithValue("@p2", userName);
-            cmd.Parameters.AddWithValue("@p3", password);
-            cmd.Parameters.AddWithValue("@p4", email);
-            cmd.Parameters.AddWithValue("@p5", dateJoined);
-            cmd.Parameters.AddWithValue("@p6", DateOfBirth);
-            cmd.Parameters.AddWithValue("@p7", numOfComplaints);
-            cmd.Parameters.AddWithValue("@p8", type);
-            cmd.Parameters.AddWithValue("@p9", false);
-            cmd.Parameters.AddWithValue("@p10", dateLastPasswordChanged);
-
-            connect_me.TakeAction(cmd);
-
+            connect_me.TakeAction(sql);
         }
 
         public void changeUserWaitingStatus(string ForumName, string userName, bool waiting)
@@ -92,10 +85,6 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
             connect_me.TakeAction(cmd);
             cmd = null;
-
-
-
-
 
             Connect_to_DB();
             cmd = new OleDbCommand();
