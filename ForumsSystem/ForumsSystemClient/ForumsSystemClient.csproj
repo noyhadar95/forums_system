@@ -75,9 +75,6 @@
     <Compile Include="PresentationLayer\AddForumWindow.xaml.cs">
       <DependentUpon>AddForumWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PresentationLayer\AddReplyWindow.xaml.cs">
-      <DependentUpon>AddReplyWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PresentationLayer\AddSubForumWindow.xaml.cs">
       <DependentUpon>AddSubForumWindow.xaml</DependentUpon>
     </Compile>
@@ -135,10 +132,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="PresentationLayer\AddForumWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PresentationLayer\AddReplyWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
