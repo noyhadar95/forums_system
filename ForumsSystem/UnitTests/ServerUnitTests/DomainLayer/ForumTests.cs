@@ -25,7 +25,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         [TestCleanup()]
         public void Cleanup() {
             dal_forum.DeleteForum(forum.getName());
-            dal_users.DeleteUserP(admin.getUsername(), forum.getName());
+            dal_users.deleteUser(admin.getUsername(), forum.getName());
             forum = null;
         }
         

@@ -82,9 +82,9 @@ namespace UnitTests.UserManagement.DomainLayer
             Assert.IsTrue(user.getSentMessages().Contains(privateMessagefromAdmin));
             Assert.IsTrue(receiver.getReceivedMessages().Contains(privateMessagefromAdmin));
 
-            dal_users.DeleteUserP(receiver.getUsername(), forum.getName());
+            dal_users.deleteUser(receiver.getUsername(), forum.getName());
             dal_forum.DeleteForum(forum2.getName());
-            dal_users.DeleteUserP(receiver2.getUsername(), forum2.getName());
+            dal_users.deleteUser(receiver2.getUsername(), forum2.getName());
         }
 
         [TestMethod]
