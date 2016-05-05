@@ -264,7 +264,7 @@ namespace AcceptanceTestsBridge
                     policy = new PasswordPolicy(forumPol, 2, 100);
                     break;
             }
-            return cl.SetForumProperties(user, forum, policy);
+            return cl.SetForumProperties(username, forumName, policy);
         }
 
         public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
@@ -386,7 +386,7 @@ namespace AcceptanceTestsBridge
           */
         public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
         {
-            return cl.removeModerator(forumName,subForumName, remover, moderatorName);
+            return cl.RemoveModerator(forumName,subForumName, remover, moderatorName);
         }
 
         public int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string username)

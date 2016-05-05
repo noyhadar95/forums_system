@@ -13,9 +13,9 @@ namespace ForumsSystem.Server.ServiceLayer
          Post AddReply(string forumName, string subForumName, int threadID, string publisherName, int postID, string title, string content);
 
         Thread AddThread(string forumName, string subForumName, string publisher, string title, string content);
-        bool ChangeExpirationDate(IUser admin, DateTime newDate, string moderator, ISubForum subforum);
+        bool ChangeExpirationDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate);
 
-        bool ChangeForumProperties(IUser user, IForum forum, Policy properties);
+        bool ChangeForumProperties(string username,string forumName, Policy properties);
 
         IForum CreateForum(string creatorName, string password, string name, Policy properties, List<IUser> adminUsername);
 
@@ -30,9 +30,9 @@ namespace ForumsSystem.Server.ServiceLayer
         bool RegisterToForum(IUser guest, IForum forum, string userName, string password, string email, DateTime dateOfBirth);
 
 
-        PrivateMessage SendPrivateMessage(IUser from, string to, string title, string content);
+        PrivateMessage SendPrivateMessage(string forumName, string from, string to, string title, string content);
 
-        bool SetForumProperties(IUser user, IForum forum, Policy properties);
+        bool SetForumProperties(string username, string forumName, Policy properties);
 
         #endregion
 
@@ -46,8 +46,8 @@ namespace ForumsSystem.Server.ServiceLayer
         void removeForum(string forumName);
         bool ConfirmRegistration(string forumName, string username);
         bool LoginSuperAdmin(string username, string pass);
-        DateTime GetModeratorExpDate(ISubForum subForum, string username);
-        int CountNestedReplies(ISubForum subforum, int threadID, int postID);
+        DateTime GetModeratorExpDate(string forumName, string subForumName, string username);
+        int CountNestedReplies(string forumName, string subForumName, int threadID, int postID);
         bool IsMsgSent(string forumName, string username, string msgTitle, string msgContent);
         bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent);
         bool IsModerator(string forumName, string subForumName, string username);
@@ -70,5 +70,10 @@ namespace ForumsSystem.Server.ServiceLayer
         Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1);
         List<Post> GetPosts(string forumName, string subforumName, int threadId);
         bool CheckIfPolicyExists(string forumName, Policies policy);
+        List<Post> GetPostNotifications(string forumName, string username);
+        void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent);
+        bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName);
+        int ReportNumOfPostsByMember(string adminUsername, string forumName, string username);
+        List<string> GetModeratorsList(string forumName, string subForumName, string adminUserName);
     }
 }

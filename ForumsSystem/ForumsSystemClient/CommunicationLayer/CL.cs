@@ -193,67 +193,67 @@ namespace ForumsSystemClient.CommunicationLayer
             return (bool)Client.SendRequest("CheckIfPolicyExists", forumName, expectedPolicy);
         }
 
-        public bool SetForumProperties(User user, Forum forum, Policy policy)
+        public bool SetForumProperties(string user, string forum, Policy policy)
         {
-            throw new NotImplementedException();
+            return (bool)Client.SendRequest("SetForumProperties",user,forum,policy);
         }
 
         public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
         {
-            throw new NotImplementedException();
+            return (int)Client.SendRequest("CountNestedReplies", forumName, subForumName, threadID,postID);
         }
 
         public bool ChangeExpirationDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate)
         {
-            throw new NotImplementedException();
+            return (bool)Client.SendRequest("ChangeExpirationDate", forumName, subForumName, admin,moderator,newDate);
         }
 
         public DateTime GetModeratorExpDate(string forumName, string subForumName, string username)
         {
-            throw new NotImplementedException();
+            return (DateTime)Client.SendRequest("GetModeratorExpDate", forumName, subForumName, username);
         }
 
         public bool ConfirmRegistration(string forumName, string username)
         {
-            throw new NotImplementedException();
+            return (bool)Client.SendRequest("ConfirmRegistration", forumName, username);
         }
 
         public int GetOpenningPostID(string forumName, string subForumName, int threadID)
         {
-            throw new NotImplementedException();
+            return (int)Client.SendRequest("GetOpenningPostID", forumName, subForumName,threadID);
         }
 
         public void AddFriend(string forumName, string username1, string username2)
         {
-            throw new NotImplementedException();
+            Client.SendRequest("AddFriend", forumName, username1, username2);
         }
 
-        public object GetPostNotifications(string forumName, string username)
+        public List<Post> GetPostNotifications(string forumName, string username)
         {
-            throw new NotImplementedException();
+            return (List<Post>)Client.SendRequest("GetPostNotifications", forumName, username);
         }
 
         public void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent)
         {
-            throw new NotImplementedException();
+            Client.SendRequest("EditPost", forumName, subForumName, threadId, editor, postId, newTitle, newContent);
         }
 
-        public bool removeModerator(string forumName, string subForumName, string remover, string moderatorName)
+        public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
         {
-            throw new NotImplementedException();
+            return (bool)Client.SendRequest("RemoveModerator",forumName, subForumName, remover, moderatorName);
         }
 
         public int ReportNumOfPostsByMember(string forumName, string adminUserName, string username)
         {
-            throw new NotImplementedException();
+            return (int)Client.SendRequest("ReportNumOfPostsByMember",adminUserName, forumName, username);
         }
 
         public List<string> GetModeratorsList(string forumName, string subForumName, string adminUserName)
         {
-            throw new NotImplementedException();
+            return (List<string>)Client.SendRequest("GetModeratorsList",forumName, subForumName, adminUserName);
         }
 
-        public List<Resources.Post> ReportPostsByMember(string forumName, string adminUserName, string moderatorName)
+        public List<Post> ReportPostsByMember(string forumName, string adminUserName, string moderatorName)
         {
             throw new NotImplementedException();
         }
@@ -280,7 +280,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public bool SendPrivateMessage(string forumName, string senderUsername, string receiverUsername, string msgTitle, string msgContent)
         {
-            throw new NotImplementedException();
+            return (bool)Client.SendRequest("SendPrivateMessage", forumName, senderUsername, receiverUsername, msgTitle, msgContent);
         }
     }
 }
