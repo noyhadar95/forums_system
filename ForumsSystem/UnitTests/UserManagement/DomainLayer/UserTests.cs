@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
 using System.Collections.Generic;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace UnitTests.UserManagement.DomainLayer
 {
@@ -12,6 +13,9 @@ namespace UnitTests.UserManagement.DomainLayer
         IForum forum;
         IUser user;
         DateTime year;
+        DAL_Forum dal_forum = new DAL_Forum();
+        DAL_Users dal_users = new DAL_Users();
+
         [TestInitialize()]
         public void Initialize()
         {
@@ -26,6 +30,8 @@ namespace UnitTests.UserManagement.DomainLayer
         [TestCleanup()]
         public void Cleanup()
         {
+            dal_forum.DeleteForum(forum.getName());
+            //dal_users.DeleteUser(user.getUsername(), forum.getName());
             forum = null;
             user = null;
         }
@@ -75,6 +81,10 @@ namespace UnitTests.UserManagement.DomainLayer
             PrivateMessage privateMessagefromAdmin = user.SendPrivateMessage(receiver.getUsername(), "hi", "sending message");
             Assert.IsTrue(user.getSentMessages().Contains(privateMessagefromAdmin));
             Assert.IsTrue(receiver.getReceivedMessages().Contains(privateMessagefromAdmin));
+
+            dal_users.DeleteUserP(receiver.getUsername(), forum.getName());
+            dal_forum.DeleteForum(forum2.getName());
+            dal_users.DeleteUserP(receiver2.getUsername(), forum2.getName());
         }
 
         [TestMethod]

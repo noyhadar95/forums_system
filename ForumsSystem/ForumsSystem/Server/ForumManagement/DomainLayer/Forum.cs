@@ -6,11 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     public class Forum : IForum
     {
+        DAL_Forum dal_forum = new DAL_Forum();
 
         public string name { get;  set; }
         private List<ISubForum> sub_forums { get; set; }
@@ -25,6 +27,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public Forum(string forumName)
         {
             this.name = forumName;
+            dal_forum.CreateForum(forumName, -1);
             InitForum();
             Loggers.Logger.GetInstance().AddActivityEntry(forumName + "created");
         }

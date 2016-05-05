@@ -345,7 +345,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             Policy policy = forum.GetPolicy();
             if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)) || (policy.CheckIfPolicyExists(Policies.Authentication) && emailAccepted))
             {
-                Server.CommunicationLayer.Server.SubscribeClient(this.userName, this.forum.getName());
+//                Server.CommunicationLayer.Server.SubscribeClient(this.userName, this.forum.getName());
                 this.isLoggedIn = true;
             }
 
@@ -454,6 +454,20 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
             this.password = password;
             this.dateOfPassLastchange = DateTime.Today;
+            if (type is Guest)
+            {
+                dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
+                    this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Guest);
+            } else if(type is Member)
+            {
+                dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
+                   this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member);
+            } else if(type is Admin)
+            {
+                dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
+                   this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member);
+            }
+
         }
         public DateTime GetDateOfPassLastChange()
         {
