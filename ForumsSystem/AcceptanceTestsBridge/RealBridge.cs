@@ -443,7 +443,7 @@ namespace AcceptanceTestsBridge
                 return false;
           //  if (!moderator.CanBeDeletedBy(remover))
           //      return false;
-            return subforum.removeModerator(moderatorName);
+            return subforum.removeModerator(remover, moderatorName);
         }
 
         public int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string username)
@@ -518,6 +518,11 @@ namespace AcceptanceTestsBridge
                 res.Add(msg.title);
             }
             return res;
+        }
+
+        public Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1)
+        {
+            return sl.GetModeratorAppointmentsDetails(forumName, subForumName, adminUserName1, username1);
         }
     }
 }
