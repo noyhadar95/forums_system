@@ -76,7 +76,15 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
         }
 
-
+        public void DeleteUserP(string userName, string forumName)
+        {
+            Connect_to_DB();
+            OleDbCommand sql = new OleDbCommand();
+            sql.CommandText = "Delete From [Users] Where [ForumName]='" +
+                forumName + "' AND UserName='" + userName + "'";
+            connect_me.TakeAction(sql);
+            sql = null;
+        }
 
 
     }

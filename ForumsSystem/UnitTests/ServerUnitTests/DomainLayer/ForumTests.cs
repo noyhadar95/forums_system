@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace UnitTests.ServerUnitTests.DomainLayer
 {
@@ -11,6 +12,8 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         IForum forum;
         IUser admin;
         DateTime year;
+        DAL_Forum dal_forum = new DAL_Forum();
+        DAL_Users dal_users = new DAL_Users();
         [TestInitialize()]
         public void Initialize()
         {
@@ -21,6 +24,8 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         }
         [TestCleanup()]
         public void Cleanup() {
+            dal_forum.DeleteForum(forum.getName());
+            dal_users.DeleteUserP(admin.getUsername(), forum.getName());
             forum = null;
         }
         
