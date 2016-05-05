@@ -48,12 +48,12 @@ namespace ForumsSystem.Server.ServiceLayer
         bool LoginSuperAdmin(string username, string pass);
         DateTime GetModeratorExpDate(ISubForum subForum, string username);
         int CountNestedReplies(ISubForum subforum, int threadID, int postID);
-        bool IsMsgSent(IUser user, string msgTitle, string msgContent);
-        bool IsMsgReceived(IUser user, string msgTitle, string msgContent);
+        bool IsMsgSent(string forumName, string username, string msgTitle, string msgContent);
+        bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent);
         bool IsModerator(string forumName, string subForumName, string username);
         bool IsRegisteredToForum(string username, string forumName);
         bool IsExistForum(string forumName);
-        bool IsExistThread(ISubForum subForum, int threadID);
+        bool IsExistThread(string forumName, string subForumName, int threadID);
         bool DeletePost(string forumName, string subForumName,string deleter, int threadID, int postID);
         void DeleteForum(string forumName);
         void DeleteUser(string userName, string forumName);
@@ -69,5 +69,6 @@ namespace ForumsSystem.Server.ServiceLayer
         void AddFriend(string forumName, string username1, string username2);
         Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1);
         List<Post> GetPosts(string forumName, string subforumName, int threadId);
+        bool CheckIfPolicyExists(string forumName, Policies policy);
     }
 }

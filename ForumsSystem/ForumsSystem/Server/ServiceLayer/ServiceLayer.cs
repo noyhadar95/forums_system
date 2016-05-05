@@ -158,14 +158,14 @@ namespace ForumsSystem.Server.ServiceLayer
             return ((SubForum)subforum).GetThreadById(threadID).GetPostById(postID).GetNumOfNestedReplies();
         }
 
-        public bool IsMsgSent(IUser user, string msgTitle, string msgContent)
+        public bool IsMsgSent(string forumName, string username, string msgTitle, string msgContent)
         {
-            return user.IsMessageSent(msgTitle, msgContent);
+            return GetForum(forumName).getUser(username).IsMessageSent(msgTitle, msgContent);
         }
 
-        public bool IsMsgReceived(IUser user, string msgTitle, string msgContent)
+        public bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent)
         {
-            return user.IsMessageReceived(msgTitle, msgContent);
+            return GetForum(forumName).getUser(username).IsMessageReceived(msgTitle, msgContent);
         }
 
         public bool IsModerator(string forumName, string subForumName, string username)
@@ -237,8 +237,9 @@ namespace ForumsSystem.Server.ServiceLayer
             return (type is Admin);
 
         }
-        public bool IsExistThread(ISubForum subForum, int threadID)
+        public bool IsExistThread(string forumName, string subForumName, int threadID)
         {
+            ISubForum subForum = GetForum(forumName).getSubForum(subForumName);
             return subForum.GetThreadById(threadID) != null;
         }
 
@@ -284,6 +285,14 @@ namespace ForumsSystem.Server.ServiceLayer
             Thread thread = sys.getForum(forumName).getSubForum(subforumName).GetThreadById(threadId);
             List<Post> res= thread.GetOpeningPost().GetReplies();
             res.Insert(0, thread.GetOpeningPost());
+            return res;
+        }
+
+        public bool CheckIfPolicyExists(string forumName, Policies expectedPolicy)
+        {
+            IForum forum = GetForum(forumName);
+            Policy policy = forum.GetPolicy();
+            bool res = policy.CheckIfPolicyExists(expectedPolicy);
             return res;
         }
     }

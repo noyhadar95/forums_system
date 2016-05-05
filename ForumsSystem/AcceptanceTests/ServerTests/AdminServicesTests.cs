@@ -111,7 +111,7 @@ namespace AcceptanceTests.ServerTests
 
             try
             {
-                bridge.CreateForum(this.superAdminUsername, forumName, admins, forumPolicy);
+                bridge.CreateForum(this.superAdminUsername,this.superAdminPass, forumName, admins, forumPolicy);
                 bridge.RegisterToForum(forumName, username1, pass1, email1, dateOfBirth1);
                 bridge.LoginUser(forumName, username1, pass1);
                 bridge.LoginUser(forumName, adminUserName1, adminPass1);

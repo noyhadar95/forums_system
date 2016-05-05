@@ -175,22 +175,22 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public bool IsExistThread(string forumName, string subForumName, int threadID)
         {
-            throw new NotImplementedException();
+            return (bool)Client.SendRequest("IsExistThread", forumName, subForumName, threadID);
         }
 
         public bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent)
         {
-            throw new NotImplementedException();
+            return (bool)Client.SendRequest("IsMsgReceived", forumName, username, msgTitle, msgContent);
         }
 
         public bool IsMsgSent(string forumName, string username, string msgTitle, string msgContent)
         {
-            throw new NotImplementedException();
+            return (bool)Client.SendRequest("IsMsgSent", forumName, username, msgTitle, msgContent);
         }
 
         public bool CheckIfPolicyExists(string forumName, Policies expectedPolicy)
         {
-            throw new NotImplementedException();
+            return (bool)Client.SendRequest("CheckIfPolicyExists", forumName, expectedPolicy);
         }
 
         public bool SetForumProperties(User user, Forum forum, Policy policy)

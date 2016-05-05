@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources
 {
-    class System
+    public class System
     {
         // private SuperAdmin superAdmin;
-        private Dictionary<string, IForum> forums; //name, forum
+        private Dictionary<string, Forum> forums; //name, forum
     }
 }

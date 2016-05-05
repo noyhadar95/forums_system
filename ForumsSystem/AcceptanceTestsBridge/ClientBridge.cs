@@ -27,7 +27,7 @@ namespace AcceptanceTestsBridge
         }
         #region Add/Create Methods
 
-        public bool CreateForum(string creator, string forumName, List<UserStub> admins, PoliciesStub forumPolicies)
+        public bool CreateForum(string creator,string creatorPass, string forumName, List<UserStub> admins, PoliciesStub forumPolicies)
         {
             List<User> newAdmins = new List<User>();
 

@@ -31,7 +31,7 @@ namespace AcceptanceTestsBridge
 
         #region Add/Create Methods
 
-        public bool CreateForum(string creator, string forumName, List<UserStub> admins, PoliciesStub forumPolicies)
+        public bool CreateForum(string creator,string creatorPass, string forumName, List<UserStub> admins, PoliciesStub forumPolicies)
         {
             List<IUser> newAdmins = new List<IUser>();
 
@@ -79,7 +79,7 @@ namespace AcceptanceTestsBridge
                     policy = new PasswordPolicy(forumPol, 2,100);
                     break;
             }
-            IForum newForum = sl.CreateForum(superAdmin, forumName, policy, newAdmins);
+            IForum newForum = sl.CreateForum(creator,creatorPass , forumName, policy, newAdmins);
             return newForum != null;
         }
 
@@ -127,18 +127,18 @@ namespace AcceptanceTestsBridge
 
         public bool CreateSubForum(string creator, string forumName, string subForumName, Dictionary<string, DateTime> moderators)
         {
-            IForum forum = sl.GetForum(forumName);
-            IUser user = forum.getUser(creator);
-            ISubForum subForum = sl.CreateSubForum(user, subForumName, moderators);
+            //IForum forum = sl.GetForum(forumName);
+            //IUser user = forum.getUser(creator);
+            ISubForum subForum = sl.CreateSubForum(creator,forumName, subForumName, moderators);
             return subForum != null;
         }
 
         public int AddThread(string forumName, string subForumName, string publisher, string title, string content)
         {
-            IForum forum = sl.GetForum(forumName);
-            IUser threadPublisher = forum.getUser(publisher);
-            ISubForum subForum = forum.getSubForum(subForumName);
-            Thread thread = sl.AddThread(subForum, threadPublisher, title, content);
+           // IForum forum = sl.GetForum(forumName);
+           // IUser threadPublisher = forum.getUser(publisher);
+           // ISubForum subForum = forum.getSubForum(subForumName);
+            Thread thread = sl.AddThread(forumName,subForumName, publisher, title, content);
             if (thread == null)
                 return -1;
             return thread.id;
@@ -146,12 +146,14 @@ namespace AcceptanceTestsBridge
 
         public int AddReplyPost(string forumName, string subForumName, int threadID, string publisher, int postID, string title, string content)
         {
-            IForum forum = sl.GetForum(forumName);
+            /*IForum forum = sl.GetForum(forumName);
             IUser user = forum.getUser(publisher);
             ISubForum subForum = forum.getSubForum(subForumName);
             Thread thread = subForum.GetThreadById(threadID);
             Post post = thread.GetPostById(postID);
-            Post reply = sl.AddReply(post, user, title, content);
+            */
+            Post reply=sl.AddReply(forumName, subForumName, threadID, publisher, postID, title, content);
+           // Post reply = sl.AddReply(post, user, title, content);
             if (reply == null)
                 return -1;
             int replyID = reply.GetId();
@@ -160,10 +162,10 @@ namespace AcceptanceTestsBridge
 
         public bool AddModerator(string forumName, string subForumName, string adminUsername, KeyValuePair<string, DateTime> newMod)
         {
-            IForum forum = sl.GetForum(forumName);
-            IUser admin = forum.getUser(adminUsername);
-            ISubForum subForum = forum.getSubForum(subForumName);
-            return sl.AddModerator(admin, subForum, newMod.Key, newMod.Value);
+          //  IForum forum = sl.GetForum(forumName);
+          //  IUser admin = forum.getUser(adminUsername);
+          //  ISubForum subForum = forum.getSubForum(subForumName);
+            return sl.AddModerator(forumName, subForumName,adminUsername, newMod.Key, newMod.Value);
         }
 
         #endregion
@@ -217,31 +219,29 @@ namespace AcceptanceTestsBridge
 
         public bool IsExistThread(string forumName, string subForumName, int threadID)
         {
-            IForum forum = sl.GetForum(forumName);
-            ISubForum subForum = forum.getSubForum(subForumName);
-            return sl.IsExistThread(subForum, threadID);
+           // IForum forum = sl.GetForum(forumName);
+           // ISubForum subForum = forum.getSubForum(subForumName);
+            return sl.IsExistThread(forumName,subForumName, threadID);
         }
 
         public bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent)
         {
             IForum forum = sl.GetForum(forumName);
             IUser user = forum.getUser(username);
-            return sl.IsMsgReceived(user, msgTitle, msgContent);
+            return sl.IsMsgReceived(forumName, username, msgTitle, msgContent);
         }
 
         public bool IsMsgSent(string forumName, string username, string msgTitle, string msgContent)
         {
-            IForum forum = sl.GetForum(forumName);
-            IUser user = forum.getUser(username);
-            return sl.IsMsgSent(user, msgTitle, msgContent);
+            //IForum forum = sl.GetForum(forumName);
+            //IUser user = forum.getUser(username);
+            return sl.IsMsgSent(forumName, username, msgTitle, msgContent);
         }
 
         public bool IsForumHasPolicy(string forumName, PoliciesStub forumPolicy)
         {
-            IForum forum = sl.GetForum(forumName);
-            Policy policy = forum.GetPolicy();
             Policies expectedPolicy = ConvertPolicyStubToReal(forumPolicy);
-            bool res = policy.CheckIfPolicyExists(expectedPolicy);
+            bool res = sl.CheckIfPolicyExists(forumName,expectedPolicy);
             return res;
         }
 
@@ -335,8 +335,8 @@ namespace AcceptanceTestsBridge
 
         public bool LoginUser(string forumName, string username, string pass)
         {
-            IForum forum = sl.GetForum(forumName);
-            IUser user = sl.MemberLogin(username, pass, forum);
+            //IForum forum = sl.GetForum(forumName);
+            IUser user = sl.MemberLogin(username, pass, forumName);
             return user != null;
         }
 
