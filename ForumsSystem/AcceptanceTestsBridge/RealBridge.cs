@@ -399,12 +399,12 @@ namespace AcceptanceTestsBridge
         {
             IForum forum = sl.GetForum(forumName);
             IUser user = forum.getUser(username);
-            Post[] notifications = user.GetPostNotifications().ToArray();
-            Post temp;
+            PostNotification[] notifications = user.GetPostNotifications().ToArray();
+            PostNotification temp;
             for (int i = 0; i < notifications.Length; i++)
             {
                 temp = notifications[i];
-                if (temp.GetId() == postId)
+                if (temp.id == postId)
                     return true;
             }
             return false;
@@ -509,11 +509,11 @@ namespace AcceptanceTestsBridge
 
         public List<string> GetNotifications(string forumName, string username)
         {
-            List<PrivateMessage>notif= sl.GetNotifications(forumName, username);
+            List<PrivateMessageNotification>notif= sl.GetNotifications(forumName, username);
             List<string> res = new List<string>();
             if (notif == null)
                 return res;
-            foreach (PrivateMessage msg in notif)
+            foreach (PrivateMessageNotification msg in notif)
             {
                 res.Add(msg.title);
             }

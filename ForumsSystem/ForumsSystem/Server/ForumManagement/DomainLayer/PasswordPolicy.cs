@@ -22,9 +22,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (param.GetPolicy() == type)
             {
                 User user = (User)param.User;
-                int passwordDuration = (int)((DateTime.Today - user.GetDateOfPassLastChange()).TotalDays);
+               // int passwordDuration = (int)((DateTime.Today - user.GetDateOfPassLastChange()).TotalDays);
 
-                return (checkLength(param.GetPassword()) && (passwordDuration <= passwordValidity));
+                return (checkLength(param.GetPassword())); //&& (passwordDuration <= passwordValidity));
             }
             else
                 return base.CheckPolicy(param);

@@ -107,7 +107,10 @@
     <Compile Include="Server\UserManagement\DomainLayer\IUser.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\Member.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\Moderator.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\NotificationType.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\PostNotification.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\PrivateMessage.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\PrivateMessageNotification.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\Type.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\User.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\MemberSuspensionPolicy.cs" />
