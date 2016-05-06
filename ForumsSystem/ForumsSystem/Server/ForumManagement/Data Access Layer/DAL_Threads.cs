@@ -44,7 +44,10 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             OleDbCommand cmd = new OleDbCommand(sql);
 
             cmd.Parameters.AddWithValue("@p1", threadId);
-            cmd.Parameters.AddWithValue("@p2", postId);
+            if(postId<0)
+                cmd.Parameters.AddWithValue("@p2", DBNull.Value);
+            else
+                cmd.Parameters.AddWithValue("@p2", postId);
             cmd.Parameters.AddWithValue("@p3", forumName);
             cmd.Parameters.AddWithValue("@p4", subForumName);
 
@@ -92,6 +95,19 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             cmd.CommandText = "Delete From [Threads] Where [ThreadId]=@p1";
 
             cmd.Parameters.AddWithValue("@p1", threadId);
+
+            connect_me.TakeAction(cmd);
+            cmd = null;
+        }
+
+        public void AddOpenningPost(int threadId, int postId)
+        {
+            Connect_to_DB();
+            OleDbCommand cmd = new OleDbCommand();
+            cmd.CommandText = "Update [Threads] Set [PostId] = @p1 Where [ThreadId]=@p2";
+
+            cmd.Parameters.AddWithValue("@p1", postId);
+            cmd.Parameters.AddWithValue("@p2", threadId);
 
             connect_me.TakeAction(cmd);
             cmd = null;

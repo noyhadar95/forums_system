@@ -276,7 +276,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             Post openingPost = new Post(callingUser, thread, title, content);
             if (thread.AddOpeningPost(openingPost))
             {
-                dal_threads.CreateThread(thread.id, openingPost.GetId(), callingUser.getForum().getName(), subForum.getName());
+                dal_threads.CreateThread(thread.id, -1, callingUser.getForum().getName(), subForum.getName());
+                dal_posts.CreatePost(openingPost.GetId(), callingUser.getUsername(), callingUser.getForum().getName(), -1,
+                    thread.id, title, content);
+                dal_threads.AddOpenningPost(thread.id, openingPost.GetId());
                 List<IUser> friends = callingUser.GetFriendsList();
                 foreach (IUser friend in friends)
                 {

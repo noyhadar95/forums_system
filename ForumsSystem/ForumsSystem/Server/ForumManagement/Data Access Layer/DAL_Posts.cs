@@ -112,6 +112,18 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             sql = null;
 
         }
+
+        public void DeltePostsFromForum(string forumName)
+        {
+            Connect_to_DB();
+            OleDbCommand cmd = new OleDbCommand();
+            cmd.CommandText = "Delete From [Posts] Where [ForumName]=@p1";
+
+            cmd.Parameters.AddWithValue("@p1", forumName);
+
+            connect_me.TakeAction(cmd);
+            cmd = null;
+        }
     }
 
 }

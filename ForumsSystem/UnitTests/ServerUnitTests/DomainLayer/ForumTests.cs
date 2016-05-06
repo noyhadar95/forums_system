@@ -17,6 +17,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         [TestInitialize()]
         public void Initialize()
         {
+            dal_forum.DeleteForum("testForum");
             DateTime today = DateTime.Today;
             year = today.AddYears(-29);
             forum = new Forum("testForum");

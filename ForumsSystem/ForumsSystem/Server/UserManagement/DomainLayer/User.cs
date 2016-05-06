@@ -354,7 +354,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public void Logout()
         {
-            Server.CommunicationLayer.Server.UnSubscribeClient(this.userName, this.forum.getName());
+//            Server.CommunicationLayer.Server.UnSubscribeClient(this.userName, this.forum.getName());
             this.isLoggedIn = false;
 
         }
