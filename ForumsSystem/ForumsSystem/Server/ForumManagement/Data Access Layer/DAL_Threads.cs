@@ -104,7 +104,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         {
             Connect_to_DB();
             OleDbCommand cmd = new OleDbCommand();
-            cmd.CommandText = "Update [Threads] Set [PostId] = @p1 Where [ThreadId]=@p2";
+            cmd.CommandText = "Update [Threads] Set [OpeningPostId] = @p1 Where [ThreadId]=@p2";
 
             cmd.Parameters.AddWithValue("@p1", postId);
             cmd.Parameters.AddWithValue("@p2", threadId);

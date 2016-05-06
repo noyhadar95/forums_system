@@ -39,6 +39,10 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
         {
             df.addFriend(forumName, "User1", "User2");
             DataTable d = df.GetUsersFriends(forumName, "User1");
+            Assert.IsTrue(d.Rows.Count == 0);
+
+            df.AcceptFriend(forumName, "User1", "User2");
+            d = df.GetUsersFriends(forumName, "User1");
             Assert.IsTrue(d.Rows.Count == 1);
         }
         [TestMethod]

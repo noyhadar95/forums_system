@@ -67,9 +67,6 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
         public void DeleteForum(string name)
         {
-            DAL_Posts dal_posts = new DAL_Posts();
-            dal_posts.DeltePostsFromForum(name);
-
             Connect_to_DB();
             OleDbCommand sql = new OleDbCommand();
             sql.CommandText = "Delete From [Forums] Where [ForumName]='" + name+"'";

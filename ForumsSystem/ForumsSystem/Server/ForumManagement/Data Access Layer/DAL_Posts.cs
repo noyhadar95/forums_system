@@ -106,7 +106,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             Connect_to_DB();
             OleDbCommand sql = new OleDbCommand();
 
-            sql.CommandText = "Update Posts Set [Title]='" + title + "', [Content]='" + content + " Where [PostID]=" + postId ;
+            sql.CommandText = "Update Posts Set [Title]='" + title + "', [Content]='" + content + "' Where [PostID]=" + postId ;
 
             connect_me.TakeAction(sql);
             sql = null;
