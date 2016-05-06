@@ -75,7 +75,24 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             sql = null;
         }
 
-       
+       public void SetForumPolicy(string forumName, int policyID)
+        {           
+            Connect_to_DB();
+            string sql = "Update [Forums] Set [PolicyId]=@p1  Where [ForumName]=@p2";
+
+            OleDbCommand cmd = new OleDbCommand(sql);
+
+            cmd.Parameters.AddWithValue("@p2", forumName);
+            if (policyID < 0)
+            {
+                cmd.Parameters.AddWithValue("@p1", DBNull.Value);
+            }
+            else
+                cmd.Parameters.AddWithValue("@p1", policyID);
+
+
+            connect_me.TakeAction(cmd);
+        }
 
 
     }

@@ -154,6 +154,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (policies != null)
             {
                 policies = policies.RemovePolicy(policyType);
+                if(policies == null)
+                    dal_forum.SetForumPolicy(this.name, -1);
+                else
+                    dal_forum.SetForumPolicy(this.name,policies.ID);
                 Loggers.Logger.GetInstance().AddActivityEntry("Policy of type: " + policyType + "removed from subforum " + this.name);
 
             }
@@ -292,6 +296,17 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 posts += subforumPosts;
             }
             return posts;
+        }
+
+        public List<IUser> getUsersInForum()
+        {
+            List<IUser> users_res = new List<IUser>();
+            foreach(KeyValuePair<string, IUser> u in users)
+            {
+                users_res.Add(u.Value);
+            }
+            return users_res;
+
         }
     }
 }

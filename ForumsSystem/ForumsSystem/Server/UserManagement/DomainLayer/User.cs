@@ -23,10 +23,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private Type type;
         private List<PrivateMessage> sentMessages;
         private List<PrivateMessage> receivedMessages;
-        private List<PrivateMessage> notifications;
+        private List<PrivateMessageNotification> privateMessageNotifications;
         private List<IUser> friends;
         private List<IUser> waitingFriendsList;
-        private List<Post> postsNotifications;
+        private List<PostNotification> postNotifications;
         private bool isLoggedIn;
         private bool emailAccepted;
         private DAL_Users dal_users = new DAL_Users();
@@ -48,8 +48,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.isLoggedIn = false;
             this.emailAccepted = false;
             this.dateOfBirth = new DateTime();
-            this.notifications = new List<PrivateMessage>();
-            this.postsNotifications = new List<Post>();
+            this.privateMessageNotifications = new List<PrivateMessageNotification>();
+            this.postNotifications = new List<PostNotification>();
             this.dateOfPassLastchange = new DateTime(); 
 
         }
@@ -82,9 +82,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             }
             this.isLoggedIn = false;
 
-            this.notifications = new List<PrivateMessage>();
+            this.privateMessageNotifications = new List<PrivateMessageNotification>();
             this.emailAccepted = false;
-            this.postsNotifications = new List<Post>();
+            this.postNotifications = new List<PostNotification>();
             
 
         }
@@ -107,9 +107,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.waitingFriendsList = new List<IUser>();
             this.isLoggedIn = false;
 
-            this.notifications = new List<PrivateMessage>();
+            this.privateMessageNotifications = new List<PrivateMessageNotification>();
             this.emailAccepted = false;
-            this.postsNotifications = new List<Post>();
+            this.postNotifications = new List<PostNotification>();
         }
 
         public bool SetForum(IForum forum)
@@ -348,6 +348,16 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             { 
                 //                Server.CommunicationLayer.Server.SubscribeClient(this.forum.getName(), this.userName);
                 this.isLoggedIn = true;
+                foreach(PostNotification p in postNotifications)
+                {
+              //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, p);
+                }
+                postNotifications = new List<PostNotification>();
+                foreach (PrivateMessageNotification m in privateMessageNotifications)
+                {
+              //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, m);
+                }
+                privateMessageNotifications = new List<PrivateMessageNotification>();
             }
 
         }
@@ -379,27 +389,48 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return type.DeleteForumProperties(forum, properties);
         }
 
-        public void AddNotification(PrivateMessage newMessage)
+        public void AddPrivateMessageNotification(PrivateMessage newMessage)
         {
-            notifications.Add(newMessage);
+            PrivateMessageNotification notification = new PrivateMessageNotification(
+                newMessage.sender.getUsername(), newMessage.title, newMessage.content);
+            if (isLoggedIn)
+            {
+            //    Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, notification);
+            }
+            else
+            {
+                // add private message notification to db
+                privateMessageNotifications.Add(notification);
+            }
         }
 
-        public List<PrivateMessage> GetNotifications()
+        public List<PrivateMessageNotification> GetPrivateMessageNotifications()
         {
-            List<PrivateMessage> notifications = this.notifications;
-            this.notifications = new List<PrivateMessage>();
+            List<PrivateMessageNotification> notifications = this.privateMessageNotifications;
+            //this.privateMessageNotifications = new List<PrivateMessageNotification>();
             return notifications;
         }
 
-        public void AddPostNotification(Post post)
+        public void AddPostNotification(Post post,NotificationType type)
         {
-            postsNotifications.Add(post);
+            PostNotification notification = new PostNotification(type,
+                post.getPublisher().getUsername(), post.Thread.GetSubforum().getName(),
+                post.Title, post.Content, post.GetId());
+            if (isLoggedIn)
+            {
+             //   Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName, notification);
+            }
+            else
+            {
+                // TODO: add post notification to db
+                postNotifications.Add(notification);
+            }
         }
 
-        public List<Post> GetPostNotifications()
+        public List<PostNotification> GetPostNotifications()
         {
-            List<Post> notifications = this.postsNotifications;
-            this.postsNotifications = new List<Post>();
+            List<PostNotification> notifications = this.postNotifications;
+            //this.postNotifications = new List<PostNotification>();
             return notifications;
         }
 
