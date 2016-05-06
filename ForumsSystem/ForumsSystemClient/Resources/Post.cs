@@ -19,6 +19,7 @@ namespace ForumsSystemClient.Resources
 
         public string Title { get { return title; } set { title = value; } }
         public string Content { get { return content; } set { content = value; } }
+        public User Publisher { get { return publisher; } set { publisher = value; } }
 
 
         public Post(string title, string content)

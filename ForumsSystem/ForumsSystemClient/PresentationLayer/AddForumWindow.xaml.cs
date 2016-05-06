@@ -83,6 +83,7 @@ namespace ForumsSystemClient.PresentationLayer
                 return;
             }
 
+            // TODO:
             //List<string> admins = new List<string>(adminsLVItems)
             //cl.CreateForum(creator, forumName, admins);
 

@@ -50,7 +50,7 @@ namespace ForumsSystemClient.PresentationLayer
                 MessageBox.Show("please enter either a title or a content for the topic");
                 return;
             }
-
+            // TODO:
             //cl.AddThread();
             WindowHelper.SwitchWindow(this, new SubForumWindow(forumName, subForumName));
         }
