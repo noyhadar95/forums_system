@@ -16,5 +16,27 @@ namespace ForumsSystemClient.Resources
         private string content;
         private int id;
         private static int nextId = 1;//TODO: Change the way to initialize this
+
+        public string Title { get { return title; } set { title = value; } }
+        public string Content { get { return content; } set { content = value; } }
+
+
+        public Post(string title, string content)
+        {
+            this.title = title;
+            this.content = content;
+            replies = new List<Post>();
+        }
+
+        public List<Post> GetNestedPosts()
+        {
+            return replies;
+        }
+
+        public void AddNestedPost(Post post)
+        {
+            replies.Add(post);
+        }
+
     }
 }

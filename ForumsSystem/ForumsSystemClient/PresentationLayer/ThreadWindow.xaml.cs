@@ -1,4 +1,5 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;

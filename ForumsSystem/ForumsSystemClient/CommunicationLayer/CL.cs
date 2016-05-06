@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ForumsSystemClient.Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -74,11 +75,11 @@ namespace ForumsSystemClient.CommunicationLayer
             // TODO: implement
         }
 
-        public bool MemberLogin(string forumName, string username, string password)
+        public User MemberLogin(string forumName, string username, string password)
         {
             // TODO: implement
 
-            return true;
+            return new User(username,password);
         }
 
         public bool IsExistUser(string username, string forumName)
@@ -116,5 +117,13 @@ namespace ForumsSystemClient.CommunicationLayer
             list.Add(new Post("title", "content content content"));
             return list;
         }
+
+        public string GetUserType(string forumName, string username)
+        {
+            // TODO: implement
+
+            return "admin";
+        }
+
     }
 }

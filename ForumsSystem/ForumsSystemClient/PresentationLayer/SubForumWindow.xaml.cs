@@ -53,5 +53,10 @@ namespace ForumsSystemClient.PresentationLayer
                 WindowHelper.SwitchWindow(this, newWin);
             }
         }
+
+        private void addThreadBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new AddThreadWindow(forumName, subForumName));
+        }
     }
 }

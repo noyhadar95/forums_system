@@ -60,6 +60,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CommunicationLayer\Client.cs" />
+    <Compile Include="PresentationLayer\AddThreadWindow.xaml.cs">
+      <DependentUpon>AddThreadWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Forum.cs" />
     <Compile Include="Resources\Moderator.cs" />
     <Compile Include="Resources\Policy.cs" />
@@ -71,7 +74,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommunicationLayer\CL.cs" />
-    <Compile Include="CommunicationLayer\Post.cs" />
     <Compile Include="PresentationLayer\AddForumWindow.xaml.cs">
       <DependentUpon>AddForumWindow.xaml</DependentUpon>
     </Compile>
@@ -136,6 +138,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\AddSubForumWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\AddThreadWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -50,6 +50,8 @@ namespace ForumsSystemClient.PresentationLayer
             bool success = cl.LoginSuperAdmin(username, password);
             if (success)
             {
+                WindowHelper.SetLoggedSuperAdmin(username);
+                WindowHelper.LogoutAllUsers();
                 WindowHelper.SwitchWindow(this, new MainWindow());
             }
 
