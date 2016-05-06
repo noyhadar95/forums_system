@@ -91,7 +91,7 @@ namespace AcceptanceTestsBridge
         bool RemoveModerator(string forumName, string subForumName, string remover, string moderator);
         int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string email);
         List<string> GetListOfModerators(string forumName, string subForumName, string adminUserName);
-        List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName,string subForumName, string adminUserName, string email);
+        List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string adminUserName, string userEmail);
         int GetNumOfForums(string username,string password);//only superadmin can use this
         Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo(string userName, string password);//<email,List<forum,username>> - only superadmin can use this
         List<string> GetNotifications(string forumName, string username);

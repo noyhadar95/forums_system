@@ -40,5 +40,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         Dictionary<string,string> GetAllUsers();
         List<Post> GetPostsByMember(string moderatorName);
         int GetNumOfPostsByUser(string username);
+        IUser GetGuest(string guestName);
     }
 }

@@ -319,10 +319,10 @@ namespace AcceptanceTestsBridge
             return null;
         }
 
-        public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string subForumName, string adminUserName, string email)
+        public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string adminUserName, string username)
         {
             if (realBridge != null)
-                return realBridge.GetPostsInForumByUser(forumName, subForumName, adminUserName, email);
+                return realBridge.GetPostsInForumByUser(forumName, adminUserName, username);
             return null;
         }
 

@@ -12,65 +12,43 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public List<string> GetForumsList()
         {
-            List<string> res = new List<string>();
-            res.Add("forum1");
-            res.Add("forum2");
-            res.Add("forum3");
-            return res;
+            return (List<string>)Client.SendRequest("GetForumsList");
         }
 
         public List<string> GetSubForumsList(string forumName)
         {
-            List<string> res = new List<string>();
-            res.Add("subforum1");
-            res.Add("subforum2");
-            res.Add("subforum3");
-            return res;
+            return (List<string>)Client.SendRequest("GetSubForumsList", forumName);
         }
 
         // return a list of titles of all threads in the subforum.
         public List<string> GetThreadsList(string forumName, string subForumName)
         {
-            List<string> res = new List<string>();
-            res.Add("thread1");
-            res.Add("thread2");
-            res.Add("thread3");
-            return res;
+            return (List<string>)Client.SendRequest("GetThreadsList", forumName, subForumName);
         }
 
         public List<string> GetUsersInForum(string forumName)
         {
-            // TODO: implement
-
-            List<string> list = new List<string>();
-            list.Add("user1");
-            list.Add("user2");
-            list.Add("user3");
-            return list;
+            return (List<string>)Client.SendRequest("GetForumMembers", forumName);
         }
 
         public SuperAdmin GetSuperAdmin()
         {
-            throw new NotImplementedException();
+            return (SuperAdmin)Client.SendRequest("GetSuperAdmin");
         }
 
         public bool IsInitialized()
         {
-            // TODO: implement
-
-            return true;
+            return (bool)Client.SendRequest("IsInitialized");
         }
 
         public bool LoginSuperAdmin(string username, string password)
         {
-            // TODO: implement
-
-            return true;
+            return (bool)Client.SendRequest("LoginSuperAdmin", username, password);
         }
 
-        public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dob)
+        public bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob)
         {
-            // TODO: implement
+            return (bool)Client.SendRequest("RegisterToForum", forumName, guestName, password, email, dob);
 
             return true;
         }
@@ -89,16 +67,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public bool IsExistUser(string username, string forumName)
         {
-            // TODO: implement
-
-            return true;
-        }
-
-        public bool SendPrivateMessage(object sender, string receiver, string title, string content)
-        {
-            // TODO: implement
-
-            return true;
+            return (bool)Client.SendRequest("IsExistUser", forumName, username);
         }
 
         public List<Post> GetPosts(string forumName, string subforumName,string threadID)
@@ -149,7 +118,6 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public bool DeletePost(string forumName, string subForumName, int threadID, string deleter, int postID)
         {
-            //TODO: deleter!!!
             return (bool)Client.SendRequest("DeletePost", forumName, subForumName,deleter, threadID, postID);
         }
 
@@ -160,7 +128,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public bool IsRegisteredToForum(string username, string forumName)
         {
-            return (bool)Client.SendRequest("IsExistForum", username, forumName);
+            return (bool)Client.SendRequest("IsRegisteredToForum", username, forumName);
         }
 
         public bool IsAdmin(string username, string forumName)
@@ -253,29 +221,38 @@ namespace ForumsSystemClient.CommunicationLayer
             return (List<string>)Client.SendRequest("GetModeratorsList",forumName, subForumName, adminUserName);
         }
 
-        public List<Post> ReportPostsByMember(string forumName, string adminUserName, string moderatorName)
+        public List<Post> ReportPostsByMember(string forumName, string adminUserName, string username)
         {
-            throw new NotImplementedException();
+            return (List<Post>)Client.SendRequest("ReportPostsByMember", forumName, adminUserName, username);
         }
 
         public int GetNumOfForums(string username, string password)
         {
-            throw new NotImplementedException();
+            return (int)Client.SendRequest("GetNumOfForums", username, password);
         }
 
         public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfoBySuperAdmin(string userName, string password)
         {
-            throw new NotImplementedException();
+            return (Dictionary<string, List<Tuple<string, string>>>)Client.SendRequest("GetMultipleUsersInfoBySuperAdmin", userName, password);
         }
 
-        public List<string> GetNotifications(string forumName, string username)
+        public List<PrivateMessage> GetNotifications(string forumName, string username)
         {
-            throw new NotImplementedException();
+            List<PrivateMessage> notifications=(List<PrivateMessage>) Client.SendRequest("GetNotifications",forumName, username);
+            return notifications;
+          /*
+             List<string> res = new List<string>();
+            foreach(PrivateMessage msg in notifications)
+            {
+                res.Add(msg.title);
+            }
+            return res;
+            */
         }
 
         public Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1)
         {
-            throw new NotImplementedException();
+            return (Tuple<string, string, DateTime, string>)Client.SendRequest("GetModeratorAppointmentsDetails", forumName, subForumName, adminUserName1, username1);
         }
 
         public bool SendPrivateMessage(string forumName, string senderUsername, string receiverUsername, string msgTitle, string msgContent)

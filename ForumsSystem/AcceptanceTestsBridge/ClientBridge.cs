@@ -414,13 +414,13 @@ namespace AcceptanceTestsBridge
         }
 
         //TUPLE: postId,title,content
-        public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string subForumName, string adminUserName, string moderatorName)
+        public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string adminUserName, string username)
         {
            // IForum forum = sl.GetForum(forumName);
            // IUser admin = forum.getUser(adminUserName);
             try
             {
-                List<Post> posts = cl.ReportPostsByMember(forumName, adminUserName,moderatorName);
+                List<Post> posts = cl.ReportPostsByMember(forumName, adminUserName,username);
                 List<Tuple<int, string, string>> res = new List<Tuple<int, string, string>>();
                 foreach (Post post in posts)
                 {
@@ -447,7 +447,13 @@ namespace AcceptanceTestsBridge
 
         public List<string> GetNotifications(string forumName, string username)
         {
-            return cl.GetNotifications(forumName, username);
+            List<PrivateMessage> notifications= cl.GetNotifications(forumName, username);
+            List<string> res = new List<string>();
+            foreach (PrivateMessage msg in notifications)
+            {
+                res.Add(msg.title);
+            }
+            return res;
         }
 
         public Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1)

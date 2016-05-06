@@ -55,9 +55,12 @@ namespace ForumsSystem.Server.ServiceLayer
             return user.ChangeForumProperties(forum, properties);
         }
 
-        public bool RegisterToForum(IUser guest, IForum forum, string userName, string password, string email, DateTime dateOfBirth)
+        public bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob)
         {
-            return guest.RegisterToForum(userName, password, forum, email, dateOfBirth);
+            
+            IForum forum = GetForum(forumName);
+            IUser guest = forum.GetGuest(guestName);
+            return guest.RegisterToForum(guestName, password, forum, email, dob);
 
         }
 
@@ -367,5 +370,71 @@ namespace ForumsSystem.Server.ServiceLayer
                 return null;
             }
         }
-    }
+
+        public List<Post> ReportPostsByMember(string forumName, string adminUserName, string username)
+        {
+            try
+            {
+                IForum forum = GetForum(forumName);
+                IUser admin = forum.getUser(adminUserName);
+
+                List<Post> posts = admin.ReportPostsByMember(username);
+                return posts;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public bool IsExistUser(string forumName, string username)
+        {
+            return GetForum(forumName).getUser(username) != null;
+        }
+
+        public bool IsInitialized()
+        {
+            return SuperAdmin.IsInitialized();
+        }
+        public SuperAdmin GetSuperAdmin()
+        {
+            return SuperAdmin.GetInstance();
+        }
+        public List<string> GetForumMembers(string forumName)
+        {
+            IForum forum = GetForum(forumName);
+            Dictionary<string,string>details= forum.GetAllUsers();
+            return details.Keys.ToList<string>();
+        }
+        public List<string> GetThreadsList(string forumName, string subForumName)
+        {
+            IForum forum = GetForum(forumName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            List<Thread> threads = subforum.GetThreads();
+            List<string> res = new List<string>();
+            foreach (Thread thrd in threads)
+            {
+                res.Add(thrd.GetTiltle());
+            }
+            return res;
+        }
+        public List<string> GetSubForumsList(string forumName)
+        {
+            IForum forum = GetForum(forumName);
+            List<ISubForum> subforums = forum.GetSubForums();
+            List<string> res = new List<string>();
+            foreach (ISubForum subf in subforums)
+            {
+                res.Add(subf.getName());
+            }
+            return res;
+        }
+        public List<string> GetForumsList()
+        {
+            List<string> forums = sys.GetForumsNamesList();
+            return forums;
+        }
+
+
+}
 }

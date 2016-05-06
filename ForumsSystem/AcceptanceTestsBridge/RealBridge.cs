@@ -299,8 +299,8 @@ namespace AcceptanceTestsBridge
 
         public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
         {
-            IForum forum = sl.GetForum(forumName);
-            return sl.RegisterToForum(new User(), forum, username, password, email, dateOfBirth);
+            //IForum forum = sl.GetForum(forumName);
+            return sl.RegisterToForum(forumName, username, password, email, dateOfBirth);
         }
 
         public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
@@ -440,13 +440,13 @@ namespace AcceptanceTestsBridge
         }
     
         //TUPLE: postId,title,content
-        public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string subForumName, string adminUserName, string moderatorName)
+        public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string adminUserName, string userEmail)
         {
-            IForum forum = sl.GetForum(forumName);
-            IUser admin = forum.getUser(adminUserName);
+           // IForum forum = sl.GetForum(forumName);
+           // IUser admin = forum.getUser(adminUserName);
             try
             {
-                List<Post> posts = admin.ReportPostsByMember(moderatorName);
+                List<Post> posts = sl.ReportPostsByMember(forumName, adminUserName, userEmail);
                 List<Tuple<int, string, string>> res = new List<Tuple<int, string, string>>();
                 foreach (Post post in posts)
                 {

@@ -24,10 +24,11 @@ namespace ForumsSystem.Server.ServiceLayer
         bool DeletePost(IUser deleter, Post post);
 
         bool InitializeSystem(string username, string pass);
+        bool IsInitialized();
 
         IUser MemberLogin(string username, string password, string forum);
 
-        bool RegisterToForum(IUser guest, IForum forum, string userName, string password, string email, DateTime dateOfBirth);
+        bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob);
 
 
         PrivateMessage SendPrivateMessage(string forumName, string from, string to, string title, string content);
@@ -54,6 +55,7 @@ namespace ForumsSystem.Server.ServiceLayer
         bool IsRegisteredToForum(string username, string forumName);
         bool IsExistForum(string forumName);
         bool IsExistThread(string forumName, string subForumName, int threadID);
+        bool IsExistUser(string forumName, string username);
         bool DeletePost(string forumName, string subForumName,string deleter, int threadID, int postID);
         void DeleteForum(string forumName);
         void DeleteUser(string userName, string forumName);
@@ -75,5 +77,11 @@ namespace ForumsSystem.Server.ServiceLayer
         bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName);
         int ReportNumOfPostsByMember(string adminUsername, string forumName, string username);
         List<string> GetModeratorsList(string forumName, string subForumName, string adminUserName);
+        List<Post> ReportPostsByMember(string forumName, string adminUserName, string username);
+        SuperAdmin GetSuperAdmin();
+        List<string> GetForumMembers(string forumName);
+        List<string> GetThreadsList(string forumName, string subForumName);
+        List<string> GetSubForumsList(string forumName);
+        List<string> GetForumsList();
     }
 }

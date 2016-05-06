@@ -26,5 +26,14 @@ namespace ForumsSystemClient.Resources
         private List<Post> postsNotifications;
         private bool isLoggedIn;
         private bool emailAccepted;
+        private DateTime dateTime;
+
+        public User(string username, string password, string email, DateTime dateTime)
+        {
+            userName = username;
+            this.password = password;
+            this.email = email;
+            this.dateTime = dateTime;
+        }
     }
 }
