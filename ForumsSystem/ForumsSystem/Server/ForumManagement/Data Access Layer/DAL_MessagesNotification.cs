@@ -8,14 +8,75 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 {
-    public class DAL_MessagesNotification : DAL_Notification
+    public class DAL_MessagesNotification : DAL_Connection
     {
-
-        public DAL_MessagesNotification()
+        public void AddNotification(int messageId)
         {
-            this.notificationDB = "MessagesNotification";
-            this.notificationItem = "Message";
+
+            Connect_to_DB();
+            string sql = "Insert into [MessageNotification] values(@p1)";
+
+            OleDbCommand cmd = new OleDbCommand(sql);
+
+            cmd.Parameters.AddWithValue("@p1", messageId);
+            
+
+            connect_me.TakeAction(cmd);
         }
+
+        public DataTable GetUsersNotifications(string forumName, string userName)
+        {
+            Connect_to_DB();
+            string sql = "SELECT Messages.*, MessageNotification.* FROM Messages INNER JOIN MessageNotification ON Messages.ID = MessageNotification.Id WHERE Forum=@p1 AND RecieverUserName=@p2";
+
+            OleDbCommand cmd = new OleDbCommand(sql);
+
+            cmd.Parameters.AddWithValue("@p1", forumName);
+            cmd.Parameters.AddWithValue("@p2", userName);
+
+
+            return connect_me.DownloadData2(cmd, "MessagesNotification");
+        }
+
+        /// <summary>
+        /// Removes a notification from the user
+        /// </summary>
+        /// <param name="forumName"></param>
+        /// <param name="userName"></param>
+        /// <param name="Id"></param>
+        public void RemoveNotification(int messageId)
+        {
+            Connect_to_DB();
+            OleDbCommand cmd = new OleDbCommand();
+            cmd.CommandText = "Delete From [MessageNotification] Where Id=@p1";
+
+            cmd.Parameters.AddWithValue("@p1", messageId);
+
+
+            connect_me.TakeAction(cmd);
+            cmd = null;
+        }
+
+        /// <summary>
+        /// Removes all of the users message notifications 
+        /// </summary>
+        /// <param name="forumName"></param>
+        /// <param name="userName"></param>
+        public void RemoveAllNotifications(string forumName, string userName)
+        {
+            Connect_to_DB();
+            OleDbCommand cmd = new OleDbCommand();
+            cmd.CommandText = "DELETE n FROM Messages m INNER JOIN MessageNotification n ON Messages.ID = MessageNotification.Id WHERE Forum=@p1 AND RecieverUserName=@p2";
+
+
+            cmd.Parameters.AddWithValue("@p1", forumName);
+            cmd.Parameters.AddWithValue("@p2", userName);
+
+            connect_me.TakeAction(cmd);
+            cmd = null;
+        }
+
+
 
 
 
