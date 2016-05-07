@@ -296,5 +296,76 @@ namespace UnitTests.UserManagement.DomainLayer
             Assert.AreEqual(subForum.getModeratorByUserName(user2.getUsername()).expirationDate, DateTime.Today.AddMonths(3));
         }
 
+        [TestMethod]
+        public void TestReportPostsByMember()
+        {
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
+            user1.Login();
+            user2.Login();
+            moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
+            moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
+            user.ChangeType(new Admin());
+            ISubForum subForum = user.createSubForum("sub forum1", moderators);
+            Thread thread = user.createThread(subForum, "new thread", "by admin");
+            Post openning = thread.GetOpeningPost();
+            Post reply = user1.postReply(openning, thread, "reply", "by user1");
+            Post secreply = user1.postReply(reply, thread, "secreply", "byuser1");
+            List<Post> postreplys = user.ReportPostsByMember(user1.getUsername());
+            Assert.IsTrue(reply.getPublisher().getUsername() == postreplys[0].getPublisher().getUsername());
+            Assert.IsTrue(reply.Title == postreplys[0].Title);
+            Assert.IsTrue(reply.Content == postreplys[0].Content);
+
+            Assert.IsTrue(secreply.getPublisher().getUsername() == postreplys[1].getPublisher().getUsername());
+            Assert.IsTrue(secreply.Title == postreplys[1].Title);
+            Assert.IsTrue(secreply.Content == postreplys[1].Content);
+
+        }
+
+
+        [TestMethod]
+        public void TestReportNumOfPostsByMember()
+        {
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
+            user1.Login();
+            user2.Login();
+            moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
+            moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
+            user.ChangeType(new Admin());
+            ISubForum subForum = user.createSubForum("sub forum1", moderators);
+            Thread thread = user.createThread(subForum, "new thread", "by admin");
+            Post openning = thread.GetOpeningPost();
+            Post reply = user1.postReply(openning, thread, "reply", "by user1");
+            Post secreply = user1.postReply(reply, thread, "secreply", "byuser1");
+            List<Post> postreplys = user.ReportPostsByMember(user1.getUsername());
+            Assert.IsTrue(2 == postreplys.Count);
+
+
+        }
+
+
+        [TestMethod]
+        public void TestReportNumOfPostsInSubForum()
+        {
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            IUser user1 = new User("m1", "mp1", "m1@gmail.com", forum, year);
+            IUser user2 = new User("m2", "mp2", "m2@gmail.com", forum, year);
+            user1.Login();
+            user2.Login();
+            moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
+            moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
+            user.ChangeType(new Admin());
+            ISubForum subForum = user.createSubForum("sub forum1", moderators);
+            Thread thread = user.createThread(subForum, "new thread", "by admin");
+            Post openning = thread.GetOpeningPost();
+            Post reply = user1.postReply(openning, thread, "reply", "by user1");
+            Post secreply = user1.postReply(reply, thread, "secreply", "byuser1");
+            int numOfPostInSubForum = user.ReportNumOfPostsInSubForum(subForum);
+            Assert.IsTrue(3 == numOfPostInSubForum);
+
+        }
     }
 }

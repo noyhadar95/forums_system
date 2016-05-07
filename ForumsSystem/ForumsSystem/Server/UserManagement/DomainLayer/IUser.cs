@@ -78,7 +78,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         DateTime GetDateOfPassLastChange();
 
+        int ReportNumOfPostsInSubForum(ISubForum subForum);
 
+        List<Tuple<string, string, DateTime, string, List<Post>>> ReportModerators();
         }
 
 }

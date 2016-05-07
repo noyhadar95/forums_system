@@ -13,12 +13,14 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public DateTime expirationDate { get; private set; }
         public IUser appointer { get; private set; }
 
+        public DateTime appointmentDate { get; private set; }
 
         public Moderator(IUser appointer, IUser user, DateTime expirationDate)
         {
             this.appointer = appointer;
             this.user = user;
             this.expirationDate = expirationDate;
+            this.appointmentDate = DateTime.Today;
         }
 
         public void changeExpirationDate(DateTime expirationDate)
