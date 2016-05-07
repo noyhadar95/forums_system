@@ -25,13 +25,14 @@ namespace ForumsSystemClient.PresentationLayer
         private CL cl;
         private string forumName;
         private string subForumName;
+        private int threadID;
         private List<Post> posts;
         private Dictionary<Button, StackPanel> btnSPParents;
         private Dictionary<Border, Post> borderPostDict;
         private bool isAddReplyMode = false;
         private Button addReplyModeCancelBtn = null; // save the cancel button, so we will be able to exit add-reply-mode when another reply-button is clicked
 
-        public ThreadWindow(string forumName, string subForumName)
+        public ThreadWindow(string forumName, string subForumName, int threadID)
         {
             InitializeComponent();
 
@@ -40,15 +41,14 @@ namespace ForumsSystemClient.PresentationLayer
             cl = new CL();
             this.forumName = forumName;
             this.subForumName = subForumName;
+            this.threadID = threadID;
             btnSPParents = new Dictionary<Button, StackPanel>();
             borderPostDict = new Dictionary<Border, Post>();
         }
 
         private void postsTreeView_Loaded(object sender, RoutedEventArgs e)
         {
-            // TODO: set threadID
-            string threadID = "";
-            posts = cl.GetPosts(forumName,subForumName, threadID);
+            posts = cl.GetPosts(forumName, subForumName, threadID);
 
             // Get TreeView reference and add the items for the posts.
             var tree = sender as TreeView;
@@ -150,7 +150,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         private bool IsLoggedUserPostPublisher(Post post)
         {
-            return (WindowHelper.IsLoggedSuperAdmin() && WindowHelper.GetLoggedSuperAdmin() == post.Publisher.Username)
+            return (WindowHelper.IsLoggedSuperAdmin() && WindowHelper.GetLoggedSuperAdmin().userName == post.Publisher.Username)
                 || (WindowHelper.IsLoggedUser(forumName) && WindowHelper.GetLoggedUser(forumName).Username == post.Publisher.Username);
         }
 
@@ -274,9 +274,10 @@ namespace ForumsSystemClient.PresentationLayer
             }
             Border parentBorder = (Border)parentSP.Parent;
             Post parentPost = borderPostDict[parentBorder];
-            //cl.AddReply(parentPost, publisher, replyTitle, replyContent);
+            cl.AddReply(forumName, subForumName, threadID, parentPost.Publisher.Username, parentPost.GetId(), replyTitle, replyContent);
 
-            // TODO: reload the tree veiw
+            // refresh window
+            WindowHelper.SwitchWindow(this, new ThreadWindow(forumName, subForumName, threadID));
         }
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
@@ -291,18 +292,19 @@ namespace ForumsSystemClient.PresentationLayer
                 return;
             }
             Border parentBorder = (Border)parentSP.Parent;
-            Post parentPost = borderPostDict[parentBorder];
-            // TODO: impl
-            // cl.DeletePost(post);
-            // TODO: reload the tree veiw
+            Post post = borderPostDict[parentBorder];
+
+            string deleter = WindowHelper.GetLoggedUsername(forumName);
+            cl.DeletePost(forumName, subForumName, threadID, deleter, post.GetId());
+
+            // refresh window
+            WindowHelper.SwitchWindow(this, new ThreadWindow(forumName, subForumName, threadID));
         }
 
         private void editBtn_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)e.OriginalSource;
             StackPanel parentSP = btnSPParents[btn];
-
-            //TextBlock contentTB = 
 
             // retrieve the parent border
             if (!(parentSP.Parent is Border))
@@ -311,10 +313,9 @@ namespace ForumsSystemClient.PresentationLayer
                 return;
             }
             Border parentBorder = (Border)parentSP.Parent;
-            Post parentPost = borderPostDict[parentBorder];
-            // TODO: impl
-            // cl.DeletePost(post);
-            // TODO: reload the tree veiw
+            Post post = borderPostDict[parentBorder];
+
+            WindowHelper.SwitchWindow(this, new EditPostWindow(forumName, subForumName, threadID, post));
         }
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)

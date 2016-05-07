@@ -74,7 +74,7 @@ namespace ForumsSystemClient.CommunicationLayer
             return (bool)Client.SendRequest("IsExistUser", forumName, username);
         }
 
-        public List<Post> GetPosts(string forumName, string subforumName,string threadID)
+        public List<Post> GetPosts(string forumName, string subforumName,int threadID)
         {
             List<Post> posts = (List<Post>)Client.SendRequest("GetPosts", forumName, subforumName, threadID);
             return posts;

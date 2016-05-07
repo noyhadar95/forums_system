@@ -56,8 +56,8 @@ namespace ForumsSystemClient.PresentationLayer
             if (WindowHelper.IsLoggedSuperAdmin())
             {
                 // super admin is already logged in
-                string superAdmin = WindowHelper.GetLoggedSuperAdmin();
-                SwitchLoginToSuperAdminViewMode(superAdmin);
+                SuperAdmin superAdmin = WindowHelper.GetLoggedSuperAdmin();
+                SwitchLoginToSuperAdminViewMode(superAdmin.userName);
             }
             else if (WindowHelper.IsLoggedUser(forumName))
             {

@@ -13,8 +13,16 @@ namespace ForumsSystemClient.PresentationLayer
         // save the user in WindowHelper so all windows will know 
         // that the user is logged in.
         private static Dictionary<string, User> loggedUsers = new Dictionary<string, User>();
-        private static string loggedSuperAdmin = "";
+        private static SuperAdmin loggedSuperAdmin = null;
 
+
+        public static string GetLoggedUsername(string forumName)
+        {
+            if (WindowHelper.IsLoggedSuperAdmin())
+                return  WindowHelper.GetLoggedSuperAdmin().userName;
+            else
+                return WindowHelper.GetLoggedUser(forumName).Username;
+        }
 
         public static bool IsLoggedUser(string forumName)
         {
@@ -50,22 +58,22 @@ namespace ForumsSystemClient.PresentationLayer
 
         public static bool IsLoggedSuperAdmin()
         {
-            return loggedSuperAdmin != "";
+            return loggedSuperAdmin != null;
         }
 
-        public static string GetLoggedSuperAdmin()
+        public static SuperAdmin GetLoggedSuperAdmin()
         {
             return loggedSuperAdmin;
         }
 
-        public static void SetLoggedSuperAdmin(string username)
+        public static void SetLoggedSuperAdmin(SuperAdmin sa)
         {
-            loggedSuperAdmin = username;
+            loggedSuperAdmin = sa;
         }
 
         public static void LogoutSuperAdmin()
         {
-            loggedSuperAdmin = "";
+            loggedSuperAdmin = null;
         }
 
         public static void SwitchWindow(Window oldWin, Window newWin)

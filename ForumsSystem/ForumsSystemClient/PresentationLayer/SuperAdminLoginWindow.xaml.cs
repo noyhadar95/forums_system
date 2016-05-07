@@ -1,4 +1,5 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,9 +51,16 @@ namespace ForumsSystemClient.PresentationLayer
             bool success = cl.LoginSuperAdmin(username, password);
             if (success)
             {
-                WindowHelper.SetLoggedSuperAdmin(username);
+                SuperAdmin sa = new SuperAdmin();
+                sa.userName = username;
+                sa.password = password;
+                WindowHelper.SetLoggedSuperAdmin(sa);
                 WindowHelper.LogoutAllUsers();
                 WindowHelper.SwitchWindow(this, new MainWindow());
+            }
+            else
+            {
+                MessageBox.Show("Incorrect username/password, please try again");
             }
 
         }

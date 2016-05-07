@@ -31,7 +31,7 @@ namespace ForumsSystemClient.PresentationLayer
             cl = new CL();
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void initializeBtn_Click(object sender, RoutedEventArgs e)
         {
             string username = usernameTB.Text;
             string password = passwordBox.Password;

@@ -31,9 +31,12 @@ namespace ForumsSystemClient.PresentationLayer
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
-            List<string> items = cl.GetThreadsList(forumName, subForumName);
-            threadsListView.ItemsSource = items;
+            //List<string> items = cl.GetThreadsList(forumName, subForumName);
+            //threadsListView.ItemsSource = items;
 
+            Dictionary<int, string> dict = new Dictionary<int, string>();
+            threadsListView.ItemsSource = dict;
+            
             this.forumName = forumName;
             this.subForumName = subForumName;
             Title = subForumName;

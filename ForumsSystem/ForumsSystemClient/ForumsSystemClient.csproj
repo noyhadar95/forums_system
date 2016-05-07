@@ -60,8 +60,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CommunicationLayer\Client.cs" />
+    <Compile Include="PresentationLayer\AddAdminWindow.xaml.cs">
+      <DependentUpon>AddAdminWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\AddThreadWindow.xaml.cs">
       <DependentUpon>AddThreadWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\EditPostWindow.xaml.cs">
+      <DependentUpon>EditPostWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\AdminAppointmentPolicy.cs" />
     <Compile Include="Resources\AuthenticationPolicy.cs" />
@@ -147,6 +153,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="PresentationLayer\AddAdminWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLayer\AddForumWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -156,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\AddThreadWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\EditPostWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
