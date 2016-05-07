@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
 using System.Collections.Generic;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace UnitTests.UserManagement.DomainLayer
 {
@@ -12,9 +13,12 @@ namespace UnitTests.UserManagement.DomainLayer
         IForum forum;
         IUser user;
         DateTime year;
+        DAL_Forum dal_forum = new DAL_Forum();
+        
         [TestInitialize()]
         public void Initialize()
         {
+            dal_forum.DeleteForum("testUser");
             DateTime today = DateTime.Today;
             year = today.AddYears(-26);
             forum = new Forum("testUser"); ;
@@ -26,6 +30,7 @@ namespace UnitTests.UserManagement.DomainLayer
         [TestCleanup()]
         public void Cleanup()
         {
+            dal_forum.DeleteForum("testUser");
             forum = null;
             user = null;
         }
@@ -56,6 +61,7 @@ namespace UnitTests.UserManagement.DomainLayer
             Assert.IsNull(user.SendPrivateMessage(receiver.getUsername(), "hi", ""));
             user.Login();
 
+            dal_forum.DeleteForum("f2");
             IForum forum2 = new Forum("f2");
             IUser receiver2 = new User("cantReceive", "p3", "u3@gmail.com", forum2, year);
             PrivateMessage privateMessage2 = user.SendPrivateMessage(receiver2.getUsername(), "hi", "sending message");
@@ -75,6 +81,9 @@ namespace UnitTests.UserManagement.DomainLayer
             PrivateMessage privateMessagefromAdmin = user.SendPrivateMessage(receiver.getUsername(), "hi", "sending message");
             Assert.IsTrue(user.getSentMessages().Contains(privateMessagefromAdmin));
             Assert.IsTrue(receiver.getReceivedMessages().Contains(privateMessagefromAdmin));
+            
+            dal_forum.DeleteForum(forum2.getName());
+            
         }
 
         [TestMethod]
@@ -88,6 +97,8 @@ namespace UnitTests.UserManagement.DomainLayer
             IForum forum2 = new Forum("f2");
             Assert.IsFalse(user.RegisterToForum("u2", "p2", forum2, "u2@gmail.com", year));
             Assert.IsFalse(forum2.isUserMember(user.getUsername()));
+
+            dal_forum.DeleteForum("f2");
         }
 
         [TestMethod]

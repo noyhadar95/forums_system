@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
@@ -11,15 +12,20 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
         protected Policies type;
         private Policy nextPolicy;
+        private int id;
+        DAL_Policy dal_policy = new DAL_Policy();
 
         public Policy(Policies type)
         {
             this.type = type;
             this.nextPolicy = null;
+            id = dal_policy.createPolicy((int)type, -1);
         }
 
         public Policies Type { get { return type; } set { this.type = value; } }
         public Policy NextPolicy { get { return nextPolicy; } set { this.nextPolicy = value; } }
+
+        public int ID { get { return id; } }
         /// <summary>
         /// Check the params given according to the forum policies
         /// </summary>
@@ -48,7 +54,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (nextPolicy != null)
                 nextPolicy.AddPolicyHelper(newPolicy);
             else
+            {
                 this.nextPolicy = newPolicy;
+                dal_policy.SetNextPolicy(id, newPolicy.id);
+            }
         }
 
         public bool CheckIfPolicyExists(Policies type)

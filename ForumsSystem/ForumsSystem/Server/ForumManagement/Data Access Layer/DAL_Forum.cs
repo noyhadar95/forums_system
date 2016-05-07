@@ -38,6 +38,17 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             
             connect_me.TakeAction(cmd);
 
+            DAL_Users du = new DAL_Users();
+            du.CreateUser(name, "Deleted", "Deleted4Ever", "Deleted", DateTime.Now, DateTime.Now, 0, UserType.UserTypes.Member,DateTime.Now);
+
+        }
+
+        public void DeleteAll()
+        {
+            Connect_to_DB();
+            string sql = "Delete * From Forums";
+            OleDbCommand cmd = new OleDbCommand(sql);
+            connect_me.TakeAction(cmd);
         }
 
         public DataTable GetForum(string name)
@@ -64,7 +75,24 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             sql = null;
         }
 
-       
+       public void SetForumPolicy(string forumName, int policyID)
+        {           
+            Connect_to_DB();
+            string sql = "Update [Forums] Set [PolicyId]=@p1  Where [ForumName]=@p2";
+
+            OleDbCommand cmd = new OleDbCommand(sql);
+
+            cmd.Parameters.AddWithValue("@p2", forumName);
+            if (policyID < 0)
+            {
+                cmd.Parameters.AddWithValue("@p1", DBNull.Value);
+            }
+            else
+                cmd.Parameters.AddWithValue("@p1", policyID);
+
+
+            connect_me.TakeAction(cmd);
+        }
 
 
     }

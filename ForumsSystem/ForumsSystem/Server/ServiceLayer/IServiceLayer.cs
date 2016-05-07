@@ -64,7 +64,7 @@ namespace ForumsSystem.Server.ServiceLayer
         bool IsAdmin(string username, string forumName);
         //Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo();
        // int GetNumOfForums();
-        List<PrivateMessage> GetNotifications(string forumName, string username);
+        List<PrivateMessageNotification> GetNotifications(string forumName, string username);
         int GetNumOfForums(string userName, string password);
 
         Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfoBySuperAdmin(string userName, string password);

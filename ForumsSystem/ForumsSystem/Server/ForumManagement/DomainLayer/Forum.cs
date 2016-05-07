@@ -6,11 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     public class Forum : IForum
     {
+        DAL_Forum dal_forum = new DAL_Forum();
 
         public string name { get;  set; }
         private List<ISubForum> sub_forums { get; set; }
@@ -25,6 +27,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public Forum(string forumName)
         {
             this.name = forumName;
+            dal_forum.CreateForum(forumName, -1);
             InitForum();
             Loggers.Logger.GetInstance().AddActivityEntry(forumName + "created");
         }
@@ -151,6 +154,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (policies != null)
             {
                 policies = policies.RemovePolicy(policyType);
+                if(policies == null)
+                    dal_forum.SetForumPolicy(this.name, -1);
+                else
+                    dal_forum.SetForumPolicy(this.name,policies.ID);
                 Loggers.Logger.GetInstance().AddActivityEntry("Policy of type: " + policyType + "removed from subforum " + this.name);
 
             }
@@ -295,6 +302,17 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 posts += subforumPosts;
             }
             return posts;
+        }
+
+        public List<IUser> getUsersInForum()
+        {
+            List<IUser> users_res = new List<IUser>();
+            foreach(KeyValuePair<string, IUser> u in users)
+            {
+                users_res.Add(u.Value);
+            }
+            return users_res;
+
         }
     }
 }

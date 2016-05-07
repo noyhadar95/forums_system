@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
@@ -17,6 +18,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             this.policy = policy;
         }
+
+        DAL_PolicyParameter dal_policyParamete = new DAL_PolicyParameter();
         private Policies policy;
         public Policies GetPolicy()
         {

@@ -23,10 +23,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private Type type;
         private List<PrivateMessage> sentMessages;
         private List<PrivateMessage> receivedMessages;
-        private List<PrivateMessage> notifications;
+        private List<PrivateMessageNotification> privateMessageNotifications;
         private List<IUser> friends;
         private List<IUser> waitingFriendsList;
-        private List<Post> postsNotifications;
+        private List<PostNotification> postNotifications;
         private bool isLoggedIn;
         private bool emailAccepted;
         private DAL_Users dal_users = new DAL_Users();
@@ -48,8 +48,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.isLoggedIn = false;
             this.emailAccepted = false;
             this.dateOfBirth = new DateTime();
-            this.notifications = new List<PrivateMessage>();
-            this.postsNotifications = new List<Post>();
+            this.privateMessageNotifications = new List<PrivateMessageNotification>();
+            this.postNotifications = new List<PostNotification>();
             this.dateOfPassLastchange = new DateTime(); 
 
         }
@@ -72,7 +72,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.waitingFriendsList = new List<IUser>();
             Policy policy = forum.GetPolicy();
             dal_users.CreateUser(this.forum.getName(), this.userName, this.password, this.email,
-                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member);
+                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange);
             if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
                 this.forum.RegisterToForum(this);
             else
@@ -82,9 +82,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             }
             this.isLoggedIn = false;
 
-            this.notifications = new List<PrivateMessage>();
+            this.privateMessageNotifications = new List<PrivateMessageNotification>();
             this.emailAccepted = false;
-            this.postsNotifications = new List<Post>();
+            this.postNotifications = new List<PostNotification>();
             
 
         }
@@ -107,9 +107,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.waitingFriendsList = new List<IUser>();
             this.isLoggedIn = false;
 
-            this.notifications = new List<PrivateMessage>();
+            this.privateMessageNotifications = new List<PrivateMessageNotification>();
             this.emailAccepted = false;
-            this.postsNotifications = new List<Post>();
+            this.postNotifications = new List<PostNotification>();
         }
 
         public bool SetForum(IForum forum)
@@ -118,7 +118,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             {
                 this.forum = forum;
                 dal_users.CreateUser("", this.userName, this.password, this.email,
-               this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member);
+               this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange);
                 Policy policy = forum.GetPolicy();
                 if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
                     this.forum.RegisterToForum(this);
@@ -185,13 +185,13 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.type = type;
             if (type is Guest)
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.dateJoined,
-                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Guest);
+                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Guest,this.dateOfPassLastchange);
             else if (type is Member)
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.dateJoined,
-                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member);
+                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange);
             else if (type is Admin)
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.dateJoined,
-                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Admin);
+                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Admin,this.dateOfPassLastchange);
 
         }
 
@@ -224,9 +224,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 this.email = email;
                 this.dateJoined = DateTime.Today;
                 this.dateOfBirth = dateOfBirth;
+                this.dateOfPassLastchange = DateTime.Today;
                 type = new Member();
                 dal_users.CreateUser(this.forum.getName(), this.userName, this.password, this.email,
-                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member);
+                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange);
                 Policy policy = forum.GetPolicy();
                      if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
                          return forum.RegisterToForum(this);
@@ -344,16 +345,26 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
             Policy policy = forum.GetPolicy();
             if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)) || (policy.CheckIfPolicyExists(Policies.Authentication) && emailAccepted))
-            {
-                Server.CommunicationLayer.Server.SubscribeClient(this.userName, this.forum.getName());
+            { 
+                //                Server.CommunicationLayer.Server.SubscribeClient(this.forum.getName(), this.userName);
                 this.isLoggedIn = true;
+                foreach(PostNotification p in postNotifications)
+                {
+              //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, p);
+                }
+                postNotifications = new List<PostNotification>();
+                foreach (PrivateMessageNotification m in privateMessageNotifications)
+                {
+              //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, m);
+                }
+                privateMessageNotifications = new List<PrivateMessageNotification>();
             }
 
         }
 
         public void Logout()
         {
-            Server.CommunicationLayer.Server.UnSubscribeClient(this.userName, this.forum.getName());
+//            Server.CommunicationLayer.Server.UnSubscribeClient(this.userName, this.forum.getName());
             this.isLoggedIn = false;
 
         }
@@ -378,27 +389,48 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return type.DeleteForumProperties(forum, properties);
         }
 
-        public void AddNotification(PrivateMessage newMessage)
+        public void AddPrivateMessageNotification(PrivateMessage newMessage)
         {
-            notifications.Add(newMessage);
+            PrivateMessageNotification notification = new PrivateMessageNotification(
+                newMessage.sender.getUsername(), newMessage.title, newMessage.content);
+            if (isLoggedIn)
+            {
+            //    Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, notification);
+            }
+            else
+            {
+                // add private message notification to db
+                privateMessageNotifications.Add(notification);
+            }
         }
 
-        public List<PrivateMessage> GetNotifications()
+        public List<PrivateMessageNotification> GetPrivateMessageNotifications()
         {
-            List<PrivateMessage> notifications = this.notifications;
-            this.notifications = new List<PrivateMessage>();
+            List<PrivateMessageNotification> notifications = this.privateMessageNotifications;
+            //this.privateMessageNotifications = new List<PrivateMessageNotification>();
             return notifications;
         }
 
-        public void AddPostNotification(Post post)
+        public void AddPostNotification(Post post,NotificationType type)
         {
-            postsNotifications.Add(post);
+            PostNotification notification = new PostNotification(type,
+                post.getPublisher().getUsername(), post.Thread.GetSubforum().getName(),
+                post.Title, post.Content, post.GetId());
+            if (isLoggedIn)
+            {
+             //   Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName, notification);
+            }
+            else
+            {
+                // TODO: add post notification to db
+                postNotifications.Add(notification);
+            }
         }
 
-        public List<Post> GetPostNotifications()
+        public List<PostNotification> GetPostNotifications()
         {
-            List<Post> notifications = this.postsNotifications;
-            this.postsNotifications = new List<Post>();
+            List<PostNotification> notifications = this.postNotifications;
+            //this.postNotifications = new List<PostNotification>();
             return notifications;
         }
 
@@ -454,6 +486,20 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
             this.password = password;
             this.dateOfPassLastchange = DateTime.Today;
+            if (type is Guest)
+            {
+                dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
+                    this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Guest,DateTime.Today);
+            } else if(type is Member)
+            {
+                dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
+                   this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,DateTime.Today);
+            } else if(type is Admin)
+            {
+                dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
+                   this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,DateTime.Today);
+            }
+
         }
         public DateTime GetDateOfPassLastChange()
         {

@@ -10,6 +10,8 @@ namespace ForumsSystemClient.CommunicationLayer
     public class CL
     {
 
+        bool serverWorks = false;
+
         public List<string> GetForumsList()
         {
             return (List<string>)Client.SendRequest("GetForumsList");
@@ -17,7 +19,10 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public List<string> GetSubForumsList(string forumName)
         {
+
             return (List<string>)Client.SendRequest("GetSubForumsList", forumName);
+
+            
         }
 
         // return a list of titles of all threads in the subforum.

@@ -106,11 +106,23 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             Connect_to_DB();
             OleDbCommand sql = new OleDbCommand();
 
-            sql.CommandText = "Update Posts Set [Title]='" + title + "', [Content]='" + content + " Where [PostID]=" + postId ;
+            sql.CommandText = "Update Posts Set [Title]='" + title + "', [Content]='" + content + "' Where [PostID]=" + postId ;
 
             connect_me.TakeAction(sql);
             sql = null;
 
+        }
+
+        public void DeltePostsFromForum(string forumName)
+        {
+            Connect_to_DB();
+            OleDbCommand cmd = new OleDbCommand();
+            cmd.CommandText = "Delete From [Posts] Where [ForumName]=@p1";
+
+            cmd.Parameters.AddWithValue("@p1", forumName);
+
+            connect_me.TakeAction(cmd);
+            cmd = null;
         }
     }
 

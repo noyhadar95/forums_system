@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace UnitTests.ServerUnitTests.DomainLayer
 {
@@ -13,6 +14,8 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         IUser admin;
         Moderator mod;
         DateTime year;
+        DAL_Forum dal_forum = new DAL_Forum();
+
         [TestInitialize()]
         public void Initialize()
         {
@@ -30,6 +33,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         [TestCleanup()]
         public void Cleanup()
         {
+            dal_forum.DeleteForum("testForum");
             forum = null;
             user = null;
             mod = null;

@@ -28,10 +28,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             cmd.Parameters.AddWithValue("@p2", subForumName);
             cmd.Parameters.AddWithValue("@p3", creatorUserName);
 
-
-
             connect_me.TakeAction(cmd);
-
         }
 
 

@@ -20,8 +20,8 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
             df = new DAL_Friends();
 
             dl.CreateForum(forumName, -1);
-            du.CreateUser(forumName, "User1", "Pass1", "User1@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member);
-            du.CreateUser(forumName, "User2", "Pass1", "User2@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member);
+            du.CreateUser(forumName, "User1", "Pass1", "User1@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member,DateTime.Today);
+            du.CreateUser(forumName, "User2", "Pass1", "User2@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member,DateTime.Today);
 
         }
         [TestCleanup()]
@@ -39,6 +39,10 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
         {
             df.addFriend(forumName, "User1", "User2");
             DataTable d = df.GetUsersFriends(forumName, "User1");
+            Assert.IsTrue(d.Rows.Count == 0);
+
+            df.AcceptFriend(forumName, "User1", "User2");
+            d = df.GetUsersFriends(forumName, "User1");
             Assert.IsTrue(d.Rows.Count == 1);
         }
         [TestMethod]

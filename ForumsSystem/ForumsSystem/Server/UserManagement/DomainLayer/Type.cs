@@ -149,6 +149,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public virtual bool SetForumProperties(IForum forum, Policy properties)
         {
+            DAL_Forum dal_forum = new DAL_Forum();
+            dal_forum.SetForumPolicy(forum.getName(), properties.ID);
             forum.SetPolicy(properties);
             return true;
         }
@@ -161,6 +163,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 forum.RemovePolicy(temp.Type); temp = temp.NextPolicy;//delete old ones
             }
             forum.AddPolicy(properties);//add new ones
+            DAL_Forum dal_forum = new DAL_Forum();
+            dal_forum.SetForumPolicy(forum.getName(), properties.ID);
             return true;
         }
         public virtual bool DeleteForumProperties(IForum forum, List<Policies> properties)
@@ -168,7 +172,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             foreach (Policies pol in properties.ToList<Policies>())
             {
                 forum.RemovePolicy(pol);
-            } 
+            }
+            DAL_Forum dal_forum = new DAL_Forum();
+            dal_forum.SetForumPolicy(forum.getName(),-1);
             return true;
         }
 
@@ -250,13 +256,19 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             {
                 dal_posts.CreatePost(reply.GetId(), callingUser.getUsername(), callingUser.getForum().getName(),
                     parent.GetId(), thread.id, title, content);
-                List<IUser> friends = callingUser.GetFriendsList();
+                /*List<IUser> friends = callingUser.GetFriendsList();
                 foreach (IUser friend in friends)
                 {
-                    friend.AddPostNotification(reply);
+                    friend.AddNewPostNotification(reply);
                 }
                 IUser user = thread.GetOpeningPost().getPublisher();
-                user.AddPostNotification(reply);
+                user.AddNewPostNotification(reply);*/
+                IForum forum = callingUser.getForum();
+                List<IUser> users = forum.getUsersInForum();
+                foreach(IUser u in users)
+                {
+                    u.AddPostNotification(reply, NotificationType.Posted);
+                }
                 return reply;
             }
             return null;
@@ -276,11 +288,20 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             Post openingPost = new Post(callingUser, thread, title, content);
             if (thread.AddOpeningPost(openingPost))
             {
-                dal_threads.CreateThread(thread.id, openingPost.GetId(), callingUser.getForum().getName(), subForum.getName());
-                List<IUser> friends = callingUser.GetFriendsList();
-                foreach (IUser friend in friends)
+                dal_threads.CreateThread(thread.id, -1, callingUser.getForum().getName(), subForum.getName());
+                dal_posts.CreatePost(openingPost.GetId(), callingUser.getUsername(), callingUser.getForum().getName(), -1,
+                    thread.id, title, content);
+                dal_threads.AddOpenningPost(thread.id, openingPost.GetId());
+                /* List<IUser> friends = callingUser.GetFriendsList();
+                 foreach (IUser friend in friends)
+                 {
+                     friend.AddNewPostNotification(openingPost);
+                 }*/
+                IForum forum = callingUser.getForum();
+                List<IUser> users = forum.getUsersInForum();
+                foreach (IUser u in users)
                 {
-                    friend.AddPostNotification(openingPost);
+                    u.AddPostNotification(openingPost,NotificationType.Posted);
                 }
                 return thread;
             }
@@ -298,6 +319,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             post.Content = content;
             post.Title = title;
             dal_posts.EditPost(post.GetId(), title, content);
+            List<Post> replies = post.GetReplies();
+            foreach(Post p in replies)
+            {
+                p.getPublisher().AddPostNotification(post, NotificationType.Changed);
+            }
             return true;
         }
 
@@ -309,6 +335,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return false;
             if (post.getPublisher() == callingUser)
             {
+                List<Post> replies = post.GetReplies();
+                foreach (Post p in replies)
+                {
+                    p.getPublisher().AddPostNotification(post, NotificationType.Deleted);
+                }
                 dal_posts.DeletePost(post.GetId());
                 return post.DeletePost();
             }
@@ -390,7 +421,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public virtual void AddReceivedMessage(IUser callingUser, PrivateMessage privateMessage)
         {
             callingUser.AddToreceivedMessages(privateMessage);
-            callingUser.AddNotification(privateMessage);
+            callingUser.AddPrivateMessageNotification(privateMessage);
         }
 
         //---------------------------------------------------------------------

@@ -8,6 +8,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
     public class PolicyTests
     {
         private ForumsSystem.Server.ForumManagement.DomainLayer.Policy policy;
+
         [TestInitialize()]
         public void Initialize()
         {

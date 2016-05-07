@@ -40,6 +40,7 @@ namespace ForumsSystemClient.PresentationLayer
             List<string> items = cl.GetForumsList();
             forumsListView.ItemsSource = items;
 
+
             // initialize different types grids (login, super admin)
             superAdminGrid.Visibility = Visibility.Hidden;
 
@@ -53,6 +54,7 @@ namespace ForumsSystemClient.PresentationLayer
 
 
             // bool ans = (bool)CommunicationLayer.Client.SendRequest("InitializeSystem", "superadmin", "pass");
+
 
 
         }

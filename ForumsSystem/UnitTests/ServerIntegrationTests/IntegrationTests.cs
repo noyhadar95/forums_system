@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
 using System.Collections.Generic;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace UnitTests.ServerIntegrationTests
 {
@@ -13,9 +14,12 @@ namespace UnitTests.ServerIntegrationTests
         IUser admin;
         IUser user;
         DateTime year;
+        DAL_Forum dal_forum = new DAL_Forum();
+
         [TestInitialize()]
         public void Initialize()
         {
+            dal_forum.DeleteForum("testForum");
             DateTime today = DateTime.Today;
              year = today.AddYears(-20);
             forum = new Forum("testForum");
@@ -29,6 +33,7 @@ namespace UnitTests.ServerIntegrationTests
         [TestCleanup()]
         public void Cleanup()
         {
+            dal_forum.DeleteForum("testForum");
             forum = null;
             admin = null;
             user = null;
