@@ -66,6 +66,7 @@ namespace AcceptanceTests.ServerTests
         // a new sub-forum called subForumName with the given moderators list.
         protected bool CreateSubForumByAdmin1(string forumName, PoliciesStub forumPolicy, string subForumName, Dictionary<string, DateTime> moderators)
         {
+            
             // create a forum
             CreateForum(forumName, forumPolicy);
 

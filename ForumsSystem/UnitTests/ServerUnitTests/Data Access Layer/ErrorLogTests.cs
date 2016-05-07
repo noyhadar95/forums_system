@@ -11,6 +11,8 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
         [TestInitialize()]
         public void Initialize()
         {
+            DAL_Forum df = new DAL_Forum();
+            df.DeleteAll();
             de = new DAL_ErrorLogs();
         }
         [TestCleanup()]

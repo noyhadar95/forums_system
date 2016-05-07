@@ -324,18 +324,20 @@ namespace AcceptanceTests.ServerTests
             string content = "content";
             try
             {
-                CreateForum(forumName);
+               /* CreateForum(forumName);
                 bridge.RegisterToForum(forumName, username1, pass1, email1, dateOfBirth1);
                 bridge.ConfirmRegistration(forumName, username1);
                 bridge.LoginUser(forumName, username1, pass1);
                 bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
                 bridge.ConfirmRegistration(forumName, username2);
-                bridge.LoginUser(forumName, username2, pass2);
+                bridge.LoginUser(forumName, username2, pass2);*/
 
                 // create a forum, sub-forum and a thread to add a post to.
                 base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
+                bridge.LoginUser(forumName, username1, pass1);
+                bridge.LoginUser(forumName, username2, pass2);
                 List<Tuple<int, string, string>> posts = bridge.GetPostsInForumByUser(forumName, subForumName, this.adminUserName1, username2);
-                Assert.IsTrue(posts.Count == 0);
+                Assert.IsNull(posts.Count == 0);
                 int threadId = bridge.AddThread(forumName, subForumName, username2, title, content);
                 posts = bridge.GetPostsInForumByUser(forumName, subForumName, this.adminUserName1, username2);
                 Assert.IsTrue(posts.Count == 1);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,12 +30,17 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         //}
         public Forum createForum(string forumName)
         {
-            if (forums.ContainsKey(forumName))
-                return (Forum)forums[forumName];
-            Forum forum = new Forum(forumName);
-            forums.Add(forumName, forum);
-            Loggers.Logger.GetInstance().AddActivityEntry("A new forum: " + forumName + " has been created");
-            return forum;
+            try
+            {
+                Forum forum = new Forum(forumName);
+                forums.Add(forumName, forum);
+                Loggers.Logger.GetInstance().AddActivityEntry("A new forum: " + forumName + " has been created");
+                return forum;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public IForum getForum(string forumName)
@@ -48,6 +54,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if (forums.ContainsKey(forumName))
             {
+                DAL_Forum dal_forum = new DAL_Forum();
+                dal_forum.DeleteForum(forumName);
                 forums.Remove(forumName);
                 Loggers.Logger.GetInstance().AddActivityEntry("The forum: " + forumName + " has been removed");
             } 
