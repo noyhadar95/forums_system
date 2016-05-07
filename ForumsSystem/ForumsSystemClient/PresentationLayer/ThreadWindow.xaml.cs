@@ -136,6 +136,7 @@ namespace ForumsSystemClient.PresentationLayer
                 Button editBtn = new Button();
                 editBtn.Content = "edit";
                 editBtn.Margin = new Thickness(5);
+                editBtn.Click += new RoutedEventHandler(editBtn_Click);
                 TextBlock editTB = new TextBlock();
                 editTB.Inlines.Add(editBtn);
 
@@ -281,6 +282,26 @@ namespace ForumsSystemClient.PresentationLayer
         {
             Button btn = (Button)e.OriginalSource;
             StackPanel parentSP = btnSPParents[btn];
+
+            // retrieve the parent border
+            if (!(parentSP.Parent is Border))
+            {
+                MessageBox.Show("there was an error while deleting your post, please try again");
+                return;
+            }
+            Border parentBorder = (Border)parentSP.Parent;
+            Post parentPost = borderPostDict[parentBorder];
+            // TODO: impl
+            // cl.DeletePost(post);
+            // TODO: reload the tree veiw
+        }
+
+        private void editBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)e.OriginalSource;
+            StackPanel parentSP = btnSPParents[btn];
+
+            //TextBlock contentTB = 
 
             // retrieve the parent border
             if (!(parentSP.Parent is Border))
