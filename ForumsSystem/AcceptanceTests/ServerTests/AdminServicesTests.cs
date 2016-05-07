@@ -334,11 +334,11 @@ namespace AcceptanceTests.ServerTests
 
                 // create a forum, sub-forum and a thread to add a post to.
                 base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
-                List<Tuple<int, string, string>> posts = bridge.GetPostsInForumByUser(forumName, this.adminUserName1, username2);
-                Assert.IsTrue(posts.Count == 0);
+                //List<Tuple<int, string, string>> posts = bridge.GetPostsInForumByUser(forumName, this.adminUserName1, username2);
+                //Assert.IsTrue(posts.Count == 0);
                 bridge.LoginUser(forumName, username1, pass1);
                 bridge.LoginUser(forumName, username2, pass2);
-                List<Tuple<int, string, string>> posts = bridge.GetPostsInForumByUser(forumName, subForumName, this.adminUserName1, username2);
+                List<Tuple<int, string, string>> posts = bridge.GetPostsInForumByUser(forumName, this.adminUserName1, username2);
                 Assert.IsNull(posts.Count == 0);
                 int threadId = bridge.AddThread(forumName, subForumName, username2, title, content);
                 posts = bridge.GetPostsInForumByUser(forumName, this.adminUserName1, username2);

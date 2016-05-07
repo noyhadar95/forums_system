@@ -293,7 +293,7 @@ namespace ForumsSystem.Server.ServiceLayer
             throw new NotImplementedException();
         }
 
-<<<<<<< HEAD
+
         public List<Post> GetPosts(string forumName,string subforumName,int threadId)
         {
             Thread thread = sys.getForum(forumName).getSubForum(subforumName).GetThreadById(threadId);
