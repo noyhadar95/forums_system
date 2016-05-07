@@ -240,11 +240,11 @@ namespace ForumsSystem.Server.ServiceLayer
                 return -1;
         }
 
-        public List<PrivateMessage> GetNotifications(string forumName, string username)
+        public List<PrivateMessageNotification> GetNotifications(string forumName, string username)
         {
             IForum forum = sys.getForum(forumName);
             IUser user = sys.getForum(forumName).getUser(username);
-            return user.GetNotifications();
+            return user.GetPrivateMessageNotifications();
         }
 
         public void AddFriend(string forumName, string username1, string username2)

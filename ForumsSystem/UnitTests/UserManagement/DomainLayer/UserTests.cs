@@ -18,6 +18,7 @@ namespace UnitTests.UserManagement.DomainLayer
         [TestInitialize()]
         public void Initialize()
         {
+            dal_forum.DeleteForum("testUser");
             DateTime today = DateTime.Today;
             year = today.AddYears(-26);
             forum = new Forum("testUser"); ;
@@ -29,7 +30,7 @@ namespace UnitTests.UserManagement.DomainLayer
         [TestCleanup()]
         public void Cleanup()
         {
-            dal_forum.DeleteForum(forum.getName());
+            dal_forum.DeleteForum("testUser");
             forum = null;
             user = null;
         }
@@ -60,6 +61,7 @@ namespace UnitTests.UserManagement.DomainLayer
             Assert.IsNull(user.SendPrivateMessage(receiver.getUsername(), "hi", ""));
             user.Login();
 
+            dal_forum.DeleteForum("f2");
             IForum forum2 = new Forum("f2");
             IUser receiver2 = new User("cantReceive", "p3", "u3@gmail.com", forum2, year);
             PrivateMessage privateMessage2 = user.SendPrivateMessage(receiver2.getUsername(), "hi", "sending message");

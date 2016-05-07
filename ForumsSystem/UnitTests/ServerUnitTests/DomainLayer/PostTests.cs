@@ -34,6 +34,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         [TestMethod]
         public void TestDeleteReply()//2
         {
+            dal_forum.DeleteForum("name");
             IForum forum = new Forum("name");
             IUser user = new User("username", "1234", "mail.com", forum, year);
             ISubForum subForum = new SubForum(forum,user,"name");
@@ -52,6 +53,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         [TestMethod]
         public void TestDeletePostWithReplies()//3
         {
+            dal_forum.DeleteForum("name");
             IForum forum = new Forum("name");
             IUser user = new User("username", "1234", "mail.com", forum, year);
             ISubForum subForum = new SubForum(forum,user,"name");
@@ -85,6 +87,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         [TestMethod]
         public void TestGetReply()//5
         {
+            dal_forum.DeleteForum("name");
             IForum forum = new Forum("name");
             IUser user = new User("username", "1234", "mail.com", forum, year);
             ISubForum subForum = new SubForum(forum,user,"name");
@@ -102,6 +105,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         [TestMethod]
         public void TestGetThread()//6
         {
+            dal_forum.DeleteForum("name");
             IForum forum = new Forum("name");
             IUser user = new User("username", "1234", "mail.com", forum, year);
             ISubForum subForum = new SubForum(forum,user, "name");

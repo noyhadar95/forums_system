@@ -19,8 +19,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         Thread createThread(ISubForum subForum, string title, string content);
         bool editPost(string title, string content, Post post);
         bool deletePost(Post post);
-        void AddPostNotification(Post post);
-        List<Post> GetPostNotifications();
+        void AddPostNotification(Post post,NotificationType type);
+        List<PostNotification> GetPostNotifications();
 
         ISubForum createSubForum(string subForumName, Dictionary<string, DateTime> users);
         bool appointModerator(string userName, DateTime expirationTime, ISubForum subForum);
@@ -47,8 +47,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         Type getType();
         void AddToreceivedMessages(PrivateMessage privateMessage);
         void AddTosentMessages(PrivateMessage privateMessage);
-        List<PrivateMessage> GetNotifications();
-        void AddNotification(PrivateMessage newMessage);
+        List<PrivateMessageNotification> GetPrivateMessageNotifications();
+        void AddPrivateMessageNotification(PrivateMessage newMessage);
 
         void Login();
         void Logout();

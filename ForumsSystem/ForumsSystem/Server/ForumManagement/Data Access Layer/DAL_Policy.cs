@@ -68,7 +68,24 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             cmd = null;
         }
 
+        public void SetNextPolicy(int policyID, int nextPolicyId)
+        {
+            Connect_to_DB();
+            OleDbCommand cmd = new OleDbCommand();
+            cmd.CommandText = "Update [Policies] Set [NextPolicyId]=@p1 Where [PolicyId]=@p2";
 
+            cmd.Parameters.AddWithValue("@p2", policyID);
+            if (nextPolicyId < 0)
+            {
+                cmd.Parameters.AddWithValue("@p1", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@p1", nextPolicyId);
+            }
+            connect_me.TakeAction(cmd);
+            cmd = null;
+        }
 
 
 
