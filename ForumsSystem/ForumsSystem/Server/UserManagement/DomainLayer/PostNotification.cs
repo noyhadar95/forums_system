@@ -8,16 +8,18 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     public class PostNotification
     {
-        private NotificationType type; 
+        private NotificationType type;
+        private string forumName;
         private string publisher;
         private string subForumName;
         private string title;
         private string content;
         public int id { get; private set; }
 
-        public PostNotification(NotificationType type,string publisher,
+        public PostNotification(NotificationType type,string forumName,string publisher,
             string subForumName, string title, string content, int id)
         {
+            this.forumName = forumName;
             this.type = type;
             this.publisher = publisher;
             this.subForumName = subForumName;

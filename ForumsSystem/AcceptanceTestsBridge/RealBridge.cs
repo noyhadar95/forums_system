@@ -539,5 +539,10 @@ namespace AcceptanceTestsBridge
             }
             return res;
         }
+
+        public void LogoutUser(string forumName, string username)
+        {
+            sl.MemberLogout(forumName, username);
+        }
     }
 }
