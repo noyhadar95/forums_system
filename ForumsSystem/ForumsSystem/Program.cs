@@ -12,6 +12,7 @@ namespace ForumsSystem
         static void Main(string[] args)
         {
             Server.CommunicationLayer.Server.StartServer();
+            
         }
     }
 }
