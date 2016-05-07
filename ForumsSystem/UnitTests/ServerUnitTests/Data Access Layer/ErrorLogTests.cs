@@ -27,7 +27,7 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
             de.AddLog(now, "test1");
             de.AddLog(next, "test2");
             var d = de.GetLogByDate(next);
-            Assert.IsTrue(d.Rows.Count >= 2);
+            Assert.IsTrue(d.Rows.Count == 1);
             de.DeleteLog(now);
             de.DeleteLog(next);
 
