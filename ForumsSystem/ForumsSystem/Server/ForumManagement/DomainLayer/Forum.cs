@@ -180,6 +180,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return this.users[username];
             return null;
         }
+        public IUser GetGuest(string guestName)
+        {
+            if (this.waiting_users.ContainsKey(guestName))
+                return this.waiting_users[guestName];
+            return null;
+        }
 
         public bool isUserMember(string username)
         {

@@ -30,60 +30,85 @@ namespace ForumsSystem.Server.ServiceLayer
                 return false;
         }
 
-        public IForum CreateForum(SuperAdmin creator, string name, Policy properties, List<IUser> adminUsername)
+        public IForum CreateForum(string creatorName,string password, string name, Policy properties, List<IUser> adminUsername)
         {
+            SuperAdmin creator;
+            if (!SuperAdmin.GetInstance().userName.Equals(creatorName))
+                return null;
+            if (!SuperAdmin.GetInstance().password.Equals(creatorName))
+                return null;
+            creator = SuperAdmin.GetInstance();
             return creator.createForum(name, properties, adminUsername);
         }
 
-        public bool SetForumProperties(IUser user, IForum forum, Policy properties)
+        public bool SetForumProperties(string username, string forumName, Policy properties)
         {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
             return user.SetForumProperties(forum, properties);
         }
 
-        public bool ChangeForumProperties(IUser user, IForum forum, Policy properties)
+        public bool ChangeForumProperties(string username, string forumName, Policy properties)
         {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
             return user.ChangeForumProperties(forum, properties);
         }
 
-        public bool RegisterToForum(IUser guest, IForum forum, string userName, string password, string email, DateTime dateOfBirth)
+        public bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob)
         {
-            return guest.RegisterToForum(userName, password, forum, email, dateOfBirth);
+            
+            IForum forum = GetForum(forumName);
+            IUser guest = forum.GetGuest(guestName);
+            return guest.RegisterToForum(guestName, password, forum, email, dob);
 
         }
 
-        public ISubForum CreateSubForum(IUser creator, string name, Dictionary<string, DateTime> moderators)
+        public ISubForum CreateSubForum(string creatorName, string forumName, string subforumName, Dictionary<string, DateTime> moderators)
         {
-
-            return creator.createSubForum(name, moderators);
+            IUser creator = GetForum(forumName).getUser(creatorName);
+            return creator.createSubForum(subforumName, moderators);
 
         }
 
-        public Thread AddThread(ISubForum subForum, IUser publisher, string title, string content)
+        public Thread AddThread(string forumName, string subForumName, string publisherName, string title, string content)
         {
+            IForum forum = GetForum(forumName);
+            ISubForum subForum = forum.getSubForum(subForumName);
+            IUser publisher = forum.getUser(publisherName);
+            if (publisher == null)
+                return null;
             return publisher.createThread(subForum, title, content);
 
         }
 
-        public Post AddReply(Post post, IUser publisher, string title, string content)
+        public Post AddReply(string forumName, string subForumName, int threadID, string publisherName, int postID, string title, string content)
         {
+            Post post = GetForum(forumName).getSubForum(subForumName).getThread(threadID).GetPostById(postID);
+            IUser publisher = GetForum(forumName).getUser(publisherName);
             return publisher.postReply(post, post.Thread, title, content);
 
         }
 
-        public IUser MemberLogin(string username, string password, IForum forum)
+        public IUser MemberLogin(string username, string password, string forumName)
         {
+            IForum forum = GetForum(forumName);
             return forum.Login(username, password);
         }
 
-        public PrivateMessage SendPrivateMessage(IUser from, string to, string title, string content)
+        public PrivateMessage SendPrivateMessage(string forumName, string senderUsername, string to, string title, string content)
         {
+            IUser from = GetForum(forumName).getUser(senderUsername);
             return from.SendPrivateMessage(to, title, content);
 
 
         }
 
-        public bool ChangeExpirationDate(IUser admin, DateTime newDate, string moderator, ISubForum subforum)
+        public bool ChangeExpirationDate(string forumName, string subForumName, string adminName, string moderator, DateTime newDate)
         {
+            IForum forum=GetForum(forumName);
+            IUser admin = forum.getUser(adminName);
+            ISubForum subforum = forum.getSubForum(subForumName);
             return admin.editExpirationTimeOfModerator(moderator, newDate, subforum);
         }
 
@@ -104,8 +129,11 @@ namespace ForumsSystem.Server.ServiceLayer
             return SuperAdmin.GetInstance().forumSystem.getForum(forumName);
         }
 
-        public bool AddModerator(IUser admin, ISubForum subForum, string username, DateTime expiratoinDate)
+        public bool AddModerator(string forumName, string subForumName, string adminUsername, string username, DateTime expiratoinDate)
         {
+            IForum forum = GetForum(forumName);
+            IUser admin = forum.getUser(adminUsername);
+            ISubForum subForum = forum.getSubForum(subForumName);
             return admin.appointModerator(username, expiratoinDate, subForum);
         }
 
@@ -131,24 +159,26 @@ namespace ForumsSystem.Server.ServiceLayer
             return SuperAdmin.GetInstance().Login(username, pass);
         }
 
-        public DateTime GetModeratorExpDate(ISubForum subForum, string username)
+        public DateTime GetModeratorExpDate(string forumName, string subForumName, string username)
         {
+            ISubForum subForum = GetForum(forumName).getSubForum(subForumName);
             return subForum.getModeratorByUserName(username).expirationDate;
         }
 
-        public int CountNestedReplies(ISubForum subforum, int threadID, int postID)
+        public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
         {
+            ISubForum subforum = GetForum(forumName).getSubForum(subForumName);
             return ((SubForum)subforum).GetThreadById(threadID).GetPostById(postID).GetNumOfNestedReplies();
         }
 
-        public bool IsMsgSent(IUser user, string msgTitle, string msgContent)
+        public bool IsMsgSent(string forumName, string username, string msgTitle, string msgContent)
         {
-            return user.IsMessageSent(msgTitle, msgContent);
+            return GetForum(forumName).getUser(username).IsMessageSent(msgTitle, msgContent);
         }
 
-        public bool IsMsgReceived(IUser user, string msgTitle, string msgContent)
+        public bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent)
         {
-            return user.IsMessageReceived(msgTitle, msgContent);
+            return GetForum(forumName).getUser(username).IsMessageReceived(msgTitle, msgContent);
         }
 
         public bool IsModerator(string forumName, string subForumName, string username)
@@ -177,8 +207,9 @@ namespace ForumsSystem.Server.ServiceLayer
             return true;
         }
 
-        public bool DeletePost(string forumName, string subForumName, int threadID, int postID)
+        public bool DeletePost(string forumName, string subForumName,string deleter, int threadID, int postID)
         {
+            //TODO: fix this to user deleter parameter!!!
             SuperAdmin superAdmin = SuperAdmin.GetInstance();
             ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
             Thread thread = sys.getForum(forumName).getSubForum(subForumName).GetThreadById(threadID);
@@ -219,8 +250,9 @@ namespace ForumsSystem.Server.ServiceLayer
             return (type is Admin);
 
         }
-        public bool IsExistThread(ISubForum subForum, int threadID)
+        public bool IsExistThread(string forumName, string subForumName, int threadID)
         {
+            ISubForum subForum = GetForum(forumName).getSubForum(subForumName);
             return subForum.GetThreadById(threadID) != null;
         }
 
@@ -253,7 +285,7 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user1 = forum.getUser(username1);
             IUser user2 = forum.getUser(username2);
             user1.addFriend(user2);
-            user2.acceptFriend(user1);
+            user2.acceptFriend(user1);//TODO: probably need to remove this!
         }
         
         // <moderatorUserName,appointerUserName,appointmentDate,subForumName,moderatorPosts>
@@ -264,11 +296,159 @@ namespace ForumsSystem.Server.ServiceLayer
             return admin.ReportModerators();
         }
 
+
         public void MemberLogout(string forumName, string username)
         {
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
             user.Logout();
         }
-    }
+    
+
+
+        public List<Post> GetPosts(string forumName,string subforumName,int threadId)
+        {
+            Thread thread = sys.getForum(forumName).getSubForum(subforumName).GetThreadById(threadId);
+            List<Post> res= thread.GetOpeningPost().GetReplies();
+            res.Insert(0, thread.GetOpeningPost());
+            return res;
+        }
+
+        public bool CheckIfPolicyExists(string forumName, Policies expectedPolicy)
+        {
+            IForum forum = GetForum(forumName);
+            Policy policy = forum.GetPolicy();
+            bool res = policy.CheckIfPolicyExists(expectedPolicy);
+            return res;
+        }
+
+        public List<PostNotification> GetPostNotifications(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            return user.GetPostNotifications();
+        }
+
+        public void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent)
+        {
+            if (newTitle == "" && newContent == "")
+                return;//illegal post
+
+            IForum forum = GetForum(forumName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            Thread thread = subforum.GetThreadById(threadId);
+            Post post = thread.GetPostById(postId);
+            post.Title = newTitle;
+            post.Content = newContent;
+        }
+        public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
+        {
+            IForum forum = GetForum(forumName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            Moderator moderator = subforum.getModeratorByUserName(moderatorName);
+            //IUser user = forum.getUser(remover);
+            //IUser moderator = forum.getUser(moderatorName);
+            if (moderator == null)
+                return false;
+            //  if (!moderator.CanBeDeletedBy(remover))
+            //      return false;
+            return subforum.removeModerator(remover, moderatorName);
+        }
+
+        public int ReportNumOfPostsByMember(string adminUsername, string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            IUser admin = forum.getUser(adminUsername);
+            try
+            {
+                return admin.ReportNumOfPostsByMember(username);
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+        }
+
+        public List<string> GetModeratorsList(string forumName, string subForumName, string adminUserName)
+        {
+            IForum forum = GetForum(forumName);
+            IUser admin = forum.getUser(adminUserName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            try
+            {
+                return admin.GetModeratorsList(subforum);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Post> ReportPostsByMember(string forumName, string adminUserName, string username)
+        {
+            try
+            {
+                IForum forum = GetForum(forumName);
+                IUser admin = forum.getUser(adminUserName);
+
+                List<Post> posts = admin.ReportPostsByMember(username);
+                return posts;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public bool IsExistUser(string forumName, string username)
+        {
+            return GetForum(forumName).getUser(username) != null;
+        }
+
+        public bool IsInitialized()
+        {
+            return SuperAdmin.IsInitialized();
+        }
+        public SuperAdmin GetSuperAdmin()
+        {
+            return SuperAdmin.GetInstance();
+        }
+        public List<string> GetForumMembers(string forumName)
+        {
+            IForum forum = GetForum(forumName);
+            Dictionary<string,string>details= forum.GetAllUsers();
+            return details.Keys.ToList<string>();
+        }
+        public List<string> GetThreadsList(string forumName, string subForumName)
+        {
+            IForum forum = GetForum(forumName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            List<Thread> threads = subforum.GetThreads();
+            List<string> res = new List<string>();
+            foreach (Thread thrd in threads)
+            {
+                res.Add(thrd.GetTiltle());
+            }
+            return res;
+        }
+        public List<string> GetSubForumsList(string forumName)
+        {
+            IForum forum = GetForum(forumName);
+            List<ISubForum> subforums = forum.GetSubForums();
+            List<string> res = new List<string>();
+            foreach (ISubForum subf in subforums)
+            {
+                res.Add(subf.getName());
+            }
+            return res;
+        }
+        public List<string> GetForumsList()
+        {
+            List<string> forums = sys.GetForumsNamesList();
+            return forums;
+        }
+
+
+}
+
 }

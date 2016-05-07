@@ -57,7 +57,7 @@ namespace ForumsSystemClient.PresentationLayer
                 return;
             }
 
-            bool isSuccess = cl.SendPrivateMessage(sender, receiver, title, content);
+            bool isSuccess = cl.SendPrivateMessage(forumName,this.sender, receiver, title, content);
             if (isSuccess)
             {
                 MessageBox.Show("message sent");
