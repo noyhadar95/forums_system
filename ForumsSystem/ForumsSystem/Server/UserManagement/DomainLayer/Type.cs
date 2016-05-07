@@ -229,6 +229,27 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return subforum.GetModeratorsList();
         }
 
+        // <moderatorUserName,appointerUserName,appointmentDate,subForumName,moderatorPosts>
+        public virtual List<Tuple<string,string,DateTime,string,List<Post>>> ReportModerators(IUser callingUser)
+        {
+            List<Tuple<string, string, DateTime, string, List<Post>>> res = new List<Tuple<string, string, DateTime, string, List<Post>>>();
+            IForum forum = callingUser.getForum();
+            List<ISubForum> subForums = forum.GetSubForums();
+            foreach(ISubForum sf in subForums)
+            {
+                List<string> moderators = sf.GetModeratorsList();
+                foreach(string m in moderators)
+                {
+                    Moderator mod = sf.getModeratorByUserName(m);
+                    Tuple<string, string, DateTime, string, List<Post>> t = new Tuple<string, string, DateTime, string, List<Post>>(
+                        mod.user.getUsername(), mod.appointer.getUsername(), mod.appointmentDate,
+                        sf.getName(), ReportPostsByMember(callingUser, mod.user.getUsername()));
+                    res.Add(t);
+                }
+            }
+            return res;
+        }
+
         //in addition the admin should be able to get a report on the forum status
 
 

@@ -67,6 +67,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
         Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfoBySuperAdmin(string userName, string password);
         void AddFriend(string forumName, string username1, string username2);
-        Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1);
+        
+        List<Tuple<string, string, DateTime, string, List<Post>>> ReportModeratorsDetails(string forumName, string adminUserName1);
     }
 }

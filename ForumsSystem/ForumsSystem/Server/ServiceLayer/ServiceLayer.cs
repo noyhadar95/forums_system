@@ -255,11 +255,13 @@ namespace ForumsSystem.Server.ServiceLayer
             user1.addFriend(user2);
             user2.acceptFriend(user1);
         }
-
-        public Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1)
+        
+        // <moderatorUserName,appointerUserName,appointmentDate,subForumName,moderatorPosts>
+        public List<Tuple<string, string, DateTime, string, List<Post>>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
-            throw new NotImplementedException();
+            IForum forum = GetForum(forumName);
+            IUser admin = forum.getUser(adminUserName1);
+            return admin.ReportModerators();
         }
-
     }
 }
