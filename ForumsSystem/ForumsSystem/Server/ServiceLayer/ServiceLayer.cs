@@ -309,7 +309,7 @@ namespace ForumsSystem.Server.ServiceLayer
             return res;
         }
 
-        public List<Post> GetPostNotifications(string forumName, string username)
+        public List<PostNotification> GetPostNotifications(string forumName, string username)
         {
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);

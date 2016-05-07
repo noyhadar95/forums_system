@@ -16,7 +16,7 @@ namespace ForumsSystemClient.CommunicationLayer
         const int CLIENT_PORT_NO = 4000;
         const int SERVER_PORT_NO = 5000;
         const string delimeter = "$|deli|$";
-        const string SERVER_IP = "132.72.225.97";
+        const string SERVER_IP = "79.179.27.79";
 
        private static string connect(string textToSend)
         {

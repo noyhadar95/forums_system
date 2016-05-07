@@ -72,7 +72,7 @@ namespace ForumsSystem.Server.ServiceLayer
         Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1);
         List<Post> GetPosts(string forumName, string subforumName, int threadId);
         bool CheckIfPolicyExists(string forumName, Policies policy);
-        List<Post> GetPostNotifications(string forumName, string username);
+        List<PostNotification> GetPostNotifications(string forumName, string username);
         void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent);
         bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName);
         int ReportNumOfPostsByMember(string adminUsername, string forumName, string username);

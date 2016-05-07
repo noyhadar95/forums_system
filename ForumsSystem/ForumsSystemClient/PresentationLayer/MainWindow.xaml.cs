@@ -29,7 +29,7 @@ namespace ForumsSystemClient.PresentationLayer
 
             WindowHelper.SetWindowBGImg(this);
             cl = new CL();
-
+            
             // check if the system is initialized
             if (!cl.IsInitialized())
             {
