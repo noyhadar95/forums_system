@@ -245,6 +245,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public void DeleteUser(string userName)
         {
+            DAL_Users dal_users = new DAL_Users();
+            dal_users.deleteUser(name, userName);
             this.users.Remove(userName);
         }
 

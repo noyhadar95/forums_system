@@ -117,7 +117,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (this.forum == null)
             {
                 this.forum = forum;
-                dal_users.CreateUser("", this.userName, this.password, this.email,
+                dal_users.CreateUser(forum.getName(), this.userName, this.password, this.email,
                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange);
                 Policy policy = forum.GetPolicy();
                 if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
@@ -506,6 +506,13 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
             return this.dateOfPassLastchange;
         }
+
+        public int ReportNumOfPostsInSubForum(ISubForum subForum)
+        {
+            return type.ReportNumOfPostsInSubForum(this, subForum);
+        }
+
+
     }
 
 

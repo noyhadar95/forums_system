@@ -77,7 +77,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             Connect_to_DB();
             OleDbCommand cmd = new OleDbCommand();
 
-            cmd.CommandText = "Update Messages Set [SenderUserName]=@p1 Where [ForumName]=@p2 AND [SenderUserName]=@p3";
+            cmd.CommandText = "Update Messages Set [SenderUserName]=@p1 Where [Forum]=@p2 AND [SenderUserName]=@p3";
 
             cmd.Parameters.AddWithValue("@p1", "Deleted");
             cmd.Parameters.AddWithValue("@p2", forumName);
@@ -89,7 +89,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             Connect_to_DB();
             cmd = new OleDbCommand();
 
-            cmd.CommandText = "Update Messages Set [RecieverUserName]=@p1 Where [ForumName]=@p2 AND [RecieverUserName]=@p3";
+            cmd.CommandText = "Update Messages Set [RecieverUserName]=@p1 Where [Forum]=@p2 AND [RecieverUserName]=@p3";
 
             cmd.Parameters.AddWithValue("@p1", "Deleted");
             cmd.Parameters.AddWithValue("@p2", forumName);
@@ -104,7 +104,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             Connect_to_DB();
             OleDbCommand cmd = new OleDbCommand();
 
-            cmd.CommandText = "Update SubForum Set [CreatorUserName]=@p1 Where [ForumName]=@p2 AND [CreatorUserName]=@p3";
+            cmd.CommandText = "Update SubForums Set [CreatorUserName]=@p1 Where [ForumName]=@p2 AND [CreatorUserName]=@p3";
 
             cmd.Parameters.AddWithValue("@p1", "Deleted");
             cmd.Parameters.AddWithValue("@p2", forumName);
