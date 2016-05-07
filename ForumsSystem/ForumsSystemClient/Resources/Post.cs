@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources
 {
-    class Post
+    public class Post
     {
         private User publisher;
         private List<Post> replies;
@@ -17,8 +17,7 @@ namespace ForumsSystemClient.Resources
         private int id;
         private static int nextId = 1;//TODO: Change the way to initialize this
 
-        public string Title { get { return title; } set { title = value; } }
-        public string Content { get { return content; } set { content = value; } }
+
         public User Publisher { get { return publisher; } set { publisher = value; } }
 
 
@@ -37,6 +36,32 @@ namespace ForumsSystemClient.Resources
         public void AddNestedPost(Post post)
         {
             replies.Add(post);
+        }
+
+
+        public string Title { get { return title; } set { this.title = value; } }
+        public string Content { get { return content; } set { this.content = value; } }
+        public Thread Thread { get { return thread; } set { this.thread = value; } }
+
+        public int GetId()
+        {
+            return this.id;
+        }
+
+        public Post GetPostById(int id)
+        {
+            if (this.id == id)
+                return this;
+            if (replies.Count == 0)
+                return null;
+            Post res;
+            foreach (Post p in replies.ToList<Post>())
+            {
+                res = p.GetPostById(id);
+                if (res != null)
+                    return res;
+            }
+            return null;
         }
 
     }
