@@ -81,9 +81,9 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         {
             Connect_to_DB();
             OleDbCommand cmd = new OleDbCommand();
-            cmd.CommandText = "DELETE n " +
-                "FROM(Posts p INNER JOIN PostNotification n ON Posts.PostID = PostNotification.NotificationId) " +
-                "INNER JOIN Threads t ON (Threads.ThreadId = Posts.ThreadID) " +
+            cmd.CommandText = "DELETE PostNotification.* " +
+                "FROM(Posts INNER JOIN PostNotification ON Posts.PostID = PostNotification.NotificationId) " +
+                "INNER JOIN Threads ON (Threads.ThreadId = Posts.ThreadID) " +
                 "AND(Posts.PostID = Threads.OpeningPostId) WHERE Forum=@p1 AND UserName=@p2";
 
 

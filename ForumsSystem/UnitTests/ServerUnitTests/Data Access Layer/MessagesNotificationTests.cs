@@ -57,7 +57,8 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
             dmn.AddNotification(id);
             Assert.IsTrue(dmn.GetUsersNotifications(forumName, "User2").Rows.Count == 1);
 
-            dmn.RemoveNotification(id);
+            //    dmn.RemoveNotification(id);
+            dmn.RemoveAllNotifications(forumName, "User2");
             Assert.IsTrue(dmn.GetUsersNotifications(forumName, "User2").Rows.Count == 0);
 
 
