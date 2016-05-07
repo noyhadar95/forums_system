@@ -23,7 +23,7 @@ namespace AcceptanceTestsBridge
             {
                 instance = new ProxyBridge();
                 // set real bridge
-                instance.SetRealBridge(new RealBridge());
+                instance.SetRealBridge(new ClientBridge());
             }
             return instance;
         }
