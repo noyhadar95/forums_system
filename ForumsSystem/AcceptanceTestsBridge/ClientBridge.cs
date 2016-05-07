@@ -298,7 +298,7 @@ namespace AcceptanceTestsBridge
 
         public bool LoginUser(string forumName, string username, string pass)
         {
-            return cl.MemberLogin(username, pass, forumName);
+            return cl.MemberLogin(username, pass, forumName)!=null;
         }
 
         public bool LoginSuperAdmin(string username, string pass)

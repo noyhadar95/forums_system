@@ -44,7 +44,7 @@ namespace ForumsSystemClient.Resources
             userName = username;
             this.password = password;
             this.email = email;
-            dateOfBirth;= dateTime;
+            dateOfBirth= dateTime;
         }
     }
 }
