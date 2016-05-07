@@ -21,11 +21,11 @@ namespace ForumsSystemClient.PresentationLayer
     /// </summary>
     public partial class ThreadWindow : Window
     {
+        private double firstLevelItemOffset = 70; // offset of the items in the first level of the treeview
         private CL cl;
         private string forumName;
         private string subForumName;
         private List<Post> posts;
-        private double firstLevelItemOffset = 70; // offset of the items in the first level of the treeview
         private Dictionary<Button, StackPanel> btnSPParents;
         private Dictionary<Border, Post> borderPostDict;
         private bool isAddReplyMode = false;
@@ -46,8 +46,9 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void postsTreeView_Loaded(object sender, RoutedEventArgs e)
         {
+            // TODO: set threadID
             string threadID = "";
-            posts = cl.GetPosts(threadID);
+            posts = cl.GetPosts(forumName,subForumName, threadID);
 
             // Get TreeView reference and add the items for the posts.
             var tree = sender as TreeView;
@@ -331,5 +332,6 @@ namespace ForumsSystemClient.PresentationLayer
         {
             WindowHelper.SwitchWindow(this, new SubForumWindow(forumName, subForumName));
         }
+
     }
 }

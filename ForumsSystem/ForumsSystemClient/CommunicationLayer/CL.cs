@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ForumsSystemClient.Resources;
 
 namespace ForumsSystemClient.CommunicationLayer
 {
@@ -51,7 +50,6 @@ namespace ForumsSystemClient.CommunicationLayer
         {
             return (bool)Client.SendRequest("RegisterToForum", forumName, guestName, password, email, dob);
 
-            return true;
         }
 
         public bool InitializeSystem(string username, string password)
