@@ -66,7 +66,9 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         {
             Connect_to_DB();
             OleDbCommand cmd = new OleDbCommand();
-            cmd.CommandText = "DELETE n FROM Messages m INNER JOIN MessageNotification n ON Messages.ID = MessageNotification.Id WHERE Forum=@p1 AND RecieverUserName=@p2";
+            cmd.CommandText = "DELETE MessageNotification.* FROM Messages INNER JOIN MessageNotification ON Messages.ID = MessageNotification.Id WHERE Forum=@p1 AND RecieverUserName=@p2";
+           // string join = "select left_id ...";
+           // string delete = "Delete from Left where id IN (inner_join)"
 
 
             cmd.Parameters.AddWithValue("@p1", forumName);
