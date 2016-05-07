@@ -59,7 +59,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         {
             Connect_to_DB();
             OleDbCommand cmd = new OleDbCommand();
-            cmd.CommandText = "Delete From [PostNotifivation] Where NotificationId=@p1 AND Type=@p2 AND Forum=@p3 AND UserName=@p4";
+            cmd.CommandText = "Delete From [PostNotification] Where NotificationId=@p1 AND Type=@p2 AND Forum=@p3 AND UserName=@p4";
 
             cmd.Parameters.AddWithValue("@p1", notificationId);
             cmd.Parameters.AddWithValue("@p2", type);

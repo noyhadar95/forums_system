@@ -296,6 +296,7 @@ namespace AcceptanceTests.ServerTests
                 //delete a post
                 bridge.DeletePost(forumName,subForumName,threadID,threadPublisher, postID);
 
+
                 //now check that the users received a notification about the edition
                 Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName,friend1, reply1));
                 Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend2, reply1));
