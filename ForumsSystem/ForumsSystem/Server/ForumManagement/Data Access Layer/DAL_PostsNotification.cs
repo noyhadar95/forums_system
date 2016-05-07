@@ -30,11 +30,15 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         public DataTable GetUsersNotifications(string forumName, string userName)
         {
             Connect_to_DB();
-            string sql = "SELECT PostNotification.*, Posts.*, Threads.* "+
-                "FROM(Posts INNER JOIN PostNotification ON Posts.PostID = PostNotification.NotificationId) "+
-                "INNER JOIN Threads ON (Threads.ThreadId = Posts.ThreadID) "+
-                "AND(Posts.PostID = Threads.OpeningPostId) WHERE Forum=@p1 AND UserName=@p2";
-            
+            // string sql = "SELECT PostNotification.*, Posts.*, Threads.* "+
+            //      "FROM(Posts INNER JOIN PostNotification ON Posts.PostID = PostNotification.NotificationId) "+
+            //      "INNER JOIN Threads ON (Threads.ThreadId = Posts.ThreadID) "+
+            //      "AND(Posts.PostID = Threads.OpeningPostId) WHERE Forum=@p1 AND UserName=@p2";
+
+
+            string sql = "SELECT PostNotification.Type, Posts.PublisherUserName, Threads.SubForumName, Posts.Title, Posts.Content, Posts.PostID " +
+            "FROM(Posts INNER JOIN Threads ON(Threads.ThreadId = Posts.ThreadID) AND(Posts.PostID = Threads.OpeningPostId)) INNER JOIN PostNotification ON Posts.PostID = PostNotification.NotificationId WHERE Forum=@p1 AND UserName=@p2";
+
 
             OleDbCommand cmd = new OleDbCommand(sql);
 
