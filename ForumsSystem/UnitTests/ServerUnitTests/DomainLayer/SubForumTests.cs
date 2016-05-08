@@ -84,7 +84,7 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         public void TestThreads()
         {
             Thread thr = subForum.createThread();
-            Assert.AreEqual(subForum.getThread(1), thr);
+            Assert.AreEqual(subForum.getThread(thr.id), thr);
         }
 
     }

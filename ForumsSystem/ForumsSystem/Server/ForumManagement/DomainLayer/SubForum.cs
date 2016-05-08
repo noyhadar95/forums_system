@@ -98,10 +98,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public Thread getThread(int index)
         {
-            int newIndex = index - 1;
-            if (newIndex >= threads.Count)
-                return null;
-            else return threads.ElementAt(newIndex);
+            foreach(Thread t in threads)
+            {
+                if (t.id == index)
+                    return t;
+            }
+            return null;
         }
 
         public IForum getForum()
