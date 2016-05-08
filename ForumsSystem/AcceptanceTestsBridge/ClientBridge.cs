@@ -460,5 +460,15 @@ namespace AcceptanceTestsBridge
         {
             return cl.GetModeratorAppointmentsDetails(forumName, subForumName, adminUserName1, username1);
         }
+
+        public void LogoutUser(string forumName, string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

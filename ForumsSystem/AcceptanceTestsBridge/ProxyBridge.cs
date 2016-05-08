@@ -347,11 +347,19 @@ namespace AcceptanceTestsBridge
             return null;
         }
 
-        public Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1)
+ 
+
+        public List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
             if (realBridge != null)
-                return realBridge.GetModeratorAppointmentsDetails(forumName, subForumName, adminUserName1, username1);
+                return realBridge.ReportModeratorsDetails(forumName,adminUserName1);
             return null;
+        }
+
+        public void LogoutUser(string forumName, string username)
+        {
+            if (realBridge != null)
+                 realBridge.LogoutUser(forumName, username);
         }
     }
     

@@ -147,5 +147,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             throw new Exception("permission denied");
         }
+
+        public override List<Tuple<string, string, DateTime, string, List<Post>>> ReportModerators(IUser callingUser)
+        {
+            throw new Exception("permission denied");
+        }
     }
 }

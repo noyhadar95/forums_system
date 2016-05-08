@@ -111,6 +111,7 @@ namespace AcceptanceTests.ServerTests
 
             try
             {
+                
                 bridge.CreateForum(this.superAdminUsername,this.superAdminPass, forumName, admins, forumPolicy);
                 bridge.RegisterToForum(forumName, username1, pass1, email1, dateOfBirth1);
                 bridge.LoginUser(forumName, username1, pass1);
@@ -118,7 +119,8 @@ namespace AcceptanceTests.ServerTests
                 bridge.LoginUser(forumName, adminUserName2, adminPass2);
                 // create a forum, sub-forum and a thread to add a post to.
                 base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
-                bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
+                bridge.LoginUser(forumName, adminUserName1, adminPass1);
+                bridge.LoginUser(forumName, adminUserName2, adminPass2);
                 //KeyValuePair<string, DateTime> newMod = new KeyValuePair<string, DateTime>(username2, DateTime.Today.AddDays(100));
                 //bridge.AddModerator(forumName, subForumName, adminUserName1, newMod);
                 //remove the moderator:
@@ -184,17 +186,13 @@ namespace AcceptanceTests.ServerTests
             string title = "title";
             string content = "content";
             try
-            {
-                CreateForum(forumName);
-                bridge.RegisterToForum(forumName, username1, pass1, email1, dateOfBirth1);
-                bridge.ConfirmRegistration(forumName, username1);
-                bridge.LoginUser(forumName, username1, pass1);
-                bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
-                bridge.ConfirmRegistration(forumName, username2);
-                bridge.LoginUser(forumName, username2, pass2);
+            {                
+                
                 // create a forum, sub-forum and a thread to add a post to.
                 base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
                 bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
+                bridge.ConfirmRegistration(forumName, username2);
+                bridge.LoginUser(forumName, username2, pass2);
                 int numOfposts = bridge.GetNumOfPostsInForumByMember(forumName, this.adminUserName1, username2);
                 Assert.IsTrue(numOfposts == 0);
                 int threadId=bridge.AddThread(forumName, subForumName, username2, title, content);
@@ -207,8 +205,6 @@ namespace AcceptanceTests.ServerTests
 
                 //and now check that it works with more than 1 subforum
                 base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName2, moderators);
-                bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
-
                 threadId = bridge.AddThread(forumName, subForumName2, username2, title, content);
                 numOfposts = bridge.GetNumOfPostsInForumByMember(forumName, this.adminUserName1, username2);
                 Assert.IsTrue(numOfposts == 3);
@@ -285,17 +281,19 @@ namespace AcceptanceTests.ServerTests
                  // create a forum, sub-forum and a thread to add a post to.
                  base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
                  bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
+                 bridge.ConfirmRegistration(forumName, username2);
                  KeyValuePair<string, DateTime> newMod = new KeyValuePair<string, DateTime>(username2, DateTime.Today.AddDays(100));
                  bridge.AddModerator(forumName, subForumName, this.adminUserName1, newMod);
                  bridge.RegisterToForum(forumName, username3, pass3, email3, dateOfBirth3);
+                 bridge.ConfirmRegistration(forumName, username3);
                  newMod = new KeyValuePair<string, DateTime>(username3, DateTime.Today.AddDays(100));
                  bridge.AddModerator(forumName, subForumName, this.adminUserName1, newMod);
-                 Tuple<string,string,DateTime,string> moderatorsList = bridge.GetModeratorAppointmentsDetails(forumName, subForumName, this.adminUserName1,username1);
-                /* Assert.IsTrue(moderatorsList.Count == 3);
-                 Assert.IsTrue(moderatorsList.Contains(username1));
+                 List<Tuple<string, string, DateTime, string, List<int>>> moderatorsList = bridge.ReportModeratorsDetails(forumName,this.adminUserName1);
+                 Assert.IsTrue(moderatorsList.Count == 3);
+                 /*Assert.IsTrue(moderatorsList.Contains(username1));
                  Assert.IsTrue(moderatorsList.Contains(username2));
-                 Assert.IsTrue(moderatorsList.Contains(username3));
-                 */
+                 Assert.IsTrue(moderatorsList.Contains(username3));*/
+                 
              }
              catch (Exception e)
              {
@@ -306,7 +304,6 @@ namespace AcceptanceTests.ServerTests
                  base.Cleanup(forumName);
              }
              
-            Assert.Fail("Not Yet Implemented");
         }
         [TestMethod]
         public void TestUserPosts()
@@ -324,16 +321,20 @@ namespace AcceptanceTests.ServerTests
             string content = "content";
             try
             {
-                CreateForum(forumName);
+               /* CreateForum(forumName);
                 bridge.RegisterToForum(forumName, username1, pass1, email1, dateOfBirth1);
                 bridge.ConfirmRegistration(forumName, username1);
                 bridge.LoginUser(forumName, username1, pass1);
                 bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
                 bridge.ConfirmRegistration(forumName, username2);
-                bridge.LoginUser(forumName, username2, pass2);
+                bridge.LoginUser(forumName, username2, pass2);*/
 
                 // create a forum, sub-forum and a thread to add a post to.
                 base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
+                bridge.LoginUser(forumName, username1, pass1);
+                bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
+                bridge.ConfirmRegistration(forumName, username2);
+                bridge.LoginUser(forumName, username2, pass2);
                 List<Tuple<int, string, string>> posts = bridge.GetPostsInForumByUser(forumName, this.adminUserName1, username2);
                 Assert.IsTrue(posts.Count == 0);
                 int threadId = bridge.AddThread(forumName, subForumName, username2, title, content);

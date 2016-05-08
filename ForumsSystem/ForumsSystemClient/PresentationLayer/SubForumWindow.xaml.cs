@@ -52,7 +52,7 @@ namespace ForumsSystemClient.PresentationLayer
             var item = (sender as ListView).SelectedItem;
             if (item != null)
             {
-                Window newWin = new ThreadWindow(forumName, subForumName);
+                Window newWin = new ThreadWindow(forumName, subForumName,1);
                 WindowHelper.SwitchWindow(this, newWin);
             }
         }

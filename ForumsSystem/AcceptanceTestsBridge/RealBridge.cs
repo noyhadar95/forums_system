@@ -46,7 +46,7 @@ namespace AcceptanceTestsBridge
             switch (forumPol)
             {
                 case Policies.Password:
-                    policy = new PasswordPolicy(forumPol, 2,100);
+                    policy = new PasswordPolicy(forumPol, 2, 100);
                     break;
                 case Policies.Authentication:
                     policy = new AuthenticationPolicy(forumPol);
@@ -76,7 +76,7 @@ namespace AcceptanceTestsBridge
                     policy = new MaxModeratorsPolicy(forumPol, maxModerators);
                     break;
                 default:
-                    policy = new PasswordPolicy(forumPol, 2,100);
+                    policy = new PasswordPolicy(forumPol, 2, 100);
                     break;
             }
             IForum newForum = sl.CreateForum(creator,creatorPass , forumName, policy, newAdmins);
@@ -261,7 +261,7 @@ namespace AcceptanceTestsBridge
             switch (forumPol)
             {
                 case Policies.Password:
-                    policy = new PasswordPolicy(forumPol, 2,100);
+                    policy = new PasswordPolicy(forumPol, 2, 100);
                     break;
                 case Policies.Authentication:
                     policy = new AuthenticationPolicy(forumPol);
@@ -291,7 +291,7 @@ namespace AcceptanceTestsBridge
                     policy = new MaxModeratorsPolicy(forumPol, maxModerators);
                     break;
                 default:
-                    policy = new PasswordPolicy(forumPol, 2,100);
+                    policy = new PasswordPolicy(forumPol, 2, 100);
                     break;
             }
             return sl.SetForumProperties(username, forumName, policy);
@@ -366,9 +366,10 @@ namespace AcceptanceTestsBridge
         //===============================================================
 
 
-        public bool ShouldCleanup(string className,string methodName)
+        public bool ShouldCleanup(string className, string methodName)
         {
-            try {
+            try
+            {
                 XDocument doc = XDocument.Load
                     ("C:\\Users\\omerh\\Documents\\GitHub\\forums_system\\ForumsSystem\\AcceptanceTests\\ServerTests\\AddModeratorTestsData.xml");
 
@@ -381,7 +382,7 @@ namespace AcceptanceTestsBridge
                     return true;
                 return false;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return true;
             }
@@ -395,7 +396,7 @@ namespace AcceptanceTestsBridge
             sl.AddFriend(forumName, username1, username2);
         }
 
-        public bool IsExistNotificationOfPost(string forumName,string username, int postId)
+        public bool IsExistNotificationOfPost(string forumName, string username, int postId)
         {
 
             IForum forum = sl.GetForum(forumName);
@@ -412,22 +413,44 @@ namespace AcceptanceTestsBridge
             return false;
         }
 
-        public void EditPost(string forumName,string subForumName,int threadId,string editor, int postId, string newTitle, string newContent)
+        public void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent)
         {
-            sl.EditPost(forumName, subForumName, threadId, editor, postId, newTitle, newContent);
-        }
+            /*if (newTitle == "" && newContent == "")
+                return;//illegal post
 
-      /*  public void DeletePost(string forumName, string subForumName, int threadId, string deleter, int postId)
-        {
             IForum forum = sl.GetForum(forumName);
-            IUser user = forum.getUser(deleter);
             ISubForum subforum = forum.getSubForum(subForumName);
             Thread thread = subforum.GetThreadById(threadId);
             Post post = thread.GetPostById(postId);
+            post.Title = newTitle;
+            post.Content = newContent;
+            */
+            sl.EditPost(forumName, subForumName, threadId, editor, postId, newTitle, newContent);
         }
-        */
+
+        /*  public void DeletePost(string forumName, string subForumName, int threadId, string deleter, int postId)
+          {
+              IForum forum = sl.GetForum(forumName);
+              IUser user = forum.getUser(deleter);
+              ISubForum subforum = forum.getSubForum(subForumName);
+              Thread thread = subforum.GetThreadById(threadId);
+              Post post = thread.GetPostById(postId);
+          }
+          */
         public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
         {
+                /*
+            IForum forum = sl.GetForum(forumName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            Moderator moderator = subforum.getModeratorByUserName(moderatorName);
+            //IUser user = forum.getUser(remover);
+            //IUser moderator = forum.getUser(moderatorName);
+            if (moderator == null)
+                return false;
+            //  if (!moderator.CanBeDeletedBy(remover))
+            //      return false;
+            return subforum.removeModerator(remover, moderatorName);
+            */
             return sl.RemoveModerator(forumName, subForumName, remover, moderatorName);
         }
 
@@ -440,7 +463,7 @@ namespace AcceptanceTestsBridge
         {
             return sl.GetModeratorsList(forumName, subForumName, adminUserName);
         }
-    
+
         //TUPLE: postId,title,content
         public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string adminUserName, string userEmail)
         {
@@ -460,7 +483,7 @@ namespace AcceptanceTestsBridge
             {
                 return null;
             }
-            
+
         }
 
         public int GetNumOfForums(string username, string password)
@@ -468,14 +491,14 @@ namespace AcceptanceTestsBridge
             return sl.GetNumOfForums(username, password);
         }
 
-        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo(string userName,string password)
+        public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo(string userName, string password)
         {
-            return sl.GetMultipleUsersInfoBySuperAdmin(userName,password);
+            return sl.GetMultipleUsersInfoBySuperAdmin(userName, password);
         }
 
         public List<string> GetNotifications(string forumName, string username)
         {
-            List<PrivateMessageNotification>notif= sl.GetNotifications(forumName, username);
+            List<PrivateMessageNotification> notif = sl.GetNotifications(forumName, username);
             List<string> res = new List<string>();
             if (notif == null)
                 return res;
@@ -486,9 +509,28 @@ namespace AcceptanceTestsBridge
             return res;
         }
 
-        public Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1)
+ 
+        public List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
-            return sl.GetModeratorAppointmentsDetails(forumName, subForumName, adminUserName1, username1);
+            List<Tuple<string, string, DateTime, string, List<int>>> res = new List<Tuple<string, string, DateTime, string, List<int>>>();
+            List<Tuple<string, string, DateTime, string, List<Post>>> l = sl.ReportModeratorsDetails(forumName, adminUserName1);
+            foreach(Tuple<string, string, DateTime, string, List<Post>> t in l)
+            {
+                List<int> postIds = new List<int>();
+                foreach(Post p in t.Item5)
+                {
+                    postIds.Add(p.GetId());
+                }
+                Tuple < string, string, DateTime, string, List<int>> newt = new Tuple<string, string, DateTime, string, List<int>>(
+                    t.Item1, t.Item2, t.Item3, t.Item4, postIds);
+                res.Add(newt);
+            }
+            return res;
+        }
+
+        public void LogoutUser(string forumName, string username)
+        {
+            sl.MemberLogout(forumName, username);
         }
     }
 }

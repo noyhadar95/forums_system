@@ -66,18 +66,22 @@ namespace AcceptanceTests.ServerTests
         // a new sub-forum called subForumName with the given moderators list.
         protected bool CreateSubForumByAdmin1(string forumName, PoliciesStub forumPolicy, string subForumName, Dictionary<string, DateTime> moderators)
         {
-            // create a forum
-            CreateForum(forumName, forumPolicy);
-
-            // register all moderators-to-be to the forum
-            foreach (KeyValuePair<string, DateTime> mod in moderators)
+            if (!bridge.IsExistForum(forumName))
             {
-                string username = mod.Key, pass = mod.Key + "passwd", email = mod.Key + "@gmail.com";
-                DateTime dateOfBirth = new DateTime(1995, 8, 2);
+                // create a forum
+                CreateForum(forumName, forumPolicy);
 
-                bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
-                bridge.ConfirmRegistration(forumName, username);
-                //.AddModerator(forumName, subForumName, this.adminUserName1, mod);
+
+                // register all moderators-to-be to the forum
+                foreach (KeyValuePair<string, DateTime> mod in moderators)
+                {
+                    string username = mod.Key, pass = mod.Key + "passwd", email = mod.Key + "@gmail.com";
+                    DateTime dateOfBirth = new DateTime(1995, 8, 2);
+
+                    bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
+                    bridge.ConfirmRegistration(forumName, username);
+                    //.AddModerator(forumName, subForumName, this.adminUserName1, mod);
+                }
             }
             bridge.LoginUser(forumName, adminUserName1, adminPass1);
             return bridge.CreateSubForum(adminUserName1, forumName, subForumName, moderators);
@@ -91,8 +95,11 @@ namespace AcceptanceTests.ServerTests
             CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
             string publisherPass = "publisherpassword", publisherEmail = "publisher1@gmail.com";
             DateTime publisherDateOfBirth = DateTime.Today.AddYears(-25);
-            bridge.RegisterToForum(forumName, publisher, publisherPass, publisherEmail, publisherDateOfBirth);
-            bridge.LoginUser(forumName, publisher, publisherPass);
+            if (!bridge.IsRegisteredToForum(publisher, forumName))
+            {
+                bridge.RegisterToForum(forumName, publisher, publisherPass, publisherEmail, publisherDateOfBirth);
+                bridge.LoginUser(forumName, publisher, publisherPass);
+            }
             return bridge.AddThread(forumName, subForumName, publisher, title, content);
 
         }

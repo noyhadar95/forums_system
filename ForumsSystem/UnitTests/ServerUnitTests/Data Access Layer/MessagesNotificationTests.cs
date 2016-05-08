@@ -43,7 +43,7 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
         {
             int id = dm.CreateMessage(forumName, "User1", "User2", "Title1", "Much content");
 
-            dmn.AddNotification(forumName, "User2", id);
+            dmn.AddNotification(id);
             Assert.IsTrue(dmn.GetUsersNotifications(forumName, "User2").Rows.Count == 1);
 
 
@@ -54,10 +54,11 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
         {
             int id = dm.CreateMessage(forumName, "User1", "User2", "Title1", "Much content");
 
-            dmn.AddNotification(forumName, "User2", id);
+            dmn.AddNotification(id);
             Assert.IsTrue(dmn.GetUsersNotifications(forumName, "User2").Rows.Count == 1);
 
-            dmn.RemoveNotification(forumName, "User2", id);
+            //    dmn.RemoveNotification(id);
+            dmn.RemoveAllNotifications(forumName, "User2");
             Assert.IsTrue(dmn.GetUsersNotifications(forumName, "User2").Rows.Count == 0);
 
 

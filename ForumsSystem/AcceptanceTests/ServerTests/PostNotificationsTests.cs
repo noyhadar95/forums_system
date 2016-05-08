@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AcceptanceTestsBridge;
 using System.Collections.Generic;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace AcceptanceTests.ServerTests
 {
@@ -75,6 +76,7 @@ namespace AcceptanceTests.ServerTests
             string title = "title1";
             string content = "content1";
             string forumName = GetNextForum();
+            //string forumName = "dasdsa";
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string friend1 = "friend1";
@@ -86,10 +88,24 @@ namespace AcceptanceTests.ServerTests
             string threadPublisher = "publisher1";
             try
             {
+                CreateForum(forumName);
+                bridge.RegisterToForum(forumName, threadPublisher, "pass", threadPublisher + "@gmail.com", DateTime.Today.AddYears(-20));
+                bridge.RegisterToForum(forumName, friend1, "pass", friend1 + "@gmail.com", DateTime.Today.AddYears(-20));
+                bridge.RegisterToForum(forumName, friend2, "pass", friend2 + "@gmail.com", DateTime.Today.AddYears(-20));
+                bridge.LoginUser(forumName, threadPublisher, "pass");
+                bridge.LoginUser(forumName, friend1, "pass");
+                bridge.LoginUser(forumName, friend2, "pass");
+
+
+                bridge.RegisterToForum(forumName, username1, "pass", username1 + "@gmail.com", DateTime.Today.AddYears(-20));
+                bridge.LoginUser(forumName, username1, "pass");
+
+
                 //add the friends to the user
                 bridge.AddFriend(forumName, threadPublisher, friend1);
                 bridge.AddFriend(forumName, threadPublisher, friend2);
-
+                bridge.LogoutUser(forumName, friend1);
+                bridge.LogoutUser(forumName, friend2);
                 // create a forum, sub-forum and thread.
                 int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
                    threadPublisher, title, content);
@@ -102,6 +118,7 @@ namespace AcceptanceTests.ServerTests
             }
             catch (Exception e)
             {
+                base.Cleanup(forumName);
                 Assert.Fail();
             }
             finally
@@ -118,6 +135,8 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestEditPostNotificationsSuccess()
         {
+            DAL_Forum d = new DAL_Forum();
+            d.DeleteAll();
             string title = "title1";
             string content = "content1";
             string forumName = GetNextForum();
@@ -135,6 +154,25 @@ namespace AcceptanceTests.ServerTests
                 string subForumName = "sub forum 1";
                 string threadPublisher = "publisher1";
 
+
+                CreateForum(forumName);
+                bridge.RegisterToForum(forumName, threadPublisher, "pass", threadPublisher + "@gmail.com", DateTime.Today.AddYears(-20));
+                bridge.RegisterToForum(forumName, friend1, "pass", friend1 + "@gmail.com", DateTime.Today.AddYears(-20));
+                bridge.RegisterToForum(forumName, friend2, "pass", friend2 + "@gmail.com", DateTime.Today.AddYears(-20));
+                bridge.RegisterToForum(forumName, friend11, "pass", friend11 + "@gmail.com", DateTime.Today.AddYears(-20));
+                bridge.LoginUser(forumName, threadPublisher, "pass");
+                bridge.LoginUser(forumName, friend1, "pass");
+                bridge.LoginUser(forumName, friend11, "pass");
+                bridge.LoginUser(forumName, friend2, "pass");
+
+                //bridge.LogoutUser(forumName, threadPublisher);
+
+                bridge.RegisterToForum(forumName, username1, "pass", username1 + "@gmail.com", DateTime.Today.AddYears(-20));
+                bridge.LoginUser(forumName, username1, "pass");
+
+
+
+
                 // create a forum, sub-forum and thread.
                 int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
                    threadPublisher, title, content);
@@ -146,6 +184,9 @@ namespace AcceptanceTests.ServerTests
                 int reply11 = bridge.AddReplyPost(forumName, subForumName, threadID, friend2, postID, title, content);
 
                 //edit a post
+                bridge.LogoutUser(forumName, friend1);
+                bridge.LogoutUser(forumName, friend11);
+                bridge.LogoutUser(forumName, friend2);
                 bridge.EditPost(forumName,subForumName,threadID, threadPublisher, postID, title, content);
 
                 //now check that the users received a notification about the edition
@@ -182,11 +223,24 @@ namespace AcceptanceTests.ServerTests
             string threadPublisher = "publisher1";
             try
             {
+                CreateForum(forumName);
+                bridge.RegisterToForum(forumName, threadPublisher, "pass", threadPublisher + "@gmail.com", DateTime.Today.AddYears(-20));
+                bridge.RegisterToForum(forumName, friend1, "pass", friend1 + "@gmail.com", DateTime.Today.AddYears(-20));
+                bridge.RegisterToForum(forumName, friend2, "pass", friend2 + "@gmail.com", DateTime.Today.AddYears(-20));
+                bridge.LoginUser(forumName, threadPublisher, "pass");
+                bridge.LoginUser(forumName, friend1, "pass");
+                bridge.LoginUser(forumName, friend2, "pass");
+
+
+                bridge.RegisterToForum(forumName, username1, "pass", username1 + "@gmail.com", DateTime.Today.AddYears(-20));
+                bridge.LoginUser(forumName, username1, "pass");
+
                 // create a forum, sub-forum and thread.
                 int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
                    threadPublisher, title, content);
                 int postID = bridge.GetOpenningPostID(forumName, subForumName, threadID);
 
+                bridge.LogoutUser(forumName, threadPublisher);
                 // add replies posts
                 int reply1 = bridge.AddReplyPost(forumName, subForumName, threadID, friend1, postID, title, content);
                 int reply2 = bridge.AddReplyPost(forumName, subForumName, threadID, friend2, reply1, title, content);
@@ -296,7 +350,8 @@ namespace AcceptanceTests.ServerTests
                 //delete a post
                 bridge.DeletePost(forumName,subForumName,threadID,threadPublisher, postID);
 
-                //now check that the users received a notification about the edition
+
+                //now check that the users received a notification about the additon
                 Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName,friend1, reply1));
                 Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend2, reply1));
                 Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend11, reply1));
