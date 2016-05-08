@@ -160,10 +160,6 @@ namespace AcceptanceTests.ServerTests
                 bridge.RegisterToForum(forumName, friend1, "pass", friend1 + "@gmail.com", DateTime.Today.AddYears(-20));
                 bridge.RegisterToForum(forumName, friend2, "pass", friend2 + "@gmail.com", DateTime.Today.AddYears(-20));
                 bridge.RegisterToForum(forumName, friend11, "pass", friend11 + "@gmail.com", DateTime.Today.AddYears(-20));
-                bridge.ConfirmRegistration(forumName, friend1);
-                bridge.ConfirmRegistration(forumName, friend2);
-                bridge.ConfirmRegistration(forumName, friend11);
-
                 bridge.LoginUser(forumName, threadPublisher, "pass");
                 bridge.LoginUser(forumName, friend1, "pass");
                 bridge.LoginUser(forumName, friend11, "pass");
@@ -172,8 +168,6 @@ namespace AcceptanceTests.ServerTests
                 //bridge.LogoutUser(forumName, threadPublisher);
 
                 bridge.RegisterToForum(forumName, username1, "pass", username1 + "@gmail.com", DateTime.Today.AddYears(-20));
-                bridge.ConfirmRegistration(forumName, username1);
-
                 bridge.LoginUser(forumName, username1, "pass");
 
 
@@ -198,7 +192,7 @@ namespace AcceptanceTests.ServerTests
                 //now check that the users received a notification about the edition
                 Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName,friend1, postID));
                 Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend2, postID));
-                Assert.IsFalse(bridge.IsExistNotificationOfPost(forumName, friend11, postID));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend11, postID));
             }
             catch (Exception e)
             {
@@ -299,22 +293,8 @@ namespace AcceptanceTests.ServerTests
                    threadPublisher, title, content);
                 int postID = bridge.GetOpenningPostID(forumName, subForumName, threadID);
 
-                bridge.RegisterToForum(forumName, friend1, "friend1pass", "friend1@gmail.com", DateTime.Today);
-                bridge.ConfirmRegistration(forumName, friend1);
-                bridge.RegisterToForum(forumName, friend2, "friend2pass", "friend2@gmail.com", DateTime.Today);
-                bridge.ConfirmRegistration(forumName, friend2);
-                bridge.LoginUser(forumName, friend1, "friend1pass");
-                bridge.LogoutUser(forumName, threadPublisher);
-
-
                 // add replies posts
                 int reply1 = bridge.AddReplyPost(forumName, subForumName, threadID, friend1, postID, title, content);
-
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend2, reply1));
-
-                bridge.LoginUser(forumName, friend2, "friend2pass");
-                bridge.LogoutUser(forumName, friend1);
-
                 int reply2 = bridge.AddReplyPost(forumName, subForumName, threadID, friend2, reply1, title, content);
                 int reply11 = bridge.AddReplyPost(forumName, subForumName, threadID, friend2, postID, title, content);
 
@@ -322,9 +302,9 @@ namespace AcceptanceTests.ServerTests
                 bridge.DeletePost(forumName,subForumName,threadID,friend1, reply1);
 
                 //now check that the users received a notification about the edition
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend1, reply11));
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, threadPublisher, reply1));
-                Assert.IsFalse(bridge.IsExistNotificationOfPost(forumName, friend2, reply11));
+                Assert.IsFalse(bridge.IsExistNotificationOfPost(forumName, friend2, reply1));//notify only those who commented the deleted post
+                Assert.IsFalse(bridge.IsExistNotificationOfPost(forumName, threadPublisher, reply1));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend11, reply1));
             }
             catch (Exception e)
             {
@@ -347,10 +327,12 @@ namespace AcceptanceTests.ServerTests
             string username1 = "user1";
             string friend1 = "friend1";
             string friend2 = "friend2";
+            string friend11 = "friend11";
             DateTime dateOfBirth1 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
             try
-            {                               
+            {
+
                 moderators.Add(username1, DateTime.Today.AddDays(100));
                 string subForumName = "sub forum 1";
                 string threadPublisher = "publisher1";
@@ -359,19 +341,9 @@ namespace AcceptanceTests.ServerTests
                 int threadID = base.AddThread(forumName, forumPolicy, subForumName, moderators,
                    threadPublisher, title, content);
                 int postID = bridge.GetOpenningPostID(forumName, subForumName, threadID);
-                bridge.RegisterToForum(forumName, friend1, "friend1pass", "friend1@gmail.com", DateTime.Today);
-                bridge.ConfirmRegistration(forumName, friend1);
-                bridge.RegisterToForum(forumName, friend2, "friend2pass", "friend2@gmail.com", DateTime.Today);
-                bridge.ConfirmRegistration(forumName, friend2);
-                bridge.LoginUser(forumName, friend1, "friend1pass");
-                bridge.LogoutUser(forumName, threadPublisher);
 
                 // add replies posts
                 int reply1 = bridge.AddReplyPost(forumName, subForumName, threadID, friend1, postID, title, content);
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend2, reply1));
-
-                bridge.LoginUser(forumName, friend2, "friend2pass");
-                bridge.LogoutUser(forumName, friend1);
                 int reply2 = bridge.AddReplyPost(forumName, subForumName, threadID, friend2, reply1, title, content);
                 int reply11 = bridge.AddReplyPost(forumName, subForumName, threadID, friend2, postID, title, content);
 
@@ -380,8 +352,9 @@ namespace AcceptanceTests.ServerTests
 
 
                 //now check that the users received a notification about the additon
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, threadPublisher, reply1));
-                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend1, reply2));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName,friend1, reply1));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend2, reply1));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend11, reply1));
             }
             catch (Exception e)
             {

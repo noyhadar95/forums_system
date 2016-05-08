@@ -420,8 +420,8 @@ namespace AcceptanceTestsBridge
             ISubForum subforum = forum.getSubForum(subForumName);
             Thread thread = subforum.GetThreadById(threadId);
             Post post = thread.GetPostById(postId);
-            IUser user = forum.getUser(editor);
-            user.editPost(newTitle, newContent, post);
+            post.Title = newTitle;
+            post.Content = newContent;
         }
 
         /*  public void DeletePost(string forumName, string subForumName, int threadId, string deleter, int postId)

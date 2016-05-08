@@ -14,7 +14,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public PasswordPolicy(Policies type, int requiredLength, int passwordValidity) :base(type)
         {
-            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1,false, -1, -1, requiredLength, passwordValidity, -1);
             this.requiredLength = requiredLength;
             this.passwordValidity = passwordValidity;
         }
