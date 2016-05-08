@@ -42,6 +42,7 @@ namespace ForumsSystemClient.PresentationLayer
         public void AddAdmin(User admin)
         {
             admins.Add(admin);
+            adminsLVItems.Add(admin.Username);
         }
 
         private void submitBtn_Click(object sender, RoutedEventArgs e)
@@ -73,7 +74,8 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void addAdminBtn_Click(object sender, RoutedEventArgs e)
         {
-            WindowHelper.SwitchWindow(this, new AddAdminWindow());
+            // open a new window without closing this one
+            WindowHelper.ShowWindow(this, new AddAdminWindow(this));
         }
 
         private void removeAdminBtn_Click(object sender, RoutedEventArgs e)
@@ -91,7 +93,10 @@ namespace ForumsSystemClient.PresentationLayer
                 foreach (User a in admins)
                 {
                     if (a.Username == selectedItem)
+                    {
                         admins.Remove(a);
+                        break;
+                    }
                 }
             }
         }

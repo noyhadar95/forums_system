@@ -20,14 +20,20 @@ namespace ForumsSystemClient.PresentationLayer
     /// </summary>
     public partial class AddAdminWindow : Window
     {
-        public AddAdminWindow()
+        AddForumWindow addForumWin;
+
+        public AddAdminWindow(AddForumWindow addForumWin)
         {
             InitializeComponent();
+
+            WindowHelper.SetWindowBGImg(this);
+
+            this.addForumWin = addForumWin;
         }
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
-            WindowHelper.SwitchWindow(this, new AddForumWindow());
+            Close();
         }
 
         private void addAdminBtn_Click(object sender, RoutedEventArgs e)
@@ -78,12 +84,10 @@ namespace ForumsSystemClient.PresentationLayer
             }
 
             DateTime dob = nullable_dob.Value;
-
             User admin = new User(username, password, email, dob);
-            AddForumWindow newWin = new AddForumWindow();
-            newWin.AddAdmin(admin);
+            addForumWin.AddAdmin(admin);
 
-            WindowHelper.SwitchWindow(this, newWin);
+            Close();
 
         }
     }

@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources
 {
-    public class MinimumAgePolicy :Policy
+    public class MinimumAgePolicy : Policy
     {
         private int minAge;
+
+        public MinimumAgePolicy() : base()
+        {
+
+        }
 
         public MinimumAgePolicy(Policies type, int minAge) : base(type)
         {
