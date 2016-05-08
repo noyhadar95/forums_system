@@ -628,6 +628,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             return type.ReportModerators(this);
         }
+
+        public void AddToMessageNotification(PrivateMessageNotification messageNotification)
+        {
+            this.privateMessageNotifications.Add(messageNotification);
+        }
     }
 
 

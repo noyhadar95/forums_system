@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +21,26 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.title = title;
             this.content = content;
             this.id = id;
+        }
+
+        public static void populateMessageNotification(Dictionary<string, IUser> users, Dictionary<string, IUser> waiting_users)
+        {
+            DAL_MessagesNotification dm = new DAL_MessagesNotification();
+            Dictionary<string, IUser> allUsers = users.Union(waiting_users).ToDictionary(k => k.Key, v => v.Value);
+
+            foreach (KeyValuePair<string, IUser> entry in allUsers)
+            {
+                DataTable messageNotificationTbl = dm.GetUsersNotifications(entry.Value.getForum().getName(), entry.Key);
+                foreach (DataRow messageRow in messageNotificationTbl.Rows)
+                {
+                    string sender = messageRow["SenderUserName"].ToString();
+                    string title = messageRow["Title"].ToString();
+                    string content = messageRow["Content"].ToString();
+                    int id = (int)messageRow["Id"];
+
+                    entry.Value.AddToMessageNotification(new PrivateMessageNotification(sender, title, content, id));
+                }
+            }
         }
     }
 }

@@ -58,16 +58,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             }
         }
 
-        public static void populateMessageNotification(Dictionary<string, IUser> users, Dictionary<string, IUser> waiting_users)
-        {
-            DAL_MessagesNotification dm = new DAL_MessagesNotification();
-            Dictionary<string, IUser> allUsers = users.Union(waiting_users).ToDictionary(k => k.Key, v => v.Value);
-            dm.
-            foreach (KeyValuePair<string, IUser> entry in allUsers)
-            {
-
-            }
-        }
+       
 
     }
 }

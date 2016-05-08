@@ -47,6 +47,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         Type getType();
         void AddToreceivedMessages(PrivateMessage privateMessage);
         void AddTosentMessages(PrivateMessage privateMessage);
+        void AddToMessageNotification(PrivateMessageNotification);
         List<PrivateMessageNotification> GetPrivateMessageNotifications();
         void AddPrivateMessageNotification(PrivateMessage newMessage);
 
