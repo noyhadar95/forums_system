@@ -35,7 +35,7 @@ namespace ForumsSystem.Server.ServiceLayer
             SuperAdmin creator;
             if (!SuperAdmin.GetInstance().userName.Equals(creatorName))
                 return null;
-            if (!SuperAdmin.GetInstance().password.Equals(creatorName))
+            if (!SuperAdmin.GetInstance().password.Equals(password))
                 return null;
             creator = SuperAdmin.GetInstance();
             return creator.createForum(name, properties, adminUsername);
