@@ -18,6 +18,7 @@ namespace ForumsSystemClient.Resources
         private static int nextId = 1;//TODO: Change the way to initialize this
 
 
+
         public User Publisher { get { return publisher; } set { publisher = value; } }
 
         public Post()
@@ -67,6 +68,7 @@ namespace ForumsSystemClient.Resources
             }
             return null;
         }
+
 
     }
 }

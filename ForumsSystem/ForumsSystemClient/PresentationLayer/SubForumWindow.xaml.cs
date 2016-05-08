@@ -34,6 +34,7 @@ namespace ForumsSystemClient.PresentationLayer
             List<string> items = cl.GetThreadsList(forumName, subForumName);
             threadsListView.ItemsSource = items;
 
+
             Dictionary<int, string> dict = new Dictionary<int, string>();
             threadsListView.ItemsSource = dict;
 
@@ -55,11 +56,9 @@ namespace ForumsSystemClient.PresentationLayer
             var item = (sender as ListView).SelectedItem;
             if (item != null)
             {
-<<<<<<< HEAD
-                Window newWin = new ThreadWindow(forumName, subForumName);
-=======
+
                 Window newWin = new ThreadWindow(forumName, subForumName, 1);
->>>>>>> refs/remotes/origin/GUI-with-server
+
                 WindowHelper.SwitchWindow(this, newWin);
             }
         }

@@ -28,6 +28,7 @@ namespace ForumsSystemClient.Resources
         private bool emailAccepted;
 
 
+
         public string Username { get { return userName; } set { userName = value; } }
 
         public User()
@@ -49,6 +50,7 @@ namespace ForumsSystemClient.Resources
             this.email = email;
             dateOfBirth= dateTime;
         }
+
 
     }
 }

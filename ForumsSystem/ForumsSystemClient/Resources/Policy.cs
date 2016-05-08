@@ -25,6 +25,7 @@ namespace ForumsSystemClient.Resources
         protected Policies type;
         private Policy nextPolicy;
 
+
         public Policies Type { get { return type; } set { this.type = value; } }
         public Policy NextPolicy { get { return nextPolicy; } set { this.nextPolicy = value; } }
 
@@ -38,6 +39,7 @@ namespace ForumsSystemClient.Resources
             this.type = type;
             this.nextPolicy = null;
         }
+
 
     }
 }

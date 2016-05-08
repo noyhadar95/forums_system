@@ -15,6 +15,7 @@ namespace ForumsSystemClient.Resources
         private Dictionary<string, User> waiting_users { get; set; }//username, user - waiting for confirmation
 
 
+
         public Forum()
         {
 
