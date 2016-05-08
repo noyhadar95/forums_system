@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumsSystemClient.Resources
+namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
     public class UsersLoadPolicy:Policy
     {
@@ -18,6 +18,19 @@ namespace ForumsSystemClient.Resources
         public UsersLoadPolicy(Policies type, int maxNumOfUsers) : base(type)
         {
             this.maxNumOfUsers = maxNumOfUsers;
+        }
+
+        public int MaxNumOfUsers
+        {
+            get
+            {
+                return maxNumOfUsers;
+            }
+
+            set
+            {
+                maxNumOfUsers = value;
+            }
         }
     }
 }

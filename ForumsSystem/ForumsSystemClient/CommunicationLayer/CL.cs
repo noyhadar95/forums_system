@@ -1,4 +1,6 @@
-﻿using ForumsSystemClient.Resources;
+﻿using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
+using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
+using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,6 +84,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public Forum CreateForum(string userName, string password, string forumName, Policy policy, List<User> newAdmins)
         {
+
             return (Forum)Client.SendRequest("CreateForum", userName, password, forumName, policy, newAdmins);
         }
 

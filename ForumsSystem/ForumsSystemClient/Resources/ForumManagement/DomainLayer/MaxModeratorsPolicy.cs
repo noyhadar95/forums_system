@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumsSystemClient.Resources
+namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
     public class MaxModeratorsPolicy :Policy
     {
@@ -18,6 +18,19 @@ namespace ForumsSystemClient.Resources
         public MaxModeratorsPolicy(Policies type, int maxModerators) : base(type)
         {
             this.maxModerators = maxModerators;
+        }
+
+        public int MaxModerators
+        {
+            get
+            {
+                return maxModerators;
+            }
+
+            set
+            {
+                maxModerators = value;
+            }
         }
     }
 }

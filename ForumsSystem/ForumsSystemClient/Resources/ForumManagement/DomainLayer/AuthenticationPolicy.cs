@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumsSystemClient.Resources
+namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
     public class AuthenticationPolicy :Policy
     {

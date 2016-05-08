@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ForumsSystemClient.Resources.UserManagement.DomainLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumsSystemClient.Resources
+namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
     public class Post
     {
@@ -46,6 +47,58 @@ namespace ForumsSystemClient.Resources
         public string Title { get { return title; } set { this.title = value; } }
         public string Content { get { return content; } set { this.content = value; } }
         public Thread Thread { get { return thread; } set { this.thread = value; } }
+
+        public List<Post> Replies
+        {
+            get
+            {
+                return replies;
+            }
+
+            set
+            {
+                replies = value;
+            }
+        }
+
+        public Post ParentPost
+        {
+            get
+            {
+                return parentPost;
+            }
+
+            set
+            {
+                parentPost = value;
+            }
+        }
+
+        public int Id
+        {
+            get
+            {
+                return id;
+            }
+
+            set
+            {
+                id = value;
+            }
+        }
+
+        public static int NextId
+        {
+            get
+            {
+                return nextId;
+            }
+
+            set
+            {
+                nextId = value;
+            }
+        }
 
         public int GetId()
         {

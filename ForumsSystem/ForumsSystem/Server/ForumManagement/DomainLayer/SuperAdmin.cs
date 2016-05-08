@@ -41,7 +41,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return instance;
         }
 
-        public Forum createForum(string forumName, Policy properties, List<IUser> adminUsername)
+        public Forum createForum(string forumName, Policy properties, List<User> adminUsername)
         {
             if (adminUsername.Count == 0)// there must be at least 1 admin
                 return null;

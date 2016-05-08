@@ -11,11 +11,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     /// </summary>
     public class MinimumAgePolicy :Policy
     {
-        private int minAge;
+        public int minAge { get; set; }
 
         public MinimumAgePolicy(Policies type, int minAge) : base(type)
         {
             this.minAge = minAge;
+        }
+        private MinimumAgePolicy() :base()
+        {
+
         }
 
         public override bool CheckPolicy(PolicyParametersObject param)

@@ -1,5 +1,6 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
-using ForumsSystemClient.Resources;
+using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
+using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;

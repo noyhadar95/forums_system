@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -69,28 +70,28 @@
     <Compile Include="PresentationLayer\EditPostWindow.xaml.cs">
       <DependentUpon>EditPostWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Resources\AdminAppointmentPolicy.cs" />
-    <Compile Include="Resources\AuthenticationPolicy.cs" />
-    <Compile Include="Resources\ConfidentialityPolicy.cs" />
-    <Compile Include="Resources\Forum.cs" />
-    <Compile Include="Resources\MaxModeratorsPolicy.cs" />
-    <Compile Include="Resources\MemberSuspensionPolicy.cs" />
-    <Compile Include="Resources\MinimumAgePolicy.cs" />
-    <Compile Include="Resources\Moderator.cs" />
-    <Compile Include="Resources\ModeratorAppointmentPolicy.cs" />
-    <Compile Include="Resources\ModeratorSeniorityPolicy.cs" />
-    <Compile Include="Resources\ModeratorSuspensionPolicy.cs" />
-    <Compile Include="Resources\PasswordPolicy.cs" />
-    <Compile Include="Resources\Policy.cs" />
-    <Compile Include="Resources\PolicyEnum.cs" />
-    <Compile Include="Resources\Post.cs" />
-    <Compile Include="Resources\PrivateMessage.cs" />
-    <Compile Include="Resources\SubForum.cs" />
-    <Compile Include="Resources\SuperAdmin.cs" />
-    <Compile Include="Resources\System.cs" />
-    <Compile Include="Resources\Thread.cs" />
-    <Compile Include="Resources\User.cs" />
-    <Compile Include="Resources\UsersLoadPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\AdminAppointmentPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\ConfidentialityPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\Forum.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\MaxModeratorsPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\MemberSuspensionPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\MinimumAgePolicy.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\Moderator.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\ModeratorAppointmentPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\ModeratorSeniorityPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\ModeratorSuspensionPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\PasswordPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\Policy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\PolicyEnum.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\Post.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\PrivateMessage.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\SubForum.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\SuperAdmin.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\System.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\Thread.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\User.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\UsersLoadPolicy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommunicationLayer\CL.cs" />

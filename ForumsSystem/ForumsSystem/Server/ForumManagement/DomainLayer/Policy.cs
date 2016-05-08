@@ -5,16 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
 using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using System.Runtime.Serialization;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
+    [DataContract]
     public abstract class Policy 
     {
-        protected Policies type;
-        private Policy nextPolicy;
-        private int id;
+        public Policies type { get; set; }
+        public Policy nextPolicy { get; set; }
+        public int id { get; set; }
         DAL_Policy dal_policy = new DAL_Policy();
 
+        protected Policy()
+        {
+
+        }
         public Policy(Policies type)
         {
             this.type = type;

@@ -30,7 +30,7 @@ namespace ForumsSystem.Server.ServiceLayer
                 return false;
         }
 
-        public IForum CreateForum(string creatorName,string password, string name, Policy properties, List<IUser> adminUsername)
+        public Forum CreateForum(string creatorName,string password, string name, Policy properties, List<User> adminUsername)
         {
             SuperAdmin creator;
             if (!SuperAdmin.GetInstance().userName.Equals(creatorName))
@@ -59,7 +59,7 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             
             IForum forum = GetForum(forumName);
-            IUser guest = forum.GetGuest(guestName);
+            IUser guest = new User();//forum.GetGuest(guestName);
             return guest.RegisterToForum(guestName, password, forum, email, dob);
 
         }

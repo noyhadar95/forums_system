@@ -1,5 +1,6 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
-using ForumsSystemClient.Resources;
+using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
+using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,7 +43,7 @@ namespace ForumsSystemClient.PresentationLayer
         public void AddAdmin(User admin)
         {
             admins.Add(admin);
-            adminsLVItems.Add(admin.Username);
+            adminsLVItems.Add(((User)admin).Username);
         }
 
         private void submitBtn_Click(object sender, RoutedEventArgs e)

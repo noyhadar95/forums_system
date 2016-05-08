@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumsSystemClient.Resources
+namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
     public class MinimumAgePolicy : Policy
     {
@@ -17,7 +17,20 @@ namespace ForumsSystemClient.Resources
 
         public MinimumAgePolicy(Policies type, int minAge) : base(type)
         {
-            this.minAge = minAge;
+            this.MinAge = minAge;
+        }
+
+        public int MinAge
+        {
+            get
+            {
+                return minAge;
+            }
+
+            set
+            {
+                minAge = value;
+            }
         }
     }
 }

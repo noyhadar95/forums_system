@@ -17,7 +17,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
         bool ChangeForumProperties(string username,string forumName, Policy properties);
 
-        IForum CreateForum(string creatorName, string password, string name, Policy properties, List<IUser> adminUsername);
+        Forum CreateForum(string creatorName, string password, string name, Policy properties, List<User> adminUsername);
 
         ISubForum CreateSubForum(string creator, string forumName, string subforumName, Dictionary<string, DateTime> moderators);
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ForumsSystemClient.Resources
+namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
     public class MemberSuspensionPolicy :Policy
     {
@@ -19,6 +19,19 @@ namespace ForumsSystemClient.Resources
         public MemberSuspensionPolicy(Policies type, int numOfComplaints) : base(type)
         {
             this.numOfComplaints = numOfComplaints;
+        }
+
+        public int NumOfComplaints
+        {
+            get
+            {
+                return numOfComplaints;
+            }
+
+            set
+            {
+                numOfComplaints = value;
+            }
         }
     }
 }

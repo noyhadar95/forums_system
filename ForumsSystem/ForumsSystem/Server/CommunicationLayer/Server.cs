@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace ForumsSystem.Server.CommunicationLayer
         {
             SERVER_IP = GetLocalIPAddress();
             clients = new Dictionary<Tuple<string, string>, string>();
+            halfClients = new Dictionary<Tuple<string, string>, string>();
             sl = new ServiceLayer.ServiceLayer();
                 //---listen at the specified IP and port no.---
                 IPAddress localAdd = IPAddress.Parse(SERVER_IP);
@@ -160,15 +162,15 @@ namespace ForumsSystem.Server.CommunicationLayer
             TcpClient client = ((ThreadParameter)tp).client;
             if (method.Equals("MemberLogin")){//check if login then Halfsubscribe
                 string username = (string)parameters.ElementAt(0);
-                Forum f = (Forum)parameters.ElementAt(2);
-                string forumName = f.getName();
+                //Forum f = (Forum)parameters.ElementAt(2);
+                string forumName = (string)parameters.ElementAt(2);
                 HalfSubscribeClient(client, forumName, username);
             }
             if (method.Equals("MemberLogout"))
             {//TODO:check if logout then unsubscribe
                 string username = (string)parameters.ElementAt(0);
-                Forum f = (Forum)parameters.ElementAt(2);
-                string forumName = f.getName();
+               // Forum f = (Forum)parameters.ElementAt(2);
+                string forumName = (string) parameters.ElementAt(2);
                 UnSubscribeClient(forumName, username);
             }
 
@@ -176,41 +178,109 @@ namespace ForumsSystem.Server.CommunicationLayer
             Type thisType = typeof(ServiceLayer.ServiceLayer);
             MethodInfo theMethod = thisType.GetMethod(method);
             Object returnObj = theMethod.Invoke(sl, parameters.ToArray());
+            if (returnObj == null)
+            {
 
-            string pType = returnObj.GetType().ToString();
-            pType = pType.Substring(pType.LastIndexOf('.') + 1);
+                string returnValue = "null";
 
-            string returnValue = pType + delimeter + ObjectToString(returnObj);
-           
 
-            //---write back the text to the client---
-            Console.WriteLine("Sending back : " + returnValue);
-            NetworkStream nwStream = client.GetStream();
-            byte[] buf = GetBytes(returnValue);
-            nwStream.Write(buf, 0,buf.Length);
-            client.Close();
+                //---write back the text to the client---
+                Console.WriteLine("Sending back : " + returnValue);
+                NetworkStream nwStream = client.GetStream();
+                byte[] buf = GetBytes(returnValue);
+                nwStream.Write(buf, 0, buf.Length);
+                client.Close();
+            }
+            else {
+                string pType = returnObj.GetType().ToString();
+                // if(!pType.StartsWith("System."))
+                //   pType = pType.Substring(pType.LastIndexOf('.') + 1);
+
+                string returnValue = pType + delimeter + ObjectToString(returnObj);
+
+
+                //---write back the text to the client---
+                Console.WriteLine("Sending back : " + returnValue);
+                NetworkStream nwStream = client.GetStream();
+                byte[] buf = GetBytes(returnValue);
+                nwStream.Write(buf, 0, buf.Length);
+                client.Close();
+            }
         }
 
 
-        public static string ObjectToString(Object obj)
-        { 
-            XmlSerializer serializer = new XmlSerializer(obj.GetType());
-            StringWriter writer = new StringWriter();
-            serializer.Serialize(writer,obj);
-            return writer.ToString();
-
-        }
-
+        
         public static Object StringToObject(string classType, string str)
         {
-            string addition = "ForumsSystem.Server.ForumManagement.DomainLayer.";
-            if (classType == "String" || classType == "Integer" || classType == "Boolean" || classType == "string" || classType == "int" || classType == "bool")
-                addition = "System.";
-            Type type = Type.GetType(addition + classType);
+            string addition = "ForumsSystem.Server.";
+            //if (classType == "String" || classType == "Integer" || classType == "Boolean" || classType == "string" || classType == "int" || classType == "bool")
+            //    addition = "System.";
+            if (classType.StartsWith("System."))
+                addition = "";
+            int index = classType.IndexOf("ForumsSystemClient.Resources");
+            if (index > -1)
+            {
+                string[] seperators = new string[] { "ForumsSystemClient.Resources" };
+                string[] items = classType.Split(seperators, StringSplitOptions.None);
+                classType = items[0] + "ForumsSystem.Server" + items[1];
+            }
+            
+
+            Type type = Type.GetType(classType);
+            /*
             XmlSerializer serializer = new XmlSerializer(type);
             StringReader reader = new StringReader(str);
             return serializer.Deserialize(reader);
+            */
+             return Deserialize(str, type);
         }
-        
+
+        public static string ObjectToString(Object obj)
+        {
+            /* XmlSerializer serializer = new XmlSerializer(obj.GetType());
+             StringWriter writer = new StringWriter();
+             serializer.Serialize(writer, obj);
+             return writer.ToString();Domain
+             */
+
+            return Serialize(obj);
+
+        }
+
+
+        public static string Serialize(object obj)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            using (StreamReader reader = new StreamReader(memoryStream))
+            {
+                DataContractSerializer serializer = new DataContractSerializer(obj.GetType());
+                serializer.WriteObject(memoryStream, obj);
+                memoryStream.Position = 0;
+                return reader.ReadToEnd();
+            }
+        }
+
+        public static object Deserialize(string xml, Type toType)
+        {
+            int index = xml.IndexOf("ForumsSystemClient.Resources");
+            if (index > -1) {
+                string[] seperators = new string[] { "ForumsSystemClient.Resources" };
+                string[] items = xml.Split(seperators, StringSplitOptions.None);
+                xml = "";
+                for (int i = 0; i < items.Length; i+=2)
+                {
+                    xml += items[i] + "ForumsSystem.Server" + items[i + 1];
+                }
+            }
+            using (Stream stream = new MemoryStream())
+            {
+                byte[] data = System.Text.Encoding.UTF8.GetBytes(xml);
+                stream.Write(data, 0, data.Length);
+                stream.Position = 0;
+                DataContractSerializer deserializer = new DataContractSerializer(toType);
+                return deserializer.ReadObject(stream);
+            }
+        }
+
     }
 }
