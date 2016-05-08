@@ -43,10 +43,22 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void moveRightBtn_Click(object sender, RoutedEventArgs e)
         {
+
             // move username from left to right
             var selectedItems = notAdminsListView.SelectedItems;
             List<string> selectedItemsCopy = new List<string>();
             foreach (string item in selectedItems)
+
+            admins.Add(admin);
+            adminsLVItems.Add(admin.Username);
+        }
+
+        private void submitBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string forumName = nameTB.Text;
+
+            if (forumName == "")
+
             {
                 selectedItemsCopy.Add(item);
             }
@@ -57,7 +69,17 @@ namespace ForumsSystemClient.PresentationLayer
             }
         }
 
+
         private void moveLeftBtn_Click(object sender, RoutedEventArgs e)
+
+        private void addAdminBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // open a new window without closing this one
+            WindowHelper.ShowWindow(this, new AddAdminWindow(this));
+        }
+
+        private void removeAdminBtn_Click(object sender, RoutedEventArgs e)
+
         {
             // move username from right to left
             var selectedItems = adminsListView.SelectedItems;
@@ -70,6 +92,17 @@ namespace ForumsSystemClient.PresentationLayer
             {
                 notAdminsLVItems.Add(selectedItem);
                 adminsLVItems.Remove(selectedItem);
+
+                // remove admin from admins list
+                foreach (User a in admins)
+                {
+                    if (a.Username == selectedItem)
+                    {
+                        admins.Remove(a);
+                        break;
+                    }
+                }
+
             }
         }
 

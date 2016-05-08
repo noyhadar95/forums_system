@@ -34,6 +34,10 @@ namespace ForumsSystemClient.PresentationLayer
             List<string> items = cl.GetThreadsList(forumName, subForumName);
             threadsListView.ItemsSource = items;
 
+            Dictionary<int, string> dict = new Dictionary<int, string>();
+            threadsListView.ItemsSource = dict;
+
+
             this.forumName = forumName;
             this.subForumName = subForumName;
             Title = subForumName;
@@ -46,10 +50,16 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void threadsListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            //KeyValuePair<int, string> keyValuePair = (KeyValuePair<int, string>)threadsListView.SelectedItem;
+
             var item = (sender as ListView).SelectedItem;
             if (item != null)
             {
+<<<<<<< HEAD
                 Window newWin = new ThreadWindow(forumName, subForumName);
+=======
+                Window newWin = new ThreadWindow(forumName, subForumName, 1);
+>>>>>>> refs/remotes/origin/GUI-with-server
                 WindowHelper.SwitchWindow(this, newWin);
             }
         }
