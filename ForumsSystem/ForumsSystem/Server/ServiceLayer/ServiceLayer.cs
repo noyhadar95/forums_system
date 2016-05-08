@@ -59,7 +59,8 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             
             IForum forum = GetForum(forumName);
-            IUser guest = forum.GetGuest(guestName);
+            //IUser guest = forum.GetGuest(guestName);
+            IUser guest = new User();
             return guest.RegisterToForum(guestName, password, forum, email, dob);
 
         }
