@@ -14,7 +14,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private Policy nextPolicy;
         private int id;
         DAL_Policy dal_policy = new DAL_Policy();
+        private Policy()
+        {
 
+        }
         public Policy(Policies type)
         {
             this.type = type;
@@ -22,6 +25,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             id = dal_policy.createPolicy((int)type, -1);
         }
 
+        public static Policy populatePolicy(int id) //TODO: Complete Policy!!
+        {
+            DAL_Policy dp = new DAL_Policy();
+            var policytbl= dp.getPolicy(id);
+            return null;
+        }
         public Policies Type { get { return type; } set { this.type = value; } }
         public Policy NextPolicy { get { return nextPolicy; } set { this.nextPolicy = value; } }
 

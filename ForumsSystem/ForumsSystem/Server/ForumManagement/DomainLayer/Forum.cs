@@ -24,6 +24,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
 
         }
+
+        public static Forum populateForum(string forumName, int policyId)
+        {
+            Forum forum = new Forum();
+            forum.name = forumName;
+            forum.policies = Policy.populatePolicy(policyId);
+
+        }
+       
         public Forum(string forumName)
         {
             this.name = forumName;

@@ -87,6 +87,20 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             cmd = null;
         }
 
+        public DataTable getPolicy(int policyId)
+        {
+            Connect_to_DB();
+            string sql = "Select * From Policies WHERE [PolicyId]=@p1";
+
+            OleDbCommand cmd = new OleDbCommand(sql);
+
+            cmd.Parameters.AddWithValue("@p1", policyId);
+
+
+
+            return connect_me.DownloadData2(cmd, "Policy");
+        }
+
 
 
     }

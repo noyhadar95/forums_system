@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using System.Data;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
@@ -24,6 +26,19 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             threads = new List<Thread>();
             Loggers.Logger.GetInstance().AddActivityEntry("SubForum: " + name + "created for Forum: " + ((Forum)forum).name + "by: " + creator.getUsername());
 
+        }
+
+        public static List<SubForum> populateSubForums(string forumName)
+        {
+            List<SubForum> sForums = new List<SubForum>();
+            DAL_SubForums dsf = new DAL_SubForums();
+            DataTable sForumtbl = dsf.GetAllSubForums(forumName);
+            foreach (DataRow sForumRow in sForumtbl.Rows)
+            {
+
+                string sForumName = sForumRow[1].ToString();
+                string createdUserName = sForumRow[2].ToString();
+            }
         }
         public int numOfModerators()
         {

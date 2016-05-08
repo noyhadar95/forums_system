@@ -90,5 +90,17 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return forums.Count;
         }
 
+
+        public static System populateSystem()
+        {
+            System sys = new System();
+            DAL_Forum dforum = new DAL_Forum();
+            var tbl = dforum.GetAllForums();
+            foreach (var forumRow in tbl.Rows)
+            {
+                Forum f = 
+                sys.forums.Add()
+            }
+        }
     }
 }
