@@ -1,6 +1,8 @@
 ﻿using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using ForumsSystem.Server.ForumManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +27,46 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.receiver = receiver;
             DAL_Messages dm = new DAL_Messages();
             this.id = dm.CreateMessage(sender.getForum().getName(), sender.getUsername(), receiver.getUsername(), title, content);
+        }
+
+        private PrivateMessage()
+        {
+
+        }
+
+        public static void populateMessages(Dictionary<string, IUser> users, Dictionary<string, IUser> waiting_users)
+        {
+            DAL_Messages dm = new DAL_Messages();
+            Dictionary<string, IUser> allUsers = users.Union(waiting_users).ToDictionary(k => k.Key, v => v.Value);
+            foreach (KeyValuePair<string, IUser> entry in allUsers)
+            {
+                User user = (User)entry.Value;
+                DataTable messageTbl = dm.GetUsersSentMessages(user.getForum().getName(), user.getUsername());
+                foreach (DataRow messageRow in messageTbl.Rows)
+                {
+                    PrivateMessage message = new PrivateMessage();
+                    message.title = messageRow["Title"].ToString();
+                    message.content = messageRow["Content"].ToString();
+                    message.sender = user;
+                    User reciever =(User)allUsers[messageRow["RecieverUserName"].ToString()];
+                    message.receiver = reciever;
+                    message.id = (int)messageRow["ID"];
+
+                    user.AddTosentMessages(message);
+                    reciever.AddToreceivedMessages(message);
+                }
+            }
+        }
+
+        public static void populateMessageNotification(Dictionary<string, IUser> users, Dictionary<string, IUser> waiting_users)
+        {
+            DAL_MessagesNotification dm = new DAL_MessagesNotification();
+            Dictionary<string, IUser> allUsers = users.Union(waiting_users).ToDictionary(k => k.Key, v => v.Value);
+            dm.
+            foreach (KeyValuePair<string, IUser> entry in allUsers)
+            {
+
+            }
         }
 
     }

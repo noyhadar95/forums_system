@@ -28,16 +28,25 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         }
 
-        public static List<SubForum> populateSubForums(string forumName)
+        private SubForum()
+        {
+        }
+
+        public static List<SubForum> populateSubForums(Forum forum)
         {
             List<SubForum> sForums = new List<SubForum>();
             DAL_SubForums dsf = new DAL_SubForums();
-            DataTable sForumtbl = dsf.GetAllSubForums(forumName);
+            DataTable sForumtbl = dsf.GetAllSubForums(forum.getName());
             foreach (DataRow sForumRow in sForumtbl.Rows)
             {
+                SubForum sf = new SubForum();
+                string sForumName = sForumRow["SubForumName"].ToString();
+                string createdUserName = sForumRow["CreatorUserName"].ToString();
 
-                string sForumName = sForumRow[1].ToString();
-                string createdUserName = sForumRow[2].ToString();
+                sf.name = sForumName;
+                sf.forum = forum;
+
+
             }
         }
         public int numOfModerators()

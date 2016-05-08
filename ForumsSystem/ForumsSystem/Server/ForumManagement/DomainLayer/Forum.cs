@@ -29,7 +29,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             Forum forum = new Forum();
             forum.name = forumName;
+            forum.users = User.populateUsers(forum);
+            forum.waiting_users = User.populateWaitingUsers(forum);
+            User.populateFriends(forum.users, forum.waiting_users);
+
+            PrivateMessage.populateMessages(forum.users, forum.waiting_users);
+
+
             forum.policies = Policy.populatePolicy(policyId);
+           
 
         }
        
