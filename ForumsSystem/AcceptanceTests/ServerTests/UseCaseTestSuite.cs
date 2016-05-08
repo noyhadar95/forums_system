@@ -43,7 +43,7 @@ namespace AcceptanceTests.ServerTests
             admins.Add(user1);
 
             // create the forum
-            return bridge.CreateForum(superAdminUsername, this.superAdminPass, forumName, admins, forumPolicy);
+            return bridge.CreateForum(superAdminUsername, forumName, admins, forumPolicy);
         }
         private void DeleteForum(string forumName)
         {

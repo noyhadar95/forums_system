@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources
 {
-    public class Policy
+    class Policy
     {
-       /* public enum Policies
+        public enum Policies
         {
             Password = 0,
             Authentication = 1,
@@ -21,18 +21,8 @@ namespace ForumsSystemClient.Resources
             MinimumAge = 8,
             MaxModerators = 9
         }
-        */
 
         protected Policies type;
         private Policy nextPolicy;
-
-        public Policies Type { get { return type; } set { this.type = value; } }
-        public Policy NextPolicy { get { return nextPolicy; } set { this.nextPolicy = value; } }
-
-        public Policy(Policies type)
-        {
-            this.type = type;
-            this.nextPolicy = null;
-        }
     }
 }

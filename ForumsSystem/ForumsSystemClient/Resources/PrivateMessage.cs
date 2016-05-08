@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources
 {
-    public class PrivateMessage
+    class PrivateMessage
     {
         public string title { get; private set; }
         public string content { get; private set; }

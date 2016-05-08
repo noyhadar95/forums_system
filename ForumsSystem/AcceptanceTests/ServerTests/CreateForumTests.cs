@@ -29,7 +29,7 @@ namespace AcceptanceTests.ServerTests
             admins.Add(user2);
 
             // create the forum
-            bool res = bridge.CreateForum(this.superAdminUsername, this.superAdminPass, forumName, admins, forumPolicy);
+            bool res = bridge.CreateForum(this.superAdminUsername, forumName, admins, forumPolicy);
             Assert.IsTrue(res);
             // check that the forum now exists in the sytem
             Assert.IsTrue(bridge.IsExistForum(forumName));
@@ -62,13 +62,13 @@ namespace AcceptanceTests.ServerTests
             try
             {
                 // create the forum
-                bool res = bridge.CreateForum(this.superAdminUsername, this.superAdminPass, forumName, admins, forumPolicy);
+                bool res = bridge.CreateForum(this.superAdminUsername, forumName, admins, forumPolicy);
                 Assert.IsTrue(res);
                 // check that the forum now exists in the sytem
                 Assert.IsTrue(bridge.IsExistForum(forumName));
 
                 //try to add the new forum:
-                res = bridge.CreateForum(this.superAdminUsername, this.superAdminPass, forumName, admins, forumPolicy);
+                res = bridge.CreateForum(this.superAdminUsername, forumName, admins, forumPolicy);
                 Assert.IsFalse(res);
             }
             catch (Exception e)

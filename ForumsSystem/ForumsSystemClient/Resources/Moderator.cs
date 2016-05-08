@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources
 {
-    public class Moderator
+    class Moderator
     {
         public User user { get; private set; }
         public DateTime expirationDate { get; private set; }

@@ -31,7 +31,7 @@ namespace AcceptanceTestsBridge
 
         #region Add/Create Methods
 
-        public bool CreateForum(string creator,string creatorPass, string forumName, List<UserStub> admins, PoliciesStub forumPolicies)
+        public bool CreateForum(string creator, string forumName, List<UserStub> admins, PoliciesStub forumPolicies)
         {
             List<IUser> newAdmins = new List<IUser>();
 
@@ -79,7 +79,7 @@ namespace AcceptanceTestsBridge
                     policy = new PasswordPolicy(forumPol, 2, 100);
                     break;
             }
-            IForum newForum = sl.CreateForum(creator,creatorPass , forumName, policy, newAdmins);
+            IForum newForum = sl.CreateForum(superAdmin, forumName, policy, newAdmins);
             return newForum != null;
         }
 
@@ -127,18 +127,18 @@ namespace AcceptanceTestsBridge
 
         public bool CreateSubForum(string creator, string forumName, string subForumName, Dictionary<string, DateTime> moderators)
         {
-            //IForum forum = sl.GetForum(forumName);
-            //IUser user = forum.getUser(creator);
-            ISubForum subForum = sl.CreateSubForum(creator,forumName, subForumName, moderators);
+            IForum forum = sl.GetForum(forumName);
+            IUser user = forum.getUser(creator);
+            ISubForum subForum = sl.CreateSubForum(user, subForumName, moderators);
             return subForum != null;
         }
 
         public int AddThread(string forumName, string subForumName, string publisher, string title, string content)
         {
-           // IForum forum = sl.GetForum(forumName);
-           // IUser threadPublisher = forum.getUser(publisher);
-           // ISubForum subForum = forum.getSubForum(subForumName);
-            Thread thread = sl.AddThread(forumName,subForumName, publisher, title, content);
+            IForum forum = sl.GetForum(forumName);
+            IUser threadPublisher = forum.getUser(publisher);
+            ISubForum subForum = forum.getSubForum(subForumName);
+            Thread thread = sl.AddThread(subForum, threadPublisher, title, content);
             if (thread == null)
                 return -1;
             return thread.id;
@@ -146,14 +146,12 @@ namespace AcceptanceTestsBridge
 
         public int AddReplyPost(string forumName, string subForumName, int threadID, string publisher, int postID, string title, string content)
         {
-            /*IForum forum = sl.GetForum(forumName);
+            IForum forum = sl.GetForum(forumName);
             IUser user = forum.getUser(publisher);
             ISubForum subForum = forum.getSubForum(subForumName);
             Thread thread = subForum.GetThreadById(threadID);
             Post post = thread.GetPostById(postID);
-            */
-            Post reply=sl.AddReply(forumName, subForumName, threadID, publisher, postID, title, content);
-           // Post reply = sl.AddReply(post, user, title, content);
+            Post reply = sl.AddReply(post, user, title, content);
             if (reply == null)
                 return -1;
             int replyID = reply.GetId();
@@ -162,10 +160,10 @@ namespace AcceptanceTestsBridge
 
         public bool AddModerator(string forumName, string subForumName, string adminUsername, KeyValuePair<string, DateTime> newMod)
         {
-          //  IForum forum = sl.GetForum(forumName);
-          //  IUser admin = forum.getUser(adminUsername);
-          //  ISubForum subForum = forum.getSubForum(subForumName);
-            return sl.AddModerator(forumName, subForumName,adminUsername, newMod.Key, newMod.Value);
+            IForum forum = sl.GetForum(forumName);
+            IUser admin = forum.getUser(adminUsername);
+            ISubForum subForum = forum.getSubForum(subForumName);
+            return sl.AddModerator(admin, subForum, newMod.Key, newMod.Value);
         }
 
         #endregion
@@ -219,29 +217,31 @@ namespace AcceptanceTestsBridge
 
         public bool IsExistThread(string forumName, string subForumName, int threadID)
         {
-           // IForum forum = sl.GetForum(forumName);
-           // ISubForum subForum = forum.getSubForum(subForumName);
-            return sl.IsExistThread(forumName,subForumName, threadID);
+            IForum forum = sl.GetForum(forumName);
+            ISubForum subForum = forum.getSubForum(subForumName);
+            return sl.IsExistThread(subForum, threadID);
         }
 
         public bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent)
         {
             IForum forum = sl.GetForum(forumName);
             IUser user = forum.getUser(username);
-            return sl.IsMsgReceived(forumName, username, msgTitle, msgContent);
+            return sl.IsMsgReceived(user, msgTitle, msgContent);
         }
 
         public bool IsMsgSent(string forumName, string username, string msgTitle, string msgContent)
         {
-            //IForum forum = sl.GetForum(forumName);
-            //IUser user = forum.getUser(username);
-            return sl.IsMsgSent(forumName, username, msgTitle, msgContent);
+            IForum forum = sl.GetForum(forumName);
+            IUser user = forum.getUser(username);
+            return sl.IsMsgSent(user, msgTitle, msgContent);
         }
 
         public bool IsForumHasPolicy(string forumName, PoliciesStub forumPolicy)
         {
+            IForum forum = sl.GetForum(forumName);
+            Policy policy = forum.GetPolicy();
             Policies expectedPolicy = ConvertPolicyStubToReal(forumPolicy);
-            bool res = sl.CheckIfPolicyExists(forumName,expectedPolicy);
+            bool res = policy.CheckIfPolicyExists(expectedPolicy);
             return res;
         }
 
@@ -294,49 +294,49 @@ namespace AcceptanceTestsBridge
                     policy = new PasswordPolicy(forumPol, 2, 100);
                     break;
             }
-            return sl.SetForumProperties(username, forumName, policy);
+            return sl.SetForumProperties(user, forum, policy);
         }
 
         public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
         {
-            //IForum forum = sl.GetForum(forumName);
-            return sl.RegisterToForum(forumName, username, password, email, dateOfBirth);
+            IForum forum = sl.GetForum(forumName);
+            return sl.RegisterToForum(new User(), forum, username, password, email, dateOfBirth);
         }
 
         public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
         {
-            //IForum forum = sl.GetForum(forumName);
-            //ISubForum subForum = forum.getSubForum(subForumName);
-            return sl.CountNestedReplies(forumName, subForumName, threadID, postID);
+            IForum forum = sl.GetForum(forumName);
+            ISubForum subForum = forum.getSubForum(subForumName);
+            return sl.CountNestedReplies(subForum, threadID, postID);
         }
 
         public bool SendPrivateMsg(string forumName, string senderUsername, string receiverUsername, string msgTitle, string msgContent)
         {
-            //IForum forum = sl.GetForum(forumName);
-            // sender = forum.getUser(senderUsername);
-            PrivateMessage pm = sl.SendPrivateMessage(forumName, senderUsername, receiverUsername, msgTitle, msgContent);
+            IForum forum = sl.GetForum(forumName);
+            IUser sender = forum.getUser(senderUsername);
+            PrivateMessage pm = sl.SendPrivateMessage(sender, receiverUsername, msgTitle, msgContent);
             return pm != null;
         }
 
         public bool EditModeratorExpDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate)
         {
-            //IForum forum = sl.GetForum(forumName);
-            //IUser adminUser = forum.getUser(admin);
-            //ISubForum subForum = forum.getSubForum(subForumName);
-            return sl.ChangeExpirationDate(forumName, subForumName, admin, moderator, newDate);
+            IForum forum = sl.GetForum(forumName);
+            IUser adminUser = forum.getUser(admin);
+            ISubForum subForum = forum.getSubForum(subForumName);
+            return sl.ChangeExpirationDate(adminUser, newDate, moderator, subForum);
         }
 
         public DateTime GetModeratorExpDate(string forumName, string subForumName, string username)
         {
-            //IForum forum = sl.GetForum(forumName);
-            //ISubForum subForum = forum.getSubForum(subForumName);
-            return sl.GetModeratorExpDate(forumName, subForumName, username);
+            IForum forum = sl.GetForum(forumName);
+            ISubForum subForum = forum.getSubForum(subForumName);
+            return sl.GetModeratorExpDate(subForum, username);
         }
 
         public bool LoginUser(string forumName, string username, string pass)
         {
-            //IForum forum = sl.GetForum(forumName);
-            IUser user = sl.MemberLogin(username, pass, forumName);
+            IForum forum = sl.GetForum(forumName);
+            IUser user = sl.MemberLogin(username, pass, forum);
             return user != null;
         }
 
@@ -398,12 +398,10 @@ namespace AcceptanceTestsBridge
 
         public bool IsExistNotificationOfPost(string forumName, string username, int postId)
         {
-
             IForum forum = sl.GetForum(forumName);
             IUser user = forum.getUser(username);
             PostNotification[] notifications = user.GetPostNotifications().ToArray();
             PostNotification temp;
-
             for (int i = 0; i < notifications.Length; i++)
             {
                 temp = notifications[i];
@@ -415,7 +413,7 @@ namespace AcceptanceTestsBridge
 
         public void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent)
         {
-            /*if (newTitle == "" && newContent == "")
+            if (newTitle == "" && newContent == "")
                 return;//illegal post
 
             IForum forum = sl.GetForum(forumName);
@@ -424,8 +422,6 @@ namespace AcceptanceTestsBridge
             Post post = thread.GetPostById(postId);
             post.Title = newTitle;
             post.Content = newContent;
-            */
-            sl.EditPost(forumName, subForumName, threadId, editor, postId, newTitle, newContent);
         }
 
         /*  public void DeletePost(string forumName, string subForumName, int threadId, string deleter, int postId)
@@ -439,7 +435,6 @@ namespace AcceptanceTestsBridge
           */
         public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
         {
-                /*
             IForum forum = sl.GetForum(forumName);
             ISubForum subforum = forum.getSubForum(subForumName);
             Moderator moderator = subforum.getModeratorByUserName(moderatorName);
@@ -450,28 +445,45 @@ namespace AcceptanceTestsBridge
             //  if (!moderator.CanBeDeletedBy(remover))
             //      return false;
             return subforum.removeModerator(remover, moderatorName);
-            */
-            return sl.RemoveModerator(forumName, subForumName, remover, moderatorName);
         }
 
         public int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string username)
         {
-            return sl.ReportNumOfPostsByMember(adminUserName, forumName, username);
+            IForum forum = sl.GetForum(forumName);
+            IUser admin = forum.getUser(adminUserName);
+            try
+            {
+                return admin.ReportNumOfPostsByMember(username);
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
         }
 
         public List<string> GetListOfModerators(string forumName, string subForumName, string adminUserName)
         {
-            return sl.GetModeratorsList(forumName, subForumName, adminUserName);
+            IForum forum = sl.GetForum(forumName);
+            IUser admin = forum.getUser(adminUserName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            try
+            {
+                return admin.GetModeratorsList(subforum);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         //TUPLE: postId,title,content
-        public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string adminUserName, string userEmail)
+        public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string subForumName, string adminUserName, string moderatorName)
         {
-           // IForum forum = sl.GetForum(forumName);
-           // IUser admin = forum.getUser(adminUserName);
+            IForum forum = sl.GetForum(forumName);
+            IUser admin = forum.getUser(adminUserName);
             try
             {
-                List<Post> posts = sl.ReportPostsByMember(forumName, adminUserName, userEmail);
+                List<Post> posts = admin.ReportPostsByMember(moderatorName);
                 List<Tuple<int, string, string>> res = new List<Tuple<int, string, string>>();
                 foreach (Post post in posts)
                 {

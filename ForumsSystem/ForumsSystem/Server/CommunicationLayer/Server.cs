@@ -18,14 +18,13 @@ namespace ForumsSystem.Server.CommunicationLayer
         const int CLIENT_PORT_NO = 4000;
         const int SERVER_PORT_NO = 5000;
         const string delimeter = "$|deli|$";
-        static string SERVER_IP = "79.179.27.79";
+        const string SERVER_IP = "132.72.225.97";
         private static ServiceLayer.IServiceLayer sl;
         private static Dictionary<Tuple<string, string>, string> halfClients; //not yet subscribed
 
         private static Dictionary<Tuple<string, string>, string> clients; //<Forum,Username> Ip address
         public static void StartServer()
         {
-            SERVER_IP = GetLocalIPAddress();
             clients = new Dictionary<Tuple<string, string>, string>();
             sl = new ServiceLayer.ServiceLayer();
                 //---listen at the specified IP and port no.---

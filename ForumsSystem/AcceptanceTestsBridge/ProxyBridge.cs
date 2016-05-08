@@ -36,10 +36,10 @@ namespace AcceptanceTestsBridge
 
         #region Add/Create Methods
 
-        public bool CreateForum(string creator,string creatorPass, string forumName, List<UserStub> admins, PoliciesStub forumPolicies)
+        public bool CreateForum(string creator, string forumName, List<UserStub> admins, PoliciesStub forumPolicies)
         {
             if (realBridge != null)
-                return realBridge.CreateForum(creator,creatorPass, forumName, admins, forumPolicies);
+                return realBridge.CreateForum(creator, forumName, admins, forumPolicies);
 
             return true;
         }
@@ -319,10 +319,10 @@ namespace AcceptanceTestsBridge
             return null;
         }
 
-        public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string adminUserName, string username)
+        public List<Tuple<int, string, string>> GetPostsInForumByUser(string forumName, string subForumName, string adminUserName, string email)
         {
             if (realBridge != null)
-                return realBridge.GetPostsInForumByUser(forumName, adminUserName, username);
+                return realBridge.GetPostsInForumByUser(forumName, subForumName, adminUserName, email);
             return null;
         }
 

@@ -90,9 +90,5 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return forums.Count;
         }
 
-        public List<string> GetForumsNamesList()
-        {
-            return forums.Keys.ToList<string>();
-        }
     }
 }

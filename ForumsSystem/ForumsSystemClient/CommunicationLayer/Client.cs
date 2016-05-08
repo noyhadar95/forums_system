@@ -16,13 +16,13 @@ namespace ForumsSystemClient.CommunicationLayer
         const int CLIENT_PORT_NO = 4000;
         const int SERVER_PORT_NO = 5000;
         const string delimeter = "$|deli|$";
-        static string SERVER_IP = "79.179.27.79";
+        const string SERVER_IP = "132.72.225.97";
 
        private static string connect(string textToSend)
         {
-            SERVER_IP = GetLocalIPAddress();
-            //---create a TCPClient object at the IP and port no.---
-            TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
+
+                //---create a TCPClient object at the IP and port no.---
+                TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
 
                 int port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
 
@@ -152,8 +152,7 @@ namespace ForumsSystemClient.CommunicationLayer
             if (classType == "String" || classType == "Integer" || classType == "Boolean" || classType == "string" || classType == "int" || classType == "bool")
                 addition = "System.";
             Type type = Type.GetType(addition + classType);
-            if (type == null)
-                return null;
+
 
             XmlSerializer serializer = new XmlSerializer(type);
             StringReader reader = new StringReader(str);

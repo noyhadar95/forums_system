@@ -10,30 +10,29 @@ namespace ForumsSystem.Server.ServiceLayer
 
         #region Use Cases Methods
 
-         Post AddReply(string forumName, string subForumName, int threadID, string publisherName, int postID, string title, string content);
+         Post AddReply(Post post, IUser publisher, string title, string content);
 
-        Thread AddThread(string forumName, string subForumName, string publisher, string title, string content);
-        bool ChangeExpirationDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate);
+        Thread AddThread(ISubForum subForum, IUser publisher, string title, string content);
+        bool ChangeExpirationDate(IUser admin, DateTime newDate, string moderator, ISubForum subforum);
 
-        bool ChangeForumProperties(string username,string forumName, Policy properties);
+        bool ChangeForumProperties(IUser user, IForum forum, Policy properties);
 
-        IForum CreateForum(string creatorName, string password, string name, Policy properties, List<IUser> adminUsername);
+        IForum CreateForum(SuperAdmin creator, string name, Policy properties, List<IUser> adminUsername);
 
-        ISubForum CreateSubForum(string creator, string forumName, string subforumName, Dictionary<string, DateTime> moderators);
+        ISubForum CreateSubForum(IUser creator, string name, Dictionary<string, DateTime> moderators);
 
         bool DeletePost(IUser deleter, Post post);
 
         bool InitializeSystem(string username, string pass);
-        bool IsInitialized();
 
-        IUser MemberLogin(string username, string password, string forum);
+        IUser MemberLogin(string username, string password, IForum forum);
 
-        bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob);
+        bool RegisterToForum(IUser guest, IForum forum, string userName, string password, string email, DateTime dateOfBirth);
 
 
-        PrivateMessage SendPrivateMessage(string forumName, string from, string to, string title, string content);
+        PrivateMessage SendPrivateMessage(IUser from, string to, string title, string content);
 
-        bool SetForumProperties(string username, string forumName, Policy properties);
+        bool SetForumProperties(IUser user, IForum forum, Policy properties);
 
         #endregion
 
@@ -43,20 +42,19 @@ namespace ForumsSystem.Server.ServiceLayer
 
         IForum GetForum(string forumName);
 
-        bool AddModerator(string forumName, string subForumName, string adminUsername, string username, DateTime expiratoinDate);
+        bool AddModerator(IUser admin, ISubForum subForum, string username, DateTime expiratoinDate);
         void removeForum(string forumName);
         bool ConfirmRegistration(string forumName, string username);
         bool LoginSuperAdmin(string username, string pass);
-        DateTime GetModeratorExpDate(string forumName, string subForumName, string username);
-        int CountNestedReplies(string forumName, string subForumName, int threadID, int postID);
-        bool IsMsgSent(string forumName, string username, string msgTitle, string msgContent);
-        bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent);
+        DateTime GetModeratorExpDate(ISubForum subForum, string username);
+        int CountNestedReplies(ISubForum subforum, int threadID, int postID);
+        bool IsMsgSent(IUser user, string msgTitle, string msgContent);
+        bool IsMsgReceived(IUser user, string msgTitle, string msgContent);
         bool IsModerator(string forumName, string subForumName, string username);
         bool IsRegisteredToForum(string username, string forumName);
         bool IsExistForum(string forumName);
-        bool IsExistThread(string forumName, string subForumName, int threadID);
-        bool IsExistUser(string forumName, string username);
-        bool DeletePost(string forumName, string subForumName,string deleter, int threadID, int postID);
+        bool IsExistThread(ISubForum subForum, int threadID);
+        bool DeletePost(string forumName, string subForumName, int threadID, int postID);
         void DeleteForum(string forumName);
         void DeleteUser(string userName, string forumName);
         int GetOpenningPostID(string forumName, string subForumName, int threadID);
@@ -72,19 +70,5 @@ namespace ForumsSystem.Server.ServiceLayer
         
         List<Tuple<string, string, DateTime, string, List<Post>>> ReportModeratorsDetails(string forumName, string adminUserName1);
         void MemberLogout(string forumName, string username);
-      //  Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1);
-        List<Post> GetPosts(string forumName, string subforumName, int threadId);
-        bool CheckIfPolicyExists(string forumName, Policies policy);
-        List<PostNotification> GetPostNotifications(string forumName, string username);
-        void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent);
-        bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName);
-        int ReportNumOfPostsByMember(string adminUsername, string forumName, string username);
-        List<string> GetModeratorsList(string forumName, string subForumName, string adminUserName);
-        List<Post> ReportPostsByMember(string forumName, string adminUserName, string username);
-        SuperAdmin GetSuperAdmin();
-        List<string> GetForumMembers(string forumName);
-        List<string> GetThreadsList(string forumName, string subForumName);
-        List<string> GetSubForumsList(string forumName);
-        List<string> GetForumsList();
     }
 }

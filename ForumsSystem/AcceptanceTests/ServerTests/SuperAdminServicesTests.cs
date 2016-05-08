@@ -33,10 +33,10 @@ namespace AcceptanceTests.ServerTests
                 numOfForums = bridge.GetNumOfForums(this.superAdminUsername,this.superAdminPass);
                 Assert.IsTrue(numOfForums == 0);
                 // create the forum
-                bridge.CreateForum(this.superAdminUsername, this.superAdminPass, forumName1, admins, forumPolicy);
+                bridge.CreateForum(this.superAdminUsername, forumName1, admins, forumPolicy);
                 numOfForums = bridge.GetNumOfForums(this.superAdminUsername, this.superAdminPass);
                 Assert.IsTrue(numOfForums == 1);
-                bridge.CreateForum(this.superAdminUsername, this.superAdminPass, forumName2, admins, forumPolicy);
+                bridge.CreateForum(this.superAdminUsername, forumName2, admins, forumPolicy);
                 numOfForums = bridge.GetNumOfForums(this.superAdminUsername, this.superAdminPass);
                 Assert.IsTrue(numOfForums == 2);
             }
@@ -70,10 +70,10 @@ namespace AcceptanceTests.ServerTests
                 numOfForums = bridge.GetNumOfForums(this.superAdminUsername, this.superAdminPass);
                 Assert.IsTrue(numOfForums == 0);
                 // create the forum
-                bridge.CreateForum(this.superAdminUsername, this.superAdminPass, forumName1, admins, forumPolicy);
+                bridge.CreateForum(this.superAdminUsername, forumName1, admins, forumPolicy);
                 numOfForums = bridge.GetNumOfForums(this.superAdminUsername, this.superAdminPass);
                 Assert.IsTrue(numOfForums == 1);
-                bridge.CreateForum(this.superAdminUsername, this.superAdminPass, forumName1, admins, forumPolicy);
+                bridge.CreateForum(this.superAdminUsername, forumName1, admins, forumPolicy);
                 numOfForums = bridge.GetNumOfForums(this.superAdminUsername, this.superAdminPass);
                 Assert.IsTrue(numOfForums == 1);
             }
@@ -109,8 +109,8 @@ namespace AcceptanceTests.ServerTests
             try
             {
                 // create the forums
-                bridge.CreateForum(this.superAdminUsername, this.superAdminPass, forumName1, admins, forumPolicy);
-                bridge.CreateForum(this.superAdminUsername, this.superAdminPass, forumName2, admins, forumPolicy);
+                bridge.CreateForum(this.superAdminUsername, forumName1, admins, forumPolicy);
+                bridge.CreateForum(this.superAdminUsername, forumName2, admins, forumPolicy);
                 //register user 1 to forums 1 and 2
                 bridge.RegisterToForum(forumName1, user11, pass1, email1, dob1);
                 bridge.ConfirmRegistration(forumName1, user11);

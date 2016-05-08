@@ -87,9 +87,5 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             this.isLoggedIn = false;
         }
-        public static bool IsInitialized()
-        {
-            return instance != null;
-        }
     }
 }

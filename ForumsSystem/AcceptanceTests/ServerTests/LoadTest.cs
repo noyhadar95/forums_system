@@ -100,7 +100,7 @@ namespace AcceptanceTests.ServerTests
             admins.Add(user2);
 
             // create the forum
-            bool res = bridge.CreateForum(superAdminUsername, superAdminPass, forumName, admins, forumPolicy);
+            bool res = bridge.CreateForum(superAdminUsername, forumName, admins, forumPolicy);
             return res;
         }
 
