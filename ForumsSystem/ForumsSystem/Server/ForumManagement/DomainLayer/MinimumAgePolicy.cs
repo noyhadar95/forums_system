@@ -15,7 +15,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public MinimumAgePolicy(Policies type, int minAge) : base(type)
         {
-            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1, false, -1, minAge, -1, -1, -1);
             this.minAge = minAge;
         }
 

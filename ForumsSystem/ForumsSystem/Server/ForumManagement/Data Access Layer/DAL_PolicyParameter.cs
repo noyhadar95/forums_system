@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 {
-    public class DAL_PolicyParameter : DAL_Connection
+    class DAL_PolicyParameter : DAL_Connection
     {
         /// <summary>
         /// Creates a policy parameter according to some of the parameters
