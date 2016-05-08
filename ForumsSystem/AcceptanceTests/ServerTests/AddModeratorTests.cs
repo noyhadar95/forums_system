@@ -21,10 +21,6 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestAddModerator()
         {
-           /* ForumsSystem.Server.ForumManagement.Data_Access_Layer.DAL_Forum d = new ForumsSystem.Server.ForumManagement.Data_Access_Layer.DAL_Forum();
-            d.DeleteAll();
-            Assert.Fail();
-            */
             string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";

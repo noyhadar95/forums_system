@@ -415,7 +415,7 @@ namespace AcceptanceTestsBridge
 
         public void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent)
         {
-            if (newTitle == "" && newContent == "")
+            /*if (newTitle == "" && newContent == "")
                 return;//illegal post
 
             IForum forum = sl.GetForum(forumName);
@@ -425,7 +425,8 @@ namespace AcceptanceTestsBridge
             
             IUser user = forum.getUser(editor);
             user.editPost(newTitle, newContent, post);
-            
+            */
+            sl.EditPost(forumName, subForumName, threadId, editor, postId, newTitle, newContent);
 
         }
 
