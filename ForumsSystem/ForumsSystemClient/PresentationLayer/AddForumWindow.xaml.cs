@@ -1,4 +1,5 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ForumsSystemClient.Resources;
 
 namespace ForumsSystemClient.PresentationLayer
 {
@@ -22,9 +24,8 @@ namespace ForumsSystemClient.PresentationLayer
     public partial class AddForumWindow : Window
     {
         private CL cl;
-        private string forumName;
-        private ObservableCollection<string> notAdminsLVItems;
         private ObservableCollection<string> adminsLVItems;
+        private List<User> admins;
 
         public AddForumWindow()
         {
@@ -33,17 +34,14 @@ namespace ForumsSystemClient.PresentationLayer
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
-            List<string> usersList = cl.GetUsersInForum(forumName);
-            notAdminsLVItems = new ObservableCollection<string>(usersList);
             adminsLVItems = new ObservableCollection<string>();
+            admins = new List<User>();
 
-            notAdminsListView.ItemsSource = notAdminsLVItems;
             adminsListView.ItemsSource = adminsLVItems;
         }
 
-        private void moveRightBtn_Click(object sender, RoutedEventArgs e)
+        public void AddAdmin(User admin)
         {
-
             admins.Add(admin);
             adminsLVItems.Add(admin.Username);
         }
@@ -53,21 +51,15 @@ namespace ForumsSystemClient.PresentationLayer
             string forumName = nameTB.Text;
 
             if (forumName == "")
-
-            // move username from left to right
-            var selectedItems = notAdminsListView.SelectedItems;
-            List<string> selectedItemsCopy = new List<string>();
-            foreach (string item in selectedItems)
-
             {
-                selectedItemsCopy.Add(item);
+                MessageBox.Show("please enter the name of the forum");
+                return;
             }
-            foreach (string selectedItem in selectedItemsCopy)
+            if (!WindowHelper.IsLoggedSuperAdmin())
             {
-                adminsLVItems.Add(selectedItem);
-                notAdminsLVItems.Remove(selectedItem);
+                MessageBox.Show("error: super admin is not logged in");
+                return;
             }
-
             SuperAdmin creator = WindowHelper.GetLoggedSuperAdmin();
 
             // TODO: handle policy
@@ -88,13 +80,7 @@ namespace ForumsSystemClient.PresentationLayer
         }
 
         private void removeAdminBtn_Click(object sender, RoutedEventArgs e)
-
-        }
-
-        private void moveLeftBtn_Click(object sender, RoutedEventArgs e)
-
         {
-            // move username from right to left
             var selectedItems = adminsListView.SelectedItems;
             List<string> selectedItemsCopy = new List<string>();
             foreach (string item in selectedItems)
@@ -103,9 +89,7 @@ namespace ForumsSystemClient.PresentationLayer
             }
             foreach (string selectedItem in selectedItemsCopy)
             {
-                notAdminsLVItems.Add(selectedItem);
                 adminsLVItems.Remove(selectedItem);
-
                 // remove admin from admins list
                 foreach (User a in admins)
                 {
@@ -115,29 +99,8 @@ namespace ForumsSystemClient.PresentationLayer
                         break;
                     }
                 }
-
             }
         }
 
-        private void submitBtn_Click(object sender, RoutedEventArgs e)
-        {
-            string forumName = nameTB.Text;
-
-            if (forumName == "")
-            {
-                MessageBox.Show("please enter the name of the forum");
-                return;
-            }
-
-            //List<string> admins = new List<string>(adminsLVItems)
-            //cl.CreateForum(creator, forumName, admins);
-
-            WindowHelper.SwitchWindow(this, new MainWindow());
-        }
-
-        private void cancelBtn_Click(object sender, RoutedEventArgs e)
-        {
-            WindowHelper.SwitchWindow(this, new MainWindow());
-        }
     }
 }

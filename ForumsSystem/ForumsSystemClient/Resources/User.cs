@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources
 {
-    class User
+    public class User
     {
         private string userName;
         private string password;
