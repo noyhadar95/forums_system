@@ -13,6 +13,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public MaxModeratorsPolicy(Policies type, int maxModerators):base(type)
         {
+            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1, false, maxModerators, -1, -1, -1, -1);
             this.maxModerators = maxModerators;
         }
 

@@ -415,17 +415,17 @@ namespace AcceptanceTestsBridge
 
         public void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent)
         {
-            /*if (newTitle == "" && newContent == "")
+            if (newTitle == "" && newContent == "")
                 return;//illegal post
 
             IForum forum = sl.GetForum(forumName);
             ISubForum subforum = forum.getSubForum(subForumName);
             Thread thread = subforum.GetThreadById(threadId);
             Post post = thread.GetPostById(postId);
-            post.Title = newTitle;
-            post.Content = newContent;
-            */
-            sl.EditPost(forumName, subForumName, threadId, editor, postId, newTitle, newContent);
+
+            IUser user = forum.getUser(editor);
+            user.editPost(newTitle, newContent, post);
+
         }
 
         /*  public void DeletePost(string forumName, string subForumName, int threadId, string deleter, int postId)
