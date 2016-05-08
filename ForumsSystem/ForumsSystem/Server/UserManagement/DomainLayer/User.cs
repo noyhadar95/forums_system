@@ -352,16 +352,12 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 {
               //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, p);
                 }
-                DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
-              //  dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
                 postNotifications = new List<PostNotification>();
                 foreach (PrivateMessageNotification m in privateMessageNotifications)
                 {
               //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, m);
                 }
                 privateMessageNotifications = new List<PrivateMessageNotification>();
-                DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
-              //  dal_messagesNotification.RemoveAllNotifications(forum.getName(), userName);
             }
 
         }
@@ -396,15 +392,14 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public void AddPrivateMessageNotification(PrivateMessage newMessage)
         {
             PrivateMessageNotification notification = new PrivateMessageNotification(
-                newMessage.sender.getUsername(), newMessage.title, newMessage.content,newMessage.id);
+                newMessage.sender.getUsername(), newMessage.title, newMessage.content);
             if (isLoggedIn)
             {
             //    Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, notification);
             }
             else
             {
-                DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
-                dal_messagesNotification.AddNotification(newMessage.id);
+                // add private message notification to db
                 privateMessageNotifications.Add(notification);
             }
         }
@@ -418,7 +413,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public void AddPostNotification(Post post,NotificationType type)
         {
-            PostNotification notification = new PostNotification(type, post.getPublisher().getForum().getName(),
+            PostNotification notification = new PostNotification(type,
                 post.getPublisher().getUsername(), post.Thread.GetSubforum().getName(),
                 post.Title, post.Content, post.GetId());
             if (isLoggedIn)
@@ -427,8 +422,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             }
             else
             {
-                DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
-                dal_postNotification.AddNotification(notification.id, (int)type, post.getPublisher().getForum().getName(), userName);
+                // TODO: add post notification to db
                 postNotifications.Add(notification);
             }
         }

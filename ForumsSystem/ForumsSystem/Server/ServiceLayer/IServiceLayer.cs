@@ -69,6 +69,5 @@ namespace ForumsSystem.Server.ServiceLayer
         void AddFriend(string forumName, string username1, string username2);
         
         List<Tuple<string, string, DateTime, string, List<Post>>> ReportModeratorsDetails(string forumName, string adminUserName1);
-        void MemberLogout(string forumName, string username);
     }
 }

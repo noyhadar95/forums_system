@@ -95,11 +95,8 @@ namespace AcceptanceTests.ServerTests
             CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
             string publisherPass = "publisherpassword", publisherEmail = "publisher1@gmail.com";
             DateTime publisherDateOfBirth = DateTime.Today.AddYears(-25);
-            if (!bridge.IsRegisteredToForum(publisher, forumName))
-            {
-                bridge.RegisterToForum(forumName, publisher, publisherPass, publisherEmail, publisherDateOfBirth);
-                bridge.LoginUser(forumName, publisher, publisherPass);
-            }
+            bridge.RegisterToForum(forumName, publisher, publisherPass, publisherEmail, publisherDateOfBirth);
+            bridge.LoginUser(forumName, publisher, publisherPass);
             return bridge.AddThread(forumName, subForumName, publisher, title, content);
 
         }

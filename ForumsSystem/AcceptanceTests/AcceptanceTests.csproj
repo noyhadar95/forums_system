@@ -85,10 +85,6 @@
       <Project>{d1d70200-d8d2-4a3e-8719-ffeb78327624}</Project>
       <Name>AcceptanceTestsBridge</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ForumsSystem\ForumsSystem.csproj">
-      <Project>{488D5473-E8EC-4DF6-99C9-8D07D7F30237}</Project>
-      <Name>ForumsSystem</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ServerTests\AddModeratorTestsData.xml" />

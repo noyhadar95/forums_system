@@ -12,13 +12,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public string title { get; private set; }
         public string content { get; private set; }
 
-        public int id { get; private set; }
-        public PrivateMessageNotification(string sender,string title,string content,int id)
+        public PrivateMessageNotification(string sender,string title,string content)
         {
             this.sender = sender;
             this.title = title;
             this.content = content;
-            this.id = id;
         }
     }
 }

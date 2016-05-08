@@ -355,12 +355,6 @@ namespace AcceptanceTestsBridge
                 return realBridge.ReportModeratorsDetails(forumName,adminUserName1);
             return null;
         }
-
-        public void LogoutUser(string forumName, string username)
-        {
-            if (realBridge != null)
-                 realBridge.LogoutUser(forumName, username);
-        }
     }
     
 }

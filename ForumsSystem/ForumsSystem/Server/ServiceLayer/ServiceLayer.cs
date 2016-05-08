@@ -263,12 +263,5 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser admin = forum.getUser(adminUserName1);
             return admin.ReportModerators();
         }
-
-        public void MemberLogout(string forumName, string username)
-        {
-            IForum forum = GetForum(forumName);
-            IUser user = forum.getUser(username);
-            user.Logout();
-        }
     }
 }
