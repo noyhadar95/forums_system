@@ -1,4 +1,5 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,21 +33,41 @@ namespace ForumsSystemClient.PresentationLayer
 
             WindowHelper.SetWindowBGImg(this);
 
+            // initialize fields
             this.forumName = forumName;
             Title = forumName;
             loggedUsername = "";
+            cl = new CL();
 
-            // initialize different types grids (user,admin,login)
+            // initialize sub-forums list
+            List<string> items = cl.GetSubForumsList(forumName);
+            subForumsListView.ItemsSource = items;
+
+            // initialize different types grids (login, user, admin, super admin)
             userGrid.Visibility = Visibility.Hidden;
             userGrid.Margin = loginGrid.Margin;
             adminGrid.Visibility = Visibility.Hidden;
             adminGrid.Margin = new Thickness(userGrid.Margin.Left, userGrid.Margin.Top + userGrid.Height,
                 userGrid.Margin.Right, userGrid.Margin.Bottom);
+            superAdminGrid.Visibility = Visibility.Hidden;
+            superAdminGrid.Margin = new Thickness(adminGrid.Margin.Left, adminGrid.Margin.Top + adminGrid.Height,
+                adminGrid.Margin.Right, adminGrid.Margin.Bottom);
 
-            cl = new CL();
-            List<string> items = cl.GetSubForumsList(forumName);
-            subForumsListView.ItemsSource = items;
-
+            if (WindowHelper.IsLoggedSuperAdmin())
+            {
+                // super admin is already logged in
+                SuperAdmin superAdmin = WindowHelper.GetLoggedSuperAdmin();
+                SwitchLoginToSuperAdminViewMode(superAdmin.userName);
+            }
+            else if (WindowHelper.IsLoggedUser(forumName))
+            {
+                // user is already logged in
+                User user = WindowHelper.GetLoggedUser(forumName);
+                SwitchLoginToUserViewMode(user.Username);
+                string type = cl.GetUserType(forumName, user.Username);
+                if (type == "admin")
+                    SwitchUserToAdminViewMode();
+            }
 
         }
 
@@ -80,8 +101,8 @@ namespace ForumsSystemClient.PresentationLayer
                 return;
             }
             // fields are not empty try to login
-            bool isSuccess = cl.MemberLogin(forumName, username, password);
-            if (!isSuccess)
+            User user = cl.MemberLogin(forumName, username, password);
+            if (user == null)
             {
                 ShowBadLoginMsg();
                 return;
@@ -89,25 +110,47 @@ namespace ForumsSystemClient.PresentationLayer
             else
             {
                 // user is logged in, get type of user and change window accordingly.
-                string type = "user";
-                loginGrid.Visibility = Visibility.Hidden;
-                usernameTB.Text = "";
-                passwordBox.Password = "";
+                string type = cl.GetUserType(forumName, username);
 
-                this.loggedUsername = username;
-                welcomeTextBlock.Text = "welcome " + username;
-                //TODO: handle type
-                userGrid.Visibility = Visibility.Visible;
+                // handle user view
+                SwitchLoginToUserViewMode(username);
+
+                // check if admin
                 if (type == "admin")
                 {
-                    adminGrid.Visibility = Visibility.Visible;
-
+                    SwitchUserToAdminViewMode();
                 }
-                adminGrid.Visibility = Visibility.Visible;
 
+                // save the user in WindowHelper so all windows will know 
+                // that the user is logged in.
+                WindowHelper.SetLoggedUser(forumName, user);
 
             }
         }
+
+        private void SwitchLoginToUserViewMode(string username)
+        {
+            loginGrid.Visibility = Visibility.Hidden;
+            usernameTB.Text = "";
+            passwordBox.Password = "";
+            this.loggedUsername = username;
+            welcomeTextBlock.Text = "welcome " + username;
+            userGrid.Visibility = Visibility.Visible;
+        }
+
+        private void SwitchUserToAdminViewMode()
+        {
+            adminGrid.Visibility = Visibility.Visible;
+        }
+
+        private void SwitchLoginToSuperAdminViewMode(string superAdmin)
+        {
+            SwitchLoginToUserViewMode(superAdmin);
+            SwitchUserToAdminViewMode();
+            logoutBtn.Visibility = Visibility.Hidden;
+            superAdminGrid.Visibility = Visibility.Visible;
+        }
+
 
         private void ShowBadLoginMsg()
         {
@@ -124,7 +167,12 @@ namespace ForumsSystemClient.PresentationLayer
         {
             loginGrid.Visibility = Visibility.Visible;
             userGrid.Visibility = Visibility.Hidden;
-            // TODO: handle other types
+            adminGrid.Visibility = Visibility.Hidden;
+
+            WindowHelper.LogoutUser(forumName);
+
+            // TODO:
+            // cl.Logout();
         }
 
         private void sendMsgBtn_Click(object sender, RoutedEventArgs e)

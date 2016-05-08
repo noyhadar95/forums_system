@@ -31,9 +31,12 @@ namespace ForumsSystemClient.PresentationLayer
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
-            List<string> items = cl.GetThreadsList(forumName, subForumName);
-            threadsListView.ItemsSource = items;
+            //List<string> items = cl.GetThreadsList(forumName, subForumName);
+            //threadsListView.ItemsSource = items;
 
+            Dictionary<int, string> dict = new Dictionary<int, string>();
+            threadsListView.ItemsSource = dict;
+            
             this.forumName = forumName;
             this.subForumName = subForumName;
             Title = subForumName;
@@ -49,9 +52,14 @@ namespace ForumsSystemClient.PresentationLayer
             var item = (sender as ListView).SelectedItem;
             if (item != null)
             {
-                Window newWin = new ThreadWindow(forumName, subForumName);
+                Window newWin = new ThreadWindow(forumName, subForumName,1);
                 WindowHelper.SwitchWindow(this, newWin);
             }
+        }
+
+        private void addThreadBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new AddThreadWindow(forumName, subForumName));
         }
     }
 }

@@ -1,0 +1,19 @@
+﻿<Window x:Class="ForumsSystemClient.PresentationLayer.EditPostWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
+        mc:Ignorable="d"
+        Title="EditPostWindow" Height="450" Width="750">
+    <Grid>
+        <TextBox x:Name="titleTB" HorizontalAlignment="Left" Height="23" Margin="208,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="387"/>
+        <TextBox x:Name="contentTB" HorizontalAlignment="Left" Height="211" Margin="208,116,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="387"/>
+        <Button x:Name="editBtn" Content="edit" HorizontalAlignment="Left" Margin="520,367,0,0" VerticalAlignment="Top" Width="75" Click="editBtn_Click"  />
+        <Button x:Name="cancelBtn" Content="cancel" HorizontalAlignment="Left" Margin="208,367,0,0" VerticalAlignment="Top" Width="75" Click="cancelBtn_Click"  />
+        <Label x:Name="titleLbl" Content="title" HorizontalAlignment="Left" Margin="111,57,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="contentLbl" Content="content" HorizontalAlignment="Left" Margin="111,116,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="instructLbl" Content="Edit the content of your post" HorizontalAlignment="Left" Margin="290,10,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

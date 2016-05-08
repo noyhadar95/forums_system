@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources
 {
-    class User
+    public class User
     {
         private string userName;
         private string password;
@@ -26,5 +26,25 @@ namespace ForumsSystemClient.Resources
         private List<Post> postsNotifications;
         private bool isLoggedIn;
         private bool emailAccepted;
+
+
+
+        public string Username { get { return userName; } set { userName = value; } }
+
+
+        public User(string username, string password)
+        {
+            this.userName = username;
+            this.password = password;
+}
+        private DateTime dateTime;
+
+        public User(string username, string password, string email, DateTime dateTime)
+        {
+            userName = username;
+            this.password = password;
+            this.email = email;
+            dateOfBirth= dateTime;
+        }
     }
 }

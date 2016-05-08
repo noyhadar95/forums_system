@@ -1,4 +1,5 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,17 +21,18 @@ namespace ForumsSystemClient.PresentationLayer
     /// </summary>
     public partial class ThreadWindow : Window
     {
+        private double firstLevelItemOffset = 70; // offset of the items in the first level of the treeview
         private CL cl;
         private string forumName;
         private string subForumName;
+        private int threadID;
         private List<Post> posts;
-        private double firstLevelItemOffset = 70; // offset of the items in the first level of the treeview
         private Dictionary<Button, StackPanel> btnSPParents;
         private Dictionary<Border, Post> borderPostDict;
         private bool isAddReplyMode = false;
         private Button addReplyModeCancelBtn = null; // save the cancel button, so we will be able to exit add-reply-mode when another reply-button is clicked
 
-        public ThreadWindow(string forumName, string subForumName)
+        public ThreadWindow(string forumName, string subForumName, int threadID)
         {
             InitializeComponent();
 
@@ -39,14 +41,14 @@ namespace ForumsSystemClient.PresentationLayer
             cl = new CL();
             this.forumName = forumName;
             this.subForumName = subForumName;
+            this.threadID = threadID;
             btnSPParents = new Dictionary<Button, StackPanel>();
             borderPostDict = new Dictionary<Border, Post>();
         }
 
         private void postsTreeView_Loaded(object sender, RoutedEventArgs e)
         {
-            string threadID = "";
-            posts = cl.GetPosts(threadID);
+            posts = cl.GetPosts(forumName, subForumName, threadID);
 
             // Get TreeView reference and add the items for the posts.
             var tree = sender as TreeView;
@@ -98,17 +100,9 @@ namespace ForumsSystemClient.PresentationLayer
             TextBlock replyTB = new TextBlock();
             replyTB.Inlines.Add(replyBtn);
 
-            // create the delete button
-            Button deleteBtn = new Button();
-            deleteBtn.Content = "delete";
-            deleteBtn.Margin = new Thickness(5);
-            TextBlock deleteTB = new TextBlock();
-            deleteTB.Inlines.Add(deleteBtn);
-
             AlignStackPanel horizontalSP = new AlignStackPanel();
             horizontalSP.Orientation = Orientation.Horizontal;
             horizontalSP.Children.Add(replyTB);
-            horizontalSP.Children.Add(deleteTB);
 
             StackPanel sp = new StackPanel();
             sp.Children.Add(WrapElementWithBorder(titleTB));
@@ -126,7 +120,38 @@ namespace ForumsSystemClient.PresentationLayer
             // save the created border with it's associated post
             borderPostDict.Add(border, post);
 
+            // check if the logged user is the post publisher
+            if (IsLoggedUserPostPublisher(post))
+            {
+                // add delete button
+                Button deleteBtn = new Button();
+                deleteBtn.Content = "delete";
+                deleteBtn.Margin = new Thickness(5);
+                deleteBtn.Click += new RoutedEventHandler(deleteBtn_Click);
+                TextBlock deleteTB = new TextBlock();
+                deleteTB.Inlines.Add(deleteBtn);
+
+                btnSPParents.Add(deleteBtn, sp);
+
+                // add edit content button
+                Button editBtn = new Button();
+                editBtn.Content = "edit";
+                editBtn.Margin = new Thickness(5);
+                editBtn.Click += new RoutedEventHandler(editBtn_Click);
+                TextBlock editTB = new TextBlock();
+                editTB.Inlines.Add(editBtn);
+
+                horizontalSP.Children.Add(editTB);
+                horizontalSP.Children.Add(deleteTB);
+            }
+
             return border;
+        }
+
+        private bool IsLoggedUserPostPublisher(Post post)
+        {
+            return (WindowHelper.IsLoggedSuperAdmin() && WindowHelper.GetLoggedSuperAdmin().userName == post.Publisher.Username)
+                || (WindowHelper.IsLoggedUser(forumName) && WindowHelper.GetLoggedUser(forumName).Username == post.Publisher.Username);
         }
 
         private Border WrapElementWithBorder(UIElement c)
@@ -203,7 +228,7 @@ namespace ForumsSystemClient.PresentationLayer
             Button btn = (Button)e.OriginalSource;
             StackPanel parentSP = btnSPParents[btn];
             // send parentSP as parameter so it could be bounded to the buttons inside
-            // the add reply border, this method also sets the field addReplyModeCancelBtn
+            // the add reply border. this method also sets the field addReplyModeCancelBtn
             Border b = CreateAddReplyBorder(parentSP);
             parentSP.Children.Add(b);
 
@@ -215,10 +240,9 @@ namespace ForumsSystemClient.PresentationLayer
         private void addReplyBtn_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)e.OriginalSource;
-            //StackPanel addReplySP = (StackPanel)(btn.Parent as AlignStackPanel).Parent;
             StackPanel parentSP = btnSPParents[btn];
-            Border addReplySPBorder= (Border)(parentSP.Children[parentSP.Children.Count -1]);
-            StackPanel addReplySP =(StackPanel)addReplySPBorder.Child;
+            Border addReplySPBorder = (Border)(parentSP.Children[parentSP.Children.Count - 1]);
+            StackPanel addReplySP = (StackPanel)addReplySPBorder.Child;
 
             // retrieve title of reply
             if (!(addReplySP.Children[0] is AlignStackPanel))
@@ -250,9 +274,48 @@ namespace ForumsSystemClient.PresentationLayer
             }
             Border parentBorder = (Border)parentSP.Parent;
             Post parentPost = borderPostDict[parentBorder];
-            //cl.AddReply(parentPost, publisher, replyTitle, replyContent);
+            cl.AddReply(forumName, subForumName, threadID, parentPost.Publisher.Username, parentPost.GetId(), replyTitle, replyContent);
 
-            // TODO: reload the tree veiw
+            // refresh window
+            WindowHelper.SwitchWindow(this, new ThreadWindow(forumName, subForumName, threadID));
+        }
+
+        private void deleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)e.OriginalSource;
+            StackPanel parentSP = btnSPParents[btn];
+
+            // retrieve the parent border
+            if (!(parentSP.Parent is Border))
+            {
+                MessageBox.Show("there was an error while deleting your post, please try again");
+                return;
+            }
+            Border parentBorder = (Border)parentSP.Parent;
+            Post post = borderPostDict[parentBorder];
+
+            string deleter = WindowHelper.GetLoggedUsername(forumName);
+            cl.DeletePost(forumName, subForumName, threadID, deleter, post.GetId());
+
+            // refresh window
+            WindowHelper.SwitchWindow(this, new ThreadWindow(forumName, subForumName, threadID));
+        }
+
+        private void editBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)e.OriginalSource;
+            StackPanel parentSP = btnSPParents[btn];
+
+            // retrieve the parent border
+            if (!(parentSP.Parent is Border))
+            {
+                MessageBox.Show("there was an error while deleting your post, please try again");
+                return;
+            }
+            Border parentBorder = (Border)parentSP.Parent;
+            Post post = borderPostDict[parentBorder];
+
+            WindowHelper.SwitchWindow(this, new EditPostWindow(forumName, subForumName, threadID, post));
         }
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
@@ -270,5 +333,6 @@ namespace ForumsSystemClient.PresentationLayer
         {
             WindowHelper.SwitchWindow(this, new SubForumWindow(forumName, subForumName));
         }
+
     }
 }
