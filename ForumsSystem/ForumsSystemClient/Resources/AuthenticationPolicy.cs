@@ -8,6 +8,11 @@ namespace ForumsSystemClient.Resources
 {
     public class AuthenticationPolicy :Policy
     {
+        public AuthenticationPolicy():base()
+        {
+
+        }
+
         public AuthenticationPolicy(Policies type) : base(type)
         {
 

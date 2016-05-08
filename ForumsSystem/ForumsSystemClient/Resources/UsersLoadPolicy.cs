@@ -10,6 +10,11 @@ namespace ForumsSystemClient.Resources
     {
         private int maxNumOfUsers;
 
+        public UsersLoadPolicy() : base()
+        {
+
+        }
+
         public UsersLoadPolicy(Policies type, int maxNumOfUsers) : base(type)
         {
             this.maxNumOfUsers = maxNumOfUsers;

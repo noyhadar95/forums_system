@@ -10,6 +10,11 @@ namespace ForumsSystemClient.Resources
     {
         private int maxModerators;
 
+        public MaxModeratorsPolicy():base()
+        {
+
+        }
+
         public MaxModeratorsPolicy(Policies type, int maxModerators) : base(type)
         {
             this.maxModerators = maxModerators;

@@ -10,6 +10,11 @@ namespace ForumsSystemClient.Resources
     {
         private bool blockPassword;
 
+        public ConfidentialityPolicy():base()
+        {
+
+        }
+
         public ConfidentialityPolicy(Policies type, bool blockPassword) : base(type)
         {
             this.blockPassword = blockPassword;

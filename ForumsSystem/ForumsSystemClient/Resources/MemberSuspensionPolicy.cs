@@ -10,6 +10,12 @@ namespace ForumsSystemClient.Resources
     {
         private int numOfComplaints;
         //TODO: maybe add more things
+
+        public MemberSuspensionPolicy():base()
+        {
+
+        }
+
         public MemberSuspensionPolicy(Policies type, int numOfComplaints) : base(type)
         {
             this.numOfComplaints = numOfComplaints;

@@ -12,6 +12,11 @@ namespace ForumsSystemClient.Resources
         private int numOfMessages;
         private int numOfComplaints;
 
+        public ModeratorAppointmentPolicy() : base()
+        {
+
+        }
+
         public ModeratorAppointmentPolicy(Policies type, int seniority, int numOfMessages, int numOfComplaints) : base(type)
         {
             this.seniorityInDays = seniority;

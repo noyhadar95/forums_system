@@ -10,6 +10,11 @@ namespace ForumsSystemClient.Resources
     {
         private int numOfComplaints;
 
+        public ModeratorSuspensionPolicy() : base()
+        {
+
+        }
+
         public ModeratorSuspensionPolicy(Policies type, int numOfComplaints) : base(type)
         {
             this.numOfComplaints = numOfComplaints;

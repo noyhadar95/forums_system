@@ -20,6 +20,10 @@ namespace ForumsSystemClient.Resources
 
         public User Publisher { get { return publisher; } set { publisher = value; } }
 
+        public Post()
+        {
+
+        }
 
         public Post(string title, string content)
         {

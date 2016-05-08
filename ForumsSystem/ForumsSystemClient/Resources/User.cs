@@ -31,6 +31,10 @@ namespace ForumsSystemClient.Resources
 
         public string Username { get { return userName; } set { userName = value; } }
 
+        public User()
+        {
+
+        }
 
         public User(string username, string password)
         {

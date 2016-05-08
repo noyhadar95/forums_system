@@ -11,6 +11,11 @@ namespace ForumsSystemClient.Resources
         private int requiredLength;
         private int passwordValidity;
 
+        public PasswordPolicy() : base()
+        {
+
+        }
+
         public PasswordPolicy(Policies type, int requiredLength, int passwordValidity) : base(type)
         {
             this.requiredLength = requiredLength;

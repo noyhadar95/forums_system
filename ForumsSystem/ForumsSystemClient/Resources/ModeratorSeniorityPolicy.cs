@@ -10,6 +10,11 @@ namespace ForumsSystemClient.Resources
     {
         private int minSeniority;
 
+        public ModeratorSeniorityPolicy() : base()
+        {
+
+        }
+
         public ModeratorSeniorityPolicy(Policies type, int minSeniority) : base(type)
         {
             this.minSeniority = minSeniority;
