@@ -204,15 +204,26 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return users;
         }
 
-        public static void populateFriends(Dictionary<string, IUser> users, Dictionary<string, IUser> waiting_users)
+        public static void populateFriends(Dictionary<string, IUser> users, Dictionary<string, IUser> waiting_users, string forumName)
         {
             DAL_Friends df = new DAL_Friends();
             Dictionary<string, IUser> allUsers = users.Union(waiting_users).ToDictionary(k => k.Key, v => v.Value);
+            DataTable friendsTbl = df.GetAllFriendsInForum(forumName);
 
-            foreach (KeyValuePair<string, IUser> entry in allUsers)
+            foreach (DataRow friendRow in friendsTbl.Rows)
             {
+                string userName = friendRow["UserName"].ToString();
+                string friendUserName = friendRow["FriendUserName"].ToString();
+                bool accepted= (bool)friendRow["Accepted"];
+
+                if (accepted)
+                {
+
+                }
 
             }
+
+
         }
 
         
