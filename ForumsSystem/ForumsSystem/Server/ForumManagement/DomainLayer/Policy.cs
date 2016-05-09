@@ -10,7 +10,17 @@ using System.Runtime.Serialization;
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(AdminAppointmentPolicy))]
+    [KnownType(typeof(AuthenticationPolicy))]
+    [KnownType(typeof(ConfidentialityPolicy))]
+    [KnownType(typeof(MaxModeratorsPolicy))]
+    [KnownType(typeof(MemberSuspensionPolicy))]
     [KnownType(typeof(MinimumAgePolicy))]
+    [KnownType(typeof(ModeratorAppointmentPolicy))]
+    [KnownType(typeof(ModeratorSeniorityPolicy))]
+    [KnownType(typeof(ModeratorSuspensionPolicy))]
+    [KnownType(typeof(PasswordPolicy))]
+    [KnownType(typeof(UsersLoadPolicy))]
     public abstract class Policy 
     {
         /*

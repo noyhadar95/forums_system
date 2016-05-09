@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(Moderator))]
+    [KnownType(typeof(Thread))]
+    [KnownType(typeof(User))]
     public class SubForum
     {
         [DataMember]

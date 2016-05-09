@@ -18,13 +18,13 @@ namespace ForumsSystemClient.CommunicationLayer
         const int CLIENT_PORT_NO = 4000;
         const int SERVER_PORT_NO = 5000;
         const string delimeter = "$|deli|$";
-        static string SERVER_IP = "79.179.27.79";
+        static string SERVER_IP = "132.72.226.107";
         static ThreadStart startNotification = new ThreadStart(WaitForNotification);
         static Thread notificationThread;
 
        private static string connect(string textToSend)
         {
-            SERVER_IP = GetLocalIPAddress();
+            //SERVER_IP = GetLocalIPAddress();
             //---create a TCPClient object at the IP and port no.---
             TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
 

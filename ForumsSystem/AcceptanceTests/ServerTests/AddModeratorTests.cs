@@ -23,8 +23,8 @@ namespace AcceptanceTests.ServerTests
         {
             ForumsSystem.Server.ForumManagement.Data_Access_Layer.DAL_Forum d = new ForumsSystem.Server.ForumManagement.Data_Access_Layer.DAL_Forum();
             d.DeleteAll();
-            //string forumName = GetNextForum();
-            string forumName = "dddd";
+            string forumName = GetNextForum();
+            //string forumName = "dddd";
 
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
