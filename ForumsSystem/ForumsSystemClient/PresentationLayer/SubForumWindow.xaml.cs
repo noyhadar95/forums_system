@@ -76,5 +76,10 @@ namespace ForumsSystemClient.PresentationLayer
         {
             WindowHelper.SwitchWindow(this, new AddThreadWindow(forumName, subForumName));
         }
+
+        private void editModsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new EditModeratorsWindow(forumName, subForumName));
+        }
     }
 }
