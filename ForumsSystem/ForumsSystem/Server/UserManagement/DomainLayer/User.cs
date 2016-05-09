@@ -353,7 +353,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
               //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, p);
                 }
                 DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
-              //  dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
+                dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
                 postNotifications = new List<PostNotification>();
                 foreach (PrivateMessageNotification m in privateMessageNotifications)
                 {
@@ -361,7 +361,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 }
                 privateMessageNotifications = new List<PrivateMessageNotification>();
                 DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
-              //  dal_messagesNotification.RemoveAllNotifications(forum.getName(), userName);
+                dal_messagesNotification.RemoveAllNotifications(forum.getName(), userName);
             }
 
         }

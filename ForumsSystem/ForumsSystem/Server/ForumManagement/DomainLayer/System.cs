@@ -37,7 +37,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 Loggers.Logger.GetInstance().AddActivityEntry("A new forum: " + forumName + " has been created");
                 return forum;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
             }

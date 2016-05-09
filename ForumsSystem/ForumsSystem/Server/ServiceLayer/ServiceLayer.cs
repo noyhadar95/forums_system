@@ -35,9 +35,10 @@ namespace ForumsSystem.Server.ServiceLayer
             SuperAdmin creator;
             if (!SuperAdmin.GetInstance().userName.Equals(creatorName))
                 return null;
-            if (!SuperAdmin.GetInstance().password.Equals(creatorName))
+            if (!SuperAdmin.GetInstance().password.Equals(password))
                 return null;
             creator = SuperAdmin.GetInstance();
+            creator.Login(creatorName, password);
             return creator.createForum(name, properties, adminUsername);
         }
 
@@ -59,7 +60,9 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             
             IForum forum = GetForum(forumName);
-            IUser guest = new User();//forum.GetGuest(guestName);
+
+            //IUser guest = forum.GetGuest(guestName);
+            IUser guest = new User();
             return guest.RegisterToForum(guestName, password, forum, email, dob);
 
         }

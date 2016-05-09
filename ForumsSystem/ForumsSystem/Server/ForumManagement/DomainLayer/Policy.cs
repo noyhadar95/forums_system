@@ -12,10 +12,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     [DataContract]
     public abstract class Policy 
     {
+*/
         public Policies type { get; set; }
         public Policy nextPolicy { get; set; }
         public int id { get; set; }
         DAL_Policy dal_policy = new DAL_Policy();
+/*
+        protected Policies type;
+        private Policy nextPolicy;
+        private int id;
+        private  DAL_Policy dal_policy = new DAL_Policy();
+        protected DAL_PolicyParameter dal_policyParameter = new DAL_PolicyParameter();
+
 
         protected Policy()
         {
@@ -82,7 +90,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public Policy RemovePolicy(Policies type)
         {
             if (this.type == type)//if the first node is the one to be removed
-                return this.nextPolicy;
+            {
+                dal_policy.DeletePolicy(id);
+                return this.nextPolicy;  
+            }
             RemovePolicyHelper(type);
             return this;
         }
@@ -91,7 +102,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if (this.NextPolicy.Type == type)
             {
+                int idToRemove = this.NextPolicy.id;
                 Policy temp = this.NextPolicy.NextPolicy;
+                if(temp == null)
+                    dal_policy.SetNextPolicy(id, -1);
+                else
+                    dal_policy.SetNextPolicy(id, temp.id);
+                dal_policy.DeletePolicy(idToRemove);
                 this.NextPolicy = temp;
                 return;
             }
