@@ -10,6 +10,7 @@ using System.Runtime.Serialization;
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(MinimumAgePolicy))]
     public abstract class Policy 
     {
         /*

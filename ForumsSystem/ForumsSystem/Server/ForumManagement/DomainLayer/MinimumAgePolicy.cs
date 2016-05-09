@@ -10,7 +10,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     /// <summary>
     /// check if a user is old enough to register to the forum
     /// </summary>
+    
     [DataContract(IsReference = true)]
+    [Serializable]
     [KnownType(typeof(MinimumAgePolicy))]
     public class MinimumAgePolicy :Policy
     {

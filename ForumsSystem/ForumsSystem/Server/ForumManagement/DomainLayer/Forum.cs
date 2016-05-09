@@ -12,6 +12,9 @@ using System.Runtime.Serialization;
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(Forum))]
+    [KnownType(typeof(User))]
+    [KnownType(typeof(SubForum))]
     public class Forum : IForum
     {
         DAL_Forum dal_forum = new DAL_Forum();
