@@ -89,5 +89,7 @@ namespace ForumsSystem.Server.ServiceLayer
         List<string> GetForumsList();
 
         string GetUserType(string forumName, string username);
+
+        bool IgnoreFriend(string forumName, string userName, string userToIgnore);
     }
 }

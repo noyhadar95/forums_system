@@ -484,5 +484,13 @@ namespace ForumsSystem.Server.ServiceLayer
             return user.GetTypeString();
             
         }
+
+        public bool IgnoreFriend(string forumName, string userName, string userToIgnore)
+        {
+            IForum forum = GetForum(forumName); 
+            IUser user = forum.getUser(userName);
+            IUser user2 = forum.getUser(userToIgnore);
+            return user.IgnoreFriend(user2);
+        }
     }
 }

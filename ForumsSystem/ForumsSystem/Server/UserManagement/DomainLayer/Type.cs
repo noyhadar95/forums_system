@@ -400,6 +400,17 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return true;
         }
 
+        public virtual bool IgnoreFriend(IUser callingUser, IUser userToIgnore)
+        {
+            if (!callingUser.isLogin())
+                return false;
+            if (!callingUser.isInWaitingList(userToIgnore))
+                return false;
+            callingUser.removeFromWaitingFriendsList(userToIgnore);
+            dal_friends.RemoveFriend(callingUser.getForum().getName(), userToIgnore.getUsername(), callingUser.getUsername());
+            return true;
+        }
+
         public virtual void fileComplaint(IUser callingUser, IUser user)
         {
             throw new NotImplementedException();

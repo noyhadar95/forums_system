@@ -305,5 +305,10 @@ namespace ForumsSystemClient.CommunicationLayer
         {
             return (List<string>)Client.SendRequest("GetForumMembers", forumName);
         }
+
+        public bool IgnoreFriend(string forumName, string userName, string userToIgnore)
+        {
+            return (bool)Client.SendRequest("IgnoreFriend", forumName,userName,userToIgnore);
+        }
     }
 }

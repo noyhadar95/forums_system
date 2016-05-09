@@ -90,5 +90,7 @@ namespace ForumsSystemClient.CommunicationLayer
         Dictionary<int, string> GetThreads(string forumName, string subForumName);
         List<string> GetSubForumsList(string forumName);
         List<string> GetForumsList();
+
+        bool IgnoreFriend(string forumName, string userName, string userToIgnore);
     }
 }
