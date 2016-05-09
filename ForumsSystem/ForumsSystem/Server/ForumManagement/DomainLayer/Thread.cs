@@ -14,7 +14,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
         [DataMember]
         private Post openingPost;
-        [DataMember]
+        [IgnoreDataMember]
         private ISubForum subForum;
 
         [DataMember]
@@ -149,6 +149,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 }
             }
             return posts;
+        }
+        public void SetSubforum(ISubForum newSubforum)
+        {
+            this.subForum = newSubforum;
         }
         
     }

@@ -183,5 +183,16 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return threads;
         }
+        [OnDeserialized()]
+    internal void OnSerializedMethod(StreamingContext context)
+    {
+            // Setting this as parent property for Child object
+            foreach (Thread t in threads)
+            {
+                t.SetSubforum(this);
+            }
+            
+    }
+
     }
 }

@@ -109,7 +109,8 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public Thread AddThread(string forumName, string subForumName, string publisher, string title, string content)
         {
-            return (Thread)Client.SendRequest("AddThread", forumName, subForumName, publisher, title, content);
+            Thread t=(Thread)Client.SendRequest("AddThread", forumName, subForumName, publisher, title, content);
+            return t;
         }
 
         public bool AddModerator(string forumName, string subForumName, string adminUsername, KeyValuePair<string, DateTime> newMod)

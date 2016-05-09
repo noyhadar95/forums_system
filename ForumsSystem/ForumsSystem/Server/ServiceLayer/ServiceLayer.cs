@@ -86,7 +86,8 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser publisher = forum.getUser(publisherName);
             if (publisher == null)
                 return null;
-            return publisher.createThread(subForum, title, content);
+            Thread t= publisher.createThread(subForum, title, content);
+            return t;
 
         }
 

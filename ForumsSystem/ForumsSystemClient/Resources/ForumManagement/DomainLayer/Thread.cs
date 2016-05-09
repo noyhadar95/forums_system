@@ -14,7 +14,7 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
     {
         [DataMember]
         private Post openingPost;
-        [DataMember]
+        [IgnoreDataMember]
         private SubForum subForum;
         [DataMember]
         public int id { get; set; }
@@ -52,6 +52,10 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
             if (openingPost != null)
                 return openingPost.GetPostById(id);
             return null;
+        }
+        public void SetSubforum(SubForum newSubforum)
+        {
+            this.subForum = newSubforum;
         }
     }
 }
