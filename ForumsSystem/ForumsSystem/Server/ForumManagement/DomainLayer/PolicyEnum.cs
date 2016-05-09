@@ -7,21 +7,34 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    [DataContract(IsReference = true)]
+    [DataContract]
     public enum Policies
     {
-        Password=0,
+        [EnumMember]
+        Password =0,
+        [EnumMember]
         Authentication = 1,
-        ModeratorSuspension=2,
-            Confidentiality=3,
-            ModeratorAppointment=4,
-            AdminAppointment=5,
-            MemberSuspension=6,
-            UsersLoad=7,
-            MinimumAge=8,
-        MaxModerators=9,
-        ModeratorSeniority=10,
-        PasswordValidity=11,
-        ModeratorPermissionToDelete=12
+        [EnumMember]
+        ModeratorSuspension =2,
+        [EnumMember]
+        Confidentiality =3,
+        [EnumMember]
+        ModeratorAppointment =4,
+        [EnumMember]
+        AdminAppointment =5,
+        [EnumMember]
+        MemberSuspension =6,
+        [EnumMember]
+        UsersLoad =7,
+        [EnumMember]
+        MinimumAge =8,
+        [EnumMember]
+        MaxModerators =9,
+        [EnumMember]
+        ModeratorSeniority =10,
+        [EnumMember]
+        PasswordValidity =11,
+        [EnumMember]
+        ModeratorPermissionToDelete =12
     }
 }

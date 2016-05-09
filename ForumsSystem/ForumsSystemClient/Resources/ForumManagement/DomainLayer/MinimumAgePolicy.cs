@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(MinimumAgePolicy))]
     public class MinimumAgePolicy : Policy
     {
         [DataMember]

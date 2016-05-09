@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
-    [DataContract]
+    [DataContract(IsReference = true)]
     public abstract class Policy
     {
         /* public enum Policies

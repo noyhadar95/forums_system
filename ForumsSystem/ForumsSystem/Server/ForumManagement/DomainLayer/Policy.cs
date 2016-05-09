@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-    [DataContract]
+    [DataContract(IsReference = true)]
     public abstract class Policy 
     {
         /*
