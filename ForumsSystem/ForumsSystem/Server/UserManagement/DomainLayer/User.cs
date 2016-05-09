@@ -392,6 +392,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return type;
         }
 
+        public string GetTypeString()
+        {
+            return type.ToString();
+        }
+
         public ISubForum createSubForum(string subForumName, Dictionary<string, DateTime> users)
         {
             IForum forum = this.forum;

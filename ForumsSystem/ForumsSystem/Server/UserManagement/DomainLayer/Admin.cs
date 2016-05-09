@@ -9,6 +9,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     public class Admin : Type
     {
+        public override string ToString()
+        {
+            return "admin";
+        }
         public override void appointAdmin(IUser callingUser, IUser user)
         {
             throw new NotImplementedException();

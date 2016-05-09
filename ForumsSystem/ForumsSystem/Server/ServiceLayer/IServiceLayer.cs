@@ -87,5 +87,7 @@ namespace ForumsSystem.Server.ServiceLayer
         Dictionary<int, string> GetThreads(string forumName, string subForumName);
         List<string> GetSubForumsList(string forumName);
         List<string> GetForumsList();
+
+        string GetUserType(string forumName, string username);
     }
 }

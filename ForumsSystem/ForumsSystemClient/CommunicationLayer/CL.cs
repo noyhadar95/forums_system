@@ -273,10 +273,37 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public string GetUserType(string forumName, string username)
         {
-            // TODO: implement
-
-            return "admin";
+            return (string)Client.SendRequest("GetUserType", forumName, username);
         }
 
+        public bool ChangeForumProperties(string username, string forumName, Policy properties)
+        {
+            return (bool)Client.SendRequest("ChangeForumProperties", username, forumName, properties);
+        }
+
+        public bool DeleteForumProperties(string deleter, string forumName, List<Policies> properties)
+        {
+            return (bool)Client.SendRequest("DeleteForumProperties",deleter, forumName, properties);
+        }
+
+        public bool AddModerator(string forumName, string subForumName, string adminUsername, string username, DateTime expiratoinDate)
+        {
+            return (bool)Client.SendRequest("AddModerator", forumName, subForumName, adminUsername,username,expiratoinDate);
+        }
+
+        public List<Tuple<string, string, DateTime, string, List<Post>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        {
+            return (List<Tuple<string, string, DateTime, string, List<Post>>>)Client.SendRequest(" ReportModeratorsDetails", forumName, adminUserName1);
+        }
+
+        public void MemberLogout(string forumName, string username)
+        {
+            Client.SendRequest("MemberLogout", forumName, username);
+        }
+
+        public List<string> GetForumMembers(string forumName)
+        {
+            return (List<string>)Client.SendRequest("GetForumMembers", forumName);
+        }
     }
 }
