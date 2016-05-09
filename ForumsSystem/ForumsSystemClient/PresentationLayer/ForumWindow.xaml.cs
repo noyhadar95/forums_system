@@ -72,10 +72,20 @@ namespace ForumsSystemClient.PresentationLayer
                 if (type == "admin")
                     SwitchUserToAdminViewMode();
 
-                // initialize friend requests menu bar
-                IniFriendReqsMenu(user.Username);
+                IniNotificationsBar(user.Username, type);
+
             }
 
+        }
+
+        private void IniNotificationsBar(string username, string type)
+        {
+            MenuItem mi = new MenuItem();
+            mi.Header = "logged in as " + type;
+            userMenuBar.Items.Add(mi);
+
+            // initialize friend requests menu bar
+            IniFriendReqsMenu(username);
         }
 
         private void IniFriendReqsMenu(string username)
@@ -106,7 +116,7 @@ namespace ForumsSystemClient.PresentationLayer
             else if (result == MessageBoxResult.No)
             {
                 // ignore friend request
-                
+
 
             }
             else

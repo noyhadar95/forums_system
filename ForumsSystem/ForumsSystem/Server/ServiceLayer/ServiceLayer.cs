@@ -533,6 +533,7 @@ namespace ForumsSystem.Server.ServiceLayer
                 if (users.Contains(usr))
                     users.Remove(usr);
             }
+            users.Remove(username);
             return users;
         }
     }

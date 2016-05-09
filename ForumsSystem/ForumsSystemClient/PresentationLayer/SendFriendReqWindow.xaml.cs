@@ -36,8 +36,7 @@ namespace ForumsSystemClient.PresentationLayer
             cl = new CL();
 
             loggedUsername = WindowHelper.GetLoggedUsername(forumName);
-            //List<string> users = cl.GetUsersNotFriends(forumName, loggedUsername);
-            List<string> users = new List<string>();
+            List<string> users = cl.GetUsersNotFriends(forumName, loggedUsername);
             usersNotFriends = new ObservableCollection<string>(users);
             usersLV.ItemsSource = usersNotFriends;
         }
@@ -56,6 +55,13 @@ namespace ForumsSystemClient.PresentationLayer
             {
                 cl.SendFriendRequest(forumName, loggedUsername, selectedItem);
             }
+            MessageBox.Show("your friend request/s have been successfully sent");
+            WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
+        }
+
+        private void cancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
         }
     }
 }
