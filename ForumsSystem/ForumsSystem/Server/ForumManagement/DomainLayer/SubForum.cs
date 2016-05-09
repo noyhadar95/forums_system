@@ -32,9 +32,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
         }
 
-        public static List<SubForum> populateSubForums(Forum forum)
+        public static List<ISubForum> populateSubForums(Forum forum)
         {
-            List<SubForum> sForums = new List<SubForum>();
+            List<ISubForum> sForums = new List<ISubForum>();
             DAL_SubForums dsf = new DAL_SubForums();
             DataTable sForumtbl = dsf.GetAllSubForums(forum.getName());
             foreach (DataRow sForumRow in sForumtbl.Rows)
@@ -49,12 +49,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 //populate moderators
                sf.moderators = Moderator.populateModerators(forum, sForumName);
 
-                //populate threads
-                sf.threads = 
+                //populate threads (includes posts)
+                sf.threads = Thread.populateThreads(sf);
 
                 sf.creator = forum.getDictionaryOfUsers()[createdUserName];
 
+                sForums.Add(sf);
             }
+
+            return sForums;
         }
         public int numOfModerators()
         {

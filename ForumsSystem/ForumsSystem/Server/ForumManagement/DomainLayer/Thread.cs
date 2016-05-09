@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,9 +29,38 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         }
 
-        public static List<Thread> populateThreads()
+        public static List<Thread> populateThreads(SubForum subForum)
         {
+            //List<Thread> threads = new List<Thread>();
+            Dictionary<int, Thread> threads = new Dictionary<int, Thread>(); // opening postId, thread
+            DAL_Threads dt = new DAL_Threads();
+            DataTable threadTbl = dt.GetAllThreads(subForum.getForum().getName(), subForum.getName());
+            foreach (DataRow threadRow in threadTbl.Rows)
+            {
+                Thread thr = new Thread();
+                
+                int threadId = (int)threadRow["ThreadId"];
+                int openingPostID = (int)threadRow["OpeningPostId"];
 
+                thr.subForum = subForum;
+                thr.id = threadId;
+
+                threads[openingPostID] = thr;
+            }
+
+            Post.PopulatePosts(threads);
+
+            return threads.Values.ToList();
+
+
+        }
+        /// <summary>
+        /// Sets the opening post - USED FOR INITIALIZATION
+        /// </summary>
+        /// <param name="post"></param>
+        public void setOpeningPost(Post post)
+        {
+            this.openingPost = post;
         }
 
         public string GetTiltle()

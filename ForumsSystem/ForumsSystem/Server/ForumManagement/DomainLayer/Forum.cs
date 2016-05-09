@@ -36,9 +36,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             User.populateFriends(forum.users, forum.waiting_users, forumName);
             //----messages
             PrivateMessage.populateMessages(forum.users, forum.waiting_users);
+            //----privateMessageNotifications
+            PrivateMessageNotification.populateMessageNotification(forum.users, forum.waiting_users);
 
-            //--subForums
 
+            //--subForums (includes threads, posts and moderators)
+            forum.sub_forums = SubForum.populateSubForums(forum);
+
+
+            //--policies
             forum.policies = Policy.populatePolicy(policyId);
            
 
