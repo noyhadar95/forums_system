@@ -1,6 +1,7 @@
 ﻿using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -93,15 +94,28 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public static System populateSystem()
         {
-            return null;
             System sys = new System();
             DAL_Forum dforum = new DAL_Forum();
-            var tbl = dforum.GetAllForums();
-            foreach (var forumRow in tbl.Rows)
+            DataTable forumsTBL = dforum.GetAllForums();
+            foreach (DataRow forumRow in forumsTBL.Rows)
             {
-           //     Forum f
-          //      sys.forums.Add()
+                
+                string forumName = forumRow["ForumName"].ToString();
+                int policyId;
+
+                if (forumRow["PolicyId"] == DBNull.Value)
+                    policyId = -1;
+                else
+                    policyId = (int)forumRow["PolicyId"];
+
+                sys.forums[forumName] = Forum.populateForum(forumName, policyId);
             }
+
+            Thread.setNextId();
+            Post.setNextId();
+
+
+            return sys;
         }
     }
 }

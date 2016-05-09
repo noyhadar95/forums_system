@@ -26,11 +26,11 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         /// <param name="passwordValidity"></param>
         /// <param name="maxNumOfUsers"></param>
         public void CreatePolicyParameter(int policyId, int seniorityInDays, int numOfMessages,
-            int numOfComplaints, bool blockPassword, int maxModerators, int minAge,int minSeniority, int requiredLength,int passwordValidity, int maxNumOfUsers )
-        {//8
+            int numOfComplaints, bool blockPassword, int maxModerators, int minAge,int minSeniority, int requiredLength,int passwordValidity, int maxNumOfUsers, bool moderatorDeletePermission)
+        {
 
             Connect_to_DB();
-            string sql = "Insert into [PolicyParameter] values(@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8,@p9,@p10,@p11)";
+            string sql = "Insert into [PolicyParameter] values(@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8,@p9,@p10,@p11,@p12)";
 
             OleDbCommand cmd = new OleDbCommand(sql);
 
@@ -84,7 +84,8 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             else
                 cmd.Parameters.AddWithValue("@p11", maxNumOfUsers);
 
-
+            cmd.Parameters.AddWithValue("@p12", moderatorDeletePermission);
+            
 
             connect_me.TakeAction(cmd);
 
@@ -120,12 +121,12 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         /// <param name="passwordValidity"></param>
         /// <param name="maxNumOfUsers"></param>
         public void updatePolicyParameter(int policyId, int seniorityInDays, int numOfMessages,
-            int numOfComplaints, bool blockPassword, int maxModerators, int minAge, int minSeniority, int requiredLength, int passwordValidity, int maxNumOfUsers)
+            int numOfComplaints, bool blockPassword, int maxModerators, int minAge, int minSeniority, int requiredLength, int passwordValidity, int maxNumOfUsers , bool moderatorDeletePermission)
         {
             Connect_to_DB();
             OleDbCommand cmd = new OleDbCommand();
             cmd.CommandText = "UPDATE [PolicyParameter] SET seniorityInDays=@p2, numOfMessages=@p3, numOfComplaints=@p4, " +
-                "blockPassword=@p5, maxModerators=@p6, minAge=@p7, minSeniority=@p8, requiredLength=@p9, passwordValidity=@p10, maxNumOfUsers=@p11 Where PolicyId=@p1";
+                "blockPassword=@p5, maxModerators=@p6, minAge=@p7, minSeniority=@p8, requiredLength=@p9, passwordValidity=@p10, maxNumOfUsers=@p11, moderatorDeletePermission=@p12 Where PolicyId=@p1";
 
             
             cmd.Parameters.AddWithValue("@p1", policyId);
@@ -178,6 +179,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             else
                 cmd.Parameters.AddWithValue("@p11", maxNumOfUsers);
 
+            cmd.Parameters.AddWithValue("@p12", moderatorDeletePermission);
 
 
             connect_me.TakeAction(cmd);

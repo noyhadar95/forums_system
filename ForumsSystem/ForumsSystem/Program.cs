@@ -11,7 +11,7 @@ namespace ForumsSystem
     {
         static void Main(string[] args)
         {
-            Policy.populatePolicy(1);
+            SuperAdmin sa = SuperAdmin.populateSuperAdmin();
             Server.CommunicationLayer.Server.StartServer();
         }
     }

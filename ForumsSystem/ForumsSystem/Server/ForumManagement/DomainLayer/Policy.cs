@@ -28,6 +28,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public static Policy populatePolicy(int id)
         {
+            if (id < 0)
+                return null;
             Policy policy = null;
             DAL_Policy dp = new DAL_Policy();
             DataTable policyTBL = dp.getPolicy(id);
@@ -56,6 +58,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                     var requiredLength = policyParameterRow["requiredLength"];
                     var passwordValidity = policyParameterRow["passwordValidity"];
                     var maxNumOfUsers = policyParameterRow["maxNumOfUsers"];
+                    bool moderatorDeletePermission = (bool)policyParameterRow["moderatorDeletePermission"];
 
                      switch ((Policies)type)
                      {
@@ -96,7 +99,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 //            policy = Passwo
                              break;
                          case Policies.ModeratorPermissionToDelete:
-                //            policy = Moder
+                            policy = ModeratorDeletePermissionPolicy.createmoderatorDeletePermissionForInit(moderatorDeletePermission);
                              break;
                          default:
                              break;

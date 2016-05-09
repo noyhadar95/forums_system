@@ -36,7 +36,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                     string sender = messageRow["SenderUserName"].ToString();
                     string title = messageRow["Title"].ToString();
                     string content = messageRow["Content"].ToString();
-                    int id = (int)messageRow["Id"];
+                    int id = (int)messageRow["Messages.Id"];
 
                     entry.Value.AddToMessageNotification(new PrivateMessageNotification(sender, title, content, id));
                 }
