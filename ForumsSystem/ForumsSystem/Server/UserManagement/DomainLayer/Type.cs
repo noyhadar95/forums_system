@@ -67,7 +67,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             {
                 subforum.addModerator(callingUser, moderator.Key, moderator.Value);
                 dal_moderators.CreateModerator(forum.getName(), subForumName, moderator.Key.getUsername(),
-                    moderator.Value, callingUser.getUsername());
+                    moderator.Value,DateTime.Today, callingUser.getUsername());
             }
             return subforum;
         }
@@ -98,7 +98,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
             subForum.addModerator(callingUser, moderator, expirationTime);
             dal_moderators.CreateModerator(callingUser.getForum().getName(), subForum.getName(),
-                moderator.getUsername(), expirationTime, callingUser.getUsername());
+                moderator.getUsername(), expirationTime, DateTime.Today, callingUser.getUsername());
             return true;
         }
 

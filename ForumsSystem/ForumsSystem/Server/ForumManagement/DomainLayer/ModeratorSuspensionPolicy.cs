@@ -16,6 +16,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             this.numOfComplaints = numOfComplaints;
         }
+        private ModeratorSuspensionPolicy() : base()
+        {
+
+        }
+
+        public static ModeratorSuspensionPolicy createModeratorSuspensionPolicyForInit(int numOfComplaints)
+        {
+            ModeratorSuspensionPolicy policy = new ModeratorSuspensionPolicy();
+            policy.numOfComplaints = numOfComplaints;
+
+            return policy;
+        }
         public override bool CheckPolicy(PolicyParametersObject param)
         {
             if (param.GetPolicy() == type)

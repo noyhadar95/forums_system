@@ -20,6 +20,20 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.numOfComplaints = numOfComplaints;
             //TODO: maybe add more things
         }
+        private AdminAppointmentPolicy() : base()
+        {
+
+        }
+
+        public static AdminAppointmentPolicy createAdminAppointmentPolicyForInit(int seniorityInDays, int numOfMessages, int numOfComplaints)
+        {
+            AdminAppointmentPolicy policy = new AdminAppointmentPolicy();
+            policy.seniorityInDays = seniorityInDays;
+            policy.numOfMessages = numOfMessages;
+            policy.numOfComplaints = numOfComplaints;
+
+            return policy;
+        }
 
         public override bool CheckPolicy(PolicyParametersObject param)
         {

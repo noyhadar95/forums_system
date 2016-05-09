@@ -17,7 +17,19 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             this.minAge = minAge;
         }
+        private MinimumAgePolicy() : base()
+        {
 
+        }
+
+        public static MinimumAgePolicy createMinimumAgePolicyForInit(int minAge)
+        {
+            MinimumAgePolicy policy = new MinimumAgePolicy();
+            policy.minAge = minAge;
+          
+
+            return policy;
+        }
         public override bool CheckPolicy(PolicyParametersObject param)
         {
 

@@ -17,6 +17,21 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.requiredLength = requiredLength;
             this.passwordValidity = passwordValidity;
         }
+
+        private PasswordPolicy() : base()
+        {
+
+        }
+
+        public static PasswordPolicy createPasswordPolicyForInit(int requiredLength, int passwordValidity)
+        {
+            PasswordPolicy policy = new PasswordPolicy();
+            policy.requiredLength = requiredLength;
+            policy.passwordValidity = passwordValidity;
+
+            return policy;
+        }
+        
         public override bool CheckPolicy(PolicyParametersObject param)
         {
             if (param.GetPolicy() == type)
@@ -30,6 +45,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return base.CheckPolicy(param);
 
         }
+
 
         private bool checkLength(string pass)
         {

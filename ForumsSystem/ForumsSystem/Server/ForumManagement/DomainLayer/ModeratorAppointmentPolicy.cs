@@ -20,6 +20,20 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.numOfComplaints = numOfComplaints;
             //TODO: maybe add more things
         }
+        private ModeratorAppointmentPolicy() : base()
+        {
+
+        }
+
+        public static ModeratorAppointmentPolicy createModeratorAppointmentPolicyForInit(int seniorityInDays, int numOfMessages, int numOfComplaints)
+        {
+            ModeratorAppointmentPolicy policy = new ModeratorAppointmentPolicy();
+            policy.seniorityInDays = seniorityInDays;
+            policy.numOfMessages = numOfMessages;
+            policy.numOfComplaints = numOfComplaints;
+
+            return policy;
+        }
 
         public override bool CheckPolicy(PolicyParametersObject param)
         {

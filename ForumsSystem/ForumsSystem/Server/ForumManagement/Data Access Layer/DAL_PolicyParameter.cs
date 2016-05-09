@@ -26,11 +26,11 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         /// <param name="passwordValidity"></param>
         /// <param name="maxNumOfUsers"></param>
         public void CreatePolicyParameter(int policyId, int seniorityInDays, int numOfMessages,
-            int numOfComplaints, bool blockPassword, int maxModerators, int minAge, int requiredLength,int passwordValidity, int maxNumOfUsers )
-        {
+            int numOfComplaints, bool blockPassword, int maxModerators, int minAge,int minSeniority, int requiredLength,int passwordValidity, int maxNumOfUsers )
+        {//8
 
             Connect_to_DB();
-            string sql = "Insert into [PolicyParameter] values(@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8,@p9,@p10)";
+            string sql = "Insert into [PolicyParameter] values(@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8,@p9,@p10,@p11)";
 
             OleDbCommand cmd = new OleDbCommand(sql);
 
@@ -64,20 +64,25 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             else
                 cmd.Parameters.AddWithValue("@p7", minAge);
 
-            if (requiredLength < 0)
+            if (minSeniority < 0)
                 cmd.Parameters.AddWithValue("@p8", DBNull.Value);
             else
-                cmd.Parameters.AddWithValue("@p8", requiredLength);
+                cmd.Parameters.AddWithValue("@p8", minSeniority);
 
-            if (passwordValidity < 0)
+            if (requiredLength < 0)
                 cmd.Parameters.AddWithValue("@p9", DBNull.Value);
             else
-                cmd.Parameters.AddWithValue("@p9", passwordValidity);
+                cmd.Parameters.AddWithValue("@p9", requiredLength);
 
-            if (maxNumOfUsers < 0)
+            if (passwordValidity < 0)
                 cmd.Parameters.AddWithValue("@p10", DBNull.Value);
             else
-                cmd.Parameters.AddWithValue("@p10", maxNumOfUsers);
+                cmd.Parameters.AddWithValue("@p10", passwordValidity);
+
+            if (maxNumOfUsers < 0)
+                cmd.Parameters.AddWithValue("@p11", DBNull.Value);
+            else
+                cmd.Parameters.AddWithValue("@p11", maxNumOfUsers);
 
 
 
@@ -115,12 +120,12 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         /// <param name="passwordValidity"></param>
         /// <param name="maxNumOfUsers"></param>
         public void updatePolicyParameter(int policyId, int seniorityInDays, int numOfMessages,
-            int numOfComplaints, bool blockPassword, int maxModerators, int minAge, int requiredLength, int passwordValidity, int maxNumOfUsers)
+            int numOfComplaints, bool blockPassword, int maxModerators, int minAge, int minSeniority, int requiredLength, int passwordValidity, int maxNumOfUsers)
         {
             Connect_to_DB();
             OleDbCommand cmd = new OleDbCommand();
             cmd.CommandText = "UPDATE [PolicyParameter] SET seniorityInDays=@p2, numOfMessages=@p3, numOfComplaints=@p4, " +
-                "blockPassword=@p5, maxModerators=@p6, minAge=@p7, requiredLength=@p8, passwordValidity=@p9, maxNumOfUsers=@p10 Where PolicyId=@p1";
+                "blockPassword=@p5, maxModerators=@p6, minAge=@p7, minSeniority=@p8, requiredLength=@p9, passwordValidity=@p10, maxNumOfUsers=@p11 Where PolicyId=@p1";
 
             
             cmd.Parameters.AddWithValue("@p1", policyId);
@@ -153,20 +158,25 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             else
                 cmd.Parameters.AddWithValue("@p7", minAge);
 
-            if (requiredLength < 0)
+            if (minSeniority < 0)
                 cmd.Parameters.AddWithValue("@p8", DBNull.Value);
             else
-                cmd.Parameters.AddWithValue("@p8", requiredLength);
+                cmd.Parameters.AddWithValue("@p8", minSeniority);
 
-            if (passwordValidity < 0)
+            if (requiredLength < 0)
                 cmd.Parameters.AddWithValue("@p9", DBNull.Value);
             else
-                cmd.Parameters.AddWithValue("@p9", passwordValidity);
+                cmd.Parameters.AddWithValue("@p9", requiredLength);
 
-            if (maxNumOfUsers < 0)
+            if (passwordValidity < 0)
                 cmd.Parameters.AddWithValue("@p10", DBNull.Value);
             else
-                cmd.Parameters.AddWithValue("@p10", maxNumOfUsers);
+                cmd.Parameters.AddWithValue("@p10", passwordValidity);
+
+            if (maxNumOfUsers < 0)
+                cmd.Parameters.AddWithValue("@p11", DBNull.Value);
+            else
+                cmd.Parameters.AddWithValue("@p11", maxNumOfUsers);
 
 
 

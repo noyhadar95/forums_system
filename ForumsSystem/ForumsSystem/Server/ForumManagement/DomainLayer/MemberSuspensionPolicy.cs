@@ -19,6 +19,19 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.numOfComplaints = numOfComplaints;
         }
 
+        private MemberSuspensionPolicy() : base()
+        {
+
+        }
+
+        public static MemberSuspensionPolicy createMemberSuspensionPolicyForInit(int numOfComplaints)
+        {
+            MemberSuspensionPolicy policy = new MemberSuspensionPolicy();
+            policy.numOfComplaints = numOfComplaints;
+
+            return policy;
+        }
+
         /// <summary>
         /// check if a user should be suspended
         /// </summary>

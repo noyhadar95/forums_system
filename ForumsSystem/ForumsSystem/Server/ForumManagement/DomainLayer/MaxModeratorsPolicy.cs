@@ -15,7 +15,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             this.maxModerators = maxModerators;
         }
+        private MaxModeratorsPolicy() : base()
+        {
 
+        }
+
+        public static MaxModeratorsPolicy createMaxModeratorsPolicyForInit(int maxModerators)
+        {
+            MaxModeratorsPolicy policy = new MaxModeratorsPolicy();
+            policy.maxModerators = maxModerators;
+
+            return policy;
+        }
         /// <summary>
         /// check if a there is a free slot for a moderator 
         /// </summary>

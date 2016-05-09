@@ -17,6 +17,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             this.maxNumOfUsers = maxNumOfUsers;
         }
+        private UsersLoadPolicy() : base()
+        {
+
+        }
+
+        public static UsersLoadPolicy createUsersLoadPolicyForInit(int maxNumOfUsers)
+        {
+            UsersLoadPolicy policy = new UsersLoadPolicy();
+            policy.maxNumOfUsers = maxNumOfUsers;
+
+            return policy;
+        }
 
         public override bool CheckPolicy(PolicyParametersObject param)
         {

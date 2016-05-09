@@ -27,7 +27,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public static Forum populateForum(string forumName, int policyId)
         {
-            
+            return null;
             Forum forum = new Forum();
             forum.name = forumName;
             //--users
@@ -48,7 +48,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
             //--policies
             forum.policies = Policy.populatePolicy(policyId);
-           
 
         }
        

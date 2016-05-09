@@ -11,6 +11,7 @@ namespace ForumsSystem
     {
         static void Main(string[] args)
         {
+            Policy.populatePolicy(1);
             Server.CommunicationLayer.Server.StartServer();
         }
     }
