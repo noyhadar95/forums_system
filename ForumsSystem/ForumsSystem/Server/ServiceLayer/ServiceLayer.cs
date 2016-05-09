@@ -79,14 +79,17 @@ namespace ForumsSystem.Server.ServiceLayer
 
         }
 
-        public Thread AddThread(string forumName, string subForumName, string publisherName, string title, string content)
+        public int AddThread(string forumName, string subForumName, string publisherName, string title, string content)
         {
             IForum forum = GetForum(forumName);
             ISubForum subForum = forum.getSubForum(subForumName);
             IUser publisher = forum.getUser(publisherName);
             if (publisher == null)
-                return null;
-            return publisher.createThread(subForum, title, content);
+                return -1;
+            Thread t = publisher.createThread(subForum, title, content);
+            if(t!=null)
+                return t.id;
+            return -1;
 
         }
 
@@ -319,7 +322,7 @@ namespace ForumsSystem.Server.ServiceLayer
         public List<Post> GetPosts(string forumName,string subforumName,int threadId)
         {
             Thread thread = sys.getForum(forumName).getSubForum(subforumName).GetThreadById(threadId);
-            List<Post> res= thread.GetOpeningPost().GetReplies();
+            List<Post> res = new List<Post>();
             res.Insert(0, thread.GetOpeningPost());
             return res;
         }

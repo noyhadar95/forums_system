@@ -14,7 +14,7 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
     {
         [DataMember]
         private Post openingPost;
-        [DataMember]
+        [IgnoreDataMember]
         private SubForum subForum;
         [DataMember]
         public int id { get; set; }

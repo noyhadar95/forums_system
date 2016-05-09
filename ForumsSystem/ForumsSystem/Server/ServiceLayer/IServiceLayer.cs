@@ -12,7 +12,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
          Post AddReply(string forumName, string subForumName, int threadID, string publisherName, int postID, string title, string content);
 
-        Thread AddThread(string forumName, string subForumName, string publisher, string title, string content);
+        int AddThread(string forumName, string subForumName, string publisher, string title, string content);
         bool ChangeExpirationDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate);
 
         bool ChangeForumProperties(string username,string forumName, Policy properties);

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.CommunicationLayer
 {
-    public class CL
+    public class CL : ICL
     {
 
         bool serverWorks = false;
@@ -107,9 +107,9 @@ namespace ForumsSystemClient.CommunicationLayer
             return (SubForum)Client.SendRequest("CreateSubForum", creator, forumName, subForumName, moderators);
         }
 
-        public Thread AddThread(string forumName, string subForumName, string publisher, string title, string content)
+        public int AddThread(string forumName, string subForumName, string publisher, string title, string content)
         {
-            return (Thread)Client.SendRequest("AddThread", forumName, subForumName, publisher, title, content);
+            return (int)Client.SendRequest("AddThread", forumName, subForumName, publisher, title, content);
         }
 
         public bool AddModerator(string forumName, string subForumName, string adminUsername, KeyValuePair<string, DateTime> newMod)

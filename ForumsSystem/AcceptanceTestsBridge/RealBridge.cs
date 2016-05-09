@@ -138,10 +138,7 @@ namespace AcceptanceTestsBridge
            // IForum forum = sl.GetForum(forumName);
            // IUser threadPublisher = forum.getUser(publisher);
            // ISubForum subForum = forum.getSubForum(subForumName);
-            Thread thread = sl.AddThread(forumName,subForumName, publisher, title, content);
-            if (thread == null)
-                return -1;
-            return thread.id;
+            return sl.AddThread(forumName,subForumName, publisher, title, content);
         }
 
         public int AddReplyPost(string forumName, string subForumName, int threadID, string publisher, int postID, string title, string content)

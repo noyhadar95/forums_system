@@ -14,7 +14,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
         [DataMember]
         private Post openingPost;
-        [DataMember]
+        [IgnoreDataMember]
         private ISubForum subForum;
 
         [DataMember]

@@ -19,7 +19,7 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
         private List<Post> replies;
         [DataMember]
         private Post parentPost;
-        [DataMember]
+        [IgnoreDataMember]
         private Thread thread;
         [DataMember]
         private string title;

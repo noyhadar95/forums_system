@@ -52,15 +52,15 @@ namespace ForumsSystemClient.PresentationLayer
             }
 
             string publisher = WindowHelper.GetLoggedUsername(forumName);
-            try
-            {
+          //  try
+          //  {
                 cl.AddThread(forumName, subForumName, publisher, title, content);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("an error occured while sending your request");
-                return;
-            }
+          //  }
+          //  catch (Exception)
+          //  {
+          //      MessageBox.Show("an error occured while sending your request");
+          //      return;
+          //  }
             WindowHelper.SwitchWindow(this, new SubForumWindow(forumName, subForumName));
         }
     }

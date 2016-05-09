@@ -19,7 +19,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private List<Post> replies;
         [DataMember]
         private Post parentPost;
-        [DataMember]
+        [IgnoreDataMember]
         private Thread thread;
         [DataMember]
         private string title;
@@ -118,7 +118,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
         public List<Post> GetReplies()
         {
-            return replies;
+            List<Post> res = new List<Post>();
+            foreach(Post p in replies)
+            {
+                res.Add(p);
+            }
+            return res;
         }
 
 
