@@ -33,11 +33,11 @@ namespace AcceptanceTestsBridge
 
         public bool CreateForum(string creator,string creatorPass, string forumName, List<UserStub> admins, PoliciesStub forumPolicies)
         {
-            List<IUser> newAdmins = new List<IUser>();
+            List<User> newAdmins = new List<User>();
 
             foreach (UserStub user in admins)
             {
-                IUser u = new User(user.Username, user.Password, user.Email, DateTime.Today.AddDays(100));
+                User u = new User(user.Username, user.Password, user.Email, DateTime.Today.AddDays(100));
                 newAdmins.Add(u);
             }
             SuperAdmin superAdmin = SuperAdmin.GetInstance();

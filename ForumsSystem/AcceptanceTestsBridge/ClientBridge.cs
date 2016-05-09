@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using ForumsSystemClient.CommunicationLayer;
 using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
 using System.Xml.Linq;
-using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystemClient.Resources.UserManagement.DomainLayer;
+//using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace AcceptanceTestsBridge
 {
