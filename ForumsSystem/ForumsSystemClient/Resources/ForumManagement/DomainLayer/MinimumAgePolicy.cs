@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
+
 
 namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
+    [DataContract(IsReference = true)]
     public class MinimumAgePolicy : Policy
     {
+        [DataMember]
         private int minAge;
 
         public MinimumAgePolicy() : base()

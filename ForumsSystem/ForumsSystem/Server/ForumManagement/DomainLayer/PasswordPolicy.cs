@@ -4,12 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using System.Runtime.Serialization;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
+    [DataContract(IsReference = true)]
     public class PasswordPolicy : Policy
     {
+        [DataMember]
         private int requiredLength;
+        [DataMember]
         private int passwordValidity;
 
         public PasswordPolicy(Policies type, int requiredLength, int passwordValidity) :base(type)

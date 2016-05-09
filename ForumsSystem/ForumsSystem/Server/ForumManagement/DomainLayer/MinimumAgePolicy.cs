@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
@@ -9,8 +10,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     /// <summary>
     /// check if a user is old enough to register to the forum
     /// </summary>
+    [DataContract(IsReference = true)]
     public class MinimumAgePolicy :Policy
     {
+        [DataMember]
         public int minAge { get; set; }
 
         public MinimumAgePolicy(Policies type, int minAge) : base(type)
