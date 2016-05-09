@@ -72,14 +72,15 @@ namespace ForumsSystemClient.PresentationLayer
                 if (type == "admin")
                     SwitchUserToAdminViewMode();
 
-                IniNotificationsBar(user.Username, type);
+                IniNotificationsBar(user.Username);
 
             }
 
         }
 
-        private void IniNotificationsBar(string username, string type)
+        private void IniNotificationsBar(string username)
         {
+            string type = cl.GetUserType(forumName, username);
             MenuItem mi = new MenuItem();
             mi.Header = "logged in as " + type;
             userMenuBar.Items.Add(mi);
@@ -190,6 +191,9 @@ namespace ForumsSystemClient.PresentationLayer
             this.loggedUsername = username;
             welcomeTextBlock.Text = "welcome " + username;
             userGrid.Visibility = Visibility.Visible;
+
+            IniNotificationsBar(username);
+            userMenuBar.Visibility = Visibility.Visible;
         }
 
         private void SwitchUserToAdminViewMode()
@@ -222,6 +226,7 @@ namespace ForumsSystemClient.PresentationLayer
             loginGrid.Visibility = Visibility.Visible;
             userGrid.Visibility = Visibility.Hidden;
             adminGrid.Visibility = Visibility.Hidden;
+            userMenuBar.Visibility = Visibility.Hidden;
 
             WindowHelper.LogoutUser(forumName);
 

@@ -38,6 +38,7 @@ namespace ForumsSystemClient.PresentationLayer
 
             adminUsername = WindowHelper.GetLoggedUsername(forumName);
             moderators = cl.GetModeratorsList(forumName, subForumName, adminUsername);
+            moderatorsComboBox.ItemsSource = moderators;
         }
 
         private void moderatorsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -83,7 +84,9 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void removeModBtn_Click(object sender, RoutedEventArgs e)
         {
-            string moderatorUsername = moderatorsComboBox.SelectedValue.ToString();
+            string moderatorUsername = "";
+            if (moderatorsComboBox.SelectedValue != null)
+                moderatorUsername = moderatorsComboBox.SelectedValue.ToString();
             if (moderatorUsername == "" || moderatorUsername == null)
             {
                 MessageBox.Show("please choose a moderator to remove");
@@ -99,6 +102,9 @@ namespace ForumsSystemClient.PresentationLayer
                 MessageBox.Show("an error occured while sending your request");
                 return;
             }
+
+            // refresh this window
+            WindowHelper.SwitchWindow(this, new EditModeratorsWindow(forumName, subForumName));
         }
     }
 }
