@@ -36,6 +36,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         }
 
+        public static void setNextId()
+        {
+            DAL_Posts dp = new DAL_Posts();
+            Post.nextId = dp.getMaxId() + 1;
+        }
+
         public static void PopulatePosts(Dictionary<int, Thread> threads)
         {
             DAL_Posts dp = new DAL_Posts();

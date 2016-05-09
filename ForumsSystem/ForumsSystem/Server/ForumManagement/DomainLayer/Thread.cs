@@ -28,7 +28,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
 
         }
-
+        public static void setNextId()
+        {
+            DAL_Threads dt = new DAL_Threads();
+            Thread.nextId = dt.getMaxId() + 1;
+        }
         public static List<Thread> populateThreads(SubForum subForum)
         {
             //List<Thread> threads = new List<Thread>();
