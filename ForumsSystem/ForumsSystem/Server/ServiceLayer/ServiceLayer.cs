@@ -12,10 +12,13 @@ namespace ForumsSystem.Server.ServiceLayer
     {
         private ForumsSystem.Server.ForumManagement.DomainLayer.System sys;
 
-
         public ServiceLayer()
         {
-            sys = new ForumsSystem.Server.ForumManagement.DomainLayer.System();
+            SuperAdmin sa = SuperAdmin.GetInstance();
+            if (sa == null)
+                sys = new ForumsSystem.Server.ForumManagement.DomainLayer.System();
+            else
+                sys = sa.forumSystem;
         }
 
         // initialize the system with the username and pass as the super admin login info
