@@ -19,7 +19,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             MinimumAge=8,
         MaxModerators=9,
         ModeratorSeniority=10,
-        PasswordValidity=11,
-        ModeratorPermissionToDelete=12
+        ModeratorPermissionToDelete=11
     }
 }

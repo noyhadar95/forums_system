@@ -95,9 +95,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                          case Policies.ModeratorSeniority:
                             policy = ModeratorSeniorityPolicy.createModeratorSeniorityPolicyForInit((int)minSeniority);
                              break;
-                         case Policies.PasswordValidity: //TODO : FINISH THIS
-                //            policy = Passwo
-                             break;
                          case Policies.ModeratorPermissionToDelete:
                             policy = ModeratorDeletePermissionPolicy.createmoderatorDeletePermissionForInit(moderatorDeletePermission);
                              break;
