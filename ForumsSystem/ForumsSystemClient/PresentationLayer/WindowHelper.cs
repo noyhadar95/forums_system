@@ -15,12 +15,29 @@ namespace ForumsSystemClient.PresentationLayer
         // that the user is logged in.
         private static Dictionary<string, User> loggedUsers = new Dictionary<string, User>();
         private static SuperAdmin loggedSuperAdmin = null;
+        private static List<string> userFriendReqs = new List<string>();
+        private static Window currentWin;
+        private static string friendReqMenuHeader = "_Friend Requests";
 
+        public static string GetFriendReqMenuHeader()
+        {
+            return friendReqMenuHeader;
+        }
+
+        public static void SetFriendReqMenuHeaderOn()
+        {
+            friendReqMenuHeader = "_Friend Requests *";
+        }
+
+        public static void SetFriendReqMenuHeaderOff()
+        {
+            friendReqMenuHeader = "_Friend Requests";
+        }
 
         public static string GetLoggedUsername(string forumName)
         {
             if (WindowHelper.IsLoggedSuperAdmin())
-                return  WindowHelper.GetLoggedSuperAdmin().userName;
+                return WindowHelper.GetLoggedSuperAdmin().userName;
             else
                 return WindowHelper.GetLoggedUser(forumName).Username;
         }
@@ -77,12 +94,18 @@ namespace ForumsSystemClient.PresentationLayer
             loggedSuperAdmin = null;
         }
 
+        public static void SetCurrentWindow(Window newWin)
+        {
+            currentWin = newWin;
+        }
+
         public static void SwitchWindow(Window oldWin, Window newWin)
         {
             newWin.Left = oldWin.Left;
             newWin.Top = oldWin.Top;
             newWin.Show();
             oldWin.Close();
+            currentWin = newWin;
         }
 
         // show newWin without closing oldWin.
@@ -99,5 +122,15 @@ namespace ForumsSystemClient.PresentationLayer
             win.Style = style;
         }
 
+        public static void AddLoggedUserFriendRequest(string reqSender)
+        {
+            userFriendReqs.Add(reqSender);
+            SetFriendReqMenuHeaderOn();
+        }
+
+        public static List<string> GetFriendRequests(string forumName, string username)
+        {
+            return userFriendReqs;
+        }
     }
 }

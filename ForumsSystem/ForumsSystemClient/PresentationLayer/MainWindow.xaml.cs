@@ -28,6 +28,8 @@ namespace ForumsSystemClient.PresentationLayer
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
+            WindowHelper.SetCurrentWindow(this);
+
             cl = new CL();
             
             // check if the system is initialized

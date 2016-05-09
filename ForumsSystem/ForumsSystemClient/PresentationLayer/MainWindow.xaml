@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="750" WindowStartupLocation="CenterScreen">
+
+
     <Grid>
         <ListView x:Name="forumsListView" HorizontalAlignment="Left" Height="238" Margin="189,149,0,0" VerticalAlignment="Top" Width="437" PreviewMouseLeftButtonUp="forumsListView_PreviewMouseLeftButtonUp">
 

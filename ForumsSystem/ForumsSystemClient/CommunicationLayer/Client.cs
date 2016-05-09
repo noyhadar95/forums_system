@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
+using ForumsSystemClient.PresentationLayer;
 
 namespace ForumsSystemClient.CommunicationLayer
 {
@@ -23,32 +24,32 @@ namespace ForumsSystemClient.CommunicationLayer
         static Thread notificationThread;
         static bool notificationsServerActive = false;
 
-       private static string connect(string textToSend)
+        private static string connect(string textToSend)
         {
             SERVER_IP = GetLocalIPAddress();
             //---create a TCPClient object at the IP and port no.---
             TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
 
-                int port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
+            int port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
 
 
-                NetworkStream nwStream = client.GetStream();
-                byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
+            NetworkStream nwStream = client.GetStream();
+            byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
 
-                //---send the text---
-                Console.WriteLine("Sending : " + textToSend);
-                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+            //---send the text---
+            Console.WriteLine("Sending : " + textToSend);
+            nwStream.Write(bytesToSend, 0, bytesToSend.Length);
 
-                //---read back the text---
-                byte[] bytesToRead = new byte[client.ReceiveBufferSize];
-                int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
-                // Console.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
-                string textFromServer = GetString(bytesToRead, bytesRead);
-                client.Close();
+            //---read back the text---
+            byte[] bytesToRead = new byte[client.ReceiveBufferSize];
+            int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
+            // Console.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
+            string textFromServer = GetString(bytesToRead, bytesRead);
+            client.Close();
 
             return textFromServer;
 
-            
+
         }
         public static void WaitForNotification()
         {
@@ -89,6 +90,13 @@ namespace ForumsSystemClient.CommunicationLayer
 
                 Console.WriteLine("Received : " + dataReceived);
 
+                if (parameters[0] is string)
+                {
+                    // friend request
+                    WindowHelper.AddLoggedUserFriendRequest((string)parameters[0]);
+                }
+                else {
+                }
                 //TODO: Handle notification------------------
 
             }
@@ -120,22 +128,22 @@ namespace ForumsSystemClient.CommunicationLayer
             foreach (Object param in methodParameter)
             {
                 string pType = param.GetType().ToString();
-              //  if(!pType.StartsWith("System."))
-               //     pType = pType.Substring(pType.LastIndexOf('.') + 1);
+                //  if(!pType.StartsWith("System."))
+                //     pType = pType.Substring(pType.LastIndexOf('.') + 1);
 
                 textToSend += delimeter + pType;
                 textToSend += delimeter + ObjectToString(param);
             }
-            
+
             string textFromServer = connect(textToSend);
             if (textFromServer.Equals("null"))
                 return null;
 
-            string[] seperators =new string[] { delimeter };
+            string[] seperators = new string[] { delimeter };
             string[] items = textFromServer.Split(seperators, StringSplitOptions.None);
 
-            Object retValue= StringToObject(items[0], items[1]);
-            if (methodName == "MemberLogin"&&retValue!=null&&!notificationsServerActive)
+            Object retValue = StringToObject(items[0], items[1]);
+            if (methodName == "MemberLogin" && retValue != null && !notificationsServerActive)
             {
                 notificationsServerActive = true;
                 //should be only on login
@@ -211,11 +219,11 @@ namespace ForumsSystemClient.CommunicationLayer
         public static Object StringToObject(string classType, string str)
         {
 
-         //   string addition = "ForumsSystemClient.Resources.";
+            //   string addition = "ForumsSystemClient.Resources.";
             // if (classType == "String" || classType == "Integer" || classType == "Boolean" || classType == "string" || classType == "int" || classType == "bool")
             //     addition = "System
-           // if (classType.StartsWith("System."))
-           //     addition = "";
+            // if (classType.StartsWith("System."))
+            //     addition = "";
 
             int index = classType.IndexOf("ForumsSystem.Server");
             if (index > -1)
@@ -256,9 +264,9 @@ namespace ForumsSystemClient.CommunicationLayer
                 string[] seperators = new string[] { "ForumsSystem.Server" };
                 string[] items = xml.Split(seperators, StringSplitOptions.None);
                 xml = items[0];
-                for (int i = 1; i < items.Length; i ++)
+                for (int i = 1; i < items.Length; i++)
                 {
-                    xml +="ForumsSystemClient.Resources" + items[i];
+                    xml += "ForumsSystemClient.Resources" + items[i];
                 }
             }
             using (Stream stream = new MemoryStream())

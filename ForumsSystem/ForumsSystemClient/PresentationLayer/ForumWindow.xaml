@@ -6,30 +6,38 @@
         xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
         mc:Ignorable="d"
         Title="ForumWindow" Height="450" Width="750">
+    <DockPanel>
+        <Menu x:Name="userMenuBar" DockPanel.Dock="Top">
+            <MenuItem  x:Name="friendRequestsMenu" Header="_Friend Requests">
+            </MenuItem>
+        </Menu>
+       
+        <Grid>
+            <ListView x:Name="subForumsListView" HorizontalAlignment="Left" Height="224" Margin="185,125,0,0" VerticalAlignment="Top" Width="472" PreviewMouseLeftButtonUp="subForumsListView_PreviewMouseLeftButtonUp" />
+            <Button x:Name="backBtn" Content="back" HorizontalAlignment="Left" Margin="20,370,0,0" VerticalAlignment="Top" Width="76" Click="backBtn_Click"/>
+            <Grid x:Name="loginGrid" HorizontalAlignment="Left" Height="83" Margin="18,17,0,0" VerticalAlignment="Top" Width="301">
+                <Button x:Name="loginBtn" Content="login" HorizontalAlignment="Left" Margin="217,10,0,0" VerticalAlignment="Top" Width="74" Click="loginBtn_Click" />
+                <Label x:Name="usernameLbl" Content="username" HorizontalAlignment="Left" Margin="0,7,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="usernameTB" HorizontalAlignment="Left" Height="23" Margin="73,11,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                <Label x:Name="passwordLbl" Content="password" HorizontalAlignment="Left" Margin="0,47,0,0" VerticalAlignment="Top"/>
+                <Button x:Name="registerBtn" Content="register" HorizontalAlignment="Left" Margin="217,50,0,0" VerticalAlignment="Top" Width="74" Click="registerBtn_Click"/>
+                <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="73,50,0,0" VerticalAlignment="Top" Height="22" Width="120"/>
+            </Grid>
+            <Grid x:Name="adminGrid" HorizontalAlignment="Left" Height="48" Margin="10,260,0,0" VerticalAlignment="Top" Width="171">
+                <Button x:Name="addSubForumBtn" Content="add sub forum" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="addSubForumBtn_Click"/>
+            </Grid>
+            <Grid x:Name="userGrid" Height="142" Margin="10,118,561,0" VerticalAlignment="Top">
+                <Button x:Name="logoutBtn" Content="logout" HorizontalAlignment="Left" Margin="5,54,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="logoutBtn_Click"/>
+                <Button x:Name="sendMsgBtn" Content="send private msg" HorizontalAlignment="Left" Margin="5,101,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="sendMsgBtn_Click"/>
+                <TextBlock x:Name="welcomeTextBlock" HorizontalAlignment="Left" Margin="5,10,0,0" TextWrapping="WrapWithOverflow" Text="Welcome" VerticalAlignment="Top"/>
+            </Grid>
+            <Label x:Name="badLoginLbl" Content="" HorizontalAlignment="Left" Margin="88,92,0,0" VerticalAlignment="Top" Foreground="#FFEC350C" FontWeight="Bold"/>
+            <Grid x:Name="superAdminGrid"  HorizontalAlignment="Left" Height="52" Margin="10,308,0,0" VerticalAlignment="Top" Width="171">
+                <Button x:Name="editPoliciesBtn" Content="edit policies" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="103" Height="30"/>
+            </Grid>
 
-    <Grid>
-        <ListView x:Name="subForumsListView" HorizontalAlignment="Left" Height="224" Margin="185,125,0,0" VerticalAlignment="Top" Width="472" PreviewMouseLeftButtonUp="subForumsListView_PreviewMouseLeftButtonUp" />
-        <Button x:Name="backBtn" Content="back" HorizontalAlignment="Left" Margin="20,370,0,0" VerticalAlignment="Top" Width="76" Click="backBtn_Click"/>
-        <Grid x:Name="loginGrid" HorizontalAlignment="Left" Height="83" Margin="18,17,0,0" VerticalAlignment="Top" Width="301">
-            <Button x:Name="loginBtn" Content="login" HorizontalAlignment="Left" Margin="217,10,0,0" VerticalAlignment="Top" Width="74" Click="loginBtn_Click" />
-            <Label x:Name="usernameLbl" Content="username" HorizontalAlignment="Left" Margin="0,7,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="usernameTB" HorizontalAlignment="Left" Height="23" Margin="73,11,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-            <Label x:Name="passwordLbl" Content="password" HorizontalAlignment="Left" Margin="0,47,0,0" VerticalAlignment="Top"/>
-            <Button x:Name="registerBtn" Content="register" HorizontalAlignment="Left" Margin="217,50,0,0" VerticalAlignment="Top" Width="74" Click="registerBtn_Click"/>
-            <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="73,50,0,0" VerticalAlignment="Top" Height="22" Width="120"/>
         </Grid>
-        <Grid x:Name="adminGrid" HorizontalAlignment="Left" Height="48" Margin="10,260,0,0" VerticalAlignment="Top" Width="171">
-            <Button x:Name="addSubForumBtn" Content="add sub forum" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="addSubForumBtn_Click"/>
-        </Grid>
-        <Grid x:Name="userGrid" Height="142" Margin="10,118,561,0" VerticalAlignment="Top">
-            <Button x:Name="logoutBtn" Content="logout" HorizontalAlignment="Left" Margin="5,54,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="logoutBtn_Click"/>
-            <Button x:Name="sendMsgBtn" Content="send private msg" HorizontalAlignment="Left" Margin="5,101,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="sendMsgBtn_Click"/>
-            <TextBlock x:Name="welcomeTextBlock" HorizontalAlignment="Left" Margin="5,10,0,0" TextWrapping="WrapWithOverflow" Text="Welcome" VerticalAlignment="Top"/>
-        </Grid>
-        <Label x:Name="badLoginLbl" Content="" HorizontalAlignment="Left" Margin="88,92,0,0" VerticalAlignment="Top" Foreground="#FFEC350C" FontWeight="Bold"/>
-        <Grid x:Name="superAdminGrid"  HorizontalAlignment="Left" Height="52" Margin="10,308,0,0" VerticalAlignment="Top" Width="171">
-            <Button x:Name="editPoliciesBtn" Content="edit policies" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="103" Height="30"/>
-        </Grid>
+    </DockPanel>
 
-    </Grid>
+    
 </Window>

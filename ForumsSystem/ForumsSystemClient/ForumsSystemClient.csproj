@@ -69,6 +69,9 @@
     <Compile Include="PresentationLayer\AddThreadWindow.xaml.cs">
       <DependentUpon>AddThreadWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\EditModeratorsWindow.xaml.cs">
+      <DependentUpon>EditModeratorsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\EditPostWindow.xaml.cs">
       <DependentUpon>EditPostWindow.xaml</DependentUpon>
     </Compile>
@@ -169,6 +172,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\AddThreadWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\EditModeratorsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

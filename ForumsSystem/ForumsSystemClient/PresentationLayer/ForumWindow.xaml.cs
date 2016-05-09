@@ -3,6 +3,7 @@ using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
 using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,8 @@ namespace ForumsSystemClient.PresentationLayer
         private string forumName;
         private string loggedUsername;
         private string badLoginMsg = "your username/password are incorrect";
+        private ObservableCollection<string> friendRequests;
+
 
         public ForumWindow(string forumName)
         {
@@ -68,8 +71,48 @@ namespace ForumsSystemClient.PresentationLayer
                 string type = cl.GetUserType(forumName, user.Username);
                 if (type == "admin")
                     SwitchUserToAdminViewMode();
+
+                // initialize friend requests menu bar
+                IniFriendReqsMenu(user.Username);
             }
 
+        }
+
+        private void IniFriendReqsMenu(string username)
+        {
+            friendRequestsMenu.Header = WindowHelper.GetFriendReqMenuHeader();
+            List<string> friendReqs = WindowHelper.GetFriendRequests(forumName, username);
+            friendRequests = new ObservableCollection<string>(friendReqs);
+            List<MenuItem> menuItems = new List<MenuItem>();
+            foreach (string str in friendRequests)
+            {
+                MenuItem mi = new MenuItem();
+                mi.Header = str;
+                mi.Click += new RoutedEventHandler(friendReqsMenu_Click);
+                menuItems.Add(mi);
+                friendRequestsMenu.Items.Add(mi);
+            }
+        }
+
+        private void friendReqsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you accept the friend request?",
+                                                    "Confirmation", MessageBoxButton.YesNoCancel);
+            if (result == MessageBoxResult.Yes)
+            {
+                // accept friend request
+
+            }
+            else if (result == MessageBoxResult.No)
+            {
+                // ignore friend request
+                
+
+            }
+            else
+            {
+                // canel, do nothing
+            }
         }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
