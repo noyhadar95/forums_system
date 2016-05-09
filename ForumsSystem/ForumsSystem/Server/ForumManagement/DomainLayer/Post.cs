@@ -6,18 +6,31 @@ using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
 using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 using System.Data;
+using System.Runtime.Serialization;
+
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
+    [DataContract(IsReference = true)]
+    [KnownType(typeof(User))]
+    [KnownType(typeof(Thread))]
     public class Post
     {
+        [DataMember]
         private IUser publisher;
+        [DataMember]
         private List<Post> replies;
+        [DataMember]
         private Post parentPost;
+        [IgnoreDataMember]
         private Thread thread;
+        [DataMember]
         private string title;
+        [DataMember]
         private string content;
+        [DataMember]
         private int id;
+        [DataMember]
         private static int nextId = 1;//TODO: Change the way to initialize this
 
         public Post(IUser publisher, Thread thread, string title, string content)
@@ -185,7 +198,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
         public List<Post> GetReplies()
         {
-            return replies;
+            List<Post> res = new List<Post>();
+            foreach(Post p in replies)
+            {
+                res.Add(p);
+            }
+            return res;
         }
 
 

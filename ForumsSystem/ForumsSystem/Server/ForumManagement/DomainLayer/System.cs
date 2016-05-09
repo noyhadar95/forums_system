@@ -3,14 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
+    [DataContract(IsReference = true)]
+    [KnownType(typeof(Forum))]
     public class System
     {
-       // private SuperAdmin superAdmin;
+        // private SuperAdmin superAdmin;
+        [DataMember]
         private Dictionary<string, IForum> forums; //name, forum
 
         public System()
@@ -38,7 +42,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 Loggers.Logger.GetInstance().AddActivityEntry("A new forum: " + forumName + " has been created");
                 return forum;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
             }
@@ -92,6 +96,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
 
 
+
         public static System populateSystem()
         {
             System sys = new System();
@@ -99,7 +104,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             DataTable forumsTBL = dforum.GetAllForums();
             foreach (DataRow forumRow in forumsTBL.Rows)
             {
-                
+
                 string forumName = forumRow["ForumName"].ToString();
                 int policyId;
 
@@ -116,6 +121,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
 
             return sys;
+        }
+
+        public List<string> GetForumsNamesList()
+        {
+            return forums.Keys.ToList<string>();
+
         }
     }
 }

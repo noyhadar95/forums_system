@@ -6,16 +6,25 @@ using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
 using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 using System.Data;
+using System.Runtime.Serialization;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-
-   public class SubForum : ISubForum
+    [DataContract(IsReference = true)]
+    [KnownType(typeof(Moderator))]
+    [KnownType(typeof(Thread))]
+    [KnownType(typeof(User))]
+    public class SubForum : ISubForum
     {
+        [DataMember]
         private string name;
+        [DataMember]
         private IForum forum;
+        [DataMember]
         private Dictionary<string, Moderator> moderators;//Username, Moderator
+        [DataMember]
         private List<Thread> threads;
+        [DataMember]
         private IUser creator; //admin who created the subforum
         public SubForum(IForum forum, IUser creator, string name)
         {
@@ -132,10 +141,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public Thread getThread(int index)
         {
-            int newIndex = index - 1;
-            if (newIndex >= threads.Count)
-                return null;
-            else return threads.ElementAt(newIndex);
+            foreach(Thread t in threads)
+            {
+                if (t.id == index)
+                    return t;
+            }
+            return null;
         }
 
         public IForum getForum()

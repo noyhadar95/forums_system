@@ -21,7 +21,11 @@ namespace AcceptanceTests.ServerTests
         [TestMethod]
         public void TestAddModerator()
         {
+            ForumsSystem.Server.ForumManagement.Data_Access_Layer.DAL_Forum d = new ForumsSystem.Server.ForumManagement.Data_Access_Layer.DAL_Forum();
+            d.DeleteAll();
             string forumName = GetNextForum();
+            //string forumName = "dddd";
+
             PoliciesStub forumPolicy = PoliciesStub.Password;
             string username1 = "user1";
             string username2 = "user2", pass2 = "passwd2", email2 = "user2@gmail.com";
@@ -31,7 +35,7 @@ namespace AcceptanceTests.ServerTests
             string subForumName = "sub forum 1";
 
             // create a forum, sub-forum and a thread to add a post to.
-            base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
+            bool flag=base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
             bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
             KeyValuePair<string, DateTime> newMod = new KeyValuePair<string, DateTime>(username2, DateTime.Today.AddDays(100));
             bool res = bridge.AddModerator(forumName, subForumName, this.adminUserName1, newMod);

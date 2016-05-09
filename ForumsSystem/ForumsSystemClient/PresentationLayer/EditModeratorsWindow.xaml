@@ -1,0 +1,22 @@
+﻿<Window x:Class="ForumsSystemClient.PresentationLayer.EditModeratorsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
+        mc:Ignorable="d"
+        Title="EditModeratorsWindow" Height="450" Width="750">
+    <Grid>
+        <ComboBox x:Name="moderatorsComboBox" HorizontalAlignment="Left" Margin="394,91,0,0" VerticalAlignment="Top" Width="120"
+                  ItemsSource="{Binding moderators}" 
+                  IsSynchronizedWithCurrentItem="True" 
+                  Text="Select Option" SelectionChanged="moderatorsComboBox_SelectionChanged"/>
+        <Label x:Name="chooseModLbl" Content="Choose a moderator:" HorizontalAlignment="Left" Margin="191,91,0,0" VerticalAlignment="Top" FontSize="14.667"/>
+        <Label x:Name="editExpDateLbl" Content="Edit expiration date:" HorizontalAlignment="Left" Margin="191,170,0,0" VerticalAlignment="Top" FontSize="14.667"/>
+        <DatePicker x:Name="expDatePicker" HorizontalAlignment="Left" Margin="394,169,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="editBtn" Content="edit" HorizontalAlignment="Left" Margin="431,298,0,0" VerticalAlignment="Top" Width="83" Height="25" Click="editBtn_Click"/>
+        <Button x:Name="cancelBtn" Content="cancel" HorizontalAlignment="Left" Margin="191,298,0,0" VerticalAlignment="Top" Width="83" Height="25" Click="cancelBtn_Click"/>
+        <Button x:Name="removeModBtn" Content="remove moderator" HorizontalAlignment="Left" Margin="570,86,0,0" VerticalAlignment="Top" Width="121" Height="33" Click="removeModBtn_Click"/>
+
+    </Grid>
+</Window>

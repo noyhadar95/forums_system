@@ -9,11 +9,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ForumsSystemClient</RootNamespace>
     <AssemblyName>ForumsSystemClient</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -61,18 +62,44 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CommunicationLayer\Client.cs" />
-    <Compile Include="Resources\Forum.cs" />
-    <Compile Include="Resources\Moderator.cs" />
-    <Compile Include="Resources\Policy.cs" />
-    <Compile Include="Resources\Post.cs" />
-    <Compile Include="Resources\PrivateMessage.cs" />
-    <Compile Include="Resources\SubForum.cs" />
-    <Compile Include="Resources\Thread.cs" />
-    <Compile Include="Resources\User.cs" />
+    <Compile Include="CommunicationLayer\ICL.cs" />
+    <Compile Include="PresentationLayer\AddAdminWindow.xaml.cs">
+      <DependentUpon>AddAdminWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\AddThreadWindow.xaml.cs">
+      <DependentUpon>AddThreadWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\EditModeratorsWindow.xaml.cs">
+      <DependentUpon>EditModeratorsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\EditPostWindow.xaml.cs">
+      <DependentUpon>EditPostWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\ForumManagement\DomainLayer\AdminAppointmentPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\ConfidentialityPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\Forum.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\MaxModeratorsPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\MemberSuspensionPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\MinimumAgePolicy.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\Moderator.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\ModeratorAppointmentPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\ModeratorSeniorityPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\ModeratorSuspensionPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\PasswordPolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\Policy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\PolicyEnum.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\Post.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\PrivateMessage.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\SubForum.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\SuperAdmin.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\System.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\Thread.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\User.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\UsersLoadPolicy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommunicationLayer\CL.cs" />
-    <Compile Include="CommunicationLayer\Post.cs" />
     <Compile Include="PresentationLayer\AddForumWindow.xaml.cs">
       <DependentUpon>AddForumWindow.xaml</DependentUpon>
     </Compile>
@@ -132,11 +159,27 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="PresentationLayer\AddAdminWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLayer\AddForumWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\AddSubForumWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\AddThreadWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\EditModeratorsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\EditPostWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -4,17 +4,23 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
-    
+    [DataContract(IsReference = true)]
+    [KnownType(typeof(User))]
     public class PrivateMessage
     {
+        [DataMember]
         public string title { get;private set; }
+        [DataMember]
         public string content { get; private set; }
+        [DataMember]
         public IUser sender { get; private set; }
+        [DataMember]
         public IUser receiver { get; private set; }
 
         public int id { get; private set; }

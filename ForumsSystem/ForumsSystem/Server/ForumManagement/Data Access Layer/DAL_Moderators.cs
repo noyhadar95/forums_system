@@ -22,7 +22,8 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         {
 
             Connect_to_DB();
-            string sql = "Insert into [Moderators] values(@p1,@p2,@p3,#"+ expirationDate +"#,#" +expirationDate+"#,@p5)";
+            string sql = "Insert into [Moderators] values(@p1,@p2,@p3,#"+ expirationDate +"#,#" + appointmentDate + "#,@p5)";
+
 
             OleDbCommand cmd = new OleDbCommand(sql);
 

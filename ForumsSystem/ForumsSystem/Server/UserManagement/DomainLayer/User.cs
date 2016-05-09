@@ -6,29 +6,53 @@ using System.Threading.Tasks;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 using System.Data;
+using System.Runtime.Serialization;
+
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
-
+    [DataContract(IsReference = true)]
+    [KnownType(typeof(Forum))]
+    [KnownType(typeof(PrivateMessage))]
+    [KnownType(typeof(PrivateMessageNotification))]
+    [KnownType(typeof(PostNotification))]
+    [Serializable]
     public class User : IUser
     {
+        [DataMember]
         private string userName;
+        [DataMember]
         private string password;
+        [DataMember]
         private string email;
+        [DataMember]
         private int age;
+        [DataMember]
         private DateTime dateJoined;
+        [DataMember]
         private DateTime dateOfBirth;
+        [DataMember]
         private IForum forum;
+        [DataMember]
         private int numOfMessages;
+        [DataMember]
         private int numOfComplaints;
         private Type type;
+        [DataMember]
         private List<PrivateMessage> sentMessages;
+        [DataMember]
         private List<PrivateMessage> receivedMessages;
+        [DataMember]
         private List<PrivateMessageNotification> privateMessageNotifications;
+        [DataMember]
         private List<IUser> friends;
+        [DataMember]
         private List<IUser> waitingFriendsList;
+        [DataMember]
         private List<PostNotification> postNotifications;
+        [DataMember]
         private bool isLoggedIn;
+        [DataMember]
         private bool emailAccepted;
         private DAL_Users dal_users = new DAL_Users();
         private DateTime dateOfPassLastchange;
@@ -273,6 +297,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         }
         public void addToWaitingFriendsList(IUser user)
         {
+            if (isLoggedIn) {
+   //             Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, user);
+            }
             waitingFriendsList.Add(user);
         }
         public void removeFromWaitingFriendsList(IUser user)
@@ -326,7 +353,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             {
 
                 PolicyParametersObject param = new PolicyParametersObject(Policies.MinimumAge);
-                param.SetAgeOfUser((int)((dateOfBirth - DateTime.Today).TotalDays) / 365);
+                param.SetAgeOfUser((int)((DateTime.Today- dateOfBirth).TotalDays) / 365);
                 if (forum.GetPolicy() != null && !forum.GetPolicy().CheckPolicy(param))
                     return false;
                 param.SetPolicy(Policies.Password);
@@ -406,6 +433,60 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public int NumOfMessages { get { return numOfMessages; } set { this.numOfMessages = value; } }
         public int NumOfComplaints { get { return numOfComplaints; } set { this.numOfComplaints = value; } }
         public int Age { get { return age; } set { this.age = value; } }
+
+        public string UserName
+        {
+            get
+            {
+                return userName;
+            }
+
+            set
+            {
+                userName = value;
+            }
+        }
+        
+
+        public string Password
+        {
+            get
+            {
+                return password;
+            }
+
+            set
+            {
+                password = value;
+            }
+        }
+
+        public string Email
+        {
+            get
+            {
+                return email;
+            }
+
+            set
+            {
+                email = value;
+            }
+        }
+
+        public DateTime DateOfBirth
+        {
+            get
+            {
+                return dateOfBirth;
+            }
+
+            set
+            {
+                dateOfBirth = value;
+            }
+        }
+
         public string getUsername()
         {
             return userName;
@@ -439,6 +520,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public Type getType()
         {
             return type;
+        }
+
+        public string GetTypeString()
+        {
+            return type.ToString();
         }
 
         public ISubForum createSubForum(string subForumName, Dictionary<string, DateTime> users)
@@ -475,7 +561,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
               //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, p);
                 }
                 DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
-              //  dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
+                dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
                 postNotifications = new List<PostNotification>();
                 foreach (PrivateMessageNotification m in privateMessageNotifications)
                 {
@@ -483,7 +569,12 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 }
                 privateMessageNotifications = new List<PrivateMessageNotification>();
                 DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
-              //  dal_messagesNotification.RemoveAllNotifications(forum.getName(), userName);
+                dal_messagesNotification.RemoveAllNotifications(forum.getName(), userName);
+
+                foreach(IUser u in waitingFriendsList)
+                {
+                    //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, u);
+                }
             }
 
         }
@@ -645,6 +736,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return type.ReportModerators(this);
         }
 
+
         public void AddToMessageNotification(PrivateMessageNotification messageNotification)
         {
             this.privateMessageNotifications.Add(messageNotification);
@@ -653,6 +745,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public void AddToPostNotification(PostNotification postNotification)
         {
             postNotifications.Add(postNotification);
+        }
+
+        public bool IgnoreFriend(IUser userToIgnore)
+        {
+            return type.IgnoreFriend(this,userToIgnore);
         }
     }
 

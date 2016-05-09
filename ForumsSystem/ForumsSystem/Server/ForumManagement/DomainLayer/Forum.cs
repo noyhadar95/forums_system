@@ -7,17 +7,27 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
 using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using System.Runtime.Serialization;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
+    [DataContract(IsReference = true)]
+    [KnownType(typeof(Forum))]
+    [KnownType(typeof(User))]
+    [KnownType(typeof(SubForum))]
+    [Serializable]
     public class Forum : IForum
     {
         DAL_Forum dal_forum = new DAL_Forum();
-
+        [DataMember]
         public string name { get;  set; }
+        [DataMember]
         private List<ISubForum> sub_forums { get; set; }
+        [DataMember]
         private Policy policies { get; set; }
+        [DataMember]
         private Dictionary<string, IUser> users { get; set; }//username, user
+        [DataMember]
         private Dictionary<string, IUser> waiting_users { get; set; }//username, user - waiting for confirmation
 
         private Forum()
@@ -209,6 +219,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if(this.users.ContainsKey(username))
                 return this.users[username];
+            return null;
+        }
+        public IUser GetGuest(string guestName)
+        {
+            if (this.waiting_users.ContainsKey(guestName))
+                return this.waiting_users[guestName];
             return null;
         }
 

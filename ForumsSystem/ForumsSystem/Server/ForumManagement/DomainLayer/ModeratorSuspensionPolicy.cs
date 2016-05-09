@@ -4,16 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using System.Runtime.Serialization;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
+    [DataContract(IsReference = true)]
     public class ModeratorSuspensionPolicy: Policy
     {
+        [DataMember]
         private int numOfComplaints;
         //TODO: maybe add more things
 
         public ModeratorSuspensionPolicy(Policies type, int numOfComplaints):base(type)
         {
+            dal_policyParameter.CreatePolicyParameter(ID, -1, -1,numOfComplaints, false, -1, -1, -1, -1, -1);
             this.numOfComplaints = numOfComplaints;
         }
         private ModeratorSuspensionPolicy() : base()

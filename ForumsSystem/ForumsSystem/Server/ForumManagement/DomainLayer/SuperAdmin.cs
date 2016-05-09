@@ -7,16 +7,24 @@ using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
 using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 using System.Data;
+using System.Runtime.Serialization;
+
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
+    [DataContract(IsReference = true)]
+    [KnownType(typeof(System))]
     public class SuperAdmin
     {
 
         private static SuperAdmin instance = null;
+        [DataMember]
         public string userName { get; set; }
+        [DataMember]
         public string password { get; set; }
+        [DataMember]
         public bool isLoggedIn { get; set; }
+        [DataMember]
         public System forumSystem { get; private set; }
 
 
@@ -46,7 +54,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return instance;
         }
 
-        public Forum createForum(string forumName, Policy properties, List<IUser> adminUsername)
+        public Forum createForum(string forumName, Policy properties, List<User> adminUsername)
         {
             if (adminUsername.Count == 0)// there must be at least 1 admin
                 return null;
@@ -93,6 +101,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.isLoggedIn = false;
         }
 
+
         public static SuperAdmin populateSuperAdmin()
         {
             SuperAdmin admin = new SuperAdmin();
@@ -109,6 +118,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
 
             return instance;
+        }
+
+        public static bool IsInitialized()
+        {
+            return instance != null;
+
         }
     }
 }

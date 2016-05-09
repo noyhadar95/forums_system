@@ -2,19 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
+
+    [DataContract(IsReference = true)]
     public class ModeratorAppointmentPolicy: Policy
     {
+        [DataMember]
         private int seniorityInDays;
+        [DataMember]
         private int numOfMessages;
+        [DataMember]
         private int numOfComplaints;
 
         public ModeratorAppointmentPolicy(Policies type, int seniority, int numOfMessages, int numOfComplaints):base(type)
         {
+            dal_policyParameter.CreatePolicyParameter(ID, seniority, numOfMessages, numOfComplaints,false, -1, -1, -1, -1, -1);
             this.seniorityInDays = seniority;
             this.numOfMessages = numOfMessages;
             this.numOfComplaints = numOfComplaints;

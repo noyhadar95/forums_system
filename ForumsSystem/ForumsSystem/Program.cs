@@ -11,8 +11,10 @@ namespace ForumsSystem
     {
         static void Main(string[] args)
         {
-            SuperAdmin sa = SuperAdmin.populateSuperAdmin();
+
+            SuperAdmin.populateSuperAdmin();
             Server.CommunicationLayer.Server.StartServer();
+            
         }
     }
 }
