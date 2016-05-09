@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.CommunicationLayer
 {
-    public class CL:ICL
+    public class CL
     {
 
         bool serverWorks = false;

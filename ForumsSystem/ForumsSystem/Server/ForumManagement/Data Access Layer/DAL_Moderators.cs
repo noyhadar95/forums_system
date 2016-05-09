@@ -22,14 +22,14 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         {
 
             Connect_to_DB();
-            string sql = "Insert into [Moderators] values(@p1,@p2,@p3,@p4,@p5)";
+            string sql = "Insert into [Moderators] values(@p1,@p2,@p3,#"+expirationDate+"#,@p5)";
 
             OleDbCommand cmd = new OleDbCommand(sql);
 
             cmd.Parameters.AddWithValue("@p1", forumName);
             cmd.Parameters.AddWithValue("@p2", subForumName);
             cmd.Parameters.AddWithValue("@p3", userName);
-            cmd.Parameters.AddWithValue("@p4", expirationDate);
+          //  cmd.Parameters.AddWithValue("@p4", expirationDate);
             cmd.Parameters.AddWithValue("@p5", appointerUserName);
 
 

@@ -43,6 +43,10 @@ namespace ForumsSystemClient.PresentationLayer
             notModeratorsListView.ItemsSource = notModeratorsLVItems;
             moderatorsListView.ItemsSource = moderatorsLVItems;
 
+            // set the width of two columns in moderators list view to be 50% each
+            GridView gv= (GridView) moderatorsListView.View;
+            gv.Columns[0].Width = moderatorsListView.Width / 2;
+            gv.Columns[1].Width = moderatorsListView.Width / 2;
         }
 
         private void moveRightBtn_Click(object sender, RoutedEventArgs e)
