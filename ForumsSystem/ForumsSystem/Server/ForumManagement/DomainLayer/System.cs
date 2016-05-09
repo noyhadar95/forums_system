@@ -93,13 +93,14 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public static System populateSystem()
         {
+            return null;
             System sys = new System();
             DAL_Forum dforum = new DAL_Forum();
             var tbl = dforum.GetAllForums();
             foreach (var forumRow in tbl.Rows)
             {
-                Forum f = 
-                sys.forums.Add()
+           //     Forum f
+          //      sys.forums.Add()
             }
         }
     }

@@ -31,7 +31,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public static Dictionary<string, Moderator> populateModerators(Forum forum, string subForumName)
         {
-            Dictionary<string, Moderator> moderators = new Dictionary<string, Moderator>;
+            Dictionary<string, Moderator> moderators = new Dictionary<string, Moderator>();
             DAL_Moderators dm = new DAL_Moderators();
             DataTable moderatorsTbl = dm.GetAllModerators(forum.getName(), subForumName);
             foreach (DataRow moderatorRow in moderatorsTbl.Rows)
@@ -47,7 +47,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 string appointedUserName = moderatorRow["AppointerUserName"].ToString();
                 mod.appointer = forum.getDictionaryOfUsers()[appointedUserName];
 
-                //TODO: What the hell about the appointmentDate
+                //TODO: What about the appointmentDate
 
                 moderators[userName] = mod;
             }

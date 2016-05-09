@@ -649,6 +649,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             this.privateMessageNotifications.Add(messageNotification);
         }
+
+        public void AddToPostNotification(PostNotification postNotification)
+        {
+            postNotifications.Add(postNotification);
+        }
     }
 
 

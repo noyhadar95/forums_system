@@ -27,6 +27,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public static Forum populateForum(string forumName, int policyId)
         {
+            
             Forum forum = new Forum();
             forum.name = forumName;
             //--users
@@ -39,10 +40,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             //----privateMessageNotifications
             PrivateMessageNotification.populateMessageNotification(forum.users, forum.waiting_users);
 
-
             //--subForums (includes threads, posts and moderators)
             forum.sub_forums = SubForum.populateSubForums(forum);
 
+            //--post notification
+            PostNotification.populatePostNotification(forum.users, forum.waiting_users, forum.name);
 
             //--policies
             forum.policies = Policy.populatePolicy(policyId);

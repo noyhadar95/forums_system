@@ -31,6 +31,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         bool isInFriendsList(IUser user);
         void addToWaitingFriendsList(IUser user);
         void addToFriendsList(IUser user);
+        
         void removeFromFriendList(IUser user);
         void addFriend(IUser friend);
         bool removeFriend(IUser friendToRemove);
@@ -47,7 +48,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         Type getType();
         void AddToreceivedMessages(PrivateMessage privateMessage);
         void AddTosentMessages(PrivateMessage privateMessage);
-        void AddToMessageNotification(PrivateMessageNotification);
+        void AddToMessageNotification(PrivateMessageNotification messageNotification);
+        void AddToPostNotification(PostNotification postNotification);
+
         List<PrivateMessageNotification> GetPrivateMessageNotifications();
         void AddPrivateMessageNotification(PrivateMessage newMessage);
 

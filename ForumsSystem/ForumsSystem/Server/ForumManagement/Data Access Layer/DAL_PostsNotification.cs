@@ -36,7 +36,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             //      "AND(Posts.PostID = Threads.OpeningPostId) WHERE Forum=@p1 AND UserName=@p2";
 
 
-            string sql = "SELECT PostNotification.Type, Posts.PublisherUserName, Threads.SubForumName, Posts.Title, Posts.Content, Posts.PostID " +
+            string sql = "SELECT PostNotification.Type, PostNotification.UserName, Posts.PublisherUserName, Threads.SubForumName, Posts.Title, Posts.Content, Posts.PostID " +
             "FROM(Posts INNER JOIN Threads ON(Threads.ThreadId = Posts.ThreadID) AND(Posts.PostID = Threads.OpeningPostId)) INNER JOIN PostNotification ON Posts.PostID = PostNotification.NotificationId WHERE Forum=@p1 AND UserName=@p2";
 
 
@@ -44,6 +44,28 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
             cmd.Parameters.AddWithValue("@p1", forumName);
             cmd.Parameters.AddWithValue("@p2", userName);
+
+
+            return connect_me.DownloadData2(cmd, "UserNotification");
+        }
+
+
+        public DataTable GetForumNotification(string forumName)
+        {
+            Connect_to_DB();
+            // string sql = "SELECT PostNotification.*, Posts.*, Threads.* "+
+            //      "FROM(Posts INNER JOIN PostNotification ON Posts.PostID = PostNotification.NotificationId) "+
+            //      "INNER JOIN Threads ON (Threads.ThreadId = Posts.ThreadID) "+
+            //      "AND(Posts.PostID = Threads.OpeningPostId) WHERE Forum=@p1 AND UserName=@p2";
+
+
+            string sql = "SELECT PostNotification.Type, PostNotification.UserName, Posts.PublisherUserName, Threads.SubForumName, Posts.Title, Posts.Content, Posts.PostID " +
+            "FROM(Posts INNER JOIN Threads ON(Threads.ThreadId = Posts.ThreadID) AND(Posts.PostID = Threads.OpeningPostId)) INNER JOIN PostNotification ON Posts.PostID = PostNotification.NotificationId WHERE Forum=@p1";
+
+
+            OleDbCommand cmd = new OleDbCommand(sql);
+
+            cmd.Parameters.AddWithValue("@p1", forumName);
 
 
             return connect_me.DownloadData2(cmd, "UserNotification");
