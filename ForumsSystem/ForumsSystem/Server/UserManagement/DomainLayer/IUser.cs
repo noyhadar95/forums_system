@@ -81,6 +81,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         int ReportNumOfPostsInSubForum(ISubForum subForum);
 
         List<Tuple<string, string, DateTime, string, List<Post>>> ReportModerators();
+
+        string GetTypeString();
         }
 
 }

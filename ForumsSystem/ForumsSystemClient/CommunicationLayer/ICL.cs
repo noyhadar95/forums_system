@@ -28,7 +28,7 @@ namespace ForumsSystemClient.CommunicationLayer
         bool InitializeSystem(string username, string pass);
         bool IsInitialized();
 
-        User MemberLogin(string username, string password, string forum);
+        User MemberLogin(string forumName, string username, string password);
 
         bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob);
 

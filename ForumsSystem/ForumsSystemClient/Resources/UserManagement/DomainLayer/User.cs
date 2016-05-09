@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(Forum))]
+    [KnownType(typeof(PrivateMessage))]
+   // [KnownType(typeof(PrivateMessageNotification))]
+   // [KnownType(typeof(PostNotification))]
     [Serializable]
     public class User 
     {

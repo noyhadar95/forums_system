@@ -10,6 +10,7 @@ using System.Runtime.Serialization;
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(System))]
     public class SuperAdmin
     {
 

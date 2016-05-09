@@ -477,6 +477,12 @@ namespace ForumsSystem.Server.ServiceLayer
             return forums;
         }
 
-
-}
+        public string GetUserType(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            return user.GetTypeString();
+            
+        }
+    }
 }

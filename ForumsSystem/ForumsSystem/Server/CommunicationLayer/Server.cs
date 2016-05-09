@@ -178,6 +178,22 @@ namespace ForumsSystem.Server.CommunicationLayer
             Type thisType = typeof(ServiceLayer.ServiceLayer);
             MethodInfo theMethod = thisType.GetMethod(method);
             Object returnObj = theMethod.Invoke(sl, parameters.ToArray());
+            if (method.Equals("MemberLogin"))
+            { 
+                string username = (string)parameters.ElementAt(0);
+                string forumName = (string)parameters.ElementAt(2);
+            
+                if (returnObj == null)
+                {
+                    UnSubscribeClient(forumName, username);
+                }
+                else
+                {
+                    SubscribeClient(forumName, username);
+                }
+                
+                //HalfSubscribeClient(client, forumName, username);
+            }
             if (returnObj == null)
             {
 

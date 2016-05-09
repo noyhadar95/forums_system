@@ -9,6 +9,9 @@ using System.Runtime.Serialization;
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(Moderator))]
+    [KnownType(typeof(Thread))]
+    [KnownType(typeof(User))]
     public class SubForum : ISubForum
     {
         [DataMember]

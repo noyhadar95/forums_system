@@ -9,6 +9,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     public class Guest : Type
     {
+        public override string ToString()
+        {
+            return "guest";
+        }
         public override bool acceptFriend(IUser callingUser, IUser userToAccept)
         {
             throw new Exception("permission denied");

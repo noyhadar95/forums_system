@@ -11,6 +11,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
     [KnownType(typeof(Forum))]
+    [KnownType(typeof(PrivateMessage))]
+    [KnownType(typeof(PrivateMessageNotification))]
+    [KnownType(typeof(PostNotification))]
     [Serializable]
     public class User : IUser
     {
@@ -391,6 +394,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public Type getType()
         {
             return type;
+        }
+
+        public string GetTypeString()
+        {
+            return type.ToString();
         }
 
         public ISubForum createSubForum(string subForumName, Dictionary<string, DateTime> users)

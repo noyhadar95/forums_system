@@ -9,7 +9,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     public class Member : Type
     {
-
+        public override string ToString()
+        {
+            return "member";
+        }
         public override void appointAdmin(IUser callingUser, IUser user)
         {
             throw new Exception("permission denied");
