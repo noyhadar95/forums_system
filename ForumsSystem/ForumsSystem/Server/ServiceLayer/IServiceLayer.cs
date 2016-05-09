@@ -91,5 +91,9 @@ namespace ForumsSystem.Server.ServiceLayer
         string GetUserType(string forumName, string username);
 
         bool IgnoreFriend(string forumName, string userName, string userToIgnore);
+
+        void AcceptFriendRequest(string forumName, string accepter, string toAccept);
+
+        void SendFriendRequest(string forumName, string sender, string reciever);
     }
 }

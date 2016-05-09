@@ -92,5 +92,8 @@ namespace ForumsSystemClient.CommunicationLayer
         List<string> GetForumsList();
 
         bool IgnoreFriend(string forumName, string userName, string userToIgnore);
+
+        void AcceptFriendRequest(string forumName, string accepter, string toAccept);
+        void SendFriendRequest(string forumName, string sender, string reciever);
     }
 }

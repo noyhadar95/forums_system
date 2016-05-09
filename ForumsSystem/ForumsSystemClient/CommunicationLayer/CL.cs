@@ -310,5 +310,15 @@ namespace ForumsSystemClient.CommunicationLayer
         {
             return (bool)Client.SendRequest("IgnoreFriend", forumName,userName,userToIgnore);
         }
+
+        public void AcceptFriendRequest(string forumName, string accepter, string toAccept)
+        {
+            Client.SendRequest("AcceptFriendRequest", forumName, accepter, toAccept);
+        }
+
+        public void SendFriendRequest(string forumName, string sender, string reciever)
+        {
+            Client.SendRequest("SendFriendRequest", forumName, sender, reciever);
+        }
     }
 }

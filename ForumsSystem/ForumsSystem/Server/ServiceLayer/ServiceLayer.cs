@@ -495,5 +495,21 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user2 = forum.getUser(userToIgnore);
             return user.IgnoreFriend(user2);
         }
+
+        public void SendFriendRequest(string forumName, string sender, string reciever)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(sender);
+            IUser user2 = forum.getUser(reciever);
+            user.addFriend(user2);
+        }
+
+        public void AcceptFriendRequest(string forumName, string accepter, string toAccept)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(accepter);
+            IUser user2 = forum.getUser(toAccept);
+            user.addFriend(user2);
+        }
     }
 }
