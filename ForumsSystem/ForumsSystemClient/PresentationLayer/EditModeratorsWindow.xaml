@@ -13,9 +13,10 @@
                   Text="Select Option" SelectionChanged="moderatorsComboBox_SelectionChanged"/>
         <Label x:Name="chooseModLbl" Content="Choose a moderator:" HorizontalAlignment="Left" Margin="191,91,0,0" VerticalAlignment="Top" FontSize="14.667"/>
         <Label x:Name="editExpDateLbl" Content="Edit expiration date:" HorizontalAlignment="Left" Margin="191,170,0,0" VerticalAlignment="Top" FontSize="14.667"/>
-        <DatePicker x:Name="expDate" HorizontalAlignment="Left" Margin="394,169,0,0" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="editBtn" Content="edit" HorizontalAlignment="Left" Margin="431,298,0,0" VerticalAlignment="Top" Width="83" Height="25"/>
-        <Button x:Name="cancelBtn" Content="cancel" HorizontalAlignment="Left" Margin="191,298,0,0" VerticalAlignment="Top" Width="83" Height="25"/>
+        <DatePicker x:Name="expDatePicker" HorizontalAlignment="Left" Margin="394,169,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="editBtn" Content="edit" HorizontalAlignment="Left" Margin="431,298,0,0" VerticalAlignment="Top" Width="83" Height="25" Click="editBtn_Click"/>
+        <Button x:Name="cancelBtn" Content="cancel" HorizontalAlignment="Left" Margin="191,298,0,0" VerticalAlignment="Top" Width="83" Height="25" Click="cancelBtn_Click"/>
+        <Button x:Name="removeModBtn" Content="remove moderator" HorizontalAlignment="Left" Margin="570,86,0,0" VerticalAlignment="Top" Width="121" Height="33" Click="removeModBtn_Click"/>
 
     </Grid>
 </Window>

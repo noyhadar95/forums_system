@@ -15,6 +15,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     [KnownType(typeof(Forum))]
     [KnownType(typeof(User))]
     [KnownType(typeof(SubForum))]
+    [Serializable]
     public class Forum : IForum
     {
         DAL_Forum dal_forum = new DAL_Forum();

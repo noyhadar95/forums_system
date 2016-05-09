@@ -10,6 +10,7 @@ using System.Runtime.Serialization;
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(Forum))]
     [Serializable]
     public class User : IUser
     {

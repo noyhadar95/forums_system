@@ -24,7 +24,7 @@ namespace ForumsSystemClient.PresentationLayer
         private string subForumName;
         private CL cl;
 
-        public AddThreadWindow(string  forumName, string  subForumName)
+        public AddThreadWindow(string forumName, string subForumName)
         {
             InitializeComponent();
 
@@ -50,8 +50,17 @@ namespace ForumsSystemClient.PresentationLayer
                 MessageBox.Show("please enter either a title or a content for the topic");
                 return;
             }
-            // TODO:
-            //cl.AddThread();
+
+            string publisher = WindowHelper.GetLoggedUsername(forumName);
+            try
+            {
+                cl.AddThread(forumName, subForumName, publisher, title, content);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("an error occured while sending your request");
+                return;
+            }
             WindowHelper.SwitchWindow(this, new SubForumWindow(forumName, subForumName));
         }
     }
