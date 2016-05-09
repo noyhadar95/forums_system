@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using System.Data;
 using System.Runtime.Serialization;
+
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
@@ -40,6 +43,83 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.thread = thread;
             this.id = nextId++;
 
+        }
+        private Post()
+        {
+
+        }
+
+        public static void setNextId()
+        {
+            DAL_Posts dp = new DAL_Posts();
+            Post.nextId = dp.getMaxId() + 1;
+        }
+
+        public static void PopulatePosts(Dictionary<int, Thread> threads)
+        {
+            DAL_Posts dp = new DAL_Posts();
+
+            foreach (KeyValuePair<int, Thread> entry in threads)
+            {
+                DataTable openingPostsTbl = dp.GetPost(entry.Key);
+                foreach (DataRow threadRow in openingPostsTbl.Rows) //should be only one
+                {
+                    Post post = new Post();
+
+                    post.id = entry.Key;
+
+                    string publisherUserName = threadRow["PublisherUserName"].ToString();
+                    Forum forum = (Forum)entry.Value.GetSubforum().getForum();
+
+                    post.publisher = forum.getDictionaryOfUsers()[publisherUserName];
+
+                    post.parentPost = null;
+                    post.thread = entry.Value;
+                    
+                    post.title = threadRow["Title"].ToString();
+                    post.content = threadRow["Content"].ToString();
+
+
+                    List<Post> replies = getRepliesOfPost(post);
+                    post.replies = replies;
+
+
+                    //Update the thread
+                    entry.Value.setOpeningPost(post);
+
+                }
+            }
+        }
+
+        private static List<Post> getRepliesOfPost(Post post)
+        {
+            List<Post> posts = new List<Post>();
+            DAL_Posts dp = new DAL_Posts();
+            DataTable repliesTbl = dp.GetPostReplies(post.id);
+            foreach (DataRow replyRow in repliesTbl.Rows)
+            {
+                Post reply = new Post();
+
+                reply.id = (int)replyRow["PostID"];
+
+                string publisherUserName = replyRow["PublisherUserName"].ToString();
+                Forum forum = (Forum)post.thread.GetSubforum().getForum();
+
+                reply.publisher = forum.getDictionaryOfUsers()[publisherUserName];
+
+                reply.parentPost = post;
+                reply.thread = post.thread;
+
+                reply.title = replyRow["Title"].ToString();
+                reply.content = replyRow["Content"].ToString();
+
+                List<Post> recursiveReplies = getRepliesOfPost(reply);
+                reply.replies = recursiveReplies;
+
+                posts.Add(reply);
+            }
+
+            return posts;
         }
 
         public int GetId()

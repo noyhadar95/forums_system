@@ -124,6 +124,18 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             connect_me.TakeAction(cmd);
             cmd = null;
         }
+
+        public DataTable GetPostReplies(int postId)
+        {
+            Connect_to_DB();
+            string sql = "Select * From Posts WHERE ParentPostId=@p1";
+
+            OleDbCommand cmd = new OleDbCommand(sql);
+
+            cmd.Parameters.AddWithValue("@p1", postId);
+
+            return connect_me.DownloadData2(cmd, "Posts");
+        }
     }
 
 }

@@ -5,7 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using System.Data;
 using System.Runtime.Serialization;
+
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
@@ -32,7 +35,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.forumSystem = forumSystem;
             this.isLoggedIn = false;
         }
+        private SuperAdmin()
+        {
 
+        }
         public static SuperAdmin CreateSuperAdmin(string userName, string password, System forumSystem)
         {
             if (instance == null)
@@ -94,9 +100,30 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             this.isLoggedIn = false;
         }
+
+
+        public static SuperAdmin populateSuperAdmin()
+        {
+            SuperAdmin admin = new SuperAdmin();
+            DAL_SuperAdmin dsa = new DAL_SuperAdmin();
+            DataTable sAdminTBL = dsa.GetAllSuperAdmins();
+            foreach (DataRow sAdminRow in sAdminTBL.Rows) //should be one
+            {
+                admin.userName = sAdminRow["UserName"].ToString();
+                admin.password = sAdminRow["Password"].ToString();
+                admin.forumSystem = System.populateSystem();
+                admin.isLoggedIn = false;
+
+                instance = admin;
+            }
+
+            return instance;
+        }
+
         public static bool IsInitialized()
         {
             return instance != null;
+
         }
     }
 }

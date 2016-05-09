@@ -18,10 +18,25 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public PasswordPolicy(Policies type, int requiredLength, int passwordValidity) :base(type)
         {
-            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1,false, -1, -1, requiredLength, passwordValidity, -1);
+            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1,false, -1, -1, requiredLength, passwordValidity, -1, -1, false);
             this.requiredLength = requiredLength;
             this.passwordValidity = passwordValidity;
         }
+
+        private PasswordPolicy() : base()
+        {
+
+        }
+
+        public static PasswordPolicy createPasswordPolicyForInit(int requiredLength, int passwordValidity)
+        {
+            PasswordPolicy policy = new PasswordPolicy();
+            policy.requiredLength = requiredLength;
+            policy.passwordValidity = passwordValidity;
+
+            return policy;
+        }
+        
         public override bool CheckPolicy(PolicyParametersObject param)
         {
             if (param.GetPolicy() == type)
@@ -35,6 +50,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return base.CheckPolicy(param);
 
         }
+
 
         private bool checkLength(string pass)
         {

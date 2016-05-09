@@ -15,6 +15,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
 
         }
+        private AuthenticationPolicy() : base()
+        {
+
+        }
+
+        public static AuthenticationPolicy createAuthenticationPolicyForInit()
+        {
+            AuthenticationPolicy policy = new AuthenticationPolicy();
+           
+
+            return policy;
+        }
         public override bool CheckPolicy(PolicyParametersObject param)
         {
             if (param.GetPolicy() == type)

@@ -36,5 +36,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         PasswordValidity =11,
         [EnumMember]
         ModeratorPermissionToDelete =12
+
     }
 }

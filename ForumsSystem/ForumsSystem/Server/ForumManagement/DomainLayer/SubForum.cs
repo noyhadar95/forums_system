@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using System.Data;
 using System.Runtime.Serialization;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
@@ -33,6 +35,38 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             threads = new List<Thread>();
             Loggers.Logger.GetInstance().AddActivityEntry("SubForum: " + name + "created for Forum: " + ((Forum)forum).name + "by: " + creator.getUsername());
 
+        }
+
+        private SubForum()
+        {
+        }
+
+        public static List<ISubForum> populateSubForums(Forum forum)
+        {
+            List<ISubForum> sForums = new List<ISubForum>();
+            DAL_SubForums dsf = new DAL_SubForums();
+            DataTable sForumtbl = dsf.GetAllSubForums(forum.getName());
+            foreach (DataRow sForumRow in sForumtbl.Rows)
+            {
+                SubForum sf = new SubForum();
+                string sForumName = sForumRow["SubForumName"].ToString();
+                string createdUserName = sForumRow["CreatorUserName"].ToString();
+
+                sf.name = sForumName;
+                sf.forum = forum;
+
+                //populate moderators
+               sf.moderators = Moderator.populateModerators(forum, sForumName);
+
+                //populate threads (includes posts)
+                sf.threads = Thread.populateThreads(sf);
+
+                sf.creator = forum.getDictionaryOfUsers()[createdUserName];
+
+                sForums.Add(sf);
+            }
+
+            return sForums;
         }
         public int numOfModerators()
         {

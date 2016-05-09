@@ -18,18 +18,19 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         /// <param name="userName">The username of the user that will become a moderator</param>
         /// <param name="expirationDate"></param>
         /// <param name="appointerUserName">The username of the user that appointed the moderator</param>
-        public void CreateModerator(string forumName, string subForumName, string userName, DateTime expirationDate, string appointerUserName)
+        public void CreateModerator(string forumName, string subForumName, string userName, DateTime expirationDate, DateTime appointmentDate, string appointerUserName)
         {
 
             Connect_to_DB();
-            string sql = "Insert into [Moderators] values(@p1,@p2,@p3,#"+expirationDate+"#,@p5)";
+            string sql = "Insert into [Moderators] values(@p1,@p2,@p3,#"+ expirationDate +"#,#" + appointmentDate + "#,@p5)";
+
 
             OleDbCommand cmd = new OleDbCommand(sql);
 
             cmd.Parameters.AddWithValue("@p1", forumName);
             cmd.Parameters.AddWithValue("@p2", subForumName);
             cmd.Parameters.AddWithValue("@p3", userName);
-          //  cmd.Parameters.AddWithValue("@p4", expirationDate);
+            //cmd.Parameters.AddWithValue("@p4", expirationDate);
             cmd.Parameters.AddWithValue("@p5", appointerUserName);
 
 

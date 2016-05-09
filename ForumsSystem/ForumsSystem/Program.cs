@@ -11,8 +11,8 @@ namespace ForumsSystem
     {
         static void Main(string[] args)
         {
-            ForumsSystem.Server.ForumManagement.Data_Access_Layer.DAL_Forum d = new Server.ForumManagement.Data_Access_Layer.DAL_Forum();
-            d.DeleteAll();
+
+            SuperAdmin.populateSuperAdmin();
             Server.CommunicationLayer.Server.StartServer();
             
         }

@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using System.Data;
 using System.Runtime.Serialization;
+
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
@@ -134,6 +136,127 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.emailAccepted = false;
             this.postNotifications = new List<PostNotification>();
         }
+
+        public static Dictionary<string, IUser> populateUsers(Forum forum)//Not waiting
+        {
+            Dictionary<string, IUser> users = new Dictionary<string, IUser>();
+            DAL_Users dsu = new DAL_Users();
+            DataTable userTbl = dsu.GetAllUsersFromForum(forum.getName());
+            foreach (DataRow userRow in userTbl.Rows)
+            {
+                if ((bool)userRow["Waiting"] == false)
+                {
+                    User user = new User();
+                    user.userName = userRow["UserName"].ToString();
+                    user.password = userRow["Password"].ToString();
+                    user.email = userRow["Email"].ToString();
+                    user.dateJoined = (DateTime)userRow["DateJoined"];
+                    user.dateOfBirth = (DateTime)userRow["DateOfBirth"];
+                    user.age = (int)(DateTime.Now.Year - user.dateOfBirth.Year);
+                    user.forum = forum;
+                    user.numOfComplaints = (int)userRow["Complaints"];
+
+
+                    switch ((int)userRow["Type"]) 
+                    {
+                        case (int)UserType.UserTypes.Guest:
+                            user.type = new Guest();
+                            break;
+                        case (int)UserType.UserTypes.Member:
+                            user.type = new Member();
+                            break;
+                        case (int)UserType.UserTypes.Admin:
+                            user.type = new Admin();
+                            break;
+                        default:
+                            user.type = new Type();
+                            break;
+                    }
+
+                    user.dateOfPassLastchange = (DateTime)userRow["DateLastPasswordChanged"];
+                    user.emailAccepted = true;
+                    users[user.userName] = user;
+                }
+            }
+            return users;
+        }
+
+
+        
+
+        public static Dictionary<string, IUser> populateWaitingUsers(Forum forum)//Waiting
+        {
+            Dictionary<string, IUser> users = new Dictionary<string, IUser>();
+            DAL_Users dsu = new DAL_Users();
+            DataTable userTbl = dsu.GetAllUsersFromForum(forum.getName());
+            foreach (DataRow userRow in userTbl.Rows)
+            {
+                if ((bool)userRow["Waiting"] == true)
+                {
+                    User user = new User();
+                    user.userName = userRow["UserName"].ToString();
+                    user.password = userRow["Password"].ToString();
+                    user.email = userRow["Email"].ToString();
+                    user.dateJoined = (DateTime)userRow["DateJoined"];
+                    user.dateOfBirth = (DateTime)userRow["DateOfBirth"];
+                    user.age = (int)(DateTime.Now.Year - user.dateOfBirth.Year);
+                    user.forum = forum;
+                    user.numOfComplaints = (int)userRow["Complaints"];
+
+
+                    switch ((int)userRow["Type"])
+                    {
+                        case (int)UserType.UserTypes.Guest:
+                            user.type = new Guest();
+                            break;
+                        case (int)UserType.UserTypes.Member:
+                            user.type = new Member();
+                            break;
+                        case (int)UserType.UserTypes.Admin:
+                            user.type = new Admin();
+                            break;
+                        default:
+                            user.type = new Type();
+                            break;
+                    }
+
+                    user.dateOfPassLastchange = (DateTime)userRow["DateLastPasswordChanged"];
+                    user.emailAccepted = false;
+                    users[user.userName] = user;
+                }
+            }
+            return users;
+        }
+
+        public static void populateFriends(Dictionary<string, IUser> users, Dictionary<string, IUser> waiting_users, string forumName)
+        {
+            DAL_Friends df = new DAL_Friends();
+            Dictionary<string, IUser> allUsers = users.Union(waiting_users).ToDictionary(k => k.Key, v => v.Value);
+            DataTable friendsTbl = df.GetAllFriendsInForum(forumName);
+
+            foreach (DataRow friendRow in friendsTbl.Rows)
+            {
+                User user = (User)allUsers[friendRow["UserName"].ToString()];
+                User friendUser = (User)allUsers[friendRow["FriendUserName"].ToString()];
+                bool accepted= (bool)friendRow["Accepted"];
+
+                if (accepted)
+                {
+                    user.addToFriendsList(friendUser);
+                    friendUser.addToFriendsList(user);
+                }
+                else
+                {
+                    friendUser.addToWaitingFriendsList(user);
+                }
+
+            }
+
+
+        }
+
+        
+
 
         public bool SetForum(IForum forum)
         {
@@ -268,7 +391,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return false;
         }
 
-
+    
         public PrivateMessage SendPrivateMessage(string reciever, string title, string content)
         {
             return type.SendPrivateMessage(this, reciever, title, content);
@@ -611,6 +734,17 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public List<Tuple<string, string, DateTime, string, List<Post>>> ReportModerators()
         {
             return type.ReportModerators(this);
+        }
+
+
+        public void AddToMessageNotification(PrivateMessageNotification messageNotification)
+        {
+            this.privateMessageNotifications.Add(messageNotification);
+        }
+
+        public void AddToPostNotification(PostNotification postNotification)
+        {
+            postNotifications.Add(postNotification);
         }
 
         public bool IgnoreFriend(IUser userToIgnore)

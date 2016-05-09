@@ -34,6 +34,34 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
 
         }
+
+        public static Forum populateForum(string forumName, int policyId)
+        {
+            Forum forum = new Forum();
+            forum.name = forumName;
+            //--users
+            forum.users = User.populateUsers(forum);
+            forum.waiting_users = User.populateWaitingUsers(forum);
+            //----friends
+            User.populateFriends(forum.users, forum.waiting_users, forumName);
+            //----messages
+            PrivateMessage.populateMessages(forum.users, forum.waiting_users);
+            //----privateMessageNotifications
+            PrivateMessageNotification.populateMessageNotification(forum.users, forum.waiting_users);
+
+            //--subForums (includes threads, posts and moderators)
+            forum.sub_forums = SubForum.populateSubForums(forum);
+
+            //--post notification
+            PostNotification.populatePostNotification(forum.users, forum.waiting_users, forum.name);
+
+            //--policies
+            forum.policies = Policy.populatePolicy(policyId);
+
+            return forum;
+
+        }
+       
         public Forum(string forumName)
         {
             this.name = forumName;
@@ -46,7 +74,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return name;
         }
-
+        public Dictionary<string, IUser> getDictionaryOfUsers()
+        {
+            return users;
+        }
         public List<ISubForum> GetSubForums()
         {
             return sub_forums;

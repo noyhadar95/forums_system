@@ -26,7 +26,17 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             connect_me.TakeAction(cmd);
 
         }
+        public DataTable GetAllFriendsInForum(string forumName)
+        {
+            Connect_to_DB();
+            string sql = "Select * From Friends WHERE ForumName=@p1";
 
+            OleDbCommand cmd = new OleDbCommand(sql);
+
+            cmd.Parameters.AddWithValue("@p1", forumName);
+
+            return connect_me.DownloadData2(cmd, "Friends");
+        }
         public DataTable GetUsersFriends(string forumName, string userName)
         {
             Connect_to_DB();

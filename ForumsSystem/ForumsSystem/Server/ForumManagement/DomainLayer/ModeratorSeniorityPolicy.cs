@@ -20,7 +20,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             this.minSeniority = minSeniority;
         }
+        private ModeratorSeniorityPolicy() : base()
+        {
 
+        }
+
+        public static ModeratorSeniorityPolicy createModeratorSeniorityPolicyForInit(int minSeniority)
+        {
+            ModeratorSeniorityPolicy policy = new ModeratorSeniorityPolicy();
+            policy.minSeniority = minSeniority;
+
+            return policy;
+        }
         public override bool CheckPolicy(PolicyParametersObject param)
         {
 

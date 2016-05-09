@@ -21,11 +21,25 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public ModeratorAppointmentPolicy(Policies type, int seniority, int numOfMessages, int numOfComplaints):base(type)
         {
-            dal_policyParameter.CreatePolicyParameter(ID, seniority, numOfMessages, numOfComplaints,false, -1, -1, -1, -1, -1);
+            dal_policyParameter.CreatePolicyParameter(ID, seniority, numOfMessages, numOfComplaints,false, -1, -1, -1, -1, -1, -1, false);
             this.seniorityInDays = seniority;
             this.numOfMessages = numOfMessages;
             this.numOfComplaints = numOfComplaints;
             //TODO: maybe add more things
+        }
+        private ModeratorAppointmentPolicy() : base()
+        {
+
+        }
+
+        public static ModeratorAppointmentPolicy createModeratorAppointmentPolicyForInit(int seniorityInDays, int numOfMessages, int numOfComplaints)
+        {
+            ModeratorAppointmentPolicy policy = new ModeratorAppointmentPolicy();
+            policy.seniorityInDays = seniorityInDays;
+            policy.numOfMessages = numOfMessages;
+            policy.numOfComplaints = numOfComplaints;
+
+            return policy;
         }
 
         public override bool CheckPolicy(PolicyParametersObject param)

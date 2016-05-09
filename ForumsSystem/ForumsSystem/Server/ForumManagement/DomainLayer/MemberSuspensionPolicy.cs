@@ -19,8 +19,21 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         //TODO: maybe add more things
         public MemberSuspensionPolicy(Policies type, int numOfComplaints):base(type)
         {
-            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, numOfComplaints, false, -1, -1, -1, -1, -1);
+            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, numOfComplaints, false, -1, -1, -1, -1, -1, -1, false);
             this.numOfComplaints = numOfComplaints;
+        }
+
+        private MemberSuspensionPolicy() : base()
+        {
+
+        }
+
+        public static MemberSuspensionPolicy createMemberSuspensionPolicyForInit(int numOfComplaints)
+        {
+            MemberSuspensionPolicy policy = new MemberSuspensionPolicy();
+            policy.numOfComplaints = numOfComplaints;
+
+            return policy;
         }
 
         /// <summary>
