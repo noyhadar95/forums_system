@@ -284,6 +284,46 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public int NumOfMessages { get { return numOfMessages; } set { this.numOfMessages = value; } }
         public int NumOfComplaints { get { return numOfComplaints; } set { this.numOfComplaints = value; } }
         public int Age { get { return age; } set { this.age = value; } }
+
+        public string UserName
+        {
+            get
+            {
+                return userName;
+            }
+
+            set
+            {
+                userName = value;
+            }
+        }
+
+        public string Password
+        {
+            get
+            {
+                return password;
+            }
+
+            set
+            {
+                password = value;
+            }
+        }
+
+        public string Email
+        {
+            get
+            {
+                return email;
+            }
+
+            set
+            {
+                email = value;
+            }
+        }
+
         public string getUsername()
         {
             return userName;

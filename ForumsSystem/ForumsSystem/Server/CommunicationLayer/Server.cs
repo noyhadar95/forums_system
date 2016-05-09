@@ -222,7 +222,11 @@ namespace ForumsSystem.Server.CommunicationLayer
             {
                 string[] seperators = new string[] { "ForumsSystemClient.Resources" };
                 string[] items = classType.Split(seperators, StringSplitOptions.None);
-                classType = items[0] + "ForumsSystem.Server" + items[1];
+                classType = "";
+                for (int i = 0; i < items.Length; i += 2)
+                {
+                    classType += items[i] + "ForumsSystem.Server" + items[i + 1];
+                }
             }
             
 

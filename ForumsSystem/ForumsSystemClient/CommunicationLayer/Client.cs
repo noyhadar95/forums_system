@@ -19,6 +19,8 @@ namespace ForumsSystemClient.CommunicationLayer
         const int SERVER_PORT_NO = 5000;
         const string delimeter = "$|deli|$";
         static string SERVER_IP = "79.179.27.79";
+        static ThreadStart startNotification = new ThreadStart(WaitForNotification);
+        static Thread notificationThread;
 
        private static string connect(string textToSend)
         {
@@ -123,13 +125,7 @@ namespace ForumsSystemClient.CommunicationLayer
                 textToSend += delimeter + pType;
                 textToSend += delimeter + ObjectToString(param);
             }
-            if(methodName == "MemberLogin")
-            {
-                //should be only on login
-                ThreadStart startNotification = new ThreadStart(WaitForNotification);
-                Thread notificationThread = new Thread(startNotification);
-                notificationThread.Start();
-            }
+            
             string textFromServer = connect(textToSend);
             if (textFromServer.Equals("null"))
                 return null;
@@ -137,7 +133,15 @@ namespace ForumsSystemClient.CommunicationLayer
             string[] seperators =new string[] { delimeter };
             string[] items = textFromServer.Split(seperators, StringSplitOptions.None);
 
-            return StringToObject(items[0], items[1]);
+            Object retValue= StringToObject(items[0], items[1]);
+            if (methodName == "MemberLogin"&&retValue!=null)
+            {
+                //should be only on login
+                // ThreadStart startNotification = new ThreadStart(WaitForNotification);
+                notificationThread = new Thread(startNotification);
+                notificationThread.Start();
+            }
+            return retValue;
 
         }
 
