@@ -1,4 +1,5 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace ForumsSystemClient.PresentationLayer
         private CL cl;
         private string forumName;
         private string subForumName;
+        private Dictionary<int, int> itemIndexThreadIDDict;
 
         public SubForumWindow(string forumName, string subForumName)
         {
@@ -31,15 +33,25 @@ namespace ForumsSystemClient.PresentationLayer
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
-            //List<string> items = cl.GetThreadsList(forumName, subForumName);
-            //threadsListView.ItemsSource = items;
-
-            Dictionary<int, string> dict = new Dictionary<int, string>();
-            threadsListView.ItemsSource = dict;
-
             this.forumName = forumName;
             this.subForumName = subForumName;
             Title = subForumName;
+
+
+            Dictionary<int, string> threadsDict = cl.GetThreads(forumName, subForumName);
+            List<string> items = new List<string>();
+            itemIndexThreadIDDict = new Dictionary<int, int>();
+            int index = 0;
+            foreach (KeyValuePair<int, string> pair in threadsDict)
+            {
+                // add title of thread to the list view
+                items.Add(pair.Value);
+                // map index of title in the LV items to it's matching thread id (pair.Key)
+                itemIndexThreadIDDict.Add(index, pair.Key);
+                index++;
+            }
+
+            threadsListView.ItemsSource = items;
         }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
@@ -49,12 +61,13 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void threadsListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            //KeyValuePair<int, string> keyValuePair = (KeyValuePair<int, string>)threadsListView.SelectedItem;
-
             var item = (sender as ListView).SelectedItem;
             if (item != null)
             {
-                Window newWin = new ThreadWindow(forumName, subForumName, 1);
+                int indexOfItem = threadsListView.Items.IndexOf(item);
+                // retrieve threadID using the indexOfItem key for the itemIndexThreadIDDict
+                int threadID = itemIndexThreadIDDict[indexOfItem];
+                Window newWin = new ThreadWindow(forumName, subForumName, threadID);
                 WindowHelper.SwitchWindow(this, newWin);
             }
         }

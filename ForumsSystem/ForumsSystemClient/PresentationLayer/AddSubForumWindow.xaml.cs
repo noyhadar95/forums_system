@@ -1,4 +1,5 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,10 +22,11 @@ namespace ForumsSystemClient.PresentationLayer
     /// </summary>
     public partial class AddSubForumWindow : Window
     {
+        private int moderatorExpDateMonths = 12;
         private CL cl;
         private string forumName;
         private ObservableCollection<string> notModeratorsLVItems;
-        private ObservableCollection<string> moderatorsLVItems;
+        private ObservableCollection<KeyValuePair<string, DateTime>> moderatorsLVItems;
 
         public AddSubForumWindow(string forumName)
         {
@@ -36,7 +38,7 @@ namespace ForumsSystemClient.PresentationLayer
             cl = new CL();
             List<string> usersList = cl.GetUsersInForum(forumName);
             notModeratorsLVItems = new ObservableCollection<string>(usersList);
-            moderatorsLVItems = new ObservableCollection<string>();
+            moderatorsLVItems = new ObservableCollection<KeyValuePair<string, DateTime>>();
 
             notModeratorsListView.ItemsSource = notModeratorsLVItems;
             moderatorsListView.ItemsSource = moderatorsLVItems;
@@ -54,7 +56,8 @@ namespace ForumsSystemClient.PresentationLayer
             }
             foreach (string selectedItem in selectedItemsCopy)
             {
-                moderatorsLVItems.Add(selectedItem);
+                DateTime expDate = DateTime.Now.AddMonths(moderatorExpDateMonths);
+                moderatorsLVItems.Add(new KeyValuePair<string, DateTime>(selectedItem, expDate));
                 notModeratorsLVItems.Remove(selectedItem);
             }
 
@@ -64,15 +67,16 @@ namespace ForumsSystemClient.PresentationLayer
         {
             // move username from right to left
             var selectedItems = moderatorsListView.SelectedItems;
-            List<string> selectedItemsCopy = new List<string>();
-            foreach (string item in selectedItems)
+            List<KeyValuePair<string, DateTime>> selectedItemsCopy = new List<KeyValuePair<string, DateTime>>();
+            foreach (KeyValuePair<string, DateTime> item in selectedItems)
             {
                 selectedItemsCopy.Add(item);
             }
-            foreach (string selectedItem in selectedItemsCopy)
+            foreach (KeyValuePair<string, DateTime> selectedItem in selectedItemsCopy)
             {
-                notModeratorsLVItems.Add(selectedItem);
+                notModeratorsLVItems.Add(selectedItem.Key);
                 moderatorsLVItems.Remove(selectedItem);
+               
             }
         }
 
@@ -86,8 +90,13 @@ namespace ForumsSystemClient.PresentationLayer
                 return;
             }
 
-            //List<string> moderators = new List<string>(moderatorsLVItems)
-            //cl.CreateSubForum(creator, subForumName, moderators);
+            Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
+            foreach (KeyValuePair<string, DateTime> pair in moderatorsLVItems)
+            {
+                moderators.Add(pair.Key, pair.Value);
+            }
+            string creator = WindowHelper.GetLoggedUsername(forumName);
+            cl.CreateSubForum(creator, forumName, subForumName, moderators);
 
             WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
         }

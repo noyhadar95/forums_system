@@ -17,7 +17,12 @@
 
         </ListView>
         <ListView x:Name="moderatorsListView" HorizontalAlignment="Left" Height="146" Margin="395,178,0,0" VerticalAlignment="Top" Width="200">
-
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="sername" DisplayMemberBinding="{Binding Key}"/>
+                    <GridViewColumn Header="expiration date" DisplayMemberBinding="{Binding Value}"/>
+                </GridView>
+            </ListView.View>
         </ListView>
         <Label x:Name="label1" Content="Not moderators" HorizontalAlignment="Left" Margin="134,146,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label2" Content="Moderators" HorizontalAlignment="Left" Margin="454,146,0,0" VerticalAlignment="Top"/>
