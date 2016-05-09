@@ -4,16 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using System.Runtime.Serialization;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
-
-   public class SubForum : ISubForum
+    [DataContract(IsReference = true)]
+    public class SubForum : ISubForum
     {
+        [DataMember]
         private string name;
+        [DataMember]
         private IForum forum;
+        [DataMember]
         private Dictionary<string, Moderator> moderators;//Username, Moderator
+        [DataMember]
         private List<Thread> threads;
+        [DataMember]
         private IUser creator; //admin who created the subforum
         public SubForum(IForum forum, IUser creator, string name)
         {

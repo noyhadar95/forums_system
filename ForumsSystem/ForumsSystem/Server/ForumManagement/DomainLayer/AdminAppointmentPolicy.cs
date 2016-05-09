@@ -4,13 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using System.Runtime.Serialization;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
+    [DataContract(IsReference = true)]
     public class AdminAppointmentPolicy:Policy
     {
+        [DataMember]
         private int seniorityInDays;
+        [DataMember]
         private int numOfMessages;
+        [DataMember]
         private int numOfComplaints;
 
         public AdminAppointmentPolicy(Policies type,int seniorityInDays, int numOfMessages, int numOfComplaints): base(type)

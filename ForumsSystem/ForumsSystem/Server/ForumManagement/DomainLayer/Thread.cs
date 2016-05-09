@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
+    [DataContract(IsReference = true)]
     public class Thread
     {
+        [DataMember]
         private Post openingPost;
+        [DataMember]
         private ISubForum subForum;
 
+        [DataMember]
         public int id { get; set; }
         private static int nextId = 1;//TODO: Change the way we get nextID
 

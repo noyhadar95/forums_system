@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
-{
-    public class MaxModeratorsPolicy :Policy
+{ 
+    [DataContract(IsReference = true)]
+public class MaxModeratorsPolicy :Policy
     {
-        private int maxModerators;
+    [DataMember]
+    private int maxModerators;
 
         public MaxModeratorsPolicy():base()
         {

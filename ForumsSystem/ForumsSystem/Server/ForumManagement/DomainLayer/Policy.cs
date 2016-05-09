@@ -12,13 +12,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     [DataContract]
     public abstract class Policy 
     {
-/*
-        public Policies type { get; set; }
-        public Policy nextPolicy { get; set; }
-        public int id { get; set; }
-        DAL_Policy dal_policy = new DAL_Policy();
-*/
+        /*
+                public Policies type { get; set; }
+                public Policy nextPolicy { get; set; }
+                public int id { get; set; }
+                DAL_Policy dal_policy = new DAL_Policy();
+        */
+        [DataMember]
         protected Policies type;
+        [DataMember]
         private Policy nextPolicy;
         private int id;
         private  DAL_Policy dal_policy = new DAL_Policy();

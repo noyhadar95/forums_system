@@ -4,14 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using System.Runtime.Serialization;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     /// <summary>
     /// check if a member should be suspended
     /// </summary>
+     [DataContract(IsReference = true)]
     public class MemberSuspensionPolicy :Policy
-    {
+    { 
+        [DataMember]
         private int numOfComplaints;
         //TODO: maybe add more things
         public MemberSuspensionPolicy(Policies type, int numOfComplaints):base(type)

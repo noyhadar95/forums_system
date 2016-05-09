@@ -4,18 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using System.Runtime.Serialization;
 
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
+    [DataContract(IsReference = true)]
     public class Post
     {
+        [DataMember]
         private IUser publisher;
+        [DataMember]
         private List<Post> replies;
+        [DataMember]
         private Post parentPost;
+        [DataMember]
         private Thread thread;
+        [DataMember]
         private string title;
+        [DataMember]
         private string content;
+        [DataMember]
         private int id;
+        [DataMember]
         private static int nextId = 1;//TODO: Change the way to initialize this
 
         public Post(IUser publisher, Thread thread, string title, string content)

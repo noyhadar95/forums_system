@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
 {
-    [DataContract]
+    [DataContract(IsReference = true)]
     [Serializable]
     public class User 
     {

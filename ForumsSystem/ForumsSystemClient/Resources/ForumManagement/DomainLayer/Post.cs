@@ -2,20 +2,30 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
+    [DataContract(IsReference = true)]
     public class Post
     {
+        [DataMember]
         private User publisher;
+        [DataMember]
         private List<Post> replies;
+        [DataMember]
         private Post parentPost;
+        [DataMember]
         private Thread thread;
+        [DataMember]
         private string title;
+        [DataMember]
         private string content;
+        [DataMember]
         private int id;
+        [DataMember]
         private static int nextId = 1;//TODO: Change the way to initialize this
 
 
