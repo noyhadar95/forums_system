@@ -83,6 +83,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         List<Tuple<string, string, DateTime, string, List<Post>>> ReportModerators();
 
         string GetTypeString();
+
+        bool IgnoreFriend(IUser userToIgnore);
         }
 
 }

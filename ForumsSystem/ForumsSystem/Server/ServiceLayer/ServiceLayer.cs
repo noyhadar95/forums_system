@@ -79,14 +79,17 @@ namespace ForumsSystem.Server.ServiceLayer
 
         }
 
-        public Thread AddThread(string forumName, string subForumName, string publisherName, string title, string content)
+        public int AddThread(string forumName, string subForumName, string publisherName, string title, string content)
         {
             IForum forum = GetForum(forumName);
             ISubForum subForum = forum.getSubForum(subForumName);
             IUser publisher = forum.getUser(publisherName);
             if (publisher == null)
-                return null;
-            return publisher.createThread(subForum, title, content);
+                return -1;
+            Thread t = publisher.createThread(subForum, title, content);
+            if(t!=null)
+                return t.id;
+            return -1;
 
         }
 
@@ -319,7 +322,7 @@ namespace ForumsSystem.Server.ServiceLayer
         public List<Post> GetPosts(string forumName,string subforumName,int threadId)
         {
             Thread thread = sys.getForum(forumName).getSubForum(subforumName).GetThreadById(threadId);
-            List<Post> res= thread.GetOpeningPost().GetReplies();
+            List<Post> res = new List<Post>();
             res.Insert(0, thread.GetOpeningPost());
             return res;
         }
@@ -483,6 +486,30 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user = forum.getUser(username);
             return user.GetTypeString();
             
+        }
+
+        public bool IgnoreFriend(string forumName, string userName, string userToIgnore)
+        {
+            IForum forum = GetForum(forumName); 
+            IUser user = forum.getUser(userName);
+            IUser user2 = forum.getUser(userToIgnore);
+            return user.IgnoreFriend(user2);
+        }
+
+        public void SendFriendRequest(string forumName, string sender, string reciever)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(sender);
+            IUser user2 = forum.getUser(reciever);
+            user.addFriend(user2);
+        }
+
+        public void AcceptFriendRequest(string forumName, string accepter, string toAccept)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(accepter);
+            IUser user2 = forum.getUser(toAccept);
+            user.addFriend(user2);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
          Post AddReply(string forumName, string subForumName, int threadID, string publisherName, int postID, string title, string content);
 
-        Thread AddThread(string forumName, string subForumName, string publisher, string title, string content);
+        int AddThread(string forumName, string subForumName, string publisher, string title, string content);
         bool ChangeExpirationDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate);
 
         bool ChangeForumProperties(string username,string forumName, Policy properties);
@@ -89,5 +89,11 @@ namespace ForumsSystem.Server.ServiceLayer
         List<string> GetForumsList();
 
         string GetUserType(string forumName, string username);
+
+        bool IgnoreFriend(string forumName, string userName, string userToIgnore);
+
+        void AcceptFriendRequest(string forumName, string accepter, string toAccept);
+
+        void SendFriendRequest(string forumName, string sender, string reciever);
     }
 }

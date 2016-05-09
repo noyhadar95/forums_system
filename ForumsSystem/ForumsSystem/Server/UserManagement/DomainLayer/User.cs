@@ -174,6 +174,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         }
         public void addToWaitingFriendsList(IUser user)
         {
+            if (isLoggedIn) {
+   //             Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, user);
+            }
             waitingFriendsList.Add(user);
         }
         public void removeFromWaitingFriendsList(IUser user)
@@ -444,6 +447,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 privateMessageNotifications = new List<PrivateMessageNotification>();
                 DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
                 dal_messagesNotification.RemoveAllNotifications(forum.getName(), userName);
+
+                foreach(IUser u in waitingFriendsList)
+                {
+                    //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, u);
+                }
             }
 
         }
@@ -603,6 +611,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public List<Tuple<string, string, DateTime, string, List<Post>>> ReportModerators()
         {
             return type.ReportModerators(this);
+        }
+
+        public bool IgnoreFriend(IUser userToIgnore)
+        {
+            return type.IgnoreFriend(this,userToIgnore);
         }
     }
 

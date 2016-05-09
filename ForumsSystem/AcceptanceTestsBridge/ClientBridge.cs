@@ -131,10 +131,7 @@ namespace AcceptanceTestsBridge
 
         public int AddThread(string forumName, string subForumName, string publisher, string title, string content)
         {
-            Thread thread = cl.AddThread(forumName, subForumName, publisher, title, content);
-            if (thread == null)
-                return -1;
-            return thread.id;
+            return cl.AddThread(forumName, subForumName, publisher, title, content);
         }
 
         public int AddReplyPost(string forumName, string subForumName, int threadID, string publisher, int postID, string title, string content)
