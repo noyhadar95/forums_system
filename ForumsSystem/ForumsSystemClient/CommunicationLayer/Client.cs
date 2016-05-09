@@ -252,10 +252,10 @@ namespace ForumsSystemClient.CommunicationLayer
             {
                 string[] seperators = new string[] { "ForumsSystem.Server" };
                 string[] items = xml.Split(seperators, StringSplitOptions.None);
-                xml = "";
-                for (int i = 0; i < items.Length; i += 2)
+                xml = items[0];
+                for (int i = 1; i < items.Length; i ++)
                 {
-                    xml += items[i] + "ForumsSystemClient.Resources" + items[i + 1];
+                    xml +="ForumsSystemClient.Resources" + items[i];
                 }
             }
             using (Stream stream = new MemoryStream())

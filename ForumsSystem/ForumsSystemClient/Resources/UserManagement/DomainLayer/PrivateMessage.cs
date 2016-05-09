@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(User))]
     public class PrivateMessage
     {
         [DataMember]

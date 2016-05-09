@@ -270,10 +270,10 @@ namespace ForumsSystem.Server.CommunicationLayer
             if (index > -1) {
                 string[] seperators = new string[] { "ForumsSystemClient.Resources" };
                 string[] items = xml.Split(seperators, StringSplitOptions.None);
-                xml = "";
-                for (int i = 0; i < items.Length; i+=2)
+                xml = items[0];
+                for (int i = 1; i < items.Length; i++)
                 {
-                    xml += items[i] + "ForumsSystem.Server" + items[i + 1];
+                    xml += "ForumsSystem.Server" + items[i];
                 }
             }
             using (Stream stream = new MemoryStream())

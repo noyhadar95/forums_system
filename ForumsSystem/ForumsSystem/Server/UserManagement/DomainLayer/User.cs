@@ -223,7 +223,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             {
 
                 PolicyParametersObject param = new PolicyParametersObject(Policies.MinimumAge);
-                param.SetAgeOfUser((int)((dateOfBirth - DateTime.Today).TotalDays) / 365);
+                param.SetAgeOfUser((int)((DateTime.Today- dateOfBirth).TotalDays) / 365);
                 if (forum.GetPolicy() != null && !forum.GetPolicy().CheckPolicy(param))
                     return false;
                 param.SetPolicy(Policies.Password);
