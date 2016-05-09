@@ -15,7 +15,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         
         public ConfidentialityPolicy(Policies type, bool blockPassword):base(type)
         {
-            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1, blockPassword, -1, -1, -1, -1, -1);
+            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1, blockPassword, -1, -1, -1, -1, -1, -1,false);
             this.blockPassword = blockPassword;
         }
         private ConfidentialityPolicy() : base()

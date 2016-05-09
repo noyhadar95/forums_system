@@ -17,7 +17,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public ModeratorSuspensionPolicy(Policies type, int numOfComplaints):base(type)
         {
-            dal_policyParameter.CreatePolicyParameter(ID, -1, -1,numOfComplaints, false, -1, -1, -1, -1, -1);
+            dal_policyParameter.CreatePolicyParameter(ID, -1, -1,numOfComplaints, false, -1, -1, -1, -1, -1, -1, false);
             this.numOfComplaints = numOfComplaints;
         }
         private ModeratorSuspensionPolicy() : base()
