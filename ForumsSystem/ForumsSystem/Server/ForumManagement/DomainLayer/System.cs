@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(Forum))]
     public class System
     {
         // private SuperAdmin superAdmin;

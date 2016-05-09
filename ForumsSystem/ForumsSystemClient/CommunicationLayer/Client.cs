@@ -19,12 +19,13 @@ namespace ForumsSystemClient.CommunicationLayer
         const int SERVER_PORT_NO = 5000;
         const string delimeter = "$|deli|$";
         static string SERVER_IP = "132.72.226.107";
-        static ThreadStart startNotification = new ThreadStart(WaitForNotification);
+        static ThreadStart startNotification;
         static Thread notificationThread;
+        static bool notificationsServerActive = false;
 
        private static string connect(string textToSend)
         {
-            //SERVER_IP = GetLocalIPAddress();
+            SERVER_IP = GetLocalIPAddress();
             //---create a TCPClient object at the IP and port no.---
             TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
 
@@ -134,10 +135,12 @@ namespace ForumsSystemClient.CommunicationLayer
             string[] items = textFromServer.Split(seperators, StringSplitOptions.None);
 
             Object retValue= StringToObject(items[0], items[1]);
-            if (methodName == "MemberLogin"&&retValue!=null)
+            if (methodName == "MemberLogin"&&retValue!=null&&!notificationsServerActive)
             {
+                notificationsServerActive = true;
                 //should be only on login
                 // ThreadStart startNotification = new ThreadStart(WaitForNotification);
+                startNotification = new ThreadStart(WaitForNotification);
                 notificationThread = new Thread(startNotification);
                 notificationThread.Start();
             }

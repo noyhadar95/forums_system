@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(Post))]
+    [KnownType(typeof(SubForum))]
     public class Thread
     {
         [DataMember]

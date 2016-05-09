@@ -192,7 +192,7 @@ namespace ForumsSystem.Server.CommunicationLayer
                     SubscribeClient(forumName, username);
                 }
                 
-                HalfSubscribeClient(client, forumName, username);
+                //HalfSubscribeClient(client, forumName, username);
             }
             if (returnObj == null)
             {

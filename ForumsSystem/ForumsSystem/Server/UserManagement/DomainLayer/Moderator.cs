@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(User))]
     public class Moderator
     {
         [DataMember]

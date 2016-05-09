@@ -10,6 +10,10 @@ using System.Runtime.Serialization;
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [KnownType(typeof(Forum))]
+    [KnownType(typeof(PrivateMessage))]
+    [KnownType(typeof(PrivateMessageNotification))]
+    [KnownType(typeof(PostNotification))]
     [Serializable]
     public class User : IUser
     {
