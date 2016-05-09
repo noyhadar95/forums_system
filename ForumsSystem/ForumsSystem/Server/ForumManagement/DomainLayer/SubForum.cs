@@ -46,6 +46,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 sf.name = sForumName;
                 sf.forum = forum;
 
+                //populate moderators
+               sf.moderators = Moderator.populateModerators(forum, sForumName);
+
+                //populate threads
+                sf.threads = 
+
+                sf.creator = forum.getDictionaryOfUsers()[createdUserName];
 
             }
         }

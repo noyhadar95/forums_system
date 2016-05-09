@@ -29,12 +29,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             Forum forum = new Forum();
             forum.name = forumName;
+            //--users
             forum.users = User.populateUsers(forum);
             forum.waiting_users = User.populateWaitingUsers(forum);
-            User.populateFriends(forum.users, forum.waiting_users);
-
+            //----friends
+            User.populateFriends(forum.users, forum.waiting_users, forumName);
+            //----messages
             PrivateMessage.populateMessages(forum.users, forum.waiting_users);
 
+            //--subForums
 
             forum.policies = Policy.populatePolicy(policyId);
            
@@ -53,7 +56,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return name;
         }
-
+        public Dictionary<string, IUser> getDictionaryOfUsers()
+        {
+            return users;
+        }
         public List<ISubForum> GetSubForums()
         {
             return sub_forums;

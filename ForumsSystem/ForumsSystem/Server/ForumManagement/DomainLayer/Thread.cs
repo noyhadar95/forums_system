@@ -22,6 +22,16 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.id = nextId++;
         }
 
+        private Thread()
+        {
+
+        }
+
+        public static List<Thread> populateThreads()
+        {
+
+        }
+
         public string GetTiltle()
         {
             if (openingPost == null)

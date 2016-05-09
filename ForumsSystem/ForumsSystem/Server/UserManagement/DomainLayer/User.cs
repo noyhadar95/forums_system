@@ -212,13 +212,18 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
             foreach (DataRow friendRow in friendsTbl.Rows)
             {
-                string userName = friendRow["UserName"].ToString();
-                string friendUserName = friendRow["FriendUserName"].ToString();
+                User user = (User)allUsers[friendRow["UserName"].ToString()];
+                User friendUser = (User)allUsers[friendRow["FriendUserName"].ToString()];
                 bool accepted= (bool)friendRow["Accepted"];
 
                 if (accepted)
                 {
-
+                    user.addToFriendsList(friendUser);
+                    friendUser.addToFriendsList(user);
+                }
+                else
+                {
+                    friendUser.addToWaitingFriendsList(user);
                 }
 
             }

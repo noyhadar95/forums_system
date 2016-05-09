@@ -1,6 +1,8 @@
-﻿using ForumsSystem.Server.UserManagement.DomainLayer;
+﻿using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using ForumsSystem.Server.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +24,37 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             this.expirationDate = expirationDate;
             this.appointmentDate = DateTime.Today;
         }
+        private Moderator()
+        { 
 
+        }
+
+        public static Dictionary<string, Moderator> populateModerators(Forum forum, string subForumName)
+        {
+            Dictionary<string, Moderator> moderators = new Dictionary<string, Moderator>;
+            DAL_Moderators dm = new DAL_Moderators();
+            DataTable moderatorsTbl = dm.GetAllModerators(forum.getName(), subForumName);
+            foreach (DataRow moderatorRow in moderatorsTbl.Rows)
+            {
+                Moderator mod = new Moderator();
+               
+                string userName = moderatorRow["UserName"].ToString();
+                mod.user = forum.getDictionaryOfUsers()[userName];
+
+                DateTime expirationDate = (DateTime)moderatorRow["ExpirationDate"];
+                mod.expirationDate = expirationDate;
+
+                string appointedUserName = moderatorRow["AppointerUserName"].ToString();
+                mod.appointer = forum.getDictionaryOfUsers()[appointedUserName];
+
+                //TODO: What the hell about the appointmentDate
+
+                moderators[userName] = mod;
+            }
+
+            return moderators;
+
+        }
         public void changeExpirationDate(DateTime expirationDate)
         {
             this.expirationDate = expirationDate;
