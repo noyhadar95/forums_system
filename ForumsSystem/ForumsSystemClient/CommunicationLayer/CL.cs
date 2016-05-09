@@ -85,7 +85,8 @@ namespace ForumsSystemClient.CommunicationLayer
         public Forum CreateForum(string userName, string password, string forumName, Policy policy, List<User> newAdmins)
         {
 
-            return (Forum)Client.SendRequest("CreateForum", userName, password, forumName, policy, newAdmins);
+            Forum f= (Forum)Client.SendRequest("CreateForum", userName, password, forumName, policy, newAdmins);
+            return f;
         }
 
         public Forum GetForum(string forumName)

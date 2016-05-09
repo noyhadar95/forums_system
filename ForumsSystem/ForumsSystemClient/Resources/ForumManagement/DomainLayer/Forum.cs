@@ -2,17 +2,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
+    [DataContract(IsReference = true)]
     public class Forum
     {
+        [DataMember]
         public string name { get; set; }
+        [DataMember]
         private List<SubForum> sub_forums;
+        [DataMember]
         private Policy policies;
+        [DataMember]
         private Dictionary<string, User> users;//username, user
+        [DataMember]
         private Dictionary<string, User> waiting_users;//username, user - waiting for confirmation
 
         public List<SubForum> Sub_forums

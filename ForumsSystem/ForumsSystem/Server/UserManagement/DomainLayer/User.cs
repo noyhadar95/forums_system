@@ -5,29 +5,48 @@ using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using System.Runtime.Serialization;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
-
+    [DataContract(IsReference = true)]
+    [Serializable]
     public class User : IUser
     {
+        [DataMember]
         private string userName;
+        [DataMember]
         private string password;
+        [DataMember]
         private string email;
+        [DataMember]
         private int age;
+        [DataMember]
         private DateTime dateJoined;
+        [DataMember]
         private DateTime dateOfBirth;
+        [DataMember]
         private IForum forum;
+        [DataMember]
         private int numOfMessages;
+        [DataMember]
         private int numOfComplaints;
         private Type type;
+        [DataMember]
         private List<PrivateMessage> sentMessages;
+        [DataMember]
         private List<PrivateMessage> receivedMessages;
+        [DataMember]
         private List<PrivateMessageNotification> privateMessageNotifications;
+        [DataMember]
         private List<IUser> friends;
+        [DataMember]
         private List<IUser> waitingFriendsList;
+        [DataMember]
         private List<PostNotification> postNotifications;
+        [DataMember]
         private bool isLoggedIn;
+        [DataMember]
         private bool emailAccepted;
         private DAL_Users dal_users = new DAL_Users();
         private DateTime dateOfPassLastchange;
@@ -297,6 +316,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 userName = value;
             }
         }
+        
 
         public string Password
         {
@@ -321,6 +341,19 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             set
             {
                 email = value;
+            }
+        }
+
+        public DateTime DateOfBirth
+        {
+            get
+            {
+                return dateOfBirth;
+            }
+
+            set
+            {
+                dateOfBirth = value;
             }
         }
 

@@ -32,14 +32,19 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public Forum CreateForum(string creatorName,string password, string name, Policy properties, List<User> adminUsername)
         {
+            List<User> serverAdmins = new List<User>();
+            foreach (User admin in adminUsername)
+            {
+                serverAdmins.Add(new User(admin.UserName, admin.Password, admin.Email, admin.DateOfBirth));
+            }
             SuperAdmin creator;
             if (!SuperAdmin.GetInstance().userName.Equals(creatorName))
                 return null;
             if (!SuperAdmin.GetInstance().password.Equals(password))
                 return null;
             creator = SuperAdmin.GetInstance();
-            creator.Login(creatorName, password);
-            return creator.createForum(name, properties, adminUsername);
+            creator.Login(creatorName, password);//TODO ?????
+            return creator.createForum(name, properties, serverAdmins);
         }
 
         public bool SetForumProperties(string username, string forumName, Policy properties)

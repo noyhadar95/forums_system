@@ -2,31 +2,51 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
 {
+    [DataContract]
     [Serializable]
     public class User 
     {
+        [DataMember]
         private string userName;
+        [DataMember]
         private string password;
+        [DataMember]
         private string email;
+        [DataMember]
         private int age;
+        [DataMember]
         private DateTime dateJoined;
+        [DataMember]
         private DateTime dateOfBirth;
+        [DataMember]
         private Forum forum;
+        [DataMember]
         private int numOfMessages;
+        [DataMember]
         private int numOfComplaints;
+        [DataMember]
         private Type type;
+        [DataMember]
         private List<PrivateMessage> sentMessages;
+        [DataMember]
         private List<PrivateMessage> receivedMessages;
+        [DataMember]
         private List<PrivateMessage> notifications;
+        [DataMember]
         private List<User> friends;
+        [DataMember]
         private List<User> waitingFriendsList;
+        [DataMember]
         private List<Post> postsNotifications;
+        [DataMember]
         private bool isLoggedIn;
+        [DataMember]
         private bool emailAccepted;
 
 
