@@ -153,6 +153,11 @@ namespace ForumsSystemClient.PresentationLayer
             }
             else
             {
+
+                // save the user in WindowHelper so all windows will know 
+                // that the user is logged in.
+                WindowHelper.SetLoggedUser(forumName, user);
+
                 // user is logged in, get type of user and change window accordingly.
                 string type = cl.GetUserType(forumName, username);
 
@@ -164,11 +169,6 @@ namespace ForumsSystemClient.PresentationLayer
                 {
                     SwitchUserToAdminViewMode();
                 }
-
-                // save the user in WindowHelper so all windows will know 
-                // that the user is logged in.
-                WindowHelper.SetLoggedUser(forumName, user);
-
             }
         }
 
@@ -215,8 +215,7 @@ namespace ForumsSystemClient.PresentationLayer
 
             WindowHelper.LogoutUser(forumName);
 
-            // TODO:
-            // cl.Logout();
+            cl.MemberLogout(forumName, loggedUsername);
         }
 
         private void sendMsgBtn_Click(object sender, RoutedEventArgs e)
@@ -228,6 +227,11 @@ namespace ForumsSystemClient.PresentationLayer
         private void addSubForumBtn_Click(object sender, RoutedEventArgs e)
         {
             WindowHelper.SwitchWindow(this, new AddSubForumWindow(forumName));
+        }
+
+        private void addFriendBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new SendFriendReqWindow(forumName));
         }
     }
 }

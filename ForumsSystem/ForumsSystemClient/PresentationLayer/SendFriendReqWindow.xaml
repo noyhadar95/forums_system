@@ -1,0 +1,21 @@
+﻿<Window x:Class="ForumsSystemClient.PresentationLayer.SendFriendReqWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
+        mc:Ignorable="d"
+        Title="SendFriendReqWindow" Height="450" Width="750">
+    <Grid>
+        <Button x:Name="sendBtn" Content="send request" HorizontalAlignment="Left" Margin="307,318,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="sendBtn_Click"/>
+        <Label x:Name="label" Content="Send friend request" HorizontalAlignment="Left" Margin="287,36,0,0" VerticalAlignment="Top" FontSize="14.667"/>
+        <ListView x:Name="usersLV" HorizontalAlignment="Left" Height="181" Margin="242,103,0,0" VerticalAlignment="Top" Width="236" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>
