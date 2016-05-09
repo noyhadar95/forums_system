@@ -314,8 +314,8 @@ namespace AcceptanceTestsBridge
         {
             //IForum forum = sl.GetForum(forumName);
             // sender = forum.getUser(senderUsername);
-            PrivateMessage pm = sl.SendPrivateMessage(forumName, senderUsername, receiverUsername, msgTitle, msgContent);
-            return pm != null;
+            return sl.SendPrivateMessage(forumName, senderUsername, receiverUsername, msgTitle, msgContent);
+           
         }
 
         public bool EditModeratorExpDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate)

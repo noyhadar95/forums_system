@@ -1,5 +1,4 @@
 ﻿using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
-using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
 using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.CommunicationLayer
 {
-    public class CL
+    public class CL:ICL
     {
 
         bool serverWorks = false;
@@ -31,6 +30,10 @@ namespace ForumsSystemClient.CommunicationLayer
         public List<string> GetThreadsList(string forumName, string subForumName)
         {
             return (List<string>)Client.SendRequest("GetThreadsList", forumName, subForumName);
+        }
+        public Dictionary<int,string> GetThreads(string forumName, string subForumName)
+        {
+            return (Dictionary<int, string>)Client.SendRequest("GetThreads", forumName, subForumName);
         }
 
         public List<string> GetUsersInForum(string forumName)

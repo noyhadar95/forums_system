@@ -104,10 +104,10 @@ namespace ForumsSystem.Server.ServiceLayer
             return forum.Login(username, password);
         }
 
-        public PrivateMessage SendPrivateMessage(string forumName, string senderUsername, string to, string title, string content)
+        public bool SendPrivateMessage(string forumName, string senderUsername, string to, string title, string content)
         {
             IUser from = GetForum(forumName).getUser(senderUsername);
-            return from.SendPrivateMessage(to, title, content);
+            return from.SendPrivateMessage(to, title, content)!=null;
 
 
         }
@@ -125,8 +125,12 @@ namespace ForumsSystem.Server.ServiceLayer
             return deleter.deletePost(post);
         }
 
-        public bool DeleteForumProperties(IUser user, IForum forum, List<Policies> properties)
+        public bool DeleteForumProperties(string deleter, string forumName , List<Policies> properties)
         {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(deleter);
+            if (user == null)
+                return false;
             return user.DeleteForumProperties(forum, properties);
 
         }
@@ -145,10 +149,11 @@ namespace ForumsSystem.Server.ServiceLayer
             return admin.appointModerator(username, expiratoinDate, subForum);
         }
 
-        public void removeForum(string forumName)
+      /*  public void removeForum(string forumName)
         {
             SuperAdmin.GetInstance().removeForum(forumName);
         }
+        */
 
         public bool ConfirmRegistration(string forumName, string username)
         {
@@ -435,6 +440,25 @@ namespace ForumsSystem.Server.ServiceLayer
                 res.Add(thrd.GetTiltle());
             }
             return res;
+        }
+        public Dictionary<int, string> GetThreads(string forumName, string subForumName)
+        {
+            IForum forum = GetForum(forumName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+            List<Thread> threads = subforum.GetThreads();
+            Dictionary<int, string> res = new Dictionary<int, string>();
+            try
+            {
+                foreach (Thread thrd in threads)
+                {
+                    res.Add(thrd.id, thrd.GetTiltle());
+                }
+                return res;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
         public List<string> GetSubForumsList(string forumName)
         {
