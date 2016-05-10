@@ -163,7 +163,7 @@ namespace ForumsSystem.Server.CommunicationLayer
             if (method.Equals("MemberLogin")){//check if login then Halfsubscribe
                 string username = (string)parameters.ElementAt(0);
                 //Forum f = (Forum)parameters.ElementAt(2);
-                string forumName = (string)parameters.ElementAt(1);
+                string forumName = (string)parameters.ElementAt(2);
                 HalfSubscribeClient(client, forumName, username);
             }
             if (method.Equals("MemberLogout"))

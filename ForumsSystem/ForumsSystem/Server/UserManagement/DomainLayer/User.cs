@@ -573,7 +573,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
                 foreach(IUser u in waitingFriendsList)
                 {
-                    //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, u);
+                 Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, u.getUsername());
                 }
             }
 
