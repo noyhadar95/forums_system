@@ -51,13 +51,20 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         //------------------------------------------------------------------
         public void TakeAction(OleDbCommand cmmd)
         {
-            cmmd.Connection = this.my_con;
+            try
+            {
+                cmmd.Connection = this.my_con;
 
-            this.my_con.Open();
+                this.my_con.Open();
 
-            cmmd.ExecuteNonQuery();
+                cmmd.ExecuteNonQuery();
 
-            this.my_con.Close();
+                this.my_con.Close();
+            }
+            catch(Exception e)
+            {
+
+            }
         }
         //------------------------------------------------------------------
         public int ReturnValue(string sql)

@@ -455,6 +455,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             callingUser.AddToreceivedMessages(privateMessage);
             callingUser.AddPrivateMessageNotification(privateMessage);
         }
+        public override string ToString()
+        {
+            return "user";
+        }
 
         //---------------------------------------------------------------------
 

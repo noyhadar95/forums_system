@@ -29,7 +29,7 @@ namespace ForumsSystemClient.PresentationLayer
         private string loggedUsername;
         private string badLoginMsg = "your username/password are incorrect";
         private ObservableCollection<string> friendRequests;
-
+        private MenuItem mi_type;
 
         public ForumWindow(string forumName)
         {
@@ -42,6 +42,7 @@ namespace ForumsSystemClient.PresentationLayer
             Title = forumName;
             loggedUsername = "";
             cl = new CL();
+            mi_type = new MenuItem();
 
             // initialize sub-forums list
             List<string> items = cl.GetSubForumsList(forumName);
@@ -81,9 +82,9 @@ namespace ForumsSystemClient.PresentationLayer
         private void IniNotificationsBar(string username)
         {
             string type = cl.GetUserType(forumName, username);
-            MenuItem mi = new MenuItem();
-            mi.Header = "logged in as " + type;
-            userMenuBar.Items.Add(mi);
+            mi_type.Header = "logged in as " + type;
+            if(userMenuBar.Items.Count<2)
+                 userMenuBar.Items.Add(mi_type);
 
             // initialize friend requests menu bar
             IniFriendReqsMenu(username);
@@ -102,7 +103,15 @@ namespace ForumsSystemClient.PresentationLayer
                 mi.Click += new RoutedEventHandler(friendReqsMenu_Click);
                 menuItems.Add(mi);
                 friendRequestsMenu.Items.Add(mi);
+                
             }
+        }
+
+        public void RefreshMenuBar()
+        {
+            friendRequestsMenu.Items.Clear();
+            IniFriendReqsMenu(loggedUsername);
+            userMenuBar.Items.Refresh();
         }
 
         private void friendReqsMenu_Click(object sender, RoutedEventArgs e)
@@ -227,7 +236,7 @@ namespace ForumsSystemClient.PresentationLayer
             userGrid.Visibility = Visibility.Hidden;
             adminGrid.Visibility = Visibility.Hidden;
             userMenuBar.Visibility = Visibility.Hidden;
-
+            userMenuBar.Items.Remove(mi_type);
             WindowHelper.LogoutUser(forumName);
 
             cl.MemberLogout(forumName, loggedUsername);

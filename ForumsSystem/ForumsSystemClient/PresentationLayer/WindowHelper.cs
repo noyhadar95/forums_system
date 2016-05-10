@@ -126,6 +126,10 @@ namespace ForumsSystemClient.PresentationLayer
         {
             userFriendReqs.Add(reqSender);
             SetFriendReqMenuHeaderOn();
+            if(currentWin is ForumWindow)
+            {
+                ((ForumWindow)currentWin).RefreshMenuBar();
+            }
         }
 
         public static List<string> GetFriendRequests(string forumName, string username)
