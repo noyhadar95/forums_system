@@ -18,9 +18,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public string title { get;private set; }
         [DataMember]
         public string content { get; private set; }
-        [DataMember]
+        [IgnoreDataMember]
         public IUser sender { get; private set; }
-        [DataMember]
+        [IgnoreDataMember]
         public IUser receiver { get; private set; }
 
         public int id { get; private set; }

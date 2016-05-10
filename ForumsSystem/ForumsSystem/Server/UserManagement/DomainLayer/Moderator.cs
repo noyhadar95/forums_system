@@ -14,11 +14,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     [KnownType(typeof(User))]
     public class Moderator
     {
-        [DataMember]
+        [IgnoreDataMember]
         public IUser user { get; private set; }
         [DataMember]
         public DateTime expirationDate { get; private set; }
-        [DataMember]
+        [IgnoreDataMember]
         public IUser appointer { get; private set; }
 
         public DateTime appointmentDate { get; private set; }

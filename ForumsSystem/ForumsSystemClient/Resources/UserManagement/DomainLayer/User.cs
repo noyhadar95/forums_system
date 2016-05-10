@@ -18,39 +18,39 @@ namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
     {
         [DataMember]
         private string userName;
-        [DataMember]
+        [IgnoreDataMember]
         private string password;
-        [DataMember]
+        [IgnoreDataMember]
         private string email;
-        [DataMember]
+        [IgnoreDataMember]
         private int age;
-        [DataMember]
+        [IgnoreDataMember]
         private DateTime dateJoined;
-        [DataMember]
+        [IgnoreDataMember]
         private DateTime dateOfBirth;
-        [DataMember]
+        [IgnoreDataMember]
         private Forum forum;
-        [DataMember]
+        [IgnoreDataMember]
         private int numOfMessages;
-        [DataMember]
+        [IgnoreDataMember]
         private int numOfComplaints;
-        [DataMember]
+        [IgnoreDataMember]
         private Type type;
-        [DataMember]
+        [IgnoreDataMember]
         private List<PrivateMessage> sentMessages;
-        [DataMember]
+        [IgnoreDataMember]
         private List<PrivateMessage> receivedMessages;
-        [DataMember]
+        [IgnoreDataMember]
         private List<PrivateMessage> notifications;
-        [DataMember]
+        [IgnoreDataMember]
         private List<User> friends;
-        [DataMember]
+        [IgnoreDataMember]
         private List<User> waitingFriendsList;
-        [DataMember]
+        [IgnoreDataMember]
         private List<Post> postsNotifications;
-        [DataMember]
+        [IgnoreDataMember]
         private bool isLoggedIn;
-        [DataMember]
+        [IgnoreDataMember]
         private bool emailAccepted;
 
 
@@ -70,7 +70,7 @@ namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
                 userName = value;
             }
         }
-
+        /*
         public string Password
         {
             get
@@ -291,7 +291,7 @@ namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
                 emailAccepted = value;
             }
         }
-
+        */
         #endregion
 
 

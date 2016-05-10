@@ -22,7 +22,7 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
         private Dictionary<string, Moderator> moderators;//Username, Moderator
         [DataMember]
         private List<Thread> threads;
-        [DataMember]
+        [IgnoreDataMember]
         private User creator; //admin who created the subforum
 
         public string Name
@@ -77,7 +77,7 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
             }
         }
 
-        public User Creator
+       /* public User Creator
         {
             get
             {
@@ -88,7 +88,7 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
             {
                 creator = value;
             }
-        }
+        }*/
 
         public string getName()
         {

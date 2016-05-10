@@ -21,38 +21,38 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
     {
         [DataMember]
         private string userName;
-        [DataMember]
+        [IgnoreDataMember]
         private string password;
-        [DataMember]
+        [IgnoreDataMember]
         private string email;
-        [DataMember]
+        [IgnoreDataMember]
         private int age;
-        [DataMember]
+        [IgnoreDataMember]
         private DateTime dateJoined;
-        [DataMember]
+        [IgnoreDataMember]
         private DateTime dateOfBirth;
-        [DataMember]
+        [IgnoreDataMember]
         private IForum forum;
-        [DataMember]
+        [IgnoreDataMember]
         private int numOfMessages;
-        [DataMember]
+        [IgnoreDataMember]
         private int numOfComplaints;
         private Type type;
-        [DataMember]
+        [IgnoreDataMember]
         private List<PrivateMessage> sentMessages;
-        [DataMember]
+        [IgnoreDataMember]
         private List<PrivateMessage> receivedMessages;
-        [DataMember]
+        [IgnoreDataMember]
         private List<PrivateMessageNotification> privateMessageNotifications;
-        [DataMember]
+        [IgnoreDataMember]
         private List<IUser> friends;
-        [DataMember]
+        [IgnoreDataMember]
         private List<IUser> waitingFriendsList;
-        [DataMember]
+        [IgnoreDataMember]
         private List<PostNotification> postNotifications;
-        [DataMember]
+        [IgnoreDataMember]
         private bool isLoggedIn;
-        [DataMember]
+        [IgnoreDataMember]
         private bool emailAccepted;
         private DAL_Users dal_users = new DAL_Users();
         private DateTime dateOfPassLastchange;

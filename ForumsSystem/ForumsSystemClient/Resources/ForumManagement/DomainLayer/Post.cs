@@ -13,8 +13,10 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
     [KnownType(typeof(Thread))]
     public class Post
     {
-        [DataMember]
+        [IgnoreDataMember]
         private User publisher;
+        [DataMember]
+        private string publisherName;
         [DataMember]
         private List<Post> replies;
         [DataMember]
@@ -31,7 +33,11 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
         private static int nextId = 1;//TODO: Change the way to initialize this
 
 
-        public User Publisher { get { return publisher; } set { publisher = value; } }
+        public User Publisher { get {
+                User usr = new User();
+                usr.UserName = publisherName;
+                usr.Username = publisherName;
+                return usr; } set { publisher = value; if (publisher != null) this.publisherName = publisher.UserName; else { publisherName = ""; } } }
 
         public Post()
         {

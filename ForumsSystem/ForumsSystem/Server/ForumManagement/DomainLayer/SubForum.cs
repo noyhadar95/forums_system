@@ -24,7 +24,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private Dictionary<string, Moderator> moderators;//Username, Moderator
         [DataMember]
         private List<Thread> threads;
-        [DataMember]
+        [IgnoreDataMember]
         private IUser creator; //admin who created the subforum
         public SubForum(IForum forum, IUser creator, string name)
         {

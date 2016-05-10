@@ -13,11 +13,11 @@ namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
     [KnownType(typeof(User))]
     public class Moderator
     {
-        [DataMember]
+        [IgnoreDataMember]
         private User user;
         [DataMember]
         private DateTime expirationDate;
-        [DataMember]
+        [IgnoreDataMember]
         private User appointer;
 
         public User User

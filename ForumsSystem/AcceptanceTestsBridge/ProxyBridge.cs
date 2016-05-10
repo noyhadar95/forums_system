@@ -24,13 +24,13 @@ namespace AcceptanceTestsBridge
             {
                 instance = new ProxyBridge();
                 // set real bridge
-                instance.SetRealBridge(new ClientBridge());
-                ForumsSystem.Server.ForumManagement.Data_Access_Layer.DAL_Forum d = new ForumsSystem.Server.ForumManagement.Data_Access_Layer.DAL_Forum();
-                d.DeleteAll();
-                ThreadStart startNotification = new ThreadStart(ForumsSystem.Server.CommunicationLayer.Server.StartServer);
-                Thread notificationThread = new Thread(startNotification);
-                notificationThread.Start();
-                Thread.Sleep(1000);
+                instance.SetRealBridge(new RealBridge());
+               // ForumsSystem.Server.ForumManagement.Data_Access_Layer.DAL_Forum d = new ForumsSystem.Server.ForumManagement.Data_Access_Layer.DAL_Forum();
+               // d.DeleteAll();
+               // ThreadStart startNotification = new ThreadStart(ForumsSystem.Server.CommunicationLayer.Server.StartServer);
+               // Thread notificationThread = new Thread(startNotification);
+               // notificationThread.Start();
+               // Thread.Sleep(1000);
             }
             return instance;
         }

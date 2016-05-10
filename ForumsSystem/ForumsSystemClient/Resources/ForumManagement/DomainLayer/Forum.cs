@@ -19,9 +19,9 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
         private List<SubForum> sub_forums;
         [DataMember]
         private Policy policies;
-        [DataMember]
+        [IgnoreDataMember]
         private Dictionary<string, User> users;//username, user
-        [DataMember]
+        [IgnoreDataMember]
         private Dictionary<string, User> waiting_users;//username, user - waiting for confirmation
 
         public List<SubForum> Sub_forums
@@ -49,7 +49,7 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
                 policies = value;
             }
         }
-
+        /*
         public Dictionary<string, User> Users
         {
             get
@@ -75,7 +75,7 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
                 waiting_users = value;
             }
         }
-
+        */
         public Forum()
         {
 

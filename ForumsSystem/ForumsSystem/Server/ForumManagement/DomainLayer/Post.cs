@@ -16,8 +16,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     [KnownType(typeof(Thread))]
     public class Post
     {
-        [DataMember]
+        [IgnoreDataMember]
         private IUser publisher;
+        [DataMember]
+        private string publisherName;
         [DataMember]
         private List<Post> replies;
         [DataMember]
@@ -36,6 +38,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public Post(IUser publisher, Thread thread, string title, string content)
         {
             this.publisher = publisher;
+            this.publisherName = publisher.getUsername();
             this.parentPost = null;
             this.replies = new List<Post>();
             this.title = title;
@@ -72,6 +75,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                     Forum forum = (Forum)entry.Value.GetSubforum().getForum();
 
                     post.publisher = forum.getDictionaryOfUsers()[publisherUserName];
+                    post.publisherName = post.publisher.getUsername();
 
                     post.parentPost = null;
                     post.thread = entry.Value;
@@ -106,6 +110,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 Forum forum = (Forum)post.thread.GetSubforum().getForum();
 
                 reply.publisher = forum.getDictionaryOfUsers()[publisherUserName];
+                reply.publisherName = reply.publisher.getUsername();
 
                 reply.parentPost = post;
                 reply.thread = post.thread;

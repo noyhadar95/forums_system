@@ -25,9 +25,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private List<ISubForum> sub_forums { get; set; }
         [DataMember]
         private Policy policies { get; set; }
-        [DataMember]
+        [IgnoreDataMember]
         private Dictionary<string, IUser> users { get; set; }//username, user
-        [DataMember]
+        [IgnoreDataMember]
         private Dictionary<string, IUser> waiting_users { get; set; }//username, user - waiting for confirmation
 
         private Forum()
