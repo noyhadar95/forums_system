@@ -11,6 +11,8 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
     [DataContract(IsReference = true)]
     [KnownType(typeof(User))]
     [KnownType(typeof(Thread))]
+    [Serializable]
+
     public class Post
     {
         [DataMember]

@@ -9,6 +9,8 @@ namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
     [KnownType(typeof(User))]
+    [Serializable]
+
     public class PrivateMessage
     {
         [DataMember]

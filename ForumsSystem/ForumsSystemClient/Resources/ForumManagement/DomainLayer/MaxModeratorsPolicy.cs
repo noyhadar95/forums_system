@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 { 
     [DataContract(IsReference = true)]
-public class MaxModeratorsPolicy :Policy
+    [Serializable]
+
+    public class MaxModeratorsPolicy :Policy
     {
     [DataMember]
     private int maxModerators;

@@ -298,7 +298,9 @@ namespace ForumsSystemClient.CommunicationLayer
 
             using (MemoryStream stream = new MemoryStream(bytes))
             {
-                return new BinaryFormatter().Deserialize(stream);
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Binder = new TypeNameConverter();
+                return formatter.Deserialize(stream);
             }
         }
 

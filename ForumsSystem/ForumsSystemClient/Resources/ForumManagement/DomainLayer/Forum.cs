@@ -11,6 +11,7 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
     [DataContract(IsReference = true)]
     [KnownType(typeof(User))]
     [KnownType(typeof(SubForum))]
+    [Serializable]
     public class Forum
     {
         [DataMember]

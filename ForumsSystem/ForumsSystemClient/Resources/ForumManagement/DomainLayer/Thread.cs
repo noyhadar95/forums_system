@@ -10,6 +10,8 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
     [DataContract(IsReference = true)]
     [KnownType(typeof(Post))]
     [KnownType(typeof(SubForum))]
+    [Serializable]
+
     public class Thread
     {
         [DataMember]

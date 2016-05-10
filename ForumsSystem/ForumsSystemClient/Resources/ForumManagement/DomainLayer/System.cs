@@ -9,6 +9,8 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
     [KnownType(typeof(Forum))]
+    [Serializable]
+
     public class System
     {
         // private SuperAdmin superAdmin;

@@ -9,6 +9,8 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
 
     [DataContract(IsReference = true)]
+    [Serializable]
+
     public class PasswordPolicy :Policy
     {
         [DataMember]

@@ -8,6 +8,8 @@ using System.Runtime.Serialization;
 namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [Serializable]
+
     public class ModeratorSuspensionPolicy :Policy
     {
         [DataMember]

@@ -12,6 +12,8 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
     [KnownType(typeof(Moderator))]
     [KnownType(typeof(Thread))]
     [KnownType(typeof(User))]
+    [Serializable]
+
     public class SubForum
     {
         [DataMember]

@@ -11,6 +11,8 @@ namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
     [DataContract(IsReference = true)]
     [KnownType(typeof(Post))]
     [KnownType(typeof(User))]
+    [Serializable]
+
     public class Moderator
     {
         [DataMember]
