@@ -54,7 +54,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private bool isLoggedIn;
         [DataMember]
         private bool emailAccepted;
+
+       [NonSerialized()]
         private DAL_Users dal_users = new DAL_Users();
+       [NonSerialized()]
         private DateTime dateOfPassLastchange;
 
         public User()

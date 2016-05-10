@@ -11,7 +11,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     /// check if users can register to the forum
     /// </summary>
     [DataContract(IsReference = true)]
-    public class UsersLoadPolicy :Policy
+    [Serializable]
+    public class UsersLoadPolicy : Policy
     {
         [DataMember]
         private int maxNumOfUsers;

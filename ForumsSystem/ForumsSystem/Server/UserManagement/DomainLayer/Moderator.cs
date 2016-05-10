@@ -12,6 +12,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
     [KnownType(typeof(User))]
+    [Serializable]
     public class Moderator
     {
         [DataMember]

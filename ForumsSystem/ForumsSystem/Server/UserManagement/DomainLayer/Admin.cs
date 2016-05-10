@@ -7,6 +7,7 @@ using ForumsSystem.Server.ForumManagement.DomainLayer;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
+    [Serializable]
     public class Admin : Type
     {
         public override string ToString()

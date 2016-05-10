@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using ForumsSystemClient.PresentationLayer;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ForumsSystemClient.CommunicationLayer
 {
@@ -212,7 +213,7 @@ namespace ForumsSystemClient.CommunicationLayer
              return writer.ToString();
              */
 
-            return Serialize(obj);
+            return BinarySer(obj);
 
         }
 
@@ -240,7 +241,7 @@ namespace ForumsSystemClient.CommunicationLayer
             return serializer.Deserialize(reader);
             */
 
-            return Deserialize(str, type);
+            return BinaryDes(str, type);
 
         }
 
@@ -276,6 +277,37 @@ namespace ForumsSystemClient.CommunicationLayer
                 stream.Position = 0;
                 DataContractSerializer deserializer = new DataContractSerializer(toType);
                 return deserializer.ReadObject(stream);
+            }
+        }
+
+
+        public static object BinaryDes(string xml, Type toType)
+        {
+            int index = xml.IndexOf("ForumsSystem.Server");
+            if (index > -1)
+            {
+                string[] seperators = new string[] { "ForumsSystem.Server" };
+                string[] items = xml.Split(seperators, StringSplitOptions.None);
+                xml = items[0];
+                for (int i = 1; i < items.Length; i++)
+                {
+                    xml += "ForumsSystemClient.Resources" + items[i];
+                }
+            }
+            byte[] bytes = Convert.FromBase64String(xml);
+
+            using (MemoryStream stream = new MemoryStream(bytes))
+            {
+                return new BinaryFormatter().Deserialize(stream);
+            }
+        }
+
+        public static string BinarySer(object o)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                new BinaryFormatter().Serialize(stream, o);
+                return Convert.ToBase64String(stream.ToArray());
             }
         }
 

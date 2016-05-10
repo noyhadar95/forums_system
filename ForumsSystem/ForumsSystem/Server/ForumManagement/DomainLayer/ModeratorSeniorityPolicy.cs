@@ -11,6 +11,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     /// check if a user's has enough seniority to be the moderator of the forum
     /// </summary>
     [DataContract(IsReference = true)]
+    [Serializable]
     public class ModeratorSeniorityPolicy : Policy
     {
         [DataMember]

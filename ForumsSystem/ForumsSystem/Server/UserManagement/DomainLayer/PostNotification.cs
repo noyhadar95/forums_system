@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [Serializable]
     public class PostNotification
     {
         private NotificationType type;

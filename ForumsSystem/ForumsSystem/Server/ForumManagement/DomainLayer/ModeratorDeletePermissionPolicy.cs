@@ -10,6 +10,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     /// <summary>
     /// check if a moderator's has permission to delete message in sub forum
     /// </summary>
+    [Serializable]
     class ModeratorDeletePermissionPolicy : Policy
     {
    

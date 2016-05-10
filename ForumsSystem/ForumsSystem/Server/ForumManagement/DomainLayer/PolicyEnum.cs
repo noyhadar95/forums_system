@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     [DataContract]
+    [Serializable]
     public enum Policies
     {
         [EnumMember]

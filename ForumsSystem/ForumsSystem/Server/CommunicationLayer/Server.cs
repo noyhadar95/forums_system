@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -252,7 +253,7 @@ namespace ForumsSystem.Server.CommunicationLayer
             StringReader reader = new StringReader(str);
             return serializer.Deserialize(reader);
             */
-             return Deserialize(str, type);
+             return BinaryDes(str, type);
         }
 
         public static string ObjectToString(Object obj)
@@ -263,7 +264,7 @@ namespace ForumsSystem.Server.CommunicationLayer
              return writer.ToString();Domain
              */
 
-            return Serialize(obj);
+            return BinarySer(obj);
 
         }
 
@@ -299,6 +300,41 @@ namespace ForumsSystem.Server.CommunicationLayer
                 stream.Position = 0;
                 DataContractSerializer deserializer = new DataContractSerializer(toType);
                 return deserializer.ReadObject(stream);
+            }
+        }
+
+
+
+
+        public static object BinaryDes(string xml, Type toType)
+        {
+            int index = xml.IndexOf("ForumsSystemClient.Resources");
+            if (index > -1)
+            {
+                string[] seperators = new string[] { "ForumsSystemClient.Resources" };
+                string[] items = xml.Split(seperators, StringSplitOptions.None);
+                xml = items[0];
+                for (int i = 1; i < items.Length; i++)
+                {
+                    xml += "ForumsSystem.Server" + items[i];
+                }
+            }
+            byte[] bytes = Convert.FromBase64String(xml);
+
+            using (MemoryStream stream = new MemoryStream(bytes))
+            {
+                return new BinaryFormatter().Deserialize(stream);
+            }
+        }
+
+        public static string BinarySer(object o)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Binder = new TypeNameConverter();
+                bf.Serialize(stream, o);
+                return Convert.ToBase64String(stream.ToArray());
             }
         }
 

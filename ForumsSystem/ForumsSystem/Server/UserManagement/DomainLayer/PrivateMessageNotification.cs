@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [Serializable]
     public class PrivateMessageNotification
     {
         public string sender { get; private set; } 

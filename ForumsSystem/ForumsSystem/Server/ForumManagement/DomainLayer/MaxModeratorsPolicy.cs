@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [Serializable]
+
     public class MaxModeratorsPolicy:Policy
     {
         [DataMember]

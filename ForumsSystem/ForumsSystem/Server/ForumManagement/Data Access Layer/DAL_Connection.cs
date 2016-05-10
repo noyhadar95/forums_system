@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 {
+    [Serializable]
     public class DAL_Connection
     {
         protected static Connect connect_me = null;

@@ -9,6 +9,7 @@ using System.Runtime.Serialization;
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
+    [Serializable]
     public class AdminAppointmentPolicy:Policy
     {
         [DataMember]

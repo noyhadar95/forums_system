@@ -12,6 +12,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
     [KnownType(typeof(User))]
+    [Serializable]
     public class PrivateMessage
     {
         [DataMember]

@@ -12,7 +12,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     /// check if a member should be suspended
     /// </summary>
      [DataContract(IsReference = true)]
-    public class MemberSuspensionPolicy :Policy
+    [Serializable]
+    public class MemberSuspensionPolicy : Policy
     { 
         [DataMember]
         private int numOfComplaints;

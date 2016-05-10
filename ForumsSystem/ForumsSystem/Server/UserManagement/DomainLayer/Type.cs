@@ -8,14 +8,21 @@ using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
+    [Serializable]
+
     public class Type
     {
-
+        [NonSerialized()]
         private DAL_Friends dal_friends = new DAL_Friends();
+        [NonSerialized()]
         private DAL_Messages dal_messages = new DAL_Messages();
+        [NonSerialized()]
         private DAL_Posts dal_posts = new DAL_Posts();
+        [NonSerialized()]
         private DAL_Threads dal_threads = new DAL_Threads();
+        [NonSerialized()]
         private DAL_SubForums dal_subForums = new DAL_SubForums();
+        [NonSerialized()]
         private DAL_Moderators dal_moderators = new DAL_Moderators();
 
         //Admin only ---------------------------------------------------------

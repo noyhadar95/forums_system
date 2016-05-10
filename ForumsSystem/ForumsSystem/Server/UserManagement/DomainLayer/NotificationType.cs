@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
     [DataContract]
+    [Serializable]
 
     public enum  NotificationType
     {

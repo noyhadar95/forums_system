@@ -18,6 +18,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     [Serializable]
     public class Forum : IForum
     {
+        [NonSerialized()]
         DAL_Forum dal_forum = new DAL_Forum();
         [DataMember]
         public string name { get;  set; }

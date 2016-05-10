@@ -10,6 +10,7 @@ using System.Data;
 
 namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 {
+
     public class DAL_Forum  : DAL_Connection
     {
 

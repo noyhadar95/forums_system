@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 {
+    [Serializable]
     public class DAL_Users : DAL_Connection
     {
         //TODO: REMEMBER TO CHANGE STUFF ABOUT THE WAITING

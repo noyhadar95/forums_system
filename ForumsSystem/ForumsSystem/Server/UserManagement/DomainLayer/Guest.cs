@@ -7,6 +7,7 @@ using ForumsSystem.Server.ForumManagement.DomainLayer;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
+    [Serializable]
     public class Guest : Type
     {
         public override string ToString()

@@ -23,7 +23,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     [KnownType(typeof(ModeratorSuspensionPolicy))]
     [KnownType(typeof(PasswordPolicy))]
     [KnownType(typeof(UsersLoadPolicy))]
-    public abstract class Policy 
+    [Serializable]
+    public abstract class Policy
     {
         /*
                 public Policies type { get; set; }
@@ -36,8 +37,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         [DataMember]
         private Policy nextPolicy;
         private int id;
-
+        [NonSerialized()]
         DAL_Policy dal_policy = new DAL_Policy();
+        [NonSerialized()]
         protected DAL_PolicyParameter dal_policyParameter = new DAL_PolicyParameter();
 
 
