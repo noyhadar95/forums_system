@@ -514,5 +514,30 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user2 = forum.getUser(toAccept);
             user.addFriend(user2);
         }
+
+        public List<string> GetUsersNotFriends(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            List<IUser> tempUsers = forum.getUsersInForum();
+            List<string> users = new List<string>();
+            foreach (IUser usr in tempUsers)
+            {
+                users.Add(usr.getUsername());
+            }
+            List<IUser> tempFriends = user.GetFriendsList();
+            List<string> friends = new List<string>();
+            foreach (IUser usr in tempFriends)
+            {
+                friends.Add(usr.getUsername());
+            }
+            foreach (string usr in friends)
+            {
+                if (users.Contains(usr))
+                    users.Remove(usr);
+            }
+            users.Remove(username);
+            return users;
+        }
     }
 }

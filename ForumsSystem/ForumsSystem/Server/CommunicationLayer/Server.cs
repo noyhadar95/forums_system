@@ -170,7 +170,7 @@ namespace ForumsSystem.Server.CommunicationLayer
             {//TODO:check if logout then unsubscribe
                 string username = (string)parameters.ElementAt(0);
                // Forum f = (Forum)parameters.ElementAt(2);
-                string forumName = (string) parameters.ElementAt(2);
+                string forumName = (string) parameters.ElementAt(1);
                 UnSubscribeClient(forumName, username);
             }
 

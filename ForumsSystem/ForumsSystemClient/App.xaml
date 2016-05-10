@@ -11,6 +11,10 @@
                     <ImageBrush ImageSource="PresentationLayer/Images/background2.jpg"  />
                 </Setter.Value>
             </Setter>
+            <Setter Property="Icon"  Value="PresentationLayer/Images/ttt_logo.ico">
+            </Setter>
+            <Setter Property="Title"  Value="TimTimTeam">
+            </Setter>
         </Style>
 
         <!--<Style  TargetType="Button">

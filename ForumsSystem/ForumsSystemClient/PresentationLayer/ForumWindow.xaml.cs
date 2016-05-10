@@ -72,10 +72,21 @@ namespace ForumsSystemClient.PresentationLayer
                 if (type == "admin")
                     SwitchUserToAdminViewMode();
 
-                // initialize friend requests menu bar
-                IniFriendReqsMenu(user.Username);
+                IniNotificationsBar(user.Username);
+
             }
 
+        }
+
+        private void IniNotificationsBar(string username)
+        {
+            string type = cl.GetUserType(forumName, username);
+            MenuItem mi = new MenuItem();
+            mi.Header = "logged in as " + type;
+            userMenuBar.Items.Add(mi);
+
+            // initialize friend requests menu bar
+            IniFriendReqsMenu(username);
         }
 
         private void IniFriendReqsMenu(string username)
@@ -106,7 +117,7 @@ namespace ForumsSystemClient.PresentationLayer
             else if (result == MessageBoxResult.No)
             {
                 // ignore friend request
-                
+
 
             }
             else
@@ -153,6 +164,11 @@ namespace ForumsSystemClient.PresentationLayer
             }
             else
             {
+
+                // save the user in WindowHelper so all windows will know 
+                // that the user is logged in.
+                WindowHelper.SetLoggedUser(forumName, user);
+
                 // user is logged in, get type of user and change window accordingly.
                 string type = cl.GetUserType(forumName, username);
 
@@ -164,11 +180,6 @@ namespace ForumsSystemClient.PresentationLayer
                 {
                     SwitchUserToAdminViewMode();
                 }
-
-                // save the user in WindowHelper so all windows will know 
-                // that the user is logged in.
-                WindowHelper.SetLoggedUser(forumName, user);
-
             }
         }
 
@@ -180,6 +191,9 @@ namespace ForumsSystemClient.PresentationLayer
             this.loggedUsername = username;
             welcomeTextBlock.Text = "welcome " + username;
             userGrid.Visibility = Visibility.Visible;
+
+            IniNotificationsBar(username);
+            userMenuBar.Visibility = Visibility.Visible;
         }
 
         private void SwitchUserToAdminViewMode()
@@ -212,11 +226,11 @@ namespace ForumsSystemClient.PresentationLayer
             loginGrid.Visibility = Visibility.Visible;
             userGrid.Visibility = Visibility.Hidden;
             adminGrid.Visibility = Visibility.Hidden;
+            userMenuBar.Visibility = Visibility.Hidden;
 
             WindowHelper.LogoutUser(forumName);
 
-            // TODO:
-            // cl.Logout();
+            cl.MemberLogout(forumName, loggedUsername);
         }
 
         private void sendMsgBtn_Click(object sender, RoutedEventArgs e)
@@ -228,6 +242,11 @@ namespace ForumsSystemClient.PresentationLayer
         private void addSubForumBtn_Click(object sender, RoutedEventArgs e)
         {
             WindowHelper.SwitchWindow(this, new AddSubForumWindow(forumName));
+        }
+
+        private void addFriendBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new SendFriendReqWindow(forumName));
         }
     }
 }

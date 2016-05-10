@@ -95,5 +95,6 @@ namespace ForumsSystemClient.CommunicationLayer
 
         void AcceptFriendRequest(string forumName, string accepter, string toAccept);
         void SendFriendRequest(string forumName, string sender, string reciever);
+        List<string> GetUsersNotFriends(string forumName,string username);
     }
 }
