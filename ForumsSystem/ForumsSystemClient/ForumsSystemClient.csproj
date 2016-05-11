@@ -62,6 +62,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CommunicationLayer\Client.cs" />
+    <Compile Include="CommunicationLayer\Encryption\AESThenHMAC.cs" />
     <Compile Include="CommunicationLayer\ICL.cs" />
     <Compile Include="PresentationLayer\AddAdminWindow.xaml.cs">
       <DependentUpon>AddAdminWindow.xaml</DependentUpon>

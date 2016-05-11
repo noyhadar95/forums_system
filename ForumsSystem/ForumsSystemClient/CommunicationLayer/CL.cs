@@ -12,6 +12,15 @@ namespace ForumsSystemClient.CommunicationLayer
     {
 
         bool serverWorks = false;
+        public CL()
+        {
+            StartSecuredConnection();
+        }
+
+        private void StartSecuredConnection()
+        {
+            Client.StartSecuredConnection();  
+        }
 
         public List<string> GetForumsList()
         {

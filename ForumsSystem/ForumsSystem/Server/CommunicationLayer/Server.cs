@@ -24,6 +24,7 @@ namespace ForumsSystem.Server.CommunicationLayer
         private static Dictionary<Tuple<string, string>, string> halfClients; //not yet subscribed
 
         private static Dictionary<Tuple<string, string>, string> clients; //<Forum,Username> Ip address
+        private static Dictionary<int,Client> clientsDetails = new Dictionary<int, Client>();
         public static void StartServer()
         {
             SERVER_IP = GetLocalIPAddress();
@@ -146,12 +147,27 @@ namespace ForumsSystem.Server.CommunicationLayer
         }
         public static void task(Object tp)
         {
+            int clientId=-1;
+            TcpClient client = ((ThreadParameter)tp).client;
             string textFromClient = ((ThreadParameter)tp).param;
+            if(textFromClient.StartsWith("StartSecuredConnection"))
+            {
+                StartSecuredConnection(client);
+                return;
+
+            }
+            else
+            {
+                Object[] temp= Decrypt(textFromClient);
+                clientId = (int)temp[0];
+                textFromClient = (string)temp[1];
+            }
             string[] seperators = new string[] { delimeter };
             string[] items = textFromClient.Split(seperators, StringSplitOptions.None);
-
+           
 
             string method = items[0];
+
             List<Object> parameters = new List<object>();
 
             for (int i = 1; i < items.Length; i+=2)
@@ -159,7 +175,7 @@ namespace ForumsSystem.Server.CommunicationLayer
                 parameters.Add(StringToObject(items[i], items[i + 1]));
             }
 
-            TcpClient client = ((ThreadParameter)tp).client;
+           
             if (method.Equals("MemberLogin")){//check if login then Halfsubscribe
                 string username = (string)parameters.ElementAt(0);
                 //Forum f = (Forum)parameters.ElementAt(2);
@@ -198,7 +214,7 @@ namespace ForumsSystem.Server.CommunicationLayer
             {
 
                 string returnValue = "null";
-
+                returnValue = Encrypt(clientId, returnValue);
 
                 //---write back the text to the client---
                 Console.WriteLine("Sending back : " + returnValue);
@@ -214,7 +230,7 @@ namespace ForumsSystem.Server.CommunicationLayer
 
                 string returnValue = pType + delimeter + ObjectToString(returnObj);
 
-
+                returnValue = Encrypt(clientId, returnValue);
                 //---write back the text to the client---
                 Console.WriteLine("Sending back : " + returnValue);
                 NetworkStream nwStream = client.GetStream();
@@ -224,8 +240,61 @@ namespace ForumsSystem.Server.CommunicationLayer
             }
         }
 
+        private static Object[] Decrypt(string textFromClient)
+        {
+            Object[] ret = new Object[2];
+            string[] seperators = new string[] { delimeter };
+            string[] items = textFromClient.Split(seperators, StringSplitOptions.None);
+            int cid= int.Parse(items[0]);
+            string message = items[1];
+            Client c = clientsDetails[cid];
+            if (c == null)
+            {
+                ret[0] = -1;
+                ret[1] = textFromClient;
+                return ret;
+            }
+            message= Encryption.AESThenHMAC.SimpleDecrypt(message, c.encKey, c.authKey);
+            ret[0] = cid;
+            ret[1] = message;
+            return ret;
+        }
+        private static string Encrypt(int cid, string textToClient)
+        {
+            if (cid == -1)
+            {
+                return "ERROR ENCRYPTING MESSAGE";
+            }
+            Client c = clientsDetails[cid];
+           
+            return Encryption.AESThenHMAC.SimpleEncrypt(textToClient, c.encKey, c.authKey);
+        }
 
-        
+        private static void StartSecuredConnection(TcpClient client)
+        {
+            List<Object> ret = new List<Object>();
+            Client newClient = new Client();
+            clientsDetails.Add(newClient.id, newClient);
+            ret.Add(newClient.id);
+            ret.Add(newClient.encKey);
+            ret.Add(newClient.authKey);
+            Object securedDetails = ret;
+            string pType = securedDetails.GetType().ToString();
+            // if(!pType.StartsWith("System."))
+            //   pType = pType.Substring(pType.LastIndexOf('.') + 1);
+
+            string returnValue = pType + delimeter + ObjectToString(securedDetails);
+
+
+            //---write back the text to the client---
+            Console.WriteLine("Sending back : " + returnValue);
+            NetworkStream nwStream = client.GetStream();
+            byte[] buf = GetBytes(returnValue);
+            nwStream.Write(buf, 0, buf.Length);
+            client.Close();
+        }
+
+
         public static Object StringToObject(string classType, string str)
         {
             string addition = "ForumsSystem.Server.";

@@ -274,7 +274,7 @@ namespace ForumsSystemClient.PresentationLayer
             }
             Border parentBorder = (Border)parentSP.Parent;
             Post parentPost = borderPostDict[parentBorder];
-            cl.AddReply(forumName, subForumName, threadID, parentPost.Publisher.Username, parentPost.GetId(), replyTitle, replyContent);
+            cl.AddReply(forumName, subForumName, threadID, WindowHelper.GetLoggedUsername(forumName), parentPost.GetId(), replyTitle, replyContent);
 
             // refresh window
             WindowHelper.SwitchWindow(this, new ThreadWindow(forumName, subForumName, threadID));

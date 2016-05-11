@@ -23,7 +23,9 @@ namespace ForumsSystemClient.CommunicationLayer
         static ThreadStart startNotification;
         static Thread notificationThread;
         static bool notificationsServerActive = false;
-
+        static int id;
+        static Byte[] encKey;
+        static Byte[] authKey;
         private static string connect(string textToSend)
         {
             SERVER_IP = GetLocalIPAddress();
@@ -134,8 +136,9 @@ namespace ForumsSystemClient.CommunicationLayer
                 textToSend += delimeter + pType;
                 textToSend += delimeter + ObjectToString(param);
             }
-
+            textToSend = Encrypt(textToSend);
             string textFromServer = connect(textToSend);
+            textFromServer = Decrypt(textFromServer);
             if (textFromServer.Equals("null"))
                 return null;
 
@@ -143,6 +146,14 @@ namespace ForumsSystemClient.CommunicationLayer
             string[] items = textFromServer.Split(seperators, StringSplitOptions.None);
 
             Object retValue = StringToObject(items[0], items[1]);
+            if (methodName == "StartSecuredConnection")
+            {
+                List<Object> ret = (List<Object>)retValue;
+                id = (int)ret[0];
+                encKey = (Byte[])ret[1];
+                authKey = (Byte[])ret[1];
+                return null;
+            }
             if (methodName == "MemberLogin" && retValue != null && !notificationsServerActive)
             {
                 notificationsServerActive = true;
@@ -154,6 +165,30 @@ namespace ForumsSystemClient.CommunicationLayer
             }
             return retValue;
 
+        }
+
+        public static void StartSecuredConnection()
+        {
+            string textToSend = "StartSecuredConnection";
+            
+           // textToSend = Encrypt(textToSend);
+            string textFromServer = connect(textToSend);
+            //textFromServer = Decrypt(textFromServer);
+            if (textFromServer.Equals("null"))
+                return;
+
+            string[] seperators = new string[] { delimeter };
+            string[] items = textFromServer.Split(seperators, StringSplitOptions.None);
+
+            Object retValue = StringToObject(items[0], items[1]);
+
+                List<Object> ret = (List<Object>)retValue;
+                id = (int)ret[0];
+                encKey = (Byte[])ret[1];
+                authKey = (Byte[])ret[2];
+                return;
+
+           
         }
 
         /*   public static string ObjectToString(Object obj)
@@ -277,6 +312,18 @@ namespace ForumsSystemClient.CommunicationLayer
                 DataContractSerializer deserializer = new DataContractSerializer(toType);
                 return deserializer.ReadObject(stream);
             }
+        }
+        private static string Encrypt(string textToSend)
+        {
+            if(encKey!=null&&authKey!=null)
+                return id+delimeter+Encryption.AESThenHMAC.SimpleEncrypt(textToSend, encKey, authKey);
+            return textToSend;
+        }
+        private static string Decrypt(string textFromServer)
+        {
+            if (encKey != null && authKey != null)
+                return Encryption.AESThenHMAC.SimpleDecrypt(textFromServer, encKey, authKey);
+            return textFromServer;
         }
 
     }

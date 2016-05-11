@@ -68,8 +68,10 @@
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\CommunicationLayer\Client.cs" />
     <Compile Include="Server\CommunicationLayer\Server.cs" />
     <Compile Include="Server\CommunicationLayer\ThreadParameter.cs" />
+    <Compile Include="Server\Encryption\AESThenHMAC.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\Connect.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_ActivityLog.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Connection.cs" />
@@ -99,6 +101,9 @@
     <Compile Include="Server\ForumManagement\DomainLayer\ModeratorSeniorityPolicy.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\SuperAdmin.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\System.cs" />
+    <Compile Include="Server\PRG\ClientSessionKeyGenerator.cs" />
+    <Compile Include="Server\PRG\Hash.cs" />
+    <Compile Include="Server\PRG\PasswordSeedGenerator.cs" />
     <Compile Include="Server\ServiceLayer\IServiceLayer.cs" />
     <Compile Include="Server\ServiceLayer\ServiceLayer.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\Admin.cs" />
