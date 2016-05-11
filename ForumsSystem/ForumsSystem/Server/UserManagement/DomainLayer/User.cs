@@ -56,6 +56,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private bool emailAccepted;
         private DAL_Users dal_users = new DAL_Users();
         private DateTime dateOfPassLastchange;
+        private string passwordSalt;
 
         public User()
         {
@@ -82,7 +83,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public User(string userName, string password, string email, IForum forum, DateTime dateOfBirth)
         {
             this.userName = userName;
-            this.password = password;
+            this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
+            password = this.passwordSalt + password;
+            this.password = PRG.Hash.GetHash(password);
             this.dateOfPassLastchange = DateTime.Today;
             this.forum = forum;
             this.email = email;
@@ -347,6 +350,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public bool RegisterToForum(string userName, string password, IForum forum, string email, DateTime dateOfBirth)
         {
+            this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
+            
             if (forum == null)
                 return false;
             if (this.forum == null)
@@ -367,7 +372,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
 
                 this.userName = userName;
-                this.password = password;
+                password = this.passwordSalt + password;
+                this.password = PRG.Hash.GetHash(password);
                 this.dateOfPassLastchange = DateTime.Today;
                 this.forum = forum;
                 this.email = email;
@@ -702,8 +708,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public void SetPassword(string password)
         {
-
-            this.password = password;
+            this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
+            password = this.passwordSalt + password;
+            this.password = PRG.Hash.GetHash(password);
             this.dateOfPassLastchange = DateTime.Today;
             if (type is Guest)
             {
@@ -750,6 +757,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public bool IgnoreFriend(IUser userToIgnore)
         {
             return type.IgnoreFriend(this,userToIgnore);
+        }
+
+        public string GetSalt()
+        {
+            return this.passwordSalt;
         }
     }
 

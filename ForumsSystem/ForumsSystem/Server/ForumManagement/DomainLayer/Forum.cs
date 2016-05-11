@@ -154,8 +154,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public IUser Login(string userName, string password)
         {
+            
             if (users.ContainsKey(userName))
             {
+                password = users[userName].GetSalt()+password;
+                password = PRG.Hash.GetHash(password);
                 Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
                 if (users[userName].getPassword().Equals(password))
                 {

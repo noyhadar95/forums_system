@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystem.Server.PRG
 {
-    public class PasswordSeedGenerator
+    public class PasswordSaltGenerator
     {
         public static string GetUniqueKey(int maxSeedLength)
         {
