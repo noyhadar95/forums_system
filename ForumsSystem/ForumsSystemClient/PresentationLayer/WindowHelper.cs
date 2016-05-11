@@ -36,10 +36,12 @@ namespace ForumsSystemClient.PresentationLayer
 
         public static string GetLoggedUsername(string forumName)
         {
-            if (WindowHelper.IsLoggedSuperAdmin())
-                return WindowHelper.GetLoggedSuperAdmin().userName;
+            if (IsLoggedSuperAdmin())
+                return GetLoggedSuperAdmin().userName;
+            else if (IsLoggedUser(forumName))
+                return GetLoggedUser(forumName).Username;
             else
-                return WindowHelper.GetLoggedUser(forumName).Username;
+                return null;
         }
 
         public static bool IsLoggedUser(string forumName)

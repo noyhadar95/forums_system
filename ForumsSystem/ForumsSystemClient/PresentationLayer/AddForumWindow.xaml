@@ -7,13 +7,13 @@
         mc:Ignorable="d"
         Title="AddForumWindow" Height="600" Width="950">
     <Grid>
-        <TextBox x:Name="nameTB" HorizontalAlignment="Left" Height="23" Margin="168,79,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="nameTB" TabIndex="1" HorizontalAlignment="Left" Height="23" Margin="168,79,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
         <Label x:Name="nameLbl" Content="Name:" HorizontalAlignment="Left" Margin="88,76,0,0" VerticalAlignment="Top"/>
         <Label x:Name="instructionsLbl" Content="Enter the details of the forum:" HorizontalAlignment="Left" Margin="225,16,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="submitBtn" Content="create forum" HorizontalAlignment="Left" Margin="395,500,0,0" VerticalAlignment="Top" Width="107" Height="30" Click="submitBtn_Click" />
-        <ListView x:Name="adminsListView" HorizontalAlignment="Left" Height="146" Margin="88,180,0,0" VerticalAlignment="Top" Width="244" />
+        <Button x:Name="submitBtn" Content="create forum" TabIndex="5" HorizontalAlignment="Left" Margin="395,500,0,0" VerticalAlignment="Top" Width="107" Height="30" Click="submitBtn_Click" />
+        <ListView x:Name="adminsListView" TabIndex="2" HorizontalAlignment="Left" Height="146" Margin="88,180,0,0" VerticalAlignment="Top" Width="244" />
         <Label x:Name="label2" Content="Admins" HorizontalAlignment="Left" Margin="88,138,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="cancelBtn" Content="cancel" HorizontalAlignment="Left" Margin="181,500,0,0" VerticalAlignment="Top" Width="107" Height="30" Click="cancelBtn_Click" />
+        <Button x:Name="cancelBtn" Content="cancel" TabIndex="6" HorizontalAlignment="Left" Margin="181,500,0,0" VerticalAlignment="Top" Width="107" Height="30" Click="cancelBtn_Click" />
         <StackPanel x:Name="setPoliciesSP" HorizontalAlignment="Left" Height="240" Margin="438,180,0,0" VerticalAlignment="Top" Width="198">
             <CheckBox x:Name="cbPassword" Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <CheckBox x:Name="cbAuthentication" Content="Authentication" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -26,7 +26,7 @@
             <CheckBox x:Name="cbMinimumAge" Content="MinimumAge" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <CheckBox x:Name="cbMaxModerators" Content="MaxModerators" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </StackPanel>
-        <Button x:Name="addAdminBtn" Content="add admin" HorizontalAlignment="Left" Margin="225,348,0,0" VerticalAlignment="Top" Width="107" Height="30" Click="addAdminBtn_Click"/>
-        <Button x:Name="removeAdminBtn" Content="remove admin" HorizontalAlignment="Left" Margin="88,348,0,0" VerticalAlignment="Top" Width="107" Height="30" Click="removeAdminBtn_Click"/>
+        <Button x:Name="addAdminBtn" Content="add admin" TabIndex="3" HorizontalAlignment="Left" Margin="225,348,0,0" VerticalAlignment="Top" Width="107" Height="30" Click="addAdminBtn_Click"/>
+        <Button x:Name="removeAdminBtn" Content="remove admin" TabIndex="4" HorizontalAlignment="Left" Margin="88,348,0,0" VerticalAlignment="Top" Width="107" Height="30" Click="removeAdminBtn_Click"/>
     </Grid>
 </Window>
