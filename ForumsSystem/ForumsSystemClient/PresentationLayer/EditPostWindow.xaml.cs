@@ -34,6 +34,7 @@ namespace ForumsSystemClient.PresentationLayer
             cl = new CL();
             this.forumName = forumName;
             this.subForumName = subForumName;
+            this.threadID = threadID;
             this.post = post;
 
             contentTB.Text = post.Content;

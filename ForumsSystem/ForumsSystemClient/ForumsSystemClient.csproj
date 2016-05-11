@@ -100,6 +100,7 @@
     <Compile Include="Resources\ForumManagement\DomainLayer\Thread.cs" />
     <Compile Include="Resources\UserManagement\DomainLayer\User.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\UsersLoadPolicy.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\UserTypes.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommunicationLayer\CL.cs" />

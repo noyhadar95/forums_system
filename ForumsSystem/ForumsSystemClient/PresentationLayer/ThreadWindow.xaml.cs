@@ -141,6 +141,8 @@ namespace ForumsSystemClient.PresentationLayer
                 TextBlock editTB = new TextBlock();
                 editTB.Inlines.Add(editBtn);
 
+                btnSPParents.Add(editBtn, sp);
+
                 horizontalSP.Children.Add(editTB);
                 horizontalSP.Children.Add(deleteTB);
             }
@@ -274,8 +276,8 @@ namespace ForumsSystemClient.PresentationLayer
             }
             Border parentBorder = (Border)parentSP.Parent;
             Post parentPost = borderPostDict[parentBorder];
-            cl.AddReply(forumName, subForumName, threadID, parentPost.Publisher.Username, parentPost.GetId(), replyTitle, replyContent);
-
+            string publisher = WindowHelper.GetLoggedUsername(forumName);
+            Post p = cl.AddReply(forumName, subForumName, threadID, publisher, parentPost.GetId(), replyTitle, replyContent);
             // refresh window
             WindowHelper.SwitchWindow(this, new ThreadWindow(forumName, subForumName, threadID));
         }
