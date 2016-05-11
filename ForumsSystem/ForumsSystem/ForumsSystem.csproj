@@ -103,7 +103,7 @@
     <Compile Include="Server\ForumManagement\DomainLayer\System.cs" />
     <Compile Include="Server\PRG\ClientSessionKeyGenerator.cs" />
     <Compile Include="Server\PRG\Hash.cs" />
-    <Compile Include="Server\PRG\PasswordSeedGenerator.cs" />
+    <Compile Include="Server\PRG\PasswordSaltGenerator.cs" />
     <Compile Include="Server\ServiceLayer\IServiceLayer.cs" />
     <Compile Include="Server\ServiceLayer\ServiceLayer.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\Admin.cs" />

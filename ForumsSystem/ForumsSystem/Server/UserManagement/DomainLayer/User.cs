@@ -57,6 +57,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private DAL_Users dal_users = new DAL_Users();
         private DateTime dateOfPassLastchange;
         private string passwordSalt;
+        [DataMember]
+        private string clientSession=null;
 
         public User()
         {
@@ -562,6 +564,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             { 
                 //                Server.CommunicationLayer.Server.SubscribeClient(this.forum.getName(), this.userName);
                 this.isLoggedIn = true;
+                this.clientSession = PRG.ClientSessionKeyGenerator.GetUniqueKey();
                 foreach(PostNotification p in postNotifications)
                 {
               //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, p);
@@ -589,6 +592,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
 //            Server.CommunicationLayer.Server.UnSubscribeClient(this.userName, this.forum.getName());
             this.isLoggedIn = false;
+            this.clientSession = null;
 
         }
 
