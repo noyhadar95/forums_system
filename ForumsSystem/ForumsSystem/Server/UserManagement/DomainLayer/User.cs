@@ -581,7 +581,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             { 
                 //                Server.CommunicationLayer.Server.SubscribeClient(this.forum.getName(), this.userName);
                 this.isLoggedIn = true;
-                this.clientSession = PRG.ClientSessionKeyGenerator.GetUniqueKey();
+                if(this.clientSession==null)
+                    this.clientSession = PRG.ClientSessionKeyGenerator.GetUniqueKey();
                 if (postNotifications != null)
                 {
                     foreach (PostNotification p in postNotifications)
