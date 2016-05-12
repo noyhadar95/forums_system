@@ -366,7 +366,9 @@ namespace ForumsSystem.Server.ServiceLayer
         public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
         {
             IForum forum = GetForum(forumName);
+            if (forum == null) return false;
             ISubForum subforum = forum.getSubForum(subForumName);
+            if (subforum == null) return false;
             Moderator moderator = subforum.getModeratorByUserName(moderatorName);
             //IUser user = forum.getUser(remover);
             //IUser moderator = forum.getUser(moderatorName);
