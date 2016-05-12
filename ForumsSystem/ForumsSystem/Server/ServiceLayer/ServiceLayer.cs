@@ -38,7 +38,7 @@ namespace ForumsSystem.Server.ServiceLayer
             List<User> serverAdmins = new List<User>();
             foreach (User admin in adminUsername)
             {
-                serverAdmins.Add(new User(admin.UserName, admin.Password, admin.Email, admin.DateOfBirth));
+                serverAdmins.Add(new User(admin));
             }
             SuperAdmin creator;
             if (!SuperAdmin.GetInstance().userName.Equals(creatorName))

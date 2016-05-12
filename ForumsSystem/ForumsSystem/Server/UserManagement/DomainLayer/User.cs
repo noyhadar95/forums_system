@@ -64,6 +64,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             this.userName = "";
             this.password = "";
+            this.passwordSalt = "";
             this.forum = null;
             this.email = "";
             this.numOfMessages = 0;
@@ -122,7 +123,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public User(string userName, string password, string email, DateTime dateOfBirth)
         {
             this.userName = userName;
-            this.password = password;
+            this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
+            password = this.passwordSalt + password;
+            this.password = PRG.Hash.GetHash(password);
             this.dateOfPassLastchange = DateTime.Today;
             this.forum = null;
             this.email = email;
@@ -142,6 +145,18 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.postNotifications = new List<PostNotification>();
         }
 
+        /// <summary>
+        /// copies username, password, email and passwordSalt
+        /// </summary>
+        /// <param name="usr"></param>
+        public User(User usr)
+        {
+            this.UserName = usr.UserName;
+            this.password = usr.Password;
+            this.Email = usr.Email;
+            this.DateOfBirth = usr.DateOfBirth;
+            this.passwordSalt = usr.passwordSalt;
+        }
         public static Dictionary<string, IUser> populateUsers(Forum forum)//Not waiting
         {
             Dictionary<string, IUser> users = new Dictionary<string, IUser>();
@@ -465,7 +480,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
             set
             {
-                password = value;
+                this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
+                string temp = this.passwordSalt + value;
+                this.password = PRG.Hash.GetHash(temp);
             }
         }
 
@@ -565,24 +582,33 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 //                Server.CommunicationLayer.Server.SubscribeClient(this.forum.getName(), this.userName);
                 this.isLoggedIn = true;
                 this.clientSession = PRG.ClientSessionKeyGenerator.GetUniqueKey();
-                foreach(PostNotification p in postNotifications)
+                if (postNotifications != null)
                 {
-              //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, p);
+                    foreach (PostNotification p in postNotifications)
+                    {
+                        //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, p);
+                    }
                 }
                 DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
                 dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
                 postNotifications = new List<PostNotification>();
-                foreach (PrivateMessageNotification m in privateMessageNotifications)
+                if (privateMessageNotifications!=null)
                 {
-              //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, m);
+                    foreach (PrivateMessageNotification m in privateMessageNotifications)
+                    {
+                        //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, m);
+                    }
                 }
                 privateMessageNotifications = new List<PrivateMessageNotification>();
                 DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
                 dal_messagesNotification.RemoveAllNotifications(forum.getName(), userName);
 
-                foreach(IUser u in waitingFriendsList)
+                if (waitingFriendsList != null)
                 {
-                 Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, u.getUsername());
+                    foreach (IUser u in waitingFriendsList)
+                    {
+                        Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, u.getUsername());
+                    }
                 }
             }
 

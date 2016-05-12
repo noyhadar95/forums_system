@@ -159,10 +159,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             {
                 password = users[userName].GetSalt()+password;
                 password = PRG.Hash.GetHash(password);
-                Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
+                
                 if (users[userName].getPassword().Equals(password))
                 {
                     users[userName].Login();
+                    Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
                     return users[userName];
 
                 }
