@@ -22,7 +22,7 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for ForumWindow.xaml
     /// </summary>
-    public partial class ForumWindow : Window
+    public partial class ForumWindow : Window , INotifiableWindow
     {
 
         private CL cl;
@@ -97,8 +97,7 @@ namespace ForumsSystemClient.PresentationLayer
         private void IniFriendReqsMenu(string username)
         {
             friendRequestsMenu.Header = WindowHelper.GetFriendReqMenuHeader();
-            //List<string> friendReqs = cl.GetFriendRequests(forumName, username);
-            List<string> friendReqs = WindowHelper.GetFriendRequests(forumName, username);
+            List<string> friendReqs = cl.GetFriendRequests(forumName, username);
             friendRequests = new ObservableCollection<string>(friendReqs);
             List<MenuItem> menuItems = new List<MenuItem>();
             foreach (string str in friendRequests)
@@ -112,8 +111,9 @@ namespace ForumsSystemClient.PresentationLayer
             }
         }
 
-        public void RefreshMenuBar()
+        public void Notify()
         {
+            MessageBox.Show("Got here!! ");
             friendRequestsMenu.Items.Clear();
             IniFriendReqsMenu(loggedUsername);
             userMenuBar.Items.Refresh();
@@ -180,6 +180,8 @@ namespace ForumsSystemClient.PresentationLayer
             userMenuBar.Items.Refresh();
         }
 
+
+
         #region Click Handlers
 
         private void sendMsgBtn_Click(object sender, RoutedEventArgs e)
@@ -220,10 +222,12 @@ namespace ForumsSystemClient.PresentationLayer
                 ShowBadLoginMsg();
                 return;
             }
+            WindowHelper.SetCurrentWindow(this);
             // fields are not empty try to login
             User user = cl.MemberLogin(forumName, username, password);
             if (user == null)
             {
+                WindowHelper.SetCurrentWindow(null);
                 ShowBadLoginMsg();
                 return;
             }

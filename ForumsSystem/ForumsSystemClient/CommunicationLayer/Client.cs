@@ -93,7 +93,7 @@ namespace ForumsSystemClient.CommunicationLayer
                 if (parameters[0] is string)
                 {
                     // friend request
-                    WindowHelper.AddLoggedUserFriendRequest((string)parameters[0]);
+                    WindowHelper.NotifyFriendRequest();
                 }
                 else {
                 }

@@ -55,6 +55,11 @@ namespace ForumsSystemClient.PresentationLayer
             {
                 cl.SendFriendRequest(forumName, loggedUsername, selectedItem);
             }
+            if (selectedItemsCopy.Count == 0)
+            {
+                MessageBox.Show("no user to send request to, please try again");
+                return;
+            }
             MessageBox.Show("your friend request/s have been successfully sent");
             WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
         }
