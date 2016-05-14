@@ -324,5 +324,10 @@ namespace ForumsSystemClient.CommunicationLayer
         {
             return (List<string>)Client.SendRequest("GetUsersNotFriends", forumName, username);
         }
+
+        public List<string> GetFriendRequests(string forumName, string username)
+        {            
+            return (List<string>)Client.SendRequest("GetWaitingFriendsList", forumName, username);
+        }
     }
 }
