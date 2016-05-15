@@ -207,11 +207,6 @@ namespace ForumsSystemClient.CommunicationLayer
             Client.SendRequest("AddFriend", forumName, username1, username2);
         }
 
-        public List<Post> GetPostNotifications(string forumName, string username)
-        {
-            return (List<Post>)Client.SendRequest("GetPostNotifications", forumName, username);
-        }
-
         public void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent)
         {
             Client.SendRequest("EditPost", forumName, subForumName, threadId, editor, postId, newTitle, newContent);
@@ -328,6 +323,16 @@ namespace ForumsSystemClient.CommunicationLayer
         public List<string> GetFriendRequests(string forumName, string username)
         {            
             return (List<string>)Client.SendRequest("GetWaitingFriendsList", forumName, username);
+        }
+
+        public List<PostNotification> GetPostNotifications(string forumName, string username)
+        {
+            return (List<PostNotification>)Client.SendRequest("GetPostNotifications", forumName, username);
+        }
+
+        public List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username)
+        {
+            return (List<PrivateMessageNotification>)Client.SendRequest("GetPrivateMessageNotifications", forumName, username);
         }
     }
 }

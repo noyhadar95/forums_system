@@ -98,5 +98,9 @@ namespace ForumsSystemClient.CommunicationLayer
         List<string> GetUsersNotFriends(string forumName,string username);
         
         List<string> GetFriendRequests(string forumName, string username);
+
+        List<PostNotification> GetPostNotifications(string forumName, string username);
+
+        List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username);
     }
 }
