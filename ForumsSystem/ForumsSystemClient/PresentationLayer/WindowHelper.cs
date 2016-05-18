@@ -23,9 +23,9 @@ namespace ForumsSystemClient.PresentationLayer
             return friendReqMenuHeader;
         }
 
-        public static void SetFriendReqMenuHeaderOn()
+        public static void SetFriendReqMenuHeaderOn(int notifNum)
         {
-            friendReqMenuHeader = "_Friend Requests *";
+            friendReqMenuHeader = "_Friend Requests(" + notifNum + ")";
         }
 
         public static void SetFriendReqMenuHeaderOff()
@@ -128,8 +128,9 @@ namespace ForumsSystemClient.PresentationLayer
 
         public static void NotifyFriendRequest()
         {
-            SetFriendReqMenuHeaderOn();
-            currentWin.Notify();
+            SetFriendReqMenuHeaderOn(1);
+            if (currentWin != null)
+                currentWin.Notify();
         }
 
 

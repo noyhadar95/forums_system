@@ -30,6 +30,7 @@ namespace ForumsSystemClient.PresentationLayer
         public EditPostWindow(string forumName, string subForumName, int threadID, Post post)
         {
             InitializeComponent();
+            WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
             this.forumName = forumName;

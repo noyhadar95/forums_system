@@ -245,6 +245,7 @@ namespace ForumsSystemClient.PresentationLayer
                     ShowAdminViewMode(user.Username);
 
                 IniNotificationsBar(user.Username);
+
             }
         }
 
