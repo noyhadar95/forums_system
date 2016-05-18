@@ -23,6 +23,8 @@ namespace ForumsSystemClient.PresentationLayer
     /// </summary>
     public partial class AddForumWindow : Window
     {
+        private const int MAX_PASS_LENGTH = 12;
+
         private CL cl;
         private ObservableCollection<string> adminsLVItems;
         private List<User> admins;
@@ -42,6 +44,12 @@ namespace ForumsSystemClient.PresentationLayer
             HidePoliciesGrids();
             policiesCBGridDict = new Dictionary<CheckBox, Grid>();
             InitPoliciesDict();
+
+            for (int i = 1; i < MAX_PASS_LENGTH; i++)
+            {
+                passwordLengthCB.Items.Add(i);
+            }
+            passwordLengthCB.SelectedIndex = 0;
         }
 
         private void InitPoliciesDict()
