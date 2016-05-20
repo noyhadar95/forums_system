@@ -29,7 +29,7 @@ namespace ForumsSystemClient.CommunicationLayer
         bool IsInitialized();
 
         User MemberLogin(string forumName, string username, string password);
-
+        User MemberLogin(string forumName, string username, string password, string sessionToken);
         bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob);
 
 

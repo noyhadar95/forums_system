@@ -79,7 +79,11 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public User MemberLogin(string forumName, string username, string password)
         {
-            User res = (User)Client.SendRequest("MemberLogin", username, password,forumName);
+            return MemberLogin(forumName, username, password, null);
+        }
+        public User MemberLogin(string forumName, string username, string password, string sessionToken)
+        {
+            User res = (User)Client.SendRequest("MemberLogin", username, password,forumName, sessionToken);
             return res;
         }
 

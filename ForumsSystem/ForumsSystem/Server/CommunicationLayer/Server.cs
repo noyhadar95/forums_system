@@ -25,6 +25,8 @@ namespace ForumsSystem.Server.CommunicationLayer
 
         private static Dictionary<Tuple<string, string>, string> clients; //<Forum,Username> Ip address
         private static Dictionary<int,Client> clientsDetails = new Dictionary<int, Client>();
+        private static Dictionary<Tuple<string, string>, Tuple<string, List<string>>> clientSessions = new Dictionary<Tuple<string, string>, Tuple<string, List<string>>>();//session token, list of logged in users
+
         public static void StartServer()
         {
             SERVER_IP = GetLocalIPAddress();
@@ -180,13 +182,55 @@ namespace ForumsSystem.Server.CommunicationLayer
                 string username = (string)parameters.ElementAt(0);
                 //Forum f = (Forum)parameters.ElementAt(2);
                 string forumName = (string)parameters.ElementAt(2);
+                string clientSession=null;
+                if (parameters.Count > 3 || parameters.ElementAt(3)!=null)
+                {
+                    
+                    clientSession = (string)parameters.ElementAt(3);
+                    string realSession;
+                    if (clientSessions.ContainsKey(new Tuple<string, string>(forumName, username)))
+                        realSession = clientSessions[new Tuple<string, string>(forumName, username)].Item1;
+                    else
+                        realSession = null;
+                    if (realSession==null || !realSession.Equals(clientSession))
+                    {
+                        string returnValue = "null";
+                        returnValue = Encrypt(clientId, returnValue);
+
+                        //---write back the text to the client---
+                        Console.WriteLine("Sending back : " + returnValue);
+                        NetworkStream nwStream = client.GetStream();
+                        byte[] buf = GetBytes(returnValue);
+                        nwStream.Write(buf, 0, buf.Length);
+                        client.Close();
+                        return;
+                    }
+                    
+                }
+                else
+                {
+                    //new client - create session:
+                    Tuple<string, List<string>> newSession = new Tuple<string, List<string>>(PRG.ClientSessionKeyGenerator.GetUniqueKey(), new List<string>());
+                    string clientIP = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
+                    newSession.Item2.Add(clientIP);
+                    clientSessions[new Tuple<string, string>(forumName, username)] = newSession;
+                }
+                //client session is correct:
+                //add to current session:
+                List<string> cliSession = clientSessions[new Tuple<string, string>(forumName, username)].Item2;
+                string ip = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
+                if (!cliSession.Contains(ip))
+                    cliSession.Add(ip);
+
+                parameters.RemoveAt(3);//no longer need the client session
                 HalfSubscribeClient(client, forumName, username);
             }
             if (method.Equals("MemberLogout"))
-            {//TODO:check if logout then unsubscribe
+            {
                 string username = (string)parameters.ElementAt(0);
                // Forum f = (Forum)parameters.ElementAt(2);
                 string forumName = (string) parameters.ElementAt(1);
+                RemoveClientFromSession(client, username, forumName);
                 UnSubscribeClient(forumName, username);
             }
 
@@ -202,6 +246,7 @@ namespace ForumsSystem.Server.CommunicationLayer
                 if (returnObj == null)
                 {
                     UnSubscribeClient(forumName, username);
+                    RemoveClientFromSession(client, username, forumName);
                 }
                 else
                 {
@@ -237,6 +282,23 @@ namespace ForumsSystem.Server.CommunicationLayer
                 byte[] buf = GetBytes(returnValue);
                 nwStream.Write(buf, 0, buf.Length);
                 client.Close();
+            }
+        }
+
+        private static void RemoveClientFromSession(TcpClient client, string username, string forumName)
+        {
+            List<string> cliSession = clientSessions[new Tuple<string, string>(forumName, username)].Item2;
+            string ip = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
+            if (cliSession.Contains(ip))
+                cliSession.Remove(ip);
+            //if clisession empty:
+            if (cliSession.Count == 0)
+            {
+                //remove session:
+                Tuple<string, List<string>> newSession = new Tuple<string, List<string>>("", new List<string>());
+                string clientIP = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
+                newSession.Item2.Add(clientIP);
+                clientSessions[new Tuple<string, string>(forumName, username)] = newSession;
             }
         }
 
