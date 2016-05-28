@@ -95,7 +95,7 @@ namespace ForumsSystem.Server.CommunicationLayer
 
             //---data to send to the server---
             string pType = notification.GetType().ToString();
-            pType = pType.Substring(pType.LastIndexOf('.') + 1);
+           // pType = pType.Substring(pType.LastIndexOf('.') + 1);
 
             string textToSend = pType + delimeter + ObjectToString(notification);
 

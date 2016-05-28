@@ -577,7 +577,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
                 // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
                 Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
-                    ""+postNotificationCount+","+privateMessageNotifications+","+waitingFriendsCount);
+                    ""+postNotificationCount+","+ privateMessageNotificationsCount + ","+waitingFriendsCount);
 
             }
 

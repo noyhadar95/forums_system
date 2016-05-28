@@ -21,7 +21,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
         ISubForum CreateSubForum(string creator, string forumName, string subforumName, Dictionary<string, DateTime> moderators);
 
-        bool DeletePost(IUser deleter, Post post);
+       // bool DeletePostHelper(IUser deleter, Post post);
 
         bool InitializeSystem(string username, string pass);
         bool IsInitialized();

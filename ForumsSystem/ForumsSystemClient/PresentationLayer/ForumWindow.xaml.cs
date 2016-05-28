@@ -22,14 +22,14 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for ForumWindow.xaml
     /// </summary>
-    public partial class ForumWindow : Window , INotifiableWindow
+    public partial class ForumWindow : Window, INotifiableWindow
     {
 
         private CL cl;
         private string forumName;
         private string loggedUsername;
         private string badLoginMsg = "your username/password are incorrect";
-        private ObservableCollection<string> friendRequests;
+        private ObservableCollection<MenuItem> friendRequestsOC;
         private MenuItem mi_type;
 
         public ForumWindow(string forumName)
@@ -43,6 +43,7 @@ namespace ForumsSystemClient.PresentationLayer
             Title = forumName;
             loggedUsername = "";
             cl = new CL();
+            friendRequestsOC = new ObservableCollection<MenuItem>();
             mi_type = new MenuItem();
 
             // initialize sub-forums list
@@ -97,23 +98,24 @@ namespace ForumsSystemClient.PresentationLayer
         private void IniFriendReqsMenu(string username)
         {
             friendRequestsMenu.Header = WindowHelper.GetFriendReqMenuHeader();
-            List<string> friendReqs = cl.GetFriendRequests(forumName, username);
-            friendRequests = new ObservableCollection<string>(friendReqs);
+            List<string> cl_friendReqs = cl.GetFriendRequests(forumName, username);
             List<MenuItem> menuItems = new List<MenuItem>();
-            foreach (string str in friendRequests)
+            foreach (string str in cl_friendReqs)
             {
                 MenuItem mi = new MenuItem();
                 mi.Header = str;
                 mi.Click += new RoutedEventHandler(friendReqsMenu_Click);
                 menuItems.Add(mi);
+                //friendRequestsOC.Add(mi);
                 friendRequestsMenu.Items.Add(mi);
-
             }
+            //friendRequestsMenu.ItemsSource = friendRequestsOC;
         }
 
         public void Notify()
         {
             MessageBox.Show("Got here!! ");
+            //friendRequestsOC.Clear();
             friendRequestsMenu.Items.Clear();
             IniFriendReqsMenu(loggedUsername);
             userMenuBar.Items.Refresh();
@@ -176,6 +178,7 @@ namespace ForumsSystemClient.PresentationLayer
 
             // hide and clear user menu bar
             userMenuBar.Visibility = Visibility.Hidden;
+            //friendRequestsOC.Clear();
             friendRequestsMenu.Items.Clear();
             userMenuBar.Items.Refresh();
         }

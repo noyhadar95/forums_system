@@ -186,7 +186,7 @@ namespace AcceptanceTestsBridge
             ISubForum subForum = forum.getSubForum(subForumName);
             Thread thread = subForum.GetThreadById(threadID);
             Post post = thread.GetPostById(postID);
-            return sl.DeletePost(user, post);
+            return sl.DeletePost(forumName, subForumName, deleter, threadID, postID);
         }
 
         #endregion

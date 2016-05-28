@@ -126,7 +126,7 @@ namespace ForumsSystem.Server.ServiceLayer
             return admin.editExpirationTimeOfModerator(moderator, newDate, subforum);
         }
 
-        public bool DeletePost(IUser deleter, Post post)
+        private bool DeletePostHelper(IUser deleter, Post post)
         {
             return deleter.deletePost(post);
         }
@@ -228,12 +228,18 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public bool DeletePost(string forumName, string subForumName,string deleter, int threadID, int postID)
         {
-            //TODO: fix this to user deleter parameter!!!
-            SuperAdmin superAdmin = SuperAdmin.GetInstance();
-            ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
-            Thread thread = sys.getForum(forumName).getSubForum(subForumName).GetThreadById(threadID);
-            IUser user = thread.GetOpeningPost().getPublisher();
-            return user.deletePost(thread.GetPostById(postID));
+            IForum forum = GetForum(forumName);
+            Thread thread = forum.getSubForum(subForumName).GetThreadById(threadID);
+            IUser user = forum.getUser(deleter);
+            if (thread != null && user != null)
+            {
+                Post post = thread.GetPostById(postID);
+                if (post == null)
+                    return false;
+                return DeletePostHelper(user, post);
+            }
+            else
+                return false;
         }
 
         public void DeleteForum(string forumName)

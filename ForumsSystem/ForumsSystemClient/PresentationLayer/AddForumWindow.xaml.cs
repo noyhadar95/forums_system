@@ -23,7 +23,28 @@ namespace ForumsSystemClient.PresentationLayer
     /// </summary>
     public partial class AddForumWindow : Window
     {
+        // TODO:: SET THE MAX VALUES
+        // password
         private const int MAX_PASS_LENGTH = 12;
+        // mod appointment
+        private const int MAX_MOD_SENIORITY = 12;
+        private const int MAX_MOD_MSGS = 12;
+        private const int MAX_MOD_APP_COMPLAINTS = 5;
+        // admin appointment
+        private const int MAX_ADMIN_SENIORITY = 12;
+        private const int MAX_ADMIN_MSGS = 12;
+        private const int MAX_ADMIN_COMPLAINTS = 5;
+        // mod suspension
+        private const int MAX_MOD_SUSP_COMPLAINTS = 5;
+        // member suspension
+        private const int MAX_MEMBER_SUSP_COMPLAINTS = 5;
+        // users load
+        private const int MAX_USERS = 100;
+        // minimum age
+        private const int MIN_AGE = 12;
+        // max moderators
+        private const int MAX_MODS = 5;
+
 
         private CL cl;
         private ObservableCollection<string> adminsLVItems;
@@ -39,17 +60,54 @@ namespace ForumsSystemClient.PresentationLayer
             adminsLVItems = new ObservableCollection<string>();
             admins = new List<User>();
             adminsListView.ItemsSource = adminsLVItems;
-            
+
             // handle policies
             HidePoliciesGrids();
             policiesCBGridDict = new Dictionary<CheckBox, Grid>();
             InitPoliciesDict();
+            InitPoliciesCB();
 
-            for (int i = 1; i < MAX_PASS_LENGTH; i++)
+        }
+
+        private void InitPoliciesCB()
+        {
+            // password
+            InitComboBox(passwordLengthCB, MAX_PASS_LENGTH);
+
+            // mod appointment
+            InitComboBox(modSeniorityCB, MAX_MOD_SENIORITY);
+            InitComboBox(modNumOfMessagesCB, MAX_MOD_MSGS);
+            InitComboBox(modNumOfComplaintsCB, MAX_MOD_APP_COMPLAINTS);
+
+            // admin appointment
+            InitComboBox(adminSeniorityCB, MAX_ADMIN_SENIORITY);
+            InitComboBox(adminNumOfMessagesCB, MAX_ADMIN_MSGS);
+            InitComboBox(adminNumOfComplaintsCB, MAX_ADMIN_COMPLAINTS);
+
+            // mod suspension
+            InitComboBox(modSuspNumOfComplCB, MAX_MOD_SUSP_COMPLAINTS);
+
+            // member suspension
+            InitComboBox(memberSuspNumOfComplCB, MAX_MEMBER_SUSP_COMPLAINTS);
+
+            // users load
+            InitComboBox(maxUsersCB, MAX_USERS);
+
+            // minimum age
+            InitComboBox(minAgeCB, MIN_AGE);
+
+            // max moderators
+            InitComboBox(maxModsCB, MAX_MODS);
+
+        }
+
+        private void InitComboBox(ComboBox cb, int maxVal)
+        {
+            for (int i = 1; i <= maxVal; i++)
             {
-                passwordLengthCB.Items.Add(i);
+                cb.Items.Add(i);
             }
-            passwordLengthCB.SelectedIndex = 0;
+            cb.SelectedIndex = 0;
         }
 
         private void InitPoliciesDict()
