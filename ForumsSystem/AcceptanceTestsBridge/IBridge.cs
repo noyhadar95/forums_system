@@ -98,5 +98,9 @@ namespace AcceptanceTestsBridge
         List<string> GetNotifications(string forumName, string username);
  
         List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1);
+
+        string getUserClientServer(string forumName, string userName);
+        bool LoginUserWithClientServer(string forumName, string username, string pass, string clientServer);
+
     }
 }

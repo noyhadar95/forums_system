@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace AcceptanceTestsBridge
 {
-    class RealBridge : IBridge
+    public class RealBridge : IBridge
     {
 
         private IServiceLayer sl;
@@ -336,6 +336,7 @@ namespace AcceptanceTestsBridge
             IUser user = sl.MemberLogin(username, pass, forumName);
             return user != null;
         }
+
 
         public bool LoginSuperAdmin(string username, string pass)
         {

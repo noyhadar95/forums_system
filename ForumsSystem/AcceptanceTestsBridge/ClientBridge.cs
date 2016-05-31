@@ -11,7 +11,7 @@ using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 
 namespace AcceptanceTestsBridge
 {
-    class ClientBridge : IBridge
+   public class ClientBridge : IBridge
     {
         private CL cl;
         // default values for policies params
