@@ -220,22 +220,36 @@ namespace ForumsSystemClient.PresentationLayer
         {
             string username = usernameTB.Text;
             string password = passwordBox.Password;
+            string sessionToken = sessionTokenPB.Password;
             if (username == "" || password == "")
             {
                 ShowBadLoginMsg();
                 return;
             }
+
             WindowHelper.SetCurrentWindow(this);
+
             // fields are not empty try to login
-            User user = cl.MemberLogin(forumName, username, password);
-            if (user == null)
+            Tuple<User, string> userTokenTuple = null;
+            if (sessionToken == "")
             {
+                userTokenTuple = cl.MemberLogin(forumName, username, password);
+            }
+            else
+            {
+                userTokenTuple = cl.MemberLogin(forumName, username, password, sessionToken);
+            }
+
+            if (userTokenTuple == null)
+            {
+                // failed login
                 WindowHelper.SetCurrentWindow(null);
                 ShowBadLoginMsg();
                 return;
             }
             else
             {
+                User user = userTokenTuple.Item1;
                 // save the user in WindowHelper so all windows will know 
                 // that the user is logged in.
                 WindowHelper.SetLoggedUser(forumName, user);
