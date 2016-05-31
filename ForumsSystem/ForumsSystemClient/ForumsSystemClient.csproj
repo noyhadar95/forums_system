@@ -76,6 +76,7 @@
     <Compile Include="PresentationLayer\EditPostWindow.xaml.cs">
       <DependentUpon>EditPostWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\INotifiableWindow.cs" />
     <Compile Include="PresentationLayer\SendFriendReqWindow.xaml.cs">
       <DependentUpon>SendFriendReqWindow.xaml</DependentUpon>
     </Compile>
@@ -101,6 +102,7 @@
     <Compile Include="Resources\ForumManagement\DomainLayer\Thread.cs" />
     <Compile Include="Resources\UserManagement\DomainLayer\User.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\UsersLoadPolicy.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\UserTypes.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommunicationLayer\CL.cs" />

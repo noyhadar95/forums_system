@@ -7,16 +7,16 @@
         mc:Ignorable="d"
         Title="SendFriendReqWindow" Height="450" Width="750">
     <Grid>
-        <Button x:Name="sendBtn" Content="send request" HorizontalAlignment="Left" Margin="375,331,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="sendBtn_Click"/>
+        <Button x:Name="sendBtn" Content="send request" TabIndex="2" HorizontalAlignment="Left" Margin="375,331,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="sendBtn_Click"/>
         <Label x:Name="label" Content="Send friend request" HorizontalAlignment="Left" Margin="242,10,0,0" VerticalAlignment="Top" FontSize="14.667"/>
-        <ListView x:Name="usersLV" HorizontalAlignment="Left" Height="181" Margin="242,103,0,0" VerticalAlignment="Top" Width="236" >
+        <ListView x:Name="usersLV" TabIndex="1" HorizontalAlignment="Left" Height="181" Margin="242,103,0,0" VerticalAlignment="Top" Width="236" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="cancelBtn" Content="cancel" HorizontalAlignment="Left" Margin="242,331,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="cancelBtn_Click"/>
+        <Button x:Name="cancelBtn" Content="cancel" TabIndex="3" HorizontalAlignment="Left" Margin="242,331,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="cancelBtn_Click"/>
         <Label x:Name="label1" Content="select users:" HorizontalAlignment="Left" Margin="242,66,0,0" VerticalAlignment="Top"/>
 
     </Grid>

@@ -85,7 +85,7 @@ namespace ForumsSystemClient.CommunicationLayer
                 //TODO: MAKE THIS WORK ---------------------
                 List<Object> parameters = new List<object>();
 
-                for (int i = 1; i < items.Length; i += 2)
+                for (int i = 0; i < items.Length; i += 2)
                 {
                     parameters.Add(StringToObject(items[i], items[i + 1]));
                 }
@@ -95,7 +95,7 @@ namespace ForumsSystemClient.CommunicationLayer
                 if (parameters[0] is string)
                 {
                     // friend request
-                    WindowHelper.AddLoggedUserFriendRequest((string)parameters[0]);
+                    WindowHelper.NotifyFriendRequest();
                 }
                 else {
                 }
@@ -267,6 +267,7 @@ namespace ForumsSystemClient.CommunicationLayer
                 string[] items = classType.Split(seperators, StringSplitOptions.None);
                 classType = items[0] + "ForumsSystemClient.Resources" + items[1];
             }
+
             Type type = Type.GetType(classType);
 
             /*

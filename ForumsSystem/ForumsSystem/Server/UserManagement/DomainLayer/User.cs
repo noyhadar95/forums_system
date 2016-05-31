@@ -317,10 +317,15 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         }
         public void addToWaitingFriendsList(IUser user)
         {
-            if (isLoggedIn) {
-   //             Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, user);
-            }
             waitingFriendsList.Add(user);
+            if (isLoggedIn) {
+                int postNotificationCount = postNotifications.Count;
+                int privateMessageNotificationsCount = privateMessageNotifications.Count;
+                int waitingFriendsCount = waitingFriendsList.Count;
+                // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
+                Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
+                    "" + postNotificationCount + "," + privateMessageNotifications + "," + waitingFriendsCount);
+            }
         }
         public void removeFromWaitingFriendsList(IUser user)
         {
@@ -581,6 +586,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             { 
                 //                Server.CommunicationLayer.Server.SubscribeClient(this.forum.getName(), this.userName);
                 this.isLoggedIn = true;
+
                 this.clientSession = PRG.ClientSessionKeyGenerator.GetUniqueKey();
                 if (postNotifications != null)
                 {
@@ -600,8 +606,26 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                     }
                 }
                 privateMessageNotifications = new List<PrivateMessageNotification>();
+
+                int postNotificationCount = postNotifications.Count;
+
+                /*DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
+                dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
+                postNotifications = new List<PostNotification>();*/
+
+                int privateMessageNotificationsCount = privateMessageNotifications.Count;
+
+               /* privateMessageNotifications = new List<PrivateMessageNotification>();
+
                 DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
-                dal_messagesNotification.RemoveAllNotifications(forum.getName(), userName);
+                dal_messagesNotification.RemoveAllNotifications(forum.getName(), userName);*/
+
+                int waitingFriendsCount = waitingFriendsList.Count;
+
+                // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
+                Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
+                    ""+postNotificationCount+","+ privateMessageNotificationsCount + ","+waitingFriendsCount);
+
 
                 if (waitingFriendsList != null)
                 {
@@ -610,6 +634,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                         Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, u.getUsername());
                     }
                 }
+
             }
 
         }
@@ -646,22 +671,28 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             PrivateMessageNotification notification = new PrivateMessageNotification(
                 newMessage.sender.getUsername(), newMessage.title, newMessage.content,newMessage.id);
+            DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
+            dal_messagesNotification.AddNotification(newMessage.id);
+            privateMessageNotifications.Add(notification);
+
             if (isLoggedIn)
             {
-            //    Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, notification);
+                int postNotificationCount = postNotifications.Count;
+                int privateMessageNotificationsCount = privateMessageNotifications.Count;
+                int waitingFriendsCount = waitingFriendsList.Count;
+                // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
+                Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
+                    "" + postNotificationCount + "," + privateMessageNotifications + "," + waitingFriendsCount);
             }
-            else
-            {
-                DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
-                dal_messagesNotification.AddNotification(newMessage.id);
-                privateMessageNotifications.Add(notification);
-            }
+
         }
 
         public List<PrivateMessageNotification> GetPrivateMessageNotifications()
         {
             List<PrivateMessageNotification> notifications = this.privateMessageNotifications;
-            //this.privateMessageNotifications = new List<PrivateMessageNotification>();
+            this.privateMessageNotifications = new List<PrivateMessageNotification>();
+            DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
+            dal_messagesNotification.RemoveAllNotifications(forum.getName(), userName);
             return notifications;
         }
 
@@ -670,25 +701,33 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             PostNotification notification = new PostNotification(type, post.getPublisher().getForum().getName(),
                 post.getPublisher().getUsername(), post.Thread.GetSubforum().getName(),
                 post.Title, post.Content, post.GetId());
+            DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
+            dal_postNotification.AddNotification(notification.id, (int)type, post.getPublisher().getForum().getName(), userName);
+            postNotifications.Add(notification);
             if (isLoggedIn)
             {
-             //   Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName, notification);
-            }
-            else
-            {
-                DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
-                dal_postNotification.AddNotification(notification.id, (int)type, post.getPublisher().getForum().getName(), userName);
-                postNotifications.Add(notification);
+                int postNotificationCount = postNotifications.Count;
+                int privateMessageNotificationsCount = privateMessageNotifications.Count;
+                int waitingFriendsCount = waitingFriendsList.Count;
+                // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
+                Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
+                    "" + postNotificationCount + "," + privateMessageNotifications + "," + waitingFriendsCount);
             }
         }
 
         public List<PostNotification> GetPostNotifications()
         {
             List<PostNotification> notifications = this.postNotifications;
-            //this.postNotifications = new List<PostNotification>();
+            this.postNotifications = new List<PostNotification>();
+            DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
+            dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
             return notifications;
         }
 
+        public List<IUser> GetWaitingFriendsList()
+        {
+            return this.waitingFriendsList;
+        }
         public List<IUser> GetFriendsList()
         {
             return friends;

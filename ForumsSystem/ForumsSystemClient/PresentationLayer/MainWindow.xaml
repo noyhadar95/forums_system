@@ -17,12 +17,12 @@
         <Label x:Name="welcomeLbl" Content="Welcome to TimTimTeam Forums system" HorizontalAlignment="Left" Margin="182,64,0,0" VerticalAlignment="Top" FontSize="21.333" FontWeight="Bold" Height="42" Width="429"/>
         <Image x:Name="image" HorizontalAlignment="Left" Height="98" Margin="-14,-10,0,0" VerticalAlignment="Top" Width="276" Source="Images/logo.png"/>
         <Grid x:Name="superAdminGrid" HorizontalAlignment="Left" Height="240" Margin="28,149,0,0" VerticalAlignment="Top" Width="124">
-            <Button x:Name="createForumBtn" HorizontalAlignment="Center" Content="create forum" Width="100" Margin="0,100,24,110" Click="createForumBtn_Click" />
+            <Button x:Name="createForumBtn" TabIndex="3" HorizontalAlignment="Center" Content="add forum" Width="100" Margin="0,100,24,110" Click="createForumBtn_Click" />
             <TextBlock x:Name="welcomeTB" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Welcome " VerticalAlignment="Top" Margin="10,10,0,10"/>
-            <Button x:Name="logoutBtn" Content="logout" HorizontalAlignment="Left" Margin="0,56,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="logoutBtn_Click"/>
+            <Button x:Name="logoutBtn" Content="logout" TabIndex="2" HorizontalAlignment="Left" Margin="0,56,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="logoutBtn_Click"/>
         </Grid>
         <Grid x:Name="superAdminLoginGrid" HorizontalAlignment="Left" Height="54" Margin="603,10,0,0" VerticalAlignment="Top" Width="115">
-            <Button x:Name="superAdminLoginBtn" Content="Super Admin Login" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="115"  Height="30" Click="superAdminLoginBtn_Click"/>
+            <Button x:Name="superAdminLoginBtn" Content="Super Admin Login" TabIndex="1" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="115"  Height="30" Click="superAdminLoginBtn_Click"/>
         </Grid>
     </Grid>
 </Window>

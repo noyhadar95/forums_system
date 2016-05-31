@@ -89,7 +89,12 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         string GetTypeString();
 
         bool IgnoreFriend(IUser userToIgnore);
+
         string GetSalt();
-    }
+
+
+        List<IUser> GetWaitingFriendsList();
+        }
+
 
 }

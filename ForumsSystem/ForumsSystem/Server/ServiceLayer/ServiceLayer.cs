@@ -126,7 +126,7 @@ namespace ForumsSystem.Server.ServiceLayer
             return admin.editExpirationTimeOfModerator(moderator, newDate, subforum);
         }
 
-        public bool DeletePost(IUser deleter, Post post)
+        private bool DeletePostHelper(IUser deleter, Post post)
         {
             return deleter.deletePost(post);
         }
@@ -236,7 +236,8 @@ namespace ForumsSystem.Server.ServiceLayer
                 Post post = thread.GetPostById(postID);
                 if (post == null)
                     return false;
-               return DeletePost(user, post);
+
+                return DeletePostHelper(user, post);
             }
             else
                 return false;
@@ -297,7 +298,7 @@ namespace ForumsSystem.Server.ServiceLayer
                 return -1;
         }
 
-        public List<PrivateMessageNotification> GetNotifications(string forumName, string username)
+        public List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username)
         {
             IForum forum = sys.getForum(forumName);
             IUser user = sys.getForum(forumName).getUser(username);
@@ -349,6 +350,19 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
             return user.GetPostNotifications();
+        }
+
+        public List<string> GetWaitingFriendsList(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            List<IUser> waitingFriends =  user.GetWaitingFriendsList();
+            List<string> res = new List<string>();
+            foreach(IUser u in waitingFriends)
+            {
+                res.Add(u.getUsername());
+            }
+            return res;
         }
 
         public void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent)
