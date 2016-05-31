@@ -79,10 +79,12 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public Tuple<User,string> MemberLogin(string forumName, string username, string password)
         {
-            return MemberLogin(forumName, username, password, null);
+            return MemberLogin(forumName, username, password, "");
         }
         public Tuple<User, string> MemberLogin(string forumName, string username, string password, string sessionToken)
         {
+            if (sessionToken == null)
+                sessionToken = "";
             Tuple<User, string> res = (Tuple<User, string>)Client.SendRequest("MemberLogin", username, password,forumName, sessionToken);
             return res;
         }

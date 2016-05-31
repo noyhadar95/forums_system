@@ -183,7 +183,7 @@ namespace ForumsSystem.Server.CommunicationLayer
                 //Forum f = (Forum)parameters.ElementAt(2);
                 string forumName = (string)parameters.ElementAt(2);
                 string clientSession=null;
-                if (parameters.Count > 3 || parameters.ElementAt(3)!=null)
+                if ( parameters.ElementAt(3) != null && (string)parameters.ElementAt(3) != "")
                 {
                     
                     clientSession = (string)parameters.ElementAt(3);
