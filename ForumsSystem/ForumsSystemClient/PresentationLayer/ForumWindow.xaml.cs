@@ -116,7 +116,11 @@ namespace ForumsSystemClient.PresentationLayer
         {
             MessageBox.Show("Got here!! ");
             //friendRequestsOC.Clear();
-            friendRequestsMenu.Items.Clear();
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
+            {
+                friendRequestsMenu.Items.Clear();
+            }));
+            
             IniFriendReqsMenu(loggedUsername);
             userMenuBar.Items.Refresh();
         }
@@ -229,18 +233,19 @@ namespace ForumsSystemClient.PresentationLayer
 
             WindowHelper.SetCurrentWindow(this);
 
-            // fields are not empty try to login
-            Tuple<User, string> userTokenTuple = null;
-            if (sessionToken == "")
-            {
-                userTokenTuple = cl.MemberLogin(forumName, username, password);
-            }
-            else
-            {
-                userTokenTuple = cl.MemberLogin(forumName, username, password, sessionToken);
-            }
+            //// fields are not empty try to login
+            //Tuple<User, string> userTokenTuple = null;
+            //if (sessionToken == "")
+            //{
+            //    userTokenTuple = cl.MemberLogin(forumName, username, password);
+            //}
+            //else
+            //{
+            //    userTokenTuple = cl.MemberLogin(forumName, username, password, sessionToken);
+            //}
+             User user= cl.MemberLogin(forumName, username, password);
 
-            if (userTokenTuple == null)
+            if (user == null)
             {
                 // failed login
                 WindowHelper.SetCurrentWindow(null);
@@ -249,7 +254,8 @@ namespace ForumsSystemClient.PresentationLayer
             }
             else
             {
-                User user = userTokenTuple.Item1;
+                //TODO: User user = userTokenTuple.Item1;
+
                 // save the user in WindowHelper so all windows will know 
                 // that the user is logged in.
                 WindowHelper.SetLoggedUser(forumName, user);
