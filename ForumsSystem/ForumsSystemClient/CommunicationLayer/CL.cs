@@ -77,13 +77,13 @@ namespace ForumsSystemClient.CommunicationLayer
             return res;
         }
 
-        public User MemberLogin(string forumName, string username, string password)
+        public Tuple<User,string> MemberLogin(string forumName, string username, string password)
         {
             return MemberLogin(forumName, username, password, null);
         }
-        public User MemberLogin(string forumName, string username, string password, string sessionToken)
+        public Tuple<User, string> MemberLogin(string forumName, string username, string password, string sessionToken)
         {
-            User res = (User)Client.SendRequest("MemberLogin", username, password,forumName, sessionToken);
+            Tuple<User, string> res = (Tuple<User, string>)Client.SendRequest("MemberLogin", username, password,forumName, sessionToken);
             return res;
         }
 

@@ -251,6 +251,10 @@ namespace ForumsSystem.Server.CommunicationLayer
                 else
                 {
                     SubscribeClient(forumName, username);
+                    //update session key in return object:
+                    Tuple<Object, string> tokenRetObj = new Tuple<object, string>(returnObj,
+                        clientSessions[new Tuple<string, string>(forumName, username)].Item1);
+                    returnObj = tokenRetObj;
                 }
                 
                 //HalfSubscribeClient(client, forumName, username);
