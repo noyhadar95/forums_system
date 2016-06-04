@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.CommunicationLayer
 {
-    interface ICL
+    public interface ICL
     {
         #region Use Cases Methods
 
