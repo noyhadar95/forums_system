@@ -97,6 +97,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void IniFriendReqsMenu(string username)
         {
+            friendRequestsMenu.Items.Clear();
             friendRequestsMenu.Header = WindowHelper.GetFriendReqMenuHeader();
             List<string> cl_friendReqs = cl.GetFriendRequests(forumName, username);
             List<MenuItem> menuItems = new List<MenuItem>();
@@ -116,7 +117,11 @@ namespace ForumsSystemClient.PresentationLayer
         {
             MessageBox.Show("Got here!! ");
             //friendRequestsOC.Clear();
-            friendRequestsMenu.Items.Clear();
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
+            {
+                friendRequestsMenu.Items.Clear();
+            }));
+
             IniFriendReqsMenu(loggedUsername);
             userMenuBar.Items.Refresh();
         }
@@ -229,7 +234,7 @@ namespace ForumsSystemClient.PresentationLayer
 
             WindowHelper.SetCurrentWindow(this);
 
-            // fields are not empty try to login
+            //// fields are not empty try to login
             Tuple<User, string> userTokenTuple = null;
             if (sessionToken == "")
             {
@@ -239,8 +244,11 @@ namespace ForumsSystemClient.PresentationLayer
             {
                 userTokenTuple = cl.MemberLogin(forumName, username, password, sessionToken);
             }
+            User user=null;
+            if(userTokenTuple!=null)
+                user= userTokenTuple.Item1;//cl.MemberLogin(forumName, username, password);
 
-            if (userTokenTuple == null)
+            if (user == null)
             {
                 // failed login
                 WindowHelper.SetCurrentWindow(null);
@@ -249,19 +257,19 @@ namespace ForumsSystemClient.PresentationLayer
             }
             else
             {
-                User user = userTokenTuple.Item1;
+                //TODO: User user = userTokenTuple.Item1;
+
                 // save the user in WindowHelper so all windows will know 
                 // that the user is logged in.
                 WindowHelper.SetLoggedUser(forumName, user);
 
                 // user is logged in, get type of user and change window accordingly.
                 string type = cl.GetUserType(forumName, username);
+                MessageBox.Show(type);
                 if (type == UserTypes.Member)
                     ShowMemberViewMode(user.Username);
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
-
-                IniNotificationsBar(user.Username);
 
             }
         }
@@ -272,7 +280,11 @@ namespace ForumsSystemClient.PresentationLayer
                                                     "Confirmation", MessageBoxButton.YesNoCancel);
             if (result == MessageBoxResult.Yes)
             {
+                MenuItem mi = sender as MenuItem;
+                string requestSender = (string)mi.Header;
+                MessageBox.Show("loggedUsername = " + loggedUsername + "\nrequestSender = " + requestSender);
                 // accept friend request
+                cl.AcceptFriendRequest(forumName, loggedUsername, requestSender);
 
             }
             else if (result == MessageBoxResult.No)

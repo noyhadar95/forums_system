@@ -33,11 +33,11 @@ namespace ForumsSystem.Server.CommunicationLayer
             clients = new Dictionary<Tuple<string, string>, string>();
             halfClients = new Dictionary<Tuple<string, string>, string>();
             sl = new ServiceLayer.ServiceLayer();
-                //---listen at the specified IP and port no.---
-                IPAddress localAdd = IPAddress.Parse(SERVER_IP);
-                TcpListener listener = new TcpListener(localAdd, SERVER_PORT_NO);
-           
-                listener.Start();
+            //---listen at the specified IP and port no.---
+            IPAddress localAdd = IPAddress.Parse(SERVER_IP);
+            TcpListener listener = new TcpListener(localAdd, SERVER_PORT_NO);
+
+            listener.Start();
             ThreadPool.SetMaxThreads(10, 10);
 
             while (true)
@@ -46,7 +46,7 @@ namespace ForumsSystem.Server.CommunicationLayer
                 //---incoming client connected---
                 TcpClient client = listener.AcceptTcpClient();
 
-             
+
                 //---get the incoming data through a network stream---
                 NetworkStream nwStream = client.GetStream();
                 byte[] buffer = new byte[client.ReceiveBufferSize];
@@ -59,23 +59,23 @@ namespace ForumsSystem.Server.CommunicationLayer
                 Console.WriteLine("Received : " + dataReceived);
 
                 Console.WriteLine("Adding to threadpool");
-                ThreadParameter tp = new ThreadParameter(dataReceived,client);
+                ThreadParameter tp = new ThreadParameter(dataReceived, client);
                 ThreadPool.QueueUserWorkItem(new WaitCallback(task), (Object)tp);
 
-               
+
             }
-          //  listener.Stop   
+            //  listener.Stop   
 
         }
 
         //should be done only on login
-        public static void HalfSubscribeClient(TcpClient client ,string forumName, string userName)
+        public static void HalfSubscribeClient(TcpClient client, string forumName, string userName)
         {
             string ip = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
             // int port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
 
             halfClients[new Tuple<string, string>(forumName, userName)] = ip;
-            
+
         }
 
         public static void SubscribeClient(string forumName, string userName)
@@ -85,12 +85,23 @@ namespace ForumsSystem.Server.CommunicationLayer
         }
         public static void UnSubscribeClient(string forumName, string userName)
         {
-            clients.Remove(new Tuple<string, string>(forumName, userName)); 
+            clients.Remove(new Tuple<string, string>(forumName, userName));
         }
 
 
         public static void notifyClient(string forumName, string userName, Object notification)
         {
+            string[] notifArr = ((string)notification).Split(',');
+            try
+            {
+                if (int.Parse(notifArr[0]) == 0 && int.Parse(notifArr[1]) == 0 && int.Parse(notifArr[2]) == 0)
+                    return;
+            }
+            catch (Exception)
+            {
+                return;
+            }
+
             Tuple<string, string> clientTuple = new Tuple<string, string>(forumName, userName);
             if (!clients.ContainsKey(clientTuple))
                 return;
@@ -98,25 +109,25 @@ namespace ForumsSystem.Server.CommunicationLayer
 
             //---data to send to the server---
             string pType = notification.GetType().ToString();
-           // pType = pType.Substring(pType.LastIndexOf('.') + 1);
+            // pType = pType.Substring(pType.LastIndexOf('.') + 1);
 
             string textToSend = pType + delimeter + ObjectToString(notification);
 
-                //---create a TCPClient object at the IP and port no.---
-                TcpClient client = new TcpClient(ip, CLIENT_PORT_NO);
+            //---create a TCPClient object at the IP and port no.---
+            TcpClient client = new TcpClient(ip, CLIENT_PORT_NO);
 
-                int port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
+            int port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
 
 
-                NetworkStream nwStream = client.GetStream();
-                byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
+            NetworkStream nwStream = client.GetStream();
+            byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
 
-                //---send the text---
-                Console.WriteLine("Sending : " + textToSend);
-                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+            //---send the text---
+            Console.WriteLine("Sending : " + textToSend);
+            nwStream.Write(bytesToSend, 0, bytesToSend.Length);
 
-                client.Close();
-            
+            client.Close();
+
         }
 
         public static string GetLocalIPAddress()
@@ -172,10 +183,11 @@ namespace ForumsSystem.Server.CommunicationLayer
 
             List<Object> parameters = new List<object>();
 
-            for (int i = 1; i < items.Length; i+=2)
+            for (int i = 1; i < items.Length; i += 2)
             {
                 parameters.Add(StringToObject(items[i], items[i + 1]));
             }
+
 
 
             if (method.Equals("GetSessionKey"))
@@ -187,6 +199,7 @@ namespace ForumsSystem.Server.CommunicationLayer
 
            
             if (method.Equals("MemberLogin")){//check if login then Halfsubscribe
+
                 string username = (string)parameters.ElementAt(0);
                 //Forum f = (Forum)parameters.ElementAt(2);
                 string forumName = (string)parameters.ElementAt(2);
@@ -253,7 +266,7 @@ namespace ForumsSystem.Server.CommunicationLayer
                 string username = (string)parameters.ElementAt(1);
                // Forum f = (Forum)parameters.ElementAt(2);
                 string forumName = (string) parameters.ElementAt(0);
-                RemoveClientFromSession(client, username, forumName);
+                RemoveClientFromSession(client, username, forumName);     
                 UnSubscribeClient(forumName, username);
             }
 
@@ -262,10 +275,10 @@ namespace ForumsSystem.Server.CommunicationLayer
             MethodInfo theMethod = thisType.GetMethod(method);
             Object returnObj = theMethod.Invoke(sl, parameters.ToArray());
             if (method.Equals("MemberLogin"))
-            { 
+            {
                 string username = (string)parameters.ElementAt(0);
                 string forumName = (string)parameters.ElementAt(2);
-            
+
                 if (returnObj == null)
                 {
                     UnSubscribeClient(forumName, username);
@@ -280,7 +293,7 @@ namespace ForumsSystem.Server.CommunicationLayer
                  //   tokenRetObj.Add(clientSessions[new Tuple<string, string>(forumName, username)].Item1);
                  //  returnObj = tokenRetObj;
                 }
-                
+
                 //HalfSubscribeClient(client, forumName, username);
             }
             if (returnObj == null)
@@ -403,7 +416,7 @@ namespace ForumsSystem.Server.CommunicationLayer
                     classType += items[i] + "ForumsSystem.Server" + items[i + 1];
                 }
             }
-            
+
 
             Type type = Type.GetType(classType);
             /*
@@ -411,7 +424,7 @@ namespace ForumsSystem.Server.CommunicationLayer
             StringReader reader = new StringReader(str);
             return serializer.Deserialize(reader);
             */
-             return Deserialize(str, type);
+            return Deserialize(str, type);
         }
 
         public static string ObjectToString(Object obj)
@@ -442,7 +455,8 @@ namespace ForumsSystem.Server.CommunicationLayer
         public static object Deserialize(string xml, Type toType)
         {
             int index = xml.IndexOf("ForumsSystemClient.Resources");
-            if (index > -1) {
+            if (index > -1)
+            {
                 string[] seperators = new string[] { "ForumsSystemClient.Resources" };
                 string[] items = xml.Split(seperators, StringSplitOptions.None);
                 xml = items[0];

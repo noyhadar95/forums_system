@@ -110,6 +110,30 @@ namespace ForumsSystemClient.CommunicationLayer
                         }
                         //TODO: Handle notification------------------
 
+                        Console.WriteLine("Received : " + dataReceived);
+
+                        // Handle notification------------------
+                        if (parameters[0] is string)
+                        {
+                            string[] notifArr = ((string)parameters[0]).Split(',');
+                            try
+                            {
+                                if (int.Parse(notifArr[2]) > 0)
+                                {
+                                    // notify about friend request/s
+                                    WindowHelper.NotifyFriendRequest();
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                return;
+                            }
+
+
+                        }
+                        else
+                        {
+                        }
                     }
 
                     catch (SocketException se)
@@ -118,6 +142,7 @@ namespace ForumsSystemClient.CommunicationLayer
                             throw (se);
                     }
                 }
+
 
             }
             //  listener.Stop   

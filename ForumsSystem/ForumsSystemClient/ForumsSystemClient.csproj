@@ -81,6 +81,7 @@
     <Compile Include="PresentationLayer\SendFriendReqWindow.xaml.cs">
       <DependentUpon>SendFriendReqWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\UserNotificationBar.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\AdminAppointmentPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\ConfidentialityPolicy.cs" />
