@@ -7,7 +7,7 @@ using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 using System.Data;
 using System.Runtime.Serialization;
-
+using ForumsSystem.Server.UserManagement.DomailLayer;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
@@ -56,11 +56,16 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private bool emailAccepted;
         private DAL_Users dal_users = new DAL_Users();
         private DateTime dateOfPassLastchange;
-
+        [DataMember]
+        private string passwordSalt;
+        [IgnoreDataMember]
+        private string clientSession=null;
+        private Dictionary<SecurityQuestions, string> passwordSecurityQuestions;
         public User()
         {
             this.userName = "";
             this.password = "";
+            this.passwordSalt = "";
             this.forum = null;
             this.email = "";
             this.numOfMessages = 0;
@@ -82,7 +87,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public User(string userName, string password, string email, IForum forum, DateTime dateOfBirth, string passwordSalt)
         {
             this.userName = userName;
-            this.password = password;
+            this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
+            password = this.passwordSalt + password;
+            this.password = PRG.Hash.GetHash(password);
             this.dateOfPassLastchange = DateTime.Today;
             this.forum = forum;
             this.email = email;
@@ -110,14 +117,16 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.privateMessageNotifications = new List<PrivateMessageNotification>();
             this.emailAccepted = false;
             this.postNotifications = new List<PostNotification>();
-            
+            passwordSecurityQuestions = new Dictionary<SecurityQuestions, string>();
 
         }
 
         public User(string userName, string password, string email, DateTime dateOfBirth)
         {
             this.userName = userName;
-            this.password = password;
+            this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
+            password = this.passwordSalt + password;
+            this.password = PRG.Hash.GetHash(password);
             this.dateOfPassLastchange = DateTime.Today;
             this.forum = null;
             this.email = email;
@@ -135,8 +144,22 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.privateMessageNotifications = new List<PrivateMessageNotification>();
             this.emailAccepted = false;
             this.postNotifications = new List<PostNotification>();
+            passwordSecurityQuestions = new Dictionary<SecurityQuestions, string>();
         }
 
+        /// <summary>
+        /// copies username, password, email and passwordSalt
+        /// </summary>
+        /// <param name="usr"></param>
+        public User(User usr)
+        {
+            this.UserName = usr.UserName;
+            this.password = usr.Password;
+            this.Email = usr.Email;
+            this.DateOfBirth = usr.DateOfBirth;
+            this.passwordSalt = usr.passwordSalt;
+            this.passwordSecurityQuestions = usr.passwordSecurityQuestions;
+        }
         public static Dictionary<string, IUser> populateUsers(Forum forum)//Not waiting
         {
             Dictionary<string, IUser> users = new Dictionary<string, IUser>();
@@ -300,10 +323,15 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         }
         public void addToWaitingFriendsList(IUser user)
         {
-            if (isLoggedIn) {
-   //             Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, user);
-            }
             waitingFriendsList.Add(user);
+            if (isLoggedIn) {
+                int postNotificationCount = postNotifications.Count;
+                int privateMessageNotificationsCount = privateMessageNotifications.Count;
+                int waitingFriendsCount = waitingFriendsList.Count;
+                // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
+                Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
+                    "" + postNotificationCount + "," + privateMessageNotifications + "," + waitingFriendsCount);
+            }
         }
         public void removeFromWaitingFriendsList(IUser user)
         {
@@ -350,6 +378,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public bool RegisterToForum(string userName, string password, IForum forum, string email, DateTime dateOfBirth)
         {
+            this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
+            
             if (forum == null)
                 return false;
             if (this.forum == null)
@@ -370,7 +400,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
 
                 this.userName = userName;
-                this.password = password;
+                password = this.passwordSalt + password;
+                this.password = PRG.Hash.GetHash(password);
                 this.dateOfPassLastchange = DateTime.Today;
                 this.forum = forum;
                 this.email = email;
@@ -385,9 +416,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                          return forum.RegisterToForum(this);
                      else
                      {
-                         forum.AddWaitingUser(this);
+                        bool retVal= forum.AddWaitingUser(this);
                          dal_users.changeUserWaitingStatus(this.forum.getName(), this.userName, true);
-                         return true;
+                         return retVal;
                      }
             }
             else
@@ -460,7 +491,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
             set
             {
-                password = value;
+                this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
+                string temp = this.passwordSalt + value;
+                this.password = PRG.Hash.GetHash(temp);
             }
         }
 
@@ -559,25 +592,55 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             { 
                 //                Server.CommunicationLayer.Server.SubscribeClient(this.forum.getName(), this.userName);
                 this.isLoggedIn = true;
-                foreach(PostNotification p in postNotifications)
+
+                this.clientSession = PRG.ClientSessionKeyGenerator.GetUniqueKey();
+                if (postNotifications != null)
                 {
-              //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, p);
+                    foreach (PostNotification p in postNotifications)
+                    {
+                        //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, p);
+                    }
                 }
                 DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
                 dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
                 postNotifications = new List<PostNotification>();
-                foreach (PrivateMessageNotification m in privateMessageNotifications)
+                if (privateMessageNotifications!=null)
                 {
-              //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, m);
+                    foreach (PrivateMessageNotification m in privateMessageNotifications)
+                    {
+                        //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, m);
+                    }
                 }
                 privateMessageNotifications = new List<PrivateMessageNotification>();
-                DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
-                dal_messagesNotification.RemoveAllNotifications(forum.getName(), userName);
 
-                foreach(IUser u in waitingFriendsList)
+                int postNotificationCount = postNotifications.Count;
+
+                /*DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
+                dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
+                postNotifications = new List<PostNotification>();*/
+
+                int privateMessageNotificationsCount = privateMessageNotifications.Count;
+
+               /* privateMessageNotifications = new List<PrivateMessageNotification>();
+
+                DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
+                dal_messagesNotification.RemoveAllNotifications(forum.getName(), userName);*/
+
+                int waitingFriendsCount = waitingFriendsList.Count;
+
+                // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
+                Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
+                    ""+postNotificationCount+","+ privateMessageNotificationsCount + ","+waitingFriendsCount);
+
+
+                if (waitingFriendsList != null)
                 {
-                 Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, u.getUsername());
+                    foreach (IUser u in waitingFriendsList)
+                    {
+                        Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, u.getUsername());
+                    }
                 }
+
             }
 
         }
@@ -586,6 +649,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
 //            Server.CommunicationLayer.Server.UnSubscribeClient(this.userName, this.forum.getName());
             this.isLoggedIn = false;
+            this.clientSession = null;
 
         }
 
@@ -613,22 +677,28 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             PrivateMessageNotification notification = new PrivateMessageNotification(
                 newMessage.sender.getUsername(), newMessage.title, newMessage.content,newMessage.id);
+            DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
+            dal_messagesNotification.AddNotification(newMessage.id);
+            privateMessageNotifications.Add(notification);
+
             if (isLoggedIn)
             {
-            //    Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, notification);
+                int postNotificationCount = postNotifications.Count;
+                int privateMessageNotificationsCount = privateMessageNotifications.Count;
+                int waitingFriendsCount = waitingFriendsList.Count;
+                // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
+                Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
+                    "" + postNotificationCount + "," + privateMessageNotifications + "," + waitingFriendsCount);
             }
-            else
-            {
-                DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
-                dal_messagesNotification.AddNotification(newMessage.id);
-                privateMessageNotifications.Add(notification);
-            }
+
         }
 
         public List<PrivateMessageNotification> GetPrivateMessageNotifications()
         {
             List<PrivateMessageNotification> notifications = this.privateMessageNotifications;
-            //this.privateMessageNotifications = new List<PrivateMessageNotification>();
+            this.privateMessageNotifications = new List<PrivateMessageNotification>();
+            DAL_MessagesNotification dal_messagesNotification = new DAL_MessagesNotification();
+            dal_messagesNotification.RemoveAllNotifications(forum.getName(), userName);
             return notifications;
         }
 
@@ -637,25 +707,33 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             PostNotification notification = new PostNotification(type, post.getPublisher().getForum().getName(),
                 post.getPublisher().getUsername(), post.Thread.GetSubforum().getName(),
                 post.Title, post.Content, post.GetId());
+            DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
+            dal_postNotification.AddNotification(notification.id, (int)type, post.getPublisher().getForum().getName(), userName);
+            postNotifications.Add(notification);
             if (isLoggedIn)
             {
-             //   Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName, notification);
-            }
-            else
-            {
-                DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
-                dal_postNotification.AddNotification(notification.id, (int)type, post.getPublisher().getForum().getName(), userName);
-                postNotifications.Add(notification);
+                int postNotificationCount = postNotifications.Count;
+                int privateMessageNotificationsCount = privateMessageNotifications.Count;
+                int waitingFriendsCount = waitingFriendsList.Count;
+                // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
+                Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
+                    "" + postNotificationCount + "," + privateMessageNotifications + "," + waitingFriendsCount);
             }
         }
 
         public List<PostNotification> GetPostNotifications()
         {
             List<PostNotification> notifications = this.postNotifications;
-            //this.postNotifications = new List<PostNotification>();
+            this.postNotifications = new List<PostNotification>();
+            DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
+            dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
             return notifications;
         }
 
+        public List<IUser> GetWaitingFriendsList()
+        {
+            return this.waitingFriendsList;
+        }
         public List<IUser> GetFriendsList()
         {
             return friends;
@@ -705,8 +783,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public void SetPassword(string password)
         {
-
-            this.password = password;
+            this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
+            password = this.passwordSalt + password;
+            this.password = PRG.Hash.GetHash(password);
             this.dateOfPassLastchange = DateTime.Today;
             if (type is Guest)
             {
@@ -753,6 +832,44 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public bool IgnoreFriend(IUser userToIgnore)
         {
             return type.IgnoreFriend(this,userToIgnore);
+        }
+
+        public string GetSalt()
+        {
+            return this.passwordSalt;
+        }
+
+        /// <summary>
+        /// Add a Security question.
+        /// If question exists, replaces the answer to the given one/
+        /// </summary>
+        /// <param name="question"></param>
+        /// <param name="answer"></param>
+        /// <returns></returns>
+        public bool AddSecurityQuestion(SecurityQuestions question, string answer)
+        {
+            passwordSecurityQuestions[question] = answer.ToUpper();
+            return true;
+        }
+
+        /// <summary>
+        /// Remove a security question if exists.
+        /// </summary>
+        /// <param name="question"></param>
+        /// <returns></returns>
+        public bool RemoveSecurityQuestion(SecurityQuestions question)
+        {
+            if (!passwordSecurityQuestions.ContainsKey(question))
+                return false;
+            passwordSecurityQuestions.Remove(question);
+            return true;
+        }
+
+        public bool CheckSecurityQuestion(SecurityQuestions question, string answer)
+        {
+            if (!passwordSecurityQuestions.ContainsKey(question))
+                return false;
+            return passwordSecurityQuestions[question].ToUpper().Equals(answer.ToUpper());
         }
     }
 

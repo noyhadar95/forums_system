@@ -36,7 +36,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         void DeleteUser(string userName);
 
         IUser GetWaitingUser(string username);
-        void AddWaitingUser(IUser user);
+        bool AddWaitingUser(IUser user);
         Dictionary<string,string> GetAllUsers();
         List<Post> GetPostsByMember(string moderatorName);
         int GetNumOfPostsByUser(string username);

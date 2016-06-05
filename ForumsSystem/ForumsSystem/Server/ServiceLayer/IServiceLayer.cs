@@ -2,6 +2,7 @@
 using ForumsSystem.Server.UserManagement.DomainLayer;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using System.Collections.Generic;
+using ForumsSystem.Server.UserManagement.DomailLayer;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
@@ -21,7 +22,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
         ISubForum CreateSubForum(string creator, string forumName, string subforumName, Dictionary<string, DateTime> moderators);
 
-        bool DeletePost(IUser deleter, Post post);
+       // bool DeletePostHelper(IUser deleter, Post post);
 
         bool InitializeSystem(string username, string pass);
         bool IsInitialized();
@@ -64,7 +65,10 @@ namespace ForumsSystem.Server.ServiceLayer
         bool IsAdmin(string username, string forumName);
         //Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo();
        // int GetNumOfForums();
-        List<PrivateMessageNotification> GetNotifications(string forumName, string username);
+        List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username);
+
+        List<string> GetWaitingFriendsList(string forumName, string username);
+
         int GetNumOfForums(string userName, string password);
 
         Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfoBySuperAdmin(string userName, string password);
@@ -96,5 +100,8 @@ namespace ForumsSystem.Server.ServiceLayer
 
         void SendFriendRequest(string forumName, string sender, string reciever);
         List<string> GetUsersNotFriends(string forumName, string username);
+        bool AddSecurityQuestion(string forumName, string username, SecurityQuestions question, string answer);
+        bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestions question);
+        bool CheckSecurityQuestion(string forumName, string username, SecurityQuestions question, string answer);
     }
 }

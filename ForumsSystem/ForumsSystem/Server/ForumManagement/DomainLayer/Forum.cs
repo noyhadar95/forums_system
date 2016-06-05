@@ -154,12 +154,17 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public IUser Login(string userName, string password)
         {
+            
             if (users.ContainsKey(userName))
             {
-                Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
+                //TODO: remove the comments
+                password = users[userName].GetSalt()+password;
+                password = PRG.Hash.GetHash(password);
+                
                 if (users[userName].getPassword().Equals(password))
                 {
                     users[userName].Login();
+                    Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
                     return users[userName];
 
                 }
@@ -298,9 +303,12 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return null;
         }
 
-        public void AddWaitingUser(IUser user)
+        public bool AddWaitingUser(IUser user)
         {
+            if (waiting_users.ContainsKey(user.getUsername()))
+                return false;
             waiting_users.Add(user.getUsername(), user);
+            return true;
         }
 
         public Dictionary<string, string> GetAllUsers()

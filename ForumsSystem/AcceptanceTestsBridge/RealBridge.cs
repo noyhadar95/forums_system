@@ -186,7 +186,7 @@ namespace AcceptanceTestsBridge
             ISubForum subForum = forum.getSubForum(subForumName);
             Thread thread = subForum.GetThreadById(threadID);
             Post post = thread.GetPostById(postID);
-            return sl.DeletePost(user, post);
+            return sl.DeletePost(forumName, subForumName, deleter, threadID, postID);
         }
 
         #endregion
@@ -496,7 +496,7 @@ namespace AcceptanceTestsBridge
 
         public List<string> GetNotifications(string forumName, string username)
         {
-            List<PrivateMessageNotification> notif = sl.GetNotifications(forumName, username);
+            List<PrivateMessageNotification> notif = sl.GetPrivateMessageNotifications(forumName, username);
             List<string> res = new List<string>();
             if (notif == null)
                 return res;

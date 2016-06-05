@@ -52,7 +52,10 @@ namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
         private bool isLoggedIn;
         [IgnoreDataMember]
         private bool emailAccepted;
-
+        [IgnoreDataMember]
+        private string clientSession;
+        [DataMember]
+        private string passwordSalt;
 
         #region Gettes/Setters
 

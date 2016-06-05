@@ -12,6 +12,15 @@ namespace ForumsSystemClient.CommunicationLayer
     {
 
         bool serverWorks = false;
+        public CL()
+        {
+            StartSecuredConnection();
+        }
+
+        private void StartSecuredConnection()
+        {
+            Client.StartSecuredConnection();  
+        }
 
         public List<string> GetForumsList()
         {
@@ -68,9 +77,20 @@ namespace ForumsSystemClient.CommunicationLayer
             return res;
         }
 
-        public User MemberLogin(string forumName, string username, string password)
+        public Tuple<User,string> MemberLogin(string forumName, string username, string password)
         {
-            User res = (User)Client.SendRequest("MemberLogin", username, password,forumName);
+            return MemberLogin(forumName, username, password, "");
+        }
+        public Tuple<User, string> MemberLogin(string forumName, string username, string password, string sessionToken)
+        {
+            if (sessionToken == null)
+                sessionToken = "";
+            User user = (User)Client.SendRequest("MemberLogin", username, password,forumName, sessionToken);
+            string sessionKey = null;
+            if (user != null)
+                sessionKey = (string)Client.SendRequest("GetSessionKey", username, forumName);
+            else return null;
+            Tuple<User, string> res = new Tuple<User, string>(user, sessionKey);
             return res;
         }
 
@@ -323,6 +343,29 @@ namespace ForumsSystemClient.CommunicationLayer
         public List<string> GetUsersNotFriends(string forumName, string username)
         {
             return (List<string>)Client.SendRequest("GetUsersNotFriends", forumName, username);
+        }
+
+        public List<string> GetFriendRequests(string forumName, string username)
+        {            
+            return (List<string>)Client.SendRequest("GetWaitingFriendsList", forumName, username);
+        }
+
+        public bool AddSecurityQuestion(string forumName, string username, SecurityQuestions question, string answer)
+        {
+            return (bool)Client.SendRequest("AddSecurityQuestion", forumName, username,question,answer);
+
+        }
+
+        public bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestions question)
+        {
+            return (bool)Client.SendRequest("RemoveSecurityQuestion", forumName, username, question);
+
+        }
+
+        public bool CheckSecurityQuestion(string forumName, string username, SecurityQuestions question, string answer)
+        {
+            return (bool)Client.SendRequest("CheckSecurityQuestion", forumName, username, question, answer);
+
         }
     }
 }
