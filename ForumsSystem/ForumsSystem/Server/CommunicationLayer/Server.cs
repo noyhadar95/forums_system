@@ -177,6 +177,14 @@ namespace ForumsSystem.Server.CommunicationLayer
                 parameters.Add(StringToObject(items[i], items[i + 1]));
             }
 
+
+            if (method.Equals("GetSessionKey"))
+            {
+                SendSessionKey(client,clientId, (string)parameters.ElementAt(0),(string)parameters.ElementAt(1));
+                return;
+            }
+
+
            
             if (method.Equals("MemberLogin")){//check if login then Halfsubscribe
                 string username = (string)parameters.ElementAt(0);
@@ -209,6 +217,8 @@ namespace ForumsSystem.Server.CommunicationLayer
                 }
                 else
                 {
+                    //TODO: check if user exists. if exists return null because he didnt provide session key
+
                     //new client - create session:
                     Tuple<string, List<string>> newSession = new Tuple<string, List<string>>(PRG.ClientSessionKeyGenerator.GetUniqueKey(), new List<string>());
                     string clientIP = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
@@ -227,9 +237,9 @@ namespace ForumsSystem.Server.CommunicationLayer
             }
             if (method.Equals("MemberLogout"))
             {
-                string username = (string)parameters.ElementAt(0);
+                string username = (string)parameters.ElementAt(1);
                // Forum f = (Forum)parameters.ElementAt(2);
-                string forumName = (string) parameters.ElementAt(1);
+                string forumName = (string) parameters.ElementAt(0);
                 RemoveClientFromSession(client, username, forumName);
                 UnSubscribeClient(forumName, username);
             }
@@ -252,9 +262,10 @@ namespace ForumsSystem.Server.CommunicationLayer
                 {
                     SubscribeClient(forumName, username);
                     //update session key in return object:
-                    Tuple<Object, string> tokenRetObj = new Tuple<object, string>(returnObj,
-                        clientSessions[new Tuple<string, string>(forumName, username)].Item1);
-                    returnObj = tokenRetObj;
+                 //   List<Object> tokenRetObj = new List<Object>();
+                 //   tokenRetObj.Add(returnObj);
+                 //   tokenRetObj.Add(clientSessions[new Tuple<string, string>(forumName, username)].Item1);
+                 //  returnObj = tokenRetObj;
                 }
                 
                 //HalfSubscribeClient(client, forumName, username);
@@ -435,6 +446,25 @@ namespace ForumsSystem.Server.CommunicationLayer
                 DataContractSerializer deserializer = new DataContractSerializer(toType);
                 return deserializer.ReadObject(stream);
             }
+        }
+
+        private static void SendSessionKey(TcpClient client, int clientId, string username,string forumName)
+        {
+            Object returnObj= clientSessions[new Tuple<string, string>(forumName, username)].Item1;
+
+            string pType = returnObj.GetType().ToString();
+            // if(!pType.StartsWith("System."))
+            //   pType = pType.Substring(pType.LastIndexOf('.') + 1);
+
+            string returnValue = pType + delimeter + ObjectToString(returnObj);
+
+            returnValue = Encrypt(clientId, returnValue);
+            //---write back the text to the client---
+            Console.WriteLine("Sending back : " + returnValue);
+            NetworkStream nwStream = client.GetStream();
+            byte[] buf = GetBytes(returnValue);
+            nwStream.Write(buf, 0, buf.Length);
+            client.Close();
         }
 
     }

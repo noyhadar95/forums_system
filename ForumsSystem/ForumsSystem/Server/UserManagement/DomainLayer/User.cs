@@ -7,7 +7,7 @@ using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 using System.Data;
 using System.Runtime.Serialization;
-
+using ForumsSystem.Server.UserManagement.DomailLayer;
 
 namespace ForumsSystem.Server.UserManagement.DomainLayer
 {
@@ -56,10 +56,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private bool emailAccepted;
         private DAL_Users dal_users = new DAL_Users();
         private DateTime dateOfPassLastchange;
-        private string passwordSalt;
         [DataMember]
+        private string passwordSalt;
+        [IgnoreDataMember]
         private string clientSession=null;
-
+        private Dictionary<SecurityQuestions, string> passwordSecurityQuestions;
         public User()
         {
             this.userName = "";
@@ -116,7 +117,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.privateMessageNotifications = new List<PrivateMessageNotification>();
             this.emailAccepted = false;
             this.postNotifications = new List<PostNotification>();
-            
+            passwordSecurityQuestions = new Dictionary<SecurityQuestions, string>();
 
         }
 
@@ -143,6 +144,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.privateMessageNotifications = new List<PrivateMessageNotification>();
             this.emailAccepted = false;
             this.postNotifications = new List<PostNotification>();
+            passwordSecurityQuestions = new Dictionary<SecurityQuestions, string>();
         }
 
         /// <summary>
@@ -156,6 +158,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.Email = usr.Email;
             this.DateOfBirth = usr.DateOfBirth;
             this.passwordSalt = usr.passwordSalt;
+            this.passwordSecurityQuestions = usr.passwordSecurityQuestions;
         }
         public static Dictionary<string, IUser> populateUsers(Forum forum)//Not waiting
         {
@@ -410,9 +413,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                          return forum.RegisterToForum(this);
                      else
                      {
-                         forum.AddWaitingUser(this);
+                        bool retVal= forum.AddWaitingUser(this);
                          dal_users.changeUserWaitingStatus(this.forum.getName(), this.userName, true);
-                         return true;
+                         return retVal;
                      }
             }
             else
@@ -831,6 +834,39 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public string GetSalt()
         {
             return this.passwordSalt;
+        }
+
+        /// <summary>
+        /// Add a Security question.
+        /// If question exists, replaces the answer to the given one/
+        /// </summary>
+        /// <param name="question"></param>
+        /// <param name="answer"></param>
+        /// <returns></returns>
+        public bool AddSecurityQuestion(SecurityQuestions question, string answer)
+        {
+            passwordSecurityQuestions[question] = answer.ToUpper();
+            return true;
+        }
+
+        /// <summary>
+        /// Remove a security question if exists.
+        /// </summary>
+        /// <param name="question"></param>
+        /// <returns></returns>
+        public bool RemoveSecurityQuestion(SecurityQuestions question)
+        {
+            if (!passwordSecurityQuestions.ContainsKey(question))
+                return false;
+            passwordSecurityQuestions.Remove(question);
+            return true;
+        }
+
+        public bool CheckSecurityQuestion(SecurityQuestions question, string answer)
+        {
+            if (!passwordSecurityQuestions.ContainsKey(question))
+                return false;
+            return passwordSecurityQuestions[question].ToUpper().Equals(answer.ToUpper());
         }
     }
 

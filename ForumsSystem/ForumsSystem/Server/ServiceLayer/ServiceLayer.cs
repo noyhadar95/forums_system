@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
+using ForumsSystem.Server.UserManagement.DomailLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
 
 namespace ForumsSystem.Server.ServiceLayer
@@ -562,5 +563,25 @@ namespace ForumsSystem.Server.ServiceLayer
             return users;
         }
 
+        public bool AddSecurityQuestion(string forumName, string username, SecurityQuestions question, string answer)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            return user.AddSecurityQuestion(question, answer);
+        }
+
+        public bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestions question)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            return user.RemoveSecurityQuestion(question);
+        }
+
+        public bool CheckSecurityQuestion(string forumName, string username, SecurityQuestions question, string answer)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            return user.CheckSecurityQuestion(question,answer);
+        }
     }
 }

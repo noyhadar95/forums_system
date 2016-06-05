@@ -85,7 +85,12 @@ namespace ForumsSystemClient.CommunicationLayer
         {
             if (sessionToken == null)
                 sessionToken = "";
-            Tuple<User, string> res = (Tuple<User, string>)Client.SendRequest("MemberLogin", username, password,forumName, sessionToken);
+            User user = (User)Client.SendRequest("MemberLogin", username, password,forumName, sessionToken);
+            string sessionKey = null;
+            if (user != null)
+                sessionKey = (string)Client.SendRequest("GetSessionKey", username, forumName);
+            else return null;
+            Tuple<User, string> res = new Tuple<User, string>(user, sessionKey);
             return res;
         }
 
@@ -343,6 +348,24 @@ namespace ForumsSystemClient.CommunicationLayer
         public List<string> GetFriendRequests(string forumName, string username)
         {            
             return (List<string>)Client.SendRequest("GetWaitingFriendsList", forumName, username);
+        }
+
+        public bool AddSecurityQuestion(string forumName, string username, SecurityQuestions question, string answer)
+        {
+            return (bool)Client.SendRequest("AddSecurityQuestion", forumName, username,question,answer);
+
+        }
+
+        public bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestions question)
+        {
+            return (bool)Client.SendRequest("RemoveSecurityQuestion", forumName, username, question);
+
+        }
+
+        public bool CheckSecurityQuestion(string forumName, string username, SecurityQuestions question, string answer)
+        {
+            return (bool)Client.SendRequest("CheckSecurityQuestion", forumName, username, question, answer);
+
         }
     }
 }

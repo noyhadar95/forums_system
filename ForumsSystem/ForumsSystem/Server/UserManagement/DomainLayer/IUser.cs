@@ -1,4 +1,5 @@
 ﻿using ForumsSystem.Server.ForumManagement.DomainLayer;
+using ForumsSystem.Server.UserManagement.DomailLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         Thread createThread(ISubForum subForum, string title, string content);
         bool editPost(string title, string content, Post post);
         bool deletePost(Post post);
-        void AddPostNotification(Post post,NotificationType type);
+        void AddPostNotification(Post post, NotificationType type);
         List<PostNotification> GetPostNotifications();
 
         ISubForum createSubForum(string subForumName, Dictionary<string, DateTime> users);
@@ -31,7 +32,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         bool isInFriendsList(IUser user);
         void addToWaitingFriendsList(IUser user);
         void addToFriendsList(IUser user);
-        
+
         void removeFromFriendList(IUser user);
         void addFriend(IUser friend);
         bool removeFriend(IUser friendToRemove);
@@ -69,13 +70,13 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         bool SetForum(IForum forum);
 
-   
+
         List<Post> ReportPostsByMember(string memberUserName);
 
         int ReportNumOfPostsByMember(string memberUserName);
 
         List<string> GetModeratorsList(ISubForum subforum);
-    
+
 
 
         void SetPassword(string password);
@@ -94,7 +95,14 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
 
         List<IUser> GetWaitingFriendsList();
-        }
+
+
+
+        bool AddSecurityQuestion(SecurityQuestions question, string answer);
+        bool RemoveSecurityQuestion(SecurityQuestions question);
+        bool CheckSecurityQuestion(SecurityQuestions question, string answer);
+
+    }
 
 
 }

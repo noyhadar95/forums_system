@@ -106,6 +106,7 @@
     <Compile Include="Server\PRG\PasswordSaltGenerator.cs" />
     <Compile Include="Server\ServiceLayer\IServiceLayer.cs" />
     <Compile Include="Server\ServiceLayer\ServiceLayer.cs" />
+    <Compile Include="Server\UserManagement\DomainLayer\SecurityQuestions.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\Admin.cs" />
     <Compile Include="Server\UserManagement\DomainLayer\Guest.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\MaxModeratorsPolicy.cs" />
