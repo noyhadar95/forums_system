@@ -288,7 +288,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 List<IUser> users = forum.getUsersInForum();
                 foreach(IUser u in users)
                 {
-                    u.AddPostNotification(reply, NotificationType.Posted);
+                    if(!u.getUsername().Equals(callingUser.getUsername()))
+                        u.AddPostNotification(reply, NotificationType.Posted);
                 }
                 return reply;
             }
@@ -345,6 +346,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             {
                 p.getPublisher().AddPostNotification(post, NotificationType.Changed);
             }
+            if(!post.Thread.GetOpeningPost().getPublisher().getUsername().Equals(callingUser.getUsername()))
+            post.Thread.GetOpeningPost().getPublisher().AddPostNotification(post, NotificationType.Changed);
+
             return true;
         }
 

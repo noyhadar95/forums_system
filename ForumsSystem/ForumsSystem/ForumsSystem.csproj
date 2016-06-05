@@ -63,6 +63,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="A.cs" />
+    <Compile Include="B.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="Server\Encryption\AESThenHMAC.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\Connect.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_ActivityLog.cs" />
+    <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Answer.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Connection.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_ErrorLogs.cs" />
     <Compile Include="Server\ForumManagement\Data Access Layer\DAL_Forum.cs" />

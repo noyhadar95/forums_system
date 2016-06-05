@@ -22,7 +22,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
                 "','"+userName+"', '" + password + "', '" + email +
                 "',#" + dateJoined.ToShortDateString() +
                 "#, #" + DateOfBirth.ToShortDateString() + "#, " + numOfComplaints + 
-                ", " + (int)type + ","+false+" ,#" + dateLastPasswordChanged + "#, " + passwordSalt+")";
+                ", " + (int)type + ","+false+" ,#" + dateLastPasswordChanged + "#, '" + passwordSalt+"')";
 
             connect_me.TakeAction(sql);
         }
@@ -58,12 +58,12 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             return connect_me.DownloadData(sql, "Users");
         }
 
-        public void editUser(string ForumName, string userName, string password, string email, DateTime dateJoined, DateTime DateOfBirth, int numOfComplaints, UserType.UserTypes type, DateTime dateLastPasswordChanged)
+        public void editUser(string ForumName, string userName, string password, string email, DateTime dateJoined, DateTime DateOfBirth, int numOfComplaints, UserType.UserTypes type, DateTime dateLastPasswordChanged, string passwordSalt)
         {
             Connect_to_DB();
             OleDbCommand sql = new OleDbCommand();
 
-            sql.CommandText = "Update Users Set [password]='" + password + "', [email]='" + email + "', [DateJoined]=#"+ dateJoined.ToShortDateString() + "#, [DateOfBirth]=#" + DateOfBirth.ToShortDateString() + "#, [Complaints]=" + numOfComplaints + ", [Type]="+ (int)type + ", [DateLastPasswordChanged]=#"+ dateLastPasswordChanged+"# Where [ForumName]='" + ForumName +"' AND [UserName]='" + userName +"'";
+            sql.CommandText = "Update Users Set [password]='" + password + "', [email]='" + email + "', [DateJoined]=#"+ dateJoined.ToShortDateString() + "#, [DateOfBirth]=#" + DateOfBirth.ToShortDateString() + "#, [Complaints]=" + numOfComplaints + ", [Type]="+ (int)type + ", [DateLastPasswordChanged]=#"+ dateLastPasswordChanged+"#, [PasswordSalt]='" + passwordSalt + "' Where [ForumName]='" + ForumName +"' AND [UserName]='" + userName +"'";
 
 
 

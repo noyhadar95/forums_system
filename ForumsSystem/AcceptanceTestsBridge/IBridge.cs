@@ -99,8 +99,8 @@ namespace AcceptanceTestsBridge
  
         List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1);
 
-        string getUserClientServer(string forumName, string userName);
-        bool LoginUserWithClientServer(string forumName, string username, string pass, string clientServer);
+        string getUserClientSession(string forumName, string userName);
+        bool LoginUserWithClientSession(string forumName, string username, string pass, string clientServer);
 
     }
 }

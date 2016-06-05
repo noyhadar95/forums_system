@@ -41,7 +41,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         public DataTable GetAnswers(string forumName, string userName)
         {
             Connect_to_DB();
-            string sql = "Select * From Answers WHERE ForumName='" + forumName+"' AND UserName='" + userName+ "'";
+            string sql = "Select * From Answers WHERE ForumName='" + forumName + "' AND UserName='" + userName + "'";
             return connect_me.DownloadData(sql, "Answers");
         }
 
@@ -56,7 +56,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         {
             Connect_to_DB();
             OleDbCommand sql = new OleDbCommand();
-            sql.CommandText = "Delete From [Answers] Where [ForumName]='" + forumName + "' AND [UserName]='" + userName + "' AND [QuestionNum]="+questionNum;
+            sql.CommandText = "Delete From [Answers] Where [ForumName]='" + forumName + "' AND [UserName]='" + userName + "' AND [QuestionNum]=" + questionNum;
 
             connect_me.TakeAction(sql);
             sql = null;
@@ -81,6 +81,6 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
     }
 
+}
 
-}
-}
+

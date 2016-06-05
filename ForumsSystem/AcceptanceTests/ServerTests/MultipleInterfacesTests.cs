@@ -14,6 +14,7 @@ namespace AcceptanceTests.ServerTests
             : base()
         {
             guiBridge = new ClientBridge();
+            webBridge = new ClientBridge();//TODO: chabge this!!!
         }
 
 

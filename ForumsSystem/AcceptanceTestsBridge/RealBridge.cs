@@ -530,5 +530,15 @@ namespace AcceptanceTestsBridge
         {
             sl.MemberLogout(forumName, username);
         }
+
+        public string getUserClientSession(string forumName, string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool LoginUserWithClientSession(string forumName, string username, string pass, string clientServer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

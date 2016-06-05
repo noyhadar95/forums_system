@@ -64,8 +64,8 @@ namespace AcceptanceTests.ServerTests
             
             Assert.IsTrue(res);
 
-            string clientServer = bridge.getUserClientServer(forumName, username);
-            res = bridge.LoginUserWithClientServer(forumName, username, pass, clientServer);
+            string clientServer = bridge.getUserClientSession(forumName, username);
+            res = bridge.LoginUserWithClientSession(forumName, username, pass, clientServer);
 
             Assert.IsTrue(res);
             // cleanup
@@ -87,8 +87,8 @@ namespace AcceptanceTests.ServerTests
 
             Assert.IsTrue(res);
 
-            string clientServer = bridge.getUserClientServer(forumName, username);
-            res = bridge.LoginUserWithClientServer(forumName, username, pass, clientServer +"bad");
+            string clientServer = bridge.getUserClientSession(forumName, username);
+            res = bridge.LoginUserWithClientSession(forumName, username, pass, clientServer +"bad");
 
             Assert.IsFalse(res);
             // cleanup

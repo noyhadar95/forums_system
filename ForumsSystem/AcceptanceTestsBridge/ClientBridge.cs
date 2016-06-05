@@ -462,10 +462,20 @@ namespace AcceptanceTestsBridge
 
         public void LogoutUser(string forumName, string username)
         {
-            throw new NotImplementedException();
+            cl.MemberLogout(forumName, username);
         }
 
         public List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string getUserClientSession(string forumName, string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool LoginUserWithClientSession(string forumName, string username, string pass, string clientServer)
         {
             throw new NotImplementedException();
         }
