@@ -25,7 +25,7 @@ namespace ForumsSystem.Server.CommunicationLayer
 
         private static Dictionary<Tuple<string, string>, string> clients; //<Forum,Username> Ip address
         private static Dictionary<int,Client> clientsDetails = new Dictionary<int, Client>();
-        private static Dictionary<Tuple<string, string>, Tuple<string, List<string>>> clientSessions = new Dictionary<Tuple<string, string>, Tuple<string, List<string>>>();//session token, list of logged in users
+        private static Dictionary<Tuple<string, string>, Tuple<string, int>> clientSessions = new Dictionary<Tuple<string, string>, Tuple<string, int>>();//session token, list of logged in users
 
         public static void StartServer()
         {
@@ -206,7 +206,6 @@ namespace ForumsSystem.Server.CommunicationLayer
                 string clientSession=null;
                 if ( parameters.ElementAt(3) != null && (string)parameters.ElementAt(3) != "")
                 {
-                    
                     clientSession = (string)parameters.ElementAt(3);
                     string realSession;
                     if (clientSessions.ContainsKey(new Tuple<string, string>(forumName, username)))
@@ -246,17 +245,14 @@ namespace ForumsSystem.Server.CommunicationLayer
                     }
 
                     //new client - create session:
-                    Tuple<string, List<string>> newSession = new Tuple<string, List<string>>(PRG.ClientSessionKeyGenerator.GetUniqueKey(), new List<string>());
-                    string clientIP = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
-                    newSession.Item2.Add(clientIP);
+                    Tuple<string, int> newSession = new Tuple<string,int>(PRG.ClientSessionKeyGenerator.GetUniqueKey(), 0);
                     clientSessions[new Tuple<string, string>(forumName, username)] = newSession;
                 }
                 //client session is correct:
                 //add to current session:
-                List<string> cliSession = clientSessions[new Tuple<string, string>(forumName, username)].Item2;
-                string ip = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
-                if (!cliSession.Contains(ip))
-                    cliSession.Add(ip);
+                clientSessions[new Tuple<string, string>(forumName, username)] =new Tuple<string, int>(
+                    clientSessions[new Tuple<string, string>(forumName, username)].Item1,
+                    clientSessions[new Tuple<string, string>(forumName, username)].Item2+1);
 
                 parameters.RemoveAt(3);//no longer need the client session
                 HalfSubscribeClient(client, forumName, username);
@@ -328,18 +324,18 @@ namespace ForumsSystem.Server.CommunicationLayer
 
         private static void RemoveClientFromSession(TcpClient client, string username, string forumName)
         {
-            List<string> cliSession = clientSessions[new Tuple<string, string>(forumName, username)].Item2;
-            string ip = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
-            if (cliSession.Contains(ip))
-                cliSession.Remove(ip);
+            clientSessions[new Tuple<string, string>(forumName, username)] = new Tuple<string, int>(
+                    clientSessions[new Tuple<string, string>(forumName, username)].Item1,
+                    clientSessions[new Tuple<string, string>(forumName, username)].Item2 - 1);
+            int cliSession = clientSessions[new Tuple<string, string>(forumName, username)].Item2;
+
             //if clisession empty:
-            if (cliSession.Count == 0)
+            if (cliSession == 0)
             {
                 //remove session:
-                Tuple<string, List<string>> newSession = new Tuple<string, List<string>>("", new List<string>());
-                string clientIP = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
-                newSession.Item2.Add(clientIP);
-                clientSessions[new Tuple<string, string>(forumName, username)] = newSession;
+                clientSessions.Remove(new Tuple<string, string>(forumName, username));
+               // Tuple<string,int> newSession = new Tuple<string,int>("", 0);
+               // clientSessions[new Tuple<string, string>(forumName, username)] = newSession;
             }
         }
 
