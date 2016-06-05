@@ -69,6 +69,7 @@ namespace AcceptanceTests.ServerTests
 
             Assert.IsTrue(res);
             // cleanup
+            base.Cleanup(forumName) ;
         }
 
         // test - the success scenario where the user is registered to a forum in the system but 
