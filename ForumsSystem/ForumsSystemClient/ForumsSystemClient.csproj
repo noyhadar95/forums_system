@@ -64,6 +64,7 @@
     <Compile Include="CommunicationLayer\Client.cs" />
     <Compile Include="CommunicationLayer\Encryption\AESThenHMAC.cs" />
     <Compile Include="CommunicationLayer\ICL.cs" />
+    <Compile Include="CommunicationLayer\TcpListenerEx.cs" />
     <Compile Include="PresentationLayer\AddAdminWindow.xaml.cs">
       <DependentUpon>AddAdminWindow.xaml</DependentUpon>
     </Compile>

@@ -59,54 +59,66 @@ namespace ForumsSystemClient.CommunicationLayer
             string myIp = GetLocalIPAddress();
             //---listen at the specified IP and port no.---
             IPAddress localAdd = IPAddress.Parse(myIp);
-            TcpListener listener = new TcpListener(localAdd, CLIENT_PORT_NO);
+            TcpListenerEx listener = new TcpListenerEx(localAdd, CLIENT_PORT_NO);
 
             if (!listenerStarted)
             {
                 listenerStarted = true;
-                listener.Start();
+                // if(!listener.Active)
+
 
                 while (true)
                 {
-                    Console.WriteLine("Listening...");
-                    //---incoming client connected---
-                    TcpClient client = listener.AcceptTcpClient();
-
-
-
-                    //---get the incoming data through a network stream---
-                    NetworkStream nwStream = client.GetStream();
-                    byte[] buffer = new byte[client.ReceiveBufferSize];
-
-                    //---read incoming stream---
-                    int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
-
-                    //---convert the data received into a string---
-                    string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                    string[] seperators = new string[] { delimeter };
-                    string[] items = dataReceived.Split(seperators, StringSplitOptions.None);
-
-                    //TODO: MAKE THIS WORK ---------------------
-                    List<Object> parameters = new List<object>();
-
-                    for (int i = 0; i < items.Length; i += 2)
+                    try
                     {
-                        parameters.Add(StringToObject(items[i], items[i + 1]));
+                        listener.Start();
+                        Console.WriteLine("Listening...");
+                        //---incoming client connected---
+                        TcpClient client = listener.AcceptTcpClient();
+
+
+
+                        //---get the incoming data through a network stream---
+                        NetworkStream nwStream = client.GetStream();
+                        byte[] buffer = new byte[client.ReceiveBufferSize];
+
+                        //---read incoming stream---
+                        int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
+
+                        //---convert the data received into a string---
+                        string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                        string[] seperators = new string[] { delimeter };
+                        string[] items = dataReceived.Split(seperators, StringSplitOptions.None);
+
+                        //TODO: MAKE THIS WORK ---------------------
+                        List<Object> parameters = new List<object>();
+
+                        for (int i = 0; i < items.Length; i += 2)
+                        {
+                            parameters.Add(StringToObject(items[i], items[i + 1]));
+                        }
+
+                        Console.WriteLine("Received : " + dataReceived);
+
+                        if (parameters[0] is string)
+                        {
+                            // friend request
+                            WindowHelper.NotifyFriendRequest();
+                        }
+                        else
+                        {
+                        }
+                        //TODO: Handle notification------------------
+
                     }
 
-                    Console.WriteLine("Received : " + dataReceived);
-
-                    if (parameters[0] is string)
+                    catch (SocketException se)
                     {
-                        // friend request
-                        WindowHelper.NotifyFriendRequest();
+                        if (se.ErrorCode != 10048)
+                            throw (se);
                     }
-                    else
-                    {
-                    }
-                    //TODO: Handle notification------------------
-
                 }
+
             }
             //  listener.Stop   
         }

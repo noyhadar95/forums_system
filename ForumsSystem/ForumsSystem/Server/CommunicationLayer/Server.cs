@@ -217,7 +217,20 @@ namespace ForumsSystem.Server.CommunicationLayer
                 }
                 else
                 {
-                    //TODO: check if user exists. if exists return null because he didnt provide session key
+                    //check if user exists. if exists return null because he didnt provide session key
+                    if(clientSessions.ContainsKey(new Tuple<string, string>(forumName, username)))
+                    {
+                        string returnValue = "null";
+                        returnValue = Encrypt(clientId, returnValue);
+
+                        //---write back the text to the client---
+                        Console.WriteLine("Sending back : " + returnValue);
+                        NetworkStream nwStream = client.GetStream();
+                        byte[] buf = GetBytes(returnValue);
+                        nwStream.Write(buf, 0, buf.Length);
+                        client.Close();
+                        return;
+                    }
 
                     //new client - create session:
                     Tuple<string, List<string>> newSession = new Tuple<string, List<string>>(PRG.ClientSessionKeyGenerator.GetUniqueKey(), new List<string>());
