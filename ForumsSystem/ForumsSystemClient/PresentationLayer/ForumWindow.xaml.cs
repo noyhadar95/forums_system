@@ -278,10 +278,12 @@ namespace ForumsSystemClient.PresentationLayer
                                                     "Confirmation", MessageBoxButton.YesNoCancel);
             if (result == MessageBoxResult.Yes)
             {
-
+                MenuItem mi = sender as MenuItem;
+                string requestSender = (string)mi.Header;
+                MessageBox.Show("loggedUsername = " + loggedUsername + "\nrequestSender = " + requestSender);
                 // accept friend request
-                cl.AcceptFriendRequest(forumName, loggedUsername, );
-                
+                cl.AcceptFriendRequest(forumName, loggedUsername, requestSender);
+
             }
             else if (result == MessageBoxResult.No)
             {
