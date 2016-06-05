@@ -97,6 +97,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void IniFriendReqsMenu(string username)
         {
+            friendRequestsMenu.Items.Clear();
             friendRequestsMenu.Header = WindowHelper.GetFriendReqMenuHeader();
             List<string> cl_friendReqs = cl.GetFriendRequests(forumName, username);
             List<MenuItem> menuItems = new List<MenuItem>();
@@ -120,7 +121,7 @@ namespace ForumsSystemClient.PresentationLayer
             {
                 friendRequestsMenu.Items.Clear();
             }));
-            
+
             IniFriendReqsMenu(loggedUsername);
             userMenuBar.Items.Refresh();
         }
@@ -243,7 +244,7 @@ namespace ForumsSystemClient.PresentationLayer
             //{
             //    userTokenTuple = cl.MemberLogin(forumName, username, password, sessionToken);
             //}
-             User user= cl.MemberLogin(forumName, username, password);
+            User user = cl.MemberLogin(forumName, username, password);
 
             if (user == null)
             {
@@ -262,12 +263,11 @@ namespace ForumsSystemClient.PresentationLayer
 
                 // user is logged in, get type of user and change window accordingly.
                 string type = cl.GetUserType(forumName, username);
+                MessageBox.Show(type);
                 if (type == UserTypes.Member)
                     ShowMemberViewMode(user.Username);
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
-
-                IniNotificationsBar(user.Username);
 
             }
         }
@@ -278,8 +278,10 @@ namespace ForumsSystemClient.PresentationLayer
                                                     "Confirmation", MessageBoxButton.YesNoCancel);
             if (result == MessageBoxResult.Yes)
             {
-                // accept friend request
 
+                // accept friend request
+                cl.AcceptFriendRequest(forumName, loggedUsername, );
+                
             }
             else if (result == MessageBoxResult.No)
             {

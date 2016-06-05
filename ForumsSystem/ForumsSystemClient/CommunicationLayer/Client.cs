@@ -90,14 +90,27 @@ namespace ForumsSystemClient.CommunicationLayer
 
                 Console.WriteLine("Received : " + dataReceived);
 
+                // Handle notification------------------
                 if (parameters[0] is string)
                 {
-                    // friend request
-                    WindowHelper.NotifyFriendRequest();
+                    string[] notifArr = ((string)parameters[0]).Split(',');
+                    try
+                    {
+                        if (int.Parse(notifArr[2]) > 0)
+                        {
+                            // notify about friend request/s
+                            WindowHelper.NotifyFriendRequest();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        return;
+                    }
+
+
                 }
                 else {
                 }
-                //TODO: Handle notification------------------
 
             }
             //  listener.Stop   
