@@ -22,29 +22,24 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for ForumWindow.xaml
     /// </summary>
-    public partial class ForumWindow : Window, INotifiableWindow
+    public partial class ForumWindow : NotifBarWindow, INotifiableWindow
     {
 
-        private CL cl;
-        private string forumName;
-        private string loggedUsername;
         private string badLoginMsg = "your username/password are incorrect";
-        private ObservableCollection<MenuItem> friendRequestsOC;
-        private MenuItem mi_type;
 
-        public ForumWindow(string forumName)
+        public ForumWindow(string forumName) : base()
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
-
             // initialize fields
             this.forumName = forumName;
             Title = forumName;
             loggedUsername = "";
             cl = new CL();
-            friendRequestsOC = new ObservableCollection<MenuItem>();
-            mi_type = new MenuItem();
+
+            base.Initialize(dockPanel);
+
 
             // initialize sub-forums list
             List<string> items = cl.GetSubForumsList(forumName);
@@ -84,39 +79,19 @@ namespace ForumsSystemClient.PresentationLayer
 
         }
 
-        private void IniNotificationsBar(string username)
-        {
-            string type = cl.GetUserType(forumName, username);
-            mi_type.Header = "logged in as " + type;
-            if (userMenuBar.Items.Count < 2)
-                userMenuBar.Items.Add(mi_type);
+        #region User Notifications Bar
 
-            // initialize friend requests menu bar
-            IniFriendReqsMenu(username);
-        }
 
-        private void IniFriendReqsMenu(string username)
-        {
-            friendRequestsMenu.Items.Clear();
-            friendRequestsMenu.Header = WindowHelper.GetFriendReqMenuHeader();
-            List<string> cl_friendReqs = cl.GetFriendRequests(forumName, username);
-            List<MenuItem> menuItems = new List<MenuItem>();
-            foreach (string str in cl_friendReqs)
-            {
-                MenuItem mi = new MenuItem();
-                mi.Header = str;
-                mi.Click += new RoutedEventHandler(friendReqsMenu_Click);
-                menuItems.Add(mi);
-                //friendRequestsOC.Add(mi);
-                friendRequestsMenu.Items.Add(mi);
-            }
-            //friendRequestsMenu.ItemsSource = friendRequestsOC;
-        }
+
+
+
+        #endregion
+
+
 
         public void Notify()
         {
             MessageBox.Show("Got here!! ");
-            //friendRequestsOC.Clear();
             System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
             {
                 friendRequestsMenu.Items.Clear();
@@ -183,7 +158,6 @@ namespace ForumsSystemClient.PresentationLayer
 
             // hide and clear user menu bar
             userMenuBar.Visibility = Visibility.Hidden;
-            //friendRequestsOC.Clear();
             friendRequestsMenu.Items.Clear();
             userMenuBar.Items.Refresh();
         }
@@ -269,31 +243,6 @@ namespace ForumsSystemClient.PresentationLayer
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
 
-            }
-        }
-
-        private void friendReqsMenu_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("Do you accept the friend request?",
-                                                    "Confirmation", MessageBoxButton.YesNoCancel);
-            if (result == MessageBoxResult.Yes)
-            {
-                MenuItem mi = sender as MenuItem;
-                string requestSender = (string)mi.Header;
-                MessageBox.Show("loggedUsername = " + loggedUsername + "\nrequestSender = " + requestSender);
-                // accept friend request
-                cl.AcceptFriendRequest(forumName, loggedUsername, requestSender);
-
-            }
-            else if (result == MessageBoxResult.No)
-            {
-                // ignore friend request
-
-
-            }
-            else
-            {
-                // canel, do nothing
             }
         }
 
