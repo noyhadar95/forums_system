@@ -11,7 +11,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
     public class DAL_Users : DAL_Connection
     {
         //TODO: REMEMBER TO CHANGE STUFF ABOUT THE WAITING
-        public void CreateUser(string ForumName, string userName, string password, string email, DateTime dateJoined, DateTime DateOfBirth, int numOfComplaints, UserType.UserTypes type, DateTime dateLastPasswordChanged)
+        public void CreateUser(string ForumName, string userName, string password, string email, DateTime dateJoined, DateTime DateOfBirth, int numOfComplaints, UserType.UserTypes type, DateTime dateLastPasswordChanged, string passwordSalt)
         {
 
             Connect_to_DB();
@@ -22,7 +22,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
                 "','"+userName+"', '" + password + "', '" + email +
                 "',#" + dateJoined.ToShortDateString() +
                 "#, #" + DateOfBirth.ToShortDateString() + "#, " + numOfComplaints + 
-                ", " + (int)type + ","+false+" ,#" + dateLastPasswordChanged + "# )";
+                ", " + (int)type + ","+false+" ,#" + dateLastPasswordChanged + "#, " + passwordSalt+")";
 
             connect_me.TakeAction(sql);
         }

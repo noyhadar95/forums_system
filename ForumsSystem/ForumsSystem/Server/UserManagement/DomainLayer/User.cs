@@ -79,7 +79,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         }
 
-        public User(string userName, string password, string email, IForum forum, DateTime dateOfBirth)
+        public User(string userName, string password, string email, IForum forum, DateTime dateOfBirth, string passwordSalt)
         {
             this.userName = userName;
             this.password = password;
@@ -97,7 +97,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.waitingFriendsList = new List<IUser>();
             Policy policy = forum.GetPolicy();
             dal_users.CreateUser(this.forum.getName(), this.userName, this.password, this.email,
-                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange);
+                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange, passwordSalt);
             if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
                 this.forum.RegisterToForum(this);
             else
@@ -176,6 +176,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                     user.dateOfPassLastchange = (DateTime)userRow["DateLastPasswordChanged"];
                     user.emailAccepted = true;
                     users[user.userName] = user;
+                    
+
+
                 }
             }
             return users;
