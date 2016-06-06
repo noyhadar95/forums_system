@@ -13,8 +13,8 @@ namespace AcceptanceTests.ServerTests
         public MultipleInterfacesTests()
             : base()
         {
-            guiBridge = new ClientBridge();
-            webBridge = new ClientBridge();//TODO: chabge this!!!
+            guiBridge = new RealBridge();//TODO: change this!!! ClientBridge
+            webBridge = new RealBridge();//TODO: change this!!! WebBridge
         }
 
 
@@ -66,9 +66,7 @@ namespace AcceptanceTests.ServerTests
         }
 
 
-
-
-
+        
 
         [TestMethod]
         public void TestAddModeratorGUIcheckWeb()
@@ -323,6 +321,65 @@ namespace AcceptanceTests.ServerTests
 
             // clean up
             bridge.DeleteForum(forumName);
+        }
+
+
+
+        [TestMethod]
+        public void TestEmailConfirmationSecureForumGuiToWeb()
+        {
+            string forumName = GetNextForum();
+            PoliciesStub forumPolicy = PoliciesStub.Authentication;
+            string username = "user1";
+            string pass = "passwd";
+            string email = "user1@gmail.com";
+            DateTime dateOfBirth = DateTime.Now;
+
+            // make sure the forum is defined as "secured forum".
+            ((ProxyBridge)bridge).SetRealBridge(guiBridge);
+            base.CreateForum(forumName, forumPolicy);
+            bool res = bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
+            Assert.IsTrue(res);
+
+            // check that the user is not yet considered registered to the forum
+            Assert.IsTrue(!bridge.IsRegisteredToForum(username, forumName));
+            bridge.ConfirmRegistration(forumName, username);
+
+            ((ProxyBridge)bridge).SetRealBridge(webBridge);
+            // check that the user is now registered to the forum
+            Assert.IsTrue(bridge.IsRegisteredToForum(username, forumName));
+
+            // cleanup
+            base.Cleanup(forumName);
+        }
+
+
+        [TestMethod]
+        public void TestEmailConfirmationSecureForumWebToGui()
+        {
+            string forumName = GetNextForum();
+            PoliciesStub forumPolicy = PoliciesStub.Authentication;
+            string username = "user1";
+            string pass = "passwd";
+            string email = "user1@gmail.com";
+            DateTime dateOfBirth = DateTime.Now;
+
+            // make sure the forum is defined as "secured forum".
+            ((ProxyBridge)bridge).SetRealBridge(webBridge);
+            base.CreateForum(forumName, forumPolicy);
+            bool res = bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
+            Assert.IsTrue(res);
+
+            // check that the user is not yet considered registered to the forum
+            Assert.IsTrue(!bridge.IsRegisteredToForum(username, forumName));
+            bridge.ConfirmRegistration(forumName, username);
+
+            ((ProxyBridge)bridge).SetRealBridge(guiBridge);
+            // check that the user is now registered to the forum
+            Assert.IsTrue(bridge.IsRegisteredToForum(username, forumName));
+
+            // cleanup
+            base.Cleanup(forumName);
         }
 
 

@@ -45,6 +45,13 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             return connect_me.DownloadData(sql, "Answers");
         }
 
+        public DataTable GetAnswersInForum(string forumName)
+        {
+            Connect_to_DB();
+            string sql = "Select * From Answers WHERE ForumName='" + forumName + "'";
+            return connect_me.DownloadData(sql, "Answers");
+        }
+
         public DataTable GetAllAnswers()
         {
             Connect_to_DB();

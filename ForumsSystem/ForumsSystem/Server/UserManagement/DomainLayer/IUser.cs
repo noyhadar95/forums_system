@@ -98,9 +98,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
 
 
-        bool AddSecurityQuestion(SecurityQuestions question, string answer);
-        bool RemoveSecurityQuestion(SecurityQuestions question);
-        bool CheckSecurityQuestion(SecurityQuestions question, string answer);
+        bool AddSecurityQuestion(SecurityQuestionsEnum question, string answer);
+        bool RemoveSecurityQuestion(SecurityQuestionsEnum question);
+        bool CheckSecurityQuestion(SecurityQuestionsEnum question, string answer);
 
     }
 

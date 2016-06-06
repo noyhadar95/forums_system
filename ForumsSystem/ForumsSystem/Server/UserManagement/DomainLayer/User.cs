@@ -60,7 +60,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private string passwordSalt;
         [IgnoreDataMember]
         private string clientSession=null;
-        private Dictionary<SecurityQuestions, string> passwordSecurityQuestions;
+        private Dictionary<SecurityQuestionsEnum, string> passwordSecurityQuestions;
         public User()
         {
             this.userName = "";
@@ -117,7 +117,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.privateMessageNotifications = new List<PrivateMessageNotification>();
             this.emailAccepted = false;
             this.postNotifications = new List<PostNotification>();
-            passwordSecurityQuestions = new Dictionary<SecurityQuestions, string>();
+            passwordSecurityQuestions = new Dictionary<SecurityQuestionsEnum, string>();
 
         }
 
@@ -144,7 +144,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.privateMessageNotifications = new List<PrivateMessageNotification>();
             this.emailAccepted = false;
             this.postNotifications = new List<PostNotification>();
-            passwordSecurityQuestions = new Dictionary<SecurityQuestions, string>();
+            passwordSecurityQuestions = new Dictionary<SecurityQuestionsEnum, string>();
         }
 
         /// <summary>
@@ -199,8 +199,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                     user.dateOfPassLastchange = (DateTime)userRow["DateLastPasswordChanged"];
                     user.emailAccepted = true;
                     users[user.userName] = user;
-                    
 
+                    user.passwordSalt = userRow["PasswordSalt"].ToString();
 
                 }
             }
@@ -249,6 +249,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                     user.dateOfPassLastchange = (DateTime)userRow["DateLastPasswordChanged"];
                     user.emailAccepted = false;
                     users[user.userName] = user;
+
+
+                    user.passwordSalt = userRow["PasswordSalt"].ToString();
                 }
             }
             return users;
@@ -279,6 +282,21 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             }
 
 
+        }
+
+        public static void populateSecurityQuestions(Dictionary<string, IUser> users, Dictionary<string, IUser> waiting_users, string forumName)
+        {
+            DAL_Answer da = new DAL_Answer();
+            Dictionary<string, IUser> allUsers = users.Union(waiting_users).ToDictionary(k => k.Key, v => v.Value);
+            DataTable answersTbl = da.GetAnswersInForum(forumName);
+
+            foreach (DataRow answerRow in answersTbl.Rows)
+            {
+                User user = (User)allUsers[answerRow["UserName"].ToString()];
+                string answer = answerRow["Answer"].ToString();
+                user.AddSecurityQuestion((SecurityQuestionsEnum)(int)answerRow["QuestionNumber"], answer);
+
+            }
         }
 
         
@@ -854,8 +872,18 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         /// <param name="question"></param>
         /// <param name="answer"></param>
         /// <returns></returns>
-        public bool AddSecurityQuestion(SecurityQuestions question, string answer)
+        public bool AddSecurityQuestion(SecurityQuestionsEnum question, string answer)
         {
+            DAL_Answer da = new DAL_Answer();
+
+            if (passwordSecurityQuestions.ContainsKey(question))
+            {
+                da.UpdateAnswer(this.forum.getName(), this.userName, (int)question, answer);
+            }
+            else
+            {
+                da.AddAnswer(this.forum.getName(), this.userName, (int)question, answer);
+            }
             passwordSecurityQuestions[question] = answer.ToUpper();
             return true;
         }
@@ -865,15 +893,17 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         /// </summary>
         /// <param name="question"></param>
         /// <returns></returns>
-        public bool RemoveSecurityQuestion(SecurityQuestions question)
+        public bool RemoveSecurityQuestion(SecurityQuestionsEnum question)
         {
+            DAL_Answer da = new DAL_Answer();
             if (!passwordSecurityQuestions.ContainsKey(question))
                 return false;
             passwordSecurityQuestions.Remove(question);
+            da.DeleteAnswer(this.forum.getName(), this.userName, (int)question);
             return true;
         }
 
-        public bool CheckSecurityQuestion(SecurityQuestions question, string answer)
+        public bool CheckSecurityQuestion(SecurityQuestionsEnum question, string answer)
         {
             if (!passwordSecurityQuestions.ContainsKey(question))
                 return false;

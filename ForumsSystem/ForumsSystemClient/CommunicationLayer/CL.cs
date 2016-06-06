@@ -350,19 +350,19 @@ namespace ForumsSystemClient.CommunicationLayer
             return (List<string>)Client.SendRequest("GetWaitingFriendsList", forumName, username);
         }
 
-        public bool AddSecurityQuestion(string forumName, string username, SecurityQuestions question, string answer)
+        public bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer)
         {
             return (bool)Client.SendRequest("AddSecurityQuestion", forumName, username,question,answer);
 
         }
 
-        public bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestions question)
+        public bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question)
         {
             return (bool)Client.SendRequest("RemoveSecurityQuestion", forumName, username, question);
 
         }
 
-        public bool CheckSecurityQuestion(string forumName, string username, SecurityQuestions question, string answer)
+        public bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer)
         {
             return (bool)Client.SendRequest("CheckSecurityQuestion", forumName, username, question, answer);
 
