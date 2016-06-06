@@ -487,5 +487,57 @@ namespace AcceptanceTestsBridge
         {
             return cl.MemberLogin(forumName, username, pass, clientServer) != null;
         }
+
+        public bool CreateForum(string creator, string creatorPass, string forumName, List<UserStub> admins, PoliciesStub forumPolicies, params object[] policyParams)
+        {
+            List<User> newAdmins = new List<User>();
+
+            foreach (UserStub user in admins)
+            {
+                User u = new User(user.Username, user.Password, user.Email, DateTime.Today.AddDays(100));
+                newAdmins.Add(u);
+            }
+            SuperAdmin superAdmin = cl.GetSuperAdmin();
+            Policies forumPol = ConvertPolicyStubToReal(forumPolicies);
+            Policy policy;
+            switch (forumPol)
+            {
+                case Policies.Password:
+                    policy = new PasswordPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1));
+                    break;
+                case Policies.Authentication:
+                    policy = new AuthenticationPolicy(forumPol);
+                    break;
+                case Policies.ModeratorSuspension:
+                    policy = new ModeratorSuspensionPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.Confidentiality:
+                    policy = new ConfidentialityPolicy(forumPol, (bool)policyParams.ElementAt(0));
+                    break;
+                case Policies.ModeratorAppointment:
+                    policy = new ModeratorAppointmentPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1), (int)policyParams.ElementAt(2));
+                    break;
+                case Policies.AdminAppointment:
+                    policy = new AdminAppointmentPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1), (int)policyParams.ElementAt(2));
+                    break;
+                case Policies.MemberSuspension:
+                    policy = new MemberSuspensionPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.UsersLoad:
+                    policy = new UsersLoadPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.MinimumAge:
+                    policy = new MinimumAgePolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.MaxModerators:
+                    policy = new MaxModeratorsPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                default:
+                    policy = new PasswordPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1));
+                    break;
+            }
+            Forum newForum = cl.CreateForum(superAdmin.userName, superAdmin.password, forumName, policy, newAdmins);
+            return newForum != null;
+        }
     }
 }

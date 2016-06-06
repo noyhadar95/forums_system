@@ -403,6 +403,14 @@ namespace AcceptanceTestsBridge
                 return LoginUserWithSessionOK(forumName, username, pass);
             return false;
         }
+
+        public bool CreateForum(string creator, string creatorPass, string forumName, List<UserStub> admins, PoliciesStub forumPolicies, params object[] policyParams)
+        {
+            if (realBridge != null)
+                return realBridge.CreateForum(creator, creatorPass, forumName, admins, forumPolicies, policyParams);
+
+            return true;
+        }
     }
     
 }
