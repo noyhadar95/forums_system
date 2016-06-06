@@ -94,5 +94,10 @@ namespace ForumsSystemClient.PresentationLayer
             superAdminGrid.Visibility = Visibility.Hidden;
             WindowHelper.LogoutSuperAdmin();
         }
+
+        private void editPoliciesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new AddForumWindow());
+        }
     }
 }

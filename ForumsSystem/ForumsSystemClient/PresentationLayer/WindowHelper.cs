@@ -118,7 +118,7 @@ namespace ForumsSystemClient.PresentationLayer
         {
             if (currentNotifyWin != null)
             {
-                currentNotifyWin.Notify();
+                currentNotifyWin.NotifyFriendRequests(friendReqsNum);
             }
         }
 

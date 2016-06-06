@@ -34,9 +34,6 @@
                 <Button x:Name="addFriendBtn" Content="add friend" TabIndex="7" HorizontalAlignment="Left" Margin="5,145,0,0" VerticalAlignment="Top"  Width="103" Height="30" Click="addFriendBtn_Click" />
             </Grid>
             <Label x:Name="badLoginLbl" Content="" HorizontalAlignment="Left" Margin="88,92,0,0" VerticalAlignment="Top" Foreground="#FFEC350C" FontWeight="Bold"/>
-            <Grid x:Name="superAdminGrid"  HorizontalAlignment="Left" Height="52" Margin="10,308,0,0" VerticalAlignment="Top" Width="171">
-                <Button x:Name="editPoliciesBtn" Content="edit policies" TabIndex="9" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="103" Height="30"/>
-            </Grid>
 
         </Grid>
     </DockPanel>
