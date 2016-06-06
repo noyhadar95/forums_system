@@ -22,6 +22,7 @@ namespace AcceptanceTestsBridge
         private int maxNumOfUsers = 200;
         private int minAge = 1;
         private int maxModerators = 20;
+        private Dictionary<Tuple<string,string>, string> sessionKeys =  new Dictionary<Tuple<string, string>, string>();
 
         public ClientBridge()
         {
@@ -297,7 +298,9 @@ namespace AcceptanceTestsBridge
 
         public bool LoginUser(string forumName, string username, string pass)
         {
-            return cl.MemberLogin(forumName, username, pass) !=null;
+            Tuple<User,string> t = cl.MemberLogin(forumName, username, pass);
+            sessionKeys.Add(new Tuple<string, string>(forumName,username), t.Item2);
+            return t != null;
         }
 
         public bool LoginSuperAdmin(string username, string pass)
@@ -462,6 +465,8 @@ namespace AcceptanceTestsBridge
 
         public void LogoutUser(string forumName, string username)
         {
+            if (sessionKeys.ContainsKey(new Tuple<string, string>(forumName, username)))
+                sessionKeys.Remove(new Tuple<string, string>(forumName, username)); 
             cl.MemberLogout(forumName, username);
         }
 
@@ -472,12 +477,15 @@ namespace AcceptanceTestsBridge
 
         public string getUserClientSession(string forumName, string userName)
         {
-            throw new NotImplementedException();
+            string key ="";
+            if (!sessionKeys.TryGetValue(new Tuple<string, string>(forumName, userName), out key))
+                key = "";
+            return key;
         }
 
         public bool LoginUserWithClientSession(string forumName, string username, string pass, string clientServer)
         {
-            throw new NotImplementedException();
+            return cl.MemberLogin(forumName, username, pass, clientServer) != null;
         }
     }
 }
