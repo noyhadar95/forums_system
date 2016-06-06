@@ -135,15 +135,15 @@ namespace ForumsSystemClient.PresentationLayer
 
         public void NotifyPrivateMessages(int privateMsgsNum)
         {
-            SetPrivateMsgMenuHeaderOn(privateMsgsNum);
-            MessageBox.Show("notify PM");
-            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
-            {
-                privateMsgsMenu.Items.Clear();
-            }));
+            //SetPrivateMsgMenuHeaderOn(privateMsgsNum);
+            //MessageBox.Show("notify PM");
+            //System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
+            //{
+            //    privateMsgsMenu.Items.Clear();
+            //}));
 
-            RefreshPrivateMsgMenu();
-            userMenuBar.Items.Refresh();
+            //RefreshPrivateMsgMenu();
+            //userMenuBar.Items.Refresh();
         }
 
         #endregion

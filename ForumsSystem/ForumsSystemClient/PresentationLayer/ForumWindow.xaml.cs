@@ -51,20 +51,12 @@ namespace ForumsSystemClient.PresentationLayer
             adminGrid.Visibility = Visibility.Hidden;
             adminGrid.Margin = new Thickness(userGrid.Margin.Left, userGrid.Margin.Top + userGrid.Height,
                 userGrid.Margin.Right, userGrid.Margin.Bottom);
-            superAdminGrid.Visibility = Visibility.Hidden;
-            superAdminGrid.Margin = new Thickness(adminGrid.Margin.Left, adminGrid.Margin.Top + adminGrid.Height,
-                adminGrid.Margin.Right, adminGrid.Margin.Bottom);
+
 
             // hide user menu bar (notifications bar included)
             userMenuBar.Visibility = Visibility.Hidden;
 
-            if (WindowHelper.IsLoggedSuperAdmin())
-            {
-                // super admin is already logged in
-                SuperAdmin superAdmin = WindowHelper.GetLoggedSuperAdmin();
-                SwitchLoginToSuperAdminViewMode(superAdmin.userName);
-            }
-            else if (WindowHelper.IsLoggedUser(forumName))
+            if (WindowHelper.IsLoggedUser(forumName))
             {
                 // user is already logged in
                 User user = WindowHelper.GetLoggedUser(forumName);
@@ -107,14 +99,6 @@ namespace ForumsSystemClient.PresentationLayer
         {
             ShowMemberViewMode(username);
             adminGrid.Visibility = Visibility.Visible;
-        }
-
-        private void SwitchLoginToSuperAdminViewMode(string superAdmin)
-        {
-            ShowMemberViewMode(superAdmin);
-            ShowAdminViewMode(superAdmin);
-            logoutBtn.Visibility = Visibility.Hidden;
-            superAdminGrid.Visibility = Visibility.Visible;
         }
 
         private void ShowBadLoginMsg()
