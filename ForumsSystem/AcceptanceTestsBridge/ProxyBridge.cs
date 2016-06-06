@@ -10,7 +10,8 @@ namespace AcceptanceTestsBridge
     public class ProxyBridge : IBridge
     {
         private static ProxyBridge instance = null;
-
+        private Dictionary<Tuple<string, string>, string> sessionKeys = new Dictionary<Tuple<string, string>, string>();
+        private int randomCounter = 1;
         private IBridge realBridge;
 
         private ProxyBridge()
@@ -239,9 +240,20 @@ namespace AcceptanceTestsBridge
             if (realBridge != null)
                 return realBridge.LoginUser(forumName, username, pass);
 
+            if (!sessionKeys.ContainsKey(new Tuple<string, string>(forumName, username)))
+            {
+                sessionKeys.Add(new Tuple<string, string>(forumName, username), username + randomCounter++);
+                return true;
+            }
+            else
+                return false;
+
+           
+        }
+        private bool LoginUserWithSessionOK(string forumName, string username, string pass)
+        {
             return true;
         }
-
         public bool LoginSuperAdmin(string username, string pass)
         {
             if (realBridge != null)
@@ -365,18 +377,31 @@ namespace AcceptanceTestsBridge
 
         public void LogoutUser(string forumName, string username)
         {
+            if (sessionKeys.ContainsKey(new Tuple<string, string>(forumName, username)))
+                sessionKeys.Remove(new Tuple<string, string>(forumName, username));
             if (realBridge != null)
                  realBridge.LogoutUser(forumName, username);
         }
 
         public string getUserClientSession(string forumName, string userName)
         {
-            throw new NotImplementedException();
+            if (realBridge != null)
+                return realBridge.getUserClientSession(forumName, userName);
+            string key = "";
+            if (!sessionKeys.TryGetValue(new Tuple<string, string>(forumName, userName), out key))
+                key = "";
+            return key;
         }
 
         public bool LoginUserWithClientSession(string forumName, string username, string pass, string clientServer)
         {
-            throw new NotImplementedException();
+
+            if (realBridge != null)
+                return realBridge.LoginUserWithClientSession(forumName, username,pass,clientServer);
+            string key = getUserClientSession(forumName, username);
+            if (clientServer.Equals(key))
+                return LoginUserWithSessionOK(forumName, username, pass);
+            return false;
         }
     }
     
