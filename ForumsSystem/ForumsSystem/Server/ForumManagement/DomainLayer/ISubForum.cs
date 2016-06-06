@@ -11,10 +11,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
 
         Thread createThread();
-        bool removeThread(int threadNumber);
+       // bool removeThread(int threadNumber);
         bool removeThread(Thread thread);
         string getName();
-        void addModerator(IUser admin, IUser user, DateTime expirationDate);//admin is the appointer
+        bool addModerator(IUser admin, IUser user, DateTime expirationDate);//admin is the appointer
         bool changeModeratorExpirationDate(IUser user, DateTime newExpirationDate);
         Moderator getModeratorByUserName(string userName);
         IUser getCreator();

@@ -101,5 +101,6 @@ namespace ForumsSystemClient.CommunicationLayer
         bool AddSecurityQuestion(string forumName, string username, SecurityQuestions question, string answer);
         bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestions question);
         bool CheckSecurityQuestion(string forumName, string username, SecurityQuestions question, string answer);
+        bool SetUserPassword(string forumName, string username, string newPassword);
     }
 }

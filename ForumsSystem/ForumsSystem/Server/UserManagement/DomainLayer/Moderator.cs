@@ -67,6 +67,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
         public bool CanBeDeletedBy(string user)
         {
+            //only the appointer is able to delete the modeartor
             return appointer.getUsername().Equals(user);
         }
     }

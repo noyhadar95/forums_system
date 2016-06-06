@@ -354,7 +354,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return false;
             if (post == null)
                 return false;
-            if (post.getPublisher() == callingUser)
+            //check if caling user is the publisher or an admin
+            if (post.getPublisher() == callingUser
+                ||((callingUser.getForum().getName().Equals(post.getPublisher().getForum().getName()))&& callingUser.getType() is Admin))
             {
                 List<Post> replies = post.GetReplies();
                 foreach (Post p in replies)
@@ -363,6 +365,23 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 }
                 dal_posts.DeletePost(post.GetId());
                 return post.DeletePost();
+            }
+            else
+            {
+                //check if moderators can delete a post
+                PolicyParametersObject checkMod = new PolicyParametersObject(Policies.ModeratorPermissionToDelete);
+                if (!post.getPublisher().getForum().GetPolicy().CheckPolicy(checkMod))
+                    return false;
+                if(post.Thread.GetSubforum().isModerator(callingUser.getUsername()))
+                {
+                    List<Post> replies = post.GetReplies();
+                    foreach (Post p in replies)
+                    {
+                        p.getPublisher().AddPostNotification(post, NotificationType.Deleted);
+                    }
+                    dal_posts.DeletePost(post.GetId());
+                    return post.DeletePost();
+                }
             }
             return false; // user can't delete other user's posts
         }

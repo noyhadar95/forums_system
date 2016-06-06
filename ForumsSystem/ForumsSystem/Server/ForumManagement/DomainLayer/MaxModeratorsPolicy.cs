@@ -40,7 +40,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (param.GetPolicy() == type)
             {
 
-                Console.WriteLine(maxModerators+" "+param.NumOfModerators);
+                //Console.WriteLine(maxModerators+" "+param.NumOfModerators);
                 return this.maxModerators > param.NumOfModerators;
             }
             else

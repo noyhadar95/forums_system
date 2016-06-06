@@ -778,8 +778,14 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return type.GetModeratorsList(this, subforum);
         }
 
-        public void SetPassword(string password)
+        public bool SetPassword(string password)
         {
+            //check password policies
+            PolicyParametersObject checkPass = new PolicyParametersObject(Policies.Password);
+            checkPass.SetPassword(password);
+            if (!this.forum.GetPolicy().CheckPolicy(checkPass))
+                return false;
+            //policies ok, change password
             this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
             password = this.passwordSalt + password;
             this.password = PRG.Hash.GetHash(password);
@@ -797,7 +803,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
                    this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,DateTime.Today);
             }
-
+            return true;
         }
         public DateTime GetDateOfPassLastChange()
         {
@@ -867,6 +873,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (!passwordSecurityQuestions.ContainsKey(question))
                 return false;
             return passwordSecurityQuestions[question].ToUpper().Equals(answer.ToUpper());
+        }
+
+        public DateTime GetDateOfBirth()
+        {
+            return this.dateOfBirth;
         }
     }
 

@@ -583,5 +583,12 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user = forum.getUser(username);
             return user.CheckSecurityQuestion(question,answer);
         }
+
+        public bool SetUserPassword(string forumName, string username, string newPassword)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            return user.SetPassword(newPassword);
+        }
     }
 }

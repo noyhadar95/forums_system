@@ -14,7 +14,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         [DataMember]
         private int requiredLength;
         [DataMember]
-        private int passwordValidity;
+        private int passwordValidity;//in days
 
         public PasswordPolicy(Policies type, int requiredLength, int passwordValidity) :base(type)
         {

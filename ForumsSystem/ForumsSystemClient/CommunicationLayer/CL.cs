@@ -367,5 +367,9 @@ namespace ForumsSystemClient.CommunicationLayer
             return (bool)Client.SendRequest("CheckSecurityQuestion", forumName, username, question, answer);
 
         }
+        public bool SetUserPassword(string forumName, string username, string newPassword)
+        {
+            return (bool)Client.SendRequest("SetUserPassword", forumName, username, newPassword);
+        }
     }
 }
