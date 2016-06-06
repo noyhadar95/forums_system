@@ -96,10 +96,11 @@ namespace ForumsSystemClient.CommunicationLayer
                     string[] notifArr = ((string)parameters[0]).Split(',');
                     try
                     {
-                        if (int.Parse(notifArr[2]) > 0)
+                        int friendReqsNum = int.Parse(notifArr[2]);
+                        if (friendReqsNum > 0)
                         {
                             // notify about friend request/s
-                            WindowHelper.NotifyFriendRequest();
+                            WindowHelper.NotifyFriendRequests(friendReqsNum);
                         }
                     }
                     catch (Exception)

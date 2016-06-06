@@ -22,7 +22,7 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for ForumWindow.xaml
     /// </summary>
-    public partial class ForumWindow : NotifBarWindow, INotifiableWindow
+    public partial class ForumWindow : NotifBarWindow
     {
 
         private string badLoginMsg = "your username/password are incorrect";
@@ -74,32 +74,11 @@ namespace ForumsSystemClient.PresentationLayer
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
 
-                IniNotificationsBar(user.Username);
+                RefreshNotificationsBar(user.Username);
             }
 
         }
 
-        #region User Notifications Bar
-
-
-
-
-
-        #endregion
-
-
-
-        public void Notify()
-        {
-            MessageBox.Show("Got here!! ");
-            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
-            {
-                friendRequestsMenu.Items.Clear();
-            }));
-
-            IniFriendReqsMenu(loggedUsername);
-            userMenuBar.Items.Refresh();
-        }
 
         private void subForumsListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -120,7 +99,7 @@ namespace ForumsSystemClient.PresentationLayer
             welcomeTextBlock.Text = "welcome " + username;
             userGrid.Visibility = Visibility.Visible;
 
-            IniNotificationsBar(username);
+            RefreshNotificationsBar(username);
             userMenuBar.Visibility = Visibility.Visible;
         }
 

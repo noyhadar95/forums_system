@@ -46,11 +46,11 @@
                 <Label x:Name="label5" Content="length:" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top"/>
                 <ComboBox x:Name="passwordLengthCB" HorizontalAlignment="Left" Margin="133,9,-61,0" VerticalAlignment="Top" Width="120"/>
                 <Label x:Name="label6" Content="validity:" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
-                <ComboBox x:Name="comboBox6" HorizontalAlignment="Left" Margin="133,36,-61,0" VerticalAlignment="Top" Width="120"/>
+                <ComboBox x:Name="passwordValidityCB" HorizontalAlignment="Left" Margin="133,36,-61,0" VerticalAlignment="Top" Width="120"/>
             </Grid>
             <Grid x:Name="gridConfidentiality" HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="266" Margin="10,121,0,0">
                 <Label x:Name="label" Content="block password:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="133,7,-11,0" VerticalAlignment="Top" Width="120">
+                <ComboBox x:Name="confidentialityBlockPassCB" HorizontalAlignment="Left" Margin="133,7,-11,0" VerticalAlignment="Top" Width="120">
                     <ComboBoxItem IsSelected="True" Content="yes"/>
                     <ComboBoxItem Content="no"/>
 

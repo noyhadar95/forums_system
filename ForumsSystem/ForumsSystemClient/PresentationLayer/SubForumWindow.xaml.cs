@@ -19,14 +19,12 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for SubForumWindow.xaml
     /// </summary>
-    public partial class SubForumWindow : Window
+    public partial class SubForumWindow : NotifBarWindow
     {
-        private CL cl;
-        private string forumName;
         private string subForumName;
         private Dictionary<int, int> itemIndexThreadIDDict;
 
-        public SubForumWindow(string forumName, string subForumName)
+        public SubForumWindow(string forumName, string subForumName) : base()
         {
             InitializeComponent();
 
@@ -36,6 +34,8 @@ namespace ForumsSystemClient.PresentationLayer
             this.forumName = forumName;
             this.subForumName = subForumName;
             Title = subForumName;
+
+            base.Initialize(dockPanel);
 
 
             Dictionary<int, string> threadsDict = cl.GetThreads(forumName, subForumName);

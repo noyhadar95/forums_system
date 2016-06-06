@@ -9,7 +9,10 @@ using System.Windows.Controls;
 
 namespace ForumsSystemClient.PresentationLayer
 {
-    public abstract class NotifBarWindow : Window
+    /// <summary>
+    /// Child class must call Initialize(dock) in constructor with it's DockPanel
+    /// </summary>
+    public abstract class NotifBarWindow : Window, INotifiableWindow
     {
         protected CL cl;
         protected string forumName;
@@ -17,6 +20,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         protected Menu userMenuBar;
         protected MenuItem friendRequestsMenu;
+        private string friendReqMenuHeader = "_Friend Requests";
         protected MenuItem mi_type; // the menu item for displaying the user type on the user notifications bar
 
 
@@ -29,7 +33,8 @@ namespace ForumsSystemClient.PresentationLayer
         protected virtual void Initialize(DockPanel dock)
         {
             friendRequestsMenu = new MenuItem();
-            friendRequestsMenu.Header = WindowHelper.GetFriendReqMenuHeader();
+            friendRequestsMenu.Header = GetFriendReqMenuHeader();
+            friendRequestsMenu.Click += new RoutedEventHandler(friendReqsMenu_Click);
 
             userMenuBar = new Menu();
             userMenuBar.Visibility = Visibility.Visible;
@@ -39,32 +44,66 @@ namespace ForumsSystemClient.PresentationLayer
             dock.Children.Insert(0, userMenuBar);
         }
 
-        protected void IniNotificationsBar(string username)
+
+
+        protected void RefreshNotificationsBar(string username)
         {
             string type = cl.GetUserType(forumName, username);
             mi_type.Header = "logged in as " + type;
             if (userMenuBar.Items.Count < 2)
                 userMenuBar.Items.Add(mi_type);
 
-            // initialize friend requests menu bar
-            IniFriendReqsMenu(username);
+            // refresh friend requests menu bar
+            RefreshFriendReqsMenu();
         }
 
-        protected void IniFriendReqsMenu(string username)
+
+        #region friend requests
+
+        private string GetFriendReqMenuHeader()
+        {
+            return friendReqMenuHeader;
+        }
+
+        private void SetFriendReqMenuHeaderOn(int notifNum)
+        {
+            friendReqMenuHeader = "_Friend Requests(" + notifNum + ")";
+        }
+
+        public void NotifyFriendRequests(int friendReqsNum)
+        {
+            SetFriendReqMenuHeaderOn(friendReqsNum);
+            MessageBox.Show("notify friend request");
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
+            {
+                friendRequestsMenu.Items.Clear();
+            }));
+
+            RefreshFriendReqsMenu();
+            userMenuBar.Items.Refresh();
+        }
+
+        protected void RefreshFriendReqsMenu()
         {
             friendRequestsMenu.Items.Clear();
-            friendRequestsMenu.Header = WindowHelper.GetFriendReqMenuHeader();
-            List<string> cl_friendReqs = cl.GetFriendRequests(forumName, username);
+            friendRequestsMenu.Header = GetFriendReqMenuHeader();
+        }
+
+        private void friendReqsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("bring reqs from db");
+            List<string> cl_friendReqs = cl.GetFriendRequests(forumName, loggedUsername);
             foreach (string str in cl_friendReqs)
             {
                 MenuItem mi = new MenuItem();
                 mi.Header = str;
-                mi.Click += new RoutedEventHandler(friendReqsMenu_Click);
+                mi.Click += new RoutedEventHandler(friendReq_Click);
                 friendRequestsMenu.Items.Add(mi);
             }
+
         }
 
-        private void friendReqsMenu_Click(object sender, RoutedEventArgs e)
+        private void friendReq_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Do you accept the friend request?",
                                                     "Confirmation", MessageBoxButton.YesNoCancel);
@@ -88,6 +127,29 @@ namespace ForumsSystemClient.PresentationLayer
                 // canel, do nothing
             }
         }
+
+        #endregion
+
+
+        #region private messages
+
+        public void NotifyPrivateMessages(int privateMsgsNum)
+        {
+            SetPrivateMsgMenuHeaderOn(privateMsgsNum);
+            MessageBox.Show("notify PM");
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
+            {
+                privateMsgsMenu.Items.Clear();
+            }));
+
+            RefreshPrivateMsgMenu();
+            userMenuBar.Items.Refresh();
+        }
+
+        #endregion
+
+
+
 
 
     }
