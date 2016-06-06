@@ -27,13 +27,13 @@ namespace ForumsSystemClient.PresentationLayer
 
         private string badLoginMsg = "your username/password are incorrect";
 
-        public ForumWindow(string forumName) : base()
+        public ForumWindow(string forumName) : base(forumName)
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
+
             // initialize fields
-            this.forumName = forumName;
             Title = forumName;
             loggedUsername = "";
             cl = new CL();
@@ -45,7 +45,7 @@ namespace ForumsSystemClient.PresentationLayer
             List<string> items = cl.GetSubForumsList(forumName);
             subForumsListView.ItemsSource = items;
 
-            // initialize different types grids (login, user, admin, super admin)
+            // initialize different types grids (login, user, admin)
             userGrid.Visibility = Visibility.Hidden;
             userGrid.Margin = loginGrid.Margin;
             adminGrid.Visibility = Visibility.Hidden;

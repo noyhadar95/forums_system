@@ -1,5 +1,6 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
 using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
+using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,20 +25,19 @@ namespace ForumsSystemClient.PresentationLayer
         private string subForumName;
         private Dictionary<int, int> itemIndexThreadIDDict;
 
-        public SubForumWindow(string forumName, string subForumName) : base()
+        public SubForumWindow(string forumName, string subForumName) : base(forumName)
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
-            this.forumName = forumName;
             this.subForumName = subForumName;
             Title = subForumName;
 
             base.Initialize(dockPanel);
 
-
+            // initialize threads list view
             Dictionary<int, string> threadsDict = cl.GetThreads(forumName, subForumName);
             List<string> items = new List<string>();
             itemIndexThreadIDDict = new Dictionary<int, int>();
@@ -50,9 +50,46 @@ namespace ForumsSystemClient.PresentationLayer
                 itemIndexThreadIDDict.Add(index, pair.Key);
                 index++;
             }
-
             threadsListView.ItemsSource = items;
+
+            // initialize different types grids (login, user, admin)
+            userGrid.Visibility = Visibility.Hidden;
+            adminGrid.Visibility = Visibility.Hidden;
+            adminGrid.Margin = new Thickness(userGrid.Margin.Left, userGrid.Margin.Top + userGrid.Height,
+                userGrid.Margin.Right, userGrid.Margin.Bottom);
+
+            // hide user menu bar (notifications bar included)
+            userMenuBar.Visibility = Visibility.Hidden;
+
+            if (WindowHelper.IsLoggedUser(forumName))
+            {
+                // user is already logged in
+                User user = WindowHelper.GetLoggedUser(forumName);
+                string type = cl.GetUserType(forumName, user.Username);
+                if (type == UserTypes.Member)
+                    ShowMemberViewMode(user.Username);
+                else if (type == UserTypes.Admin)
+                    ShowAdminViewMode(user.Username);
+
+                RefreshNotificationsBar(user.Username);
+            }
         }
+
+        private void ShowMemberViewMode(string username)
+        {
+            this.loggedUsername = username;
+            userGrid.Visibility = Visibility.Visible;
+
+            RefreshNotificationsBar(username);
+            userMenuBar.Visibility = Visibility.Visible;
+        }
+
+        private void ShowAdminViewMode(string username)
+        {
+            ShowMemberViewMode(username);
+            adminGrid.Visibility = Visibility.Visible;
+        }
+
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {

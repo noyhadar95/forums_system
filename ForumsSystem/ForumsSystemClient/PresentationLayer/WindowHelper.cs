@@ -20,12 +20,10 @@ namespace ForumsSystemClient.PresentationLayer
         private static INotifiableWindow currentNotifyWin;
 
 
-
+        // not including super admin
         public static string GetLoggedUsername(string forumName)
         {
-            if (IsLoggedSuperAdmin())
-                return GetLoggedSuperAdmin().userName;
-            else if (IsLoggedUser(forumName))
+            if (IsLoggedUser(forumName))
                 return GetLoggedUser(forumName).Username;
             else
                 return null;
@@ -57,11 +55,11 @@ namespace ForumsSystemClient.PresentationLayer
             SetLoggedUser(forumName, null);
         }
 
-        public static void LogoutAllUsers()
-        {
-            // forget all logged users by reseting the dict
-            loggedUsers = new Dictionary<string, User>();
-        }
+        //public static void LogoutAllUsers()
+        //{
+        //    // forget all logged users by reseting the dict
+        //    loggedUsers = new Dictionary<string, User>();
+        //}
 
         public static bool IsLoggedSuperAdmin()
         {

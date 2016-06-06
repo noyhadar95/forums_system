@@ -25,25 +25,26 @@ namespace ForumsSystemClient.PresentationLayer
     {
         // TODO:: SET THE MAX VALUES
         // password
-        private const int MAX_PASS_LENGTH = 12;
+        public static int MAX_PASS_LENGTH = 12;
+        public static int MAX_PASS_VALIDITY = 12; // in days
         // mod appointment
-        private const int MAX_MOD_SENIORITY = 12;
-        private const int MAX_MOD_MSGS = 12;
-        private const int MAX_MOD_APP_COMPLAINTS = 5;
+        public static int MAX_MOD_SENIORITY = 12;
+        public static int MAX_MOD_MSGS = 12;
+        public static int MAX_MOD_APP_COMPLAINTS = 5;
         // admin appointment
-        private const int MAX_ADMIN_SENIORITY = 12;
-        private const int MAX_ADMIN_MSGS = 12;
-        private const int MAX_ADMIN_COMPLAINTS = 5;
+        public static int MAX_ADMIN_SENIORITY = 12;
+        public static int MAX_ADMIN_MSGS = 12;
+        public static int MAX_ADMIN_COMPLAINTS = 5;
         // mod suspension
-        private const int MAX_MOD_SUSP_COMPLAINTS = 5;
+        public static int MAX_MOD_SUSP_COMPLAINTS = 5;
         // member suspension
-        private const int MAX_MEMBER_SUSP_COMPLAINTS = 5;
+        public static int MAX_MEMBER_SUSP_COMPLAINTS = 5;
         // users load
-        private const int MAX_USERS = 100;
+        public static int MAX_USERS = 100;
         // minimum age
-        private const int MIN_AGE = 12;
+        public static int MIN_AGE = 12;
         // max moderators
-        private const int MAX_MODS = 5;
+        public static int MAX_MODS = 5;
 
 
         private CL cl;
@@ -73,6 +74,7 @@ namespace ForumsSystemClient.PresentationLayer
         {
             // password
             InitComboBox(passwordLengthCB, MAX_PASS_LENGTH);
+            InitComboBox(passwordValidityCB, MAX_PASS_VALIDITY);
 
             // mod appointment
             InitComboBox(modSeniorityCB, MAX_MOD_SENIORITY);

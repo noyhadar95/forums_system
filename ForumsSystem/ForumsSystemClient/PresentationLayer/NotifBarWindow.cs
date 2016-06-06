@@ -22,12 +22,17 @@ namespace ForumsSystemClient.PresentationLayer
         protected MenuItem friendRequestsMenu;
         private string friendReqMenuHeader = "_Friend Requests";
         protected MenuItem mi_type; // the menu item for displaying the user type on the user notifications bar
+        private bool notifiedFriendReq;
 
 
-        public NotifBarWindow()
+        public NotifBarWindow(string forumName)
         {
+            this.forumName = forumName;
             mi_type = new MenuItem();
+            notifiedFriendReq = true;
 
+            if (WindowHelper.IsLoggedUser(forumName))
+                loggedUsername = WindowHelper.GetLoggedUsername(forumName);
         }
 
         protected virtual void Initialize(DockPanel dock)
@@ -43,8 +48,6 @@ namespace ForumsSystemClient.PresentationLayer
             DockPanel.SetDock(userMenuBar, Dock.Top);
             dock.Children.Insert(0, userMenuBar);
         }
-
-
 
         protected void RefreshNotificationsBar(string username)
         {
@@ -72,6 +75,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         public void NotifyFriendRequests(int friendReqsNum)
         {
+            notifiedFriendReq = true;
             SetFriendReqMenuHeaderOn(friendReqsNum);
             MessageBox.Show("notify friend request");
             System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
@@ -91,14 +95,18 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void friendReqsMenu_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("bring reqs from db");
-            List<string> cl_friendReqs = cl.GetFriendRequests(forumName, loggedUsername);
-            foreach (string str in cl_friendReqs)
+            if (notifiedFriendReq)
             {
-                MenuItem mi = new MenuItem();
-                mi.Header = str;
-                mi.Click += new RoutedEventHandler(friendReq_Click);
-                friendRequestsMenu.Items.Add(mi);
+                MessageBox.Show("bring reqs from db");
+                List<string> cl_friendReqs = cl.GetFriendRequests(forumName, loggedUsername);
+                foreach (string str in cl_friendReqs)
+                {
+                    MenuItem mi = new MenuItem();
+                    mi.Header = str;
+                    mi.Click += new RoutedEventHandler(friendReq_Click);
+                    friendRequestsMenu.Items.Add(mi);
+                }
+                notifiedFriendReq = false;
             }
 
         }

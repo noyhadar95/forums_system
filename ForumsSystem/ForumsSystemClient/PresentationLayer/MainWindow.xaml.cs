@@ -30,7 +30,7 @@ namespace ForumsSystemClient.PresentationLayer
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
-            
+
             // check if the system is initialized
             if (!cl.IsInitialized())
             {
@@ -97,7 +97,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void editPoliciesBtn_Click(object sender, RoutedEventArgs e)
         {
-            WindowHelper.SwitchWindow(this, new AddForumWindow());
+            WindowHelper.SwitchWindow(this, new EditForumPoliciesWindow());
         }
     }
 }

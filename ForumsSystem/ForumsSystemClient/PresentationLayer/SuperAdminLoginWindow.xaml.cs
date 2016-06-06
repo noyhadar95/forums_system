@@ -55,7 +55,6 @@ namespace ForumsSystemClient.PresentationLayer
                 sa.userName = username;
                 sa.password = password;
                 WindowHelper.SetLoggedSuperAdmin(sa);
-                WindowHelper.LogoutAllUsers();
                 WindowHelper.SwitchWindow(this, new MainWindow());
             }
             else
