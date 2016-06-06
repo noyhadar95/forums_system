@@ -103,6 +103,8 @@ namespace ForumsSystem.Server.CommunicationLayer
             }
 
             Tuple<string, string> clientTuple = new Tuple<string, string>(forumName, userName);
+            if (clients == null)
+                return;
             if (!clients.ContainsKey(clientTuple))
                 return;
             string ip = clients[clientTuple];

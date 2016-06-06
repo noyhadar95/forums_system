@@ -11,7 +11,7 @@ using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 
 namespace AcceptanceTestsBridge
 {
-    class ClientBridge : IBridge
+   public class ClientBridge : IBridge
     {
         private CL cl;
         // default values for policies params
@@ -22,6 +22,7 @@ namespace AcceptanceTestsBridge
         private int maxNumOfUsers = 200;
         private int minAge = 1;
         private int maxModerators = 20;
+        private Dictionary<Tuple<string,string>, string> sessionKeys =  new Dictionary<Tuple<string, string>, string>();
 
         public ClientBridge()
         {
@@ -297,7 +298,9 @@ namespace AcceptanceTestsBridge
 
         public bool LoginUser(string forumName, string username, string pass)
         {
-            return cl.MemberLogin(forumName, username, pass) !=null;
+            Tuple<User,string> t = cl.MemberLogin(forumName, username, pass);
+            sessionKeys.Add(new Tuple<string, string>(forumName,username), t.Item2);
+            return t != null;
         }
 
         public bool LoginSuperAdmin(string username, string pass)
@@ -462,12 +465,27 @@ namespace AcceptanceTestsBridge
 
         public void LogoutUser(string forumName, string username)
         {
-            throw new NotImplementedException();
+            if (sessionKeys.ContainsKey(new Tuple<string, string>(forumName, username)))
+                sessionKeys.Remove(new Tuple<string, string>(forumName, username)); 
+            cl.MemberLogout(forumName, username);
         }
 
         public List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
             throw new NotImplementedException();
+        }
+
+        public string getUserClientSession(string forumName, string userName)
+        {
+            string key ="";
+            if (!sessionKeys.TryGetValue(new Tuple<string, string>(forumName, userName), out key))
+                key = "";
+            return key;
+        }
+
+        public bool LoginUserWithClientSession(string forumName, string username, string pass, string clientServer)
+        {
+            return cl.MemberLogin(forumName, username, pass, clientServer) != null;
         }
     }
 }

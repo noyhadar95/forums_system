@@ -39,7 +39,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             connect_me.TakeAction(cmd);
 
             DAL_Users du = new DAL_Users();
-            du.CreateUser(name, "Deleted", "Deleted4Ever", "Deleted", DateTime.Now, DateTime.Now, 0, UserType.UserTypes.Member,DateTime.Now);
+            du.CreateUser(name, "Deleted", "Deleted4Ever", "Deleted", DateTime.Now, DateTime.Now, 0, UserType.UserTypes.Member,DateTime.Now,"deleted");
 
         }
 

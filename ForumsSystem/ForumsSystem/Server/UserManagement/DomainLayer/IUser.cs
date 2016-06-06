@@ -97,11 +97,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         List<IUser> GetWaitingFriendsList();
 
 
-
-        bool AddSecurityQuestion(SecurityQuestions question, string answer);
-        bool RemoveSecurityQuestion(SecurityQuestions question);
-        bool CheckSecurityQuestion(SecurityQuestions question, string answer);
         DateTime GetDateOfBirth();
+        bool AddSecurityQuestion(SecurityQuestionsEnum question, string answer);
+        bool RemoveSecurityQuestion(SecurityQuestionsEnum question);
+        bool CheckSecurityQuestion(SecurityQuestionsEnum question, string answer);
+
 
     }
 

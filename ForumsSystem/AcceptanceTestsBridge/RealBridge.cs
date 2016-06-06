@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace AcceptanceTestsBridge
 {
-    class RealBridge : IBridge
+    public class RealBridge : IBridge
     {
 
         private IServiceLayer sl;
@@ -22,7 +22,8 @@ namespace AcceptanceTestsBridge
         private int maxNumOfUsers = 200;
         private int minAge = 1;
         private int maxModerators = 20;
-
+        private Dictionary<Tuple<string, string>, string> sessionKeys = new Dictionary<Tuple<string, string>, string>();
+        private int randomCounter = 1;
         public RealBridge()
         {
             sl = new ServiceLayer();
@@ -334,8 +335,22 @@ namespace AcceptanceTestsBridge
         {
             //IForum forum = sl.GetForum(forumName);
             IUser user = sl.MemberLogin(username, pass, forumName);
+
+            if (!sessionKeys.ContainsKey(new Tuple<string, string>(forumName, username)))
+            {
+                sessionKeys.Add(new Tuple<string, string>(forumName, username), username + randomCounter++);
+                return user != null;
+            }
+            else
+            return false;
+        }
+
+        private bool LoginUserWithSessionOK(string forumName, string username, string pass)
+        {
+            IUser user = sl.MemberLogin(username, pass, forumName);
             return user != null;
         }
+
 
         public bool LoginSuperAdmin(string username, string pass)
         {
@@ -527,7 +542,26 @@ namespace AcceptanceTestsBridge
 
         public void LogoutUser(string forumName, string username)
         {
+
+            if (sessionKeys.ContainsKey(new Tuple<string, string>(forumName, username)))
+                sessionKeys.Remove(new Tuple<string, string>(forumName, username));
             sl.MemberLogout(forumName, username);
+        }
+
+        public string getUserClientSession(string forumName, string userName)
+        {
+            string key = "";
+            if (!sessionKeys.TryGetValue(new Tuple<string, string>(forumName, userName), out key))
+                key = "";
+            return key;
+        }
+
+        public bool LoginUserWithClientSession(string forumName, string username, string pass, string clientServer)
+        {
+            string key = getUserClientSession(forumName, username);
+            if (clientServer.Equals(key))
+                return LoginUserWithSessionOK(forumName, username, pass);
+            return false;
         }
     }
 }

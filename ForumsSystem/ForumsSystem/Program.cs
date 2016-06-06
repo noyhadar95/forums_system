@@ -12,10 +12,13 @@ namespace ForumsSystem
     {
         static void Main(string[] args)
         {
+          
 
             SuperAdmin.populateSuperAdmin();
             Server.CommunicationLayer.Server.StartServer();
-            /*string s = "erge3434tg3";
+
+            /*
+            string s = "erge3434tg3";
             string hash = Server.PRG.Hash.GetHash(s);
             string hash2 = Server.PRG.Hash.GetHash(s);
             string hash3 = Server.PRG.Hash.GetHash(s);
