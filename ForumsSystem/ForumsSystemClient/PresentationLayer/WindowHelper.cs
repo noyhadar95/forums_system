@@ -17,23 +17,9 @@ namespace ForumsSystemClient.PresentationLayer
         // that the user is logged in.
         private static Dictionary<string, User> loggedUsers = new Dictionary<string, User>();
         private static SuperAdmin loggedSuperAdmin = null;
-        private static INotifiableWindow currentWin;
-        private static string friendReqMenuHeader = "_Friend Requests";
+        private static INotifiableWindow currentNotifyWin;
 
-        public static string GetFriendReqMenuHeader()
-        {
-            return friendReqMenuHeader;
-        }
 
-        public static void SetFriendReqMenuHeaderOn(int notifNum)
-        {
-            friendReqMenuHeader = "_Friend Requests(" + notifNum + ")";
-        }
-
-        public static void SetFriendReqMenuHeaderOff()
-        {
-            friendReqMenuHeader = "_Friend Requests";
-        }
 
         public static string GetLoggedUsername(string forumName)
         {
@@ -99,7 +85,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         public static void SetCurrentWindow(INotifiableWindow newWin)
         {
-            currentWin = newWin;
+            currentNotifyWin = newWin;
         }
 
         public static void SwitchWindow(Window oldWin, Window newWin)
@@ -111,7 +97,7 @@ namespace ForumsSystemClient.PresentationLayer
 
             // handle INotifiableWindow
             if (newWin is INotifiableWindow)
-                currentWin = (INotifiableWindow)newWin;
+                currentNotifyWin = (INotifiableWindow)newWin;
         }
 
         // show newWin without closing oldWin.
@@ -128,13 +114,11 @@ namespace ForumsSystemClient.PresentationLayer
             win.Style = style;
         }
 
-        public static void NotifyFriendRequest()
+        public static void NotifyFriendRequests(int friendReqsNum)
         {
-            SetFriendReqMenuHeaderOn(1);
-            if (currentWin != null)
+            if (currentNotifyWin != null)
             {
-                
-                    currentWin.Notify();
+                currentNotifyWin.Notify();
             }
         }
 

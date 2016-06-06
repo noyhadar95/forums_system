@@ -78,6 +78,7 @@
       <DependentUpon>EditPostWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLayer\INotifiableWindow.cs" />
+    <Compile Include="PresentationLayer\NotifBarWindow.cs" />
     <Compile Include="PresentationLayer\SendFriendReqWindow.xaml.cs">
       <DependentUpon>SendFriendReqWindow.xaml</DependentUpon>
     </Compile>

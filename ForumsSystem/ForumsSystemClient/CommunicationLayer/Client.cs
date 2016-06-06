@@ -100,29 +100,20 @@ namespace ForumsSystemClient.CommunicationLayer
 
                         Console.WriteLine("Received : " + dataReceived);
 
-                        if (parameters[0] is string)
-                        {
-                            // friend request
-                            WindowHelper.NotifyFriendRequest();
-                        }
-                        else
-                        {
-                        }
-                        //TODO: Handle notification------------------
-
-                        Console.WriteLine("Received : " + dataReceived);
-
                         // Handle notification------------------
                         if (parameters[0] is string)
                         {
                             string[] notifArr = ((string)parameters[0]).Split(',');
                             try
                             {
-                                if (int.Parse(notifArr[2]) > 0)
+                                int friendReqsNum = int.Parse(notifArr[2]);
+                                if (friendReqsNum > 0)
                                 {
                                     // notify about friend request/s
-                                    WindowHelper.NotifyFriendRequest();
+                                    WindowHelper.NotifyFriendRequests(friendReqsNum);
+
                                 }
+
                             }
                             catch (Exception)
                             {
@@ -213,8 +204,8 @@ namespace ForumsSystemClient.CommunicationLayer
         public static void StartSecuredConnection()
         {
             string textToSend = "StartSecuredConnection";
-            
-           // textToSend = Encrypt(textToSend);
+
+            // textToSend = Encrypt(textToSend);
             string textFromServer = connect(textToSend);
             //textFromServer = Decrypt(textFromServer);
             if (textFromServer.Equals("null"))
@@ -225,13 +216,13 @@ namespace ForumsSystemClient.CommunicationLayer
 
             Object retValue = StringToObject(items[0], items[1]);
 
-                List<Object> ret = (List<Object>)retValue;
-                id = (int)ret[0];
-                encKey = (Byte[])ret[1];
-                authKey = (Byte[])ret[2];
-                return;
+            List<Object> ret = (List<Object>)retValue;
+            id = (int)ret[0];
+            encKey = (Byte[])ret[1];
+            authKey = (Byte[])ret[2];
+            return;
 
-           
+
         }
 
         /*   public static string ObjectToString(Object obj)
@@ -359,8 +350,8 @@ namespace ForumsSystemClient.CommunicationLayer
         }
         private static string Encrypt(string textToSend)
         {
-            if(encKey!=null&&authKey!=null)
-                return id+delimeter+Encryption.AESThenHMAC.SimpleEncrypt(textToSend, encKey, authKey);
+            if (encKey != null && authKey != null)
+                return id + delimeter + Encryption.AESThenHMAC.SimpleEncrypt(textToSend, encKey, authKey);
             return textToSend;
         }
         private static string Decrypt(string textFromServer)

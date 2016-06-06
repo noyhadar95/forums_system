@@ -158,11 +158,76 @@ namespace ForumsSystemClient.PresentationLayer
             }
             SuperAdmin creator = WindowHelper.GetLoggedSuperAdmin();
 
-            // TODO: handle policy
-            cl.CreateForum(creator.userName, creator.password, forumName, new MinimumAgePolicy(Policies.MinimumAge, 1), admins);
+            Policy policy = GetForumPolicy();
+            cl.CreateForum(creator.userName, creator.password, forumName, policy, admins);
 
             WindowHelper.SwitchWindow(this, new MainWindow());
         }
+
+        private Policy GetForumPolicy()
+        {
+            List<Policy> policyList = new List<Policy>();
+
+            if (cbPassword.IsChecked == true)
+            {
+                policyList.Add(new PasswordPolicy(Policies.Password, (int)passwordLengthCB.SelectedItem, (int)passwordValidityCB.SelectedItem));
+            }
+            if (cbAuthentication.IsChecked == true)
+            {
+                policyList.Add(new AuthenticationPolicy(Policies.Authentication));
+            }
+            if (cbConfidentiality.IsChecked == true)
+            {
+                policyList.Add(new ConfidentialityPolicy(Policies.Confidentiality, (bool)confidentialityBlockPassCB.SelectedItem));
+            }
+            if (cbModeratorAppointment.IsChecked == true)
+            {
+                policyList.Add(new ModeratorAppointmentPolicy(Policies.ModeratorAppointment, (int)modSeniorityCB.SelectedItem, (int)modNumOfMessagesCB.SelectedItem,
+                    (int)modNumOfComplaintsCB.SelectedItem));
+            }
+            if (cbAdminAppointment.IsChecked == true)
+            {
+                policyList.Add(new AdminAppointmentPolicy(Policies.AdminAppointment, (int)adminSeniorityCB.SelectedItem, (int)adminNumOfMessagesCB.SelectedItem,
+                    (int)adminNumOfComplaintsCB.SelectedItem));
+            }
+            if (cbModeratorSuspension.IsChecked == true)
+            {
+                policyList.Add(new ModeratorSuspensionPolicy(Policies.ModeratorSuspension, (int)modSuspNumOfComplCB.SelectedItem));
+            }
+            if (cbMemberSuspension.IsChecked == true)
+            {
+                policyList.Add(new MemberSuspensionPolicy(Policies.MemberSuspension, (int)memberSuspNumOfComplCB.SelectedItem));
+            }
+            if (cbUsersLoad.IsChecked == true)
+            {
+                policyList.Add(new UsersLoadPolicy(Policies.UsersLoad, (int)maxUsersCB.SelectedItem));
+            }
+            if (cbMinimumAge.IsChecked == true)
+            {
+                policyList.Add(new MinimumAgePolicy(Policies.MinimumAge, (int)minAgeCB.SelectedItem));
+            }
+            if (cbMaxModerators.IsChecked == true)
+            {
+                policyList.Add(new MaxModeratorsPolicy(Policies.MaxModerators, (int)maxModsCB.SelectedItem));
+            }
+
+            // check if no policy has been chosen
+            if (policyList.Count == 0)
+                return null;
+
+            Policy policyHead = policyList[0];
+            Policy policyTail = policyHead;
+            int i = 1;
+            while (i < policyList.Count)
+            {
+                policyTail.NextPolicy = policyList[i];
+                policyTail = policyTail.NextPolicy;
+                i++;
+            }
+
+            return policyHead;
+        }
+
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
