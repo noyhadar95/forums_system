@@ -186,19 +186,19 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void privateMsgsMenu_Click(object sender, RoutedEventArgs e)
         {
-            if (notifiedPrivateMsg)
-            {
-                MessageBox.Show("bring PM's from db");
-                List<string> cl_privateMsgs = cl.(forumName, loggedUsername);
-                foreach (string str in cl_privateMsgs)
-                {
-                    MenuItem mi = new MenuItem();
-                    mi.Header = str;
-                    mi.Click += new RoutedEventHandler(friendReq_Click);
-                    privateMsgsMenu.Items.Add(mi);
-                }
-                notifiedPrivateMsg = false;
-            }
+            //if (notifiedPrivateMsg)
+            //{
+            //    MessageBox.Show("bring PM's from db");
+            //    List<string> cl_privateMsgs = cl.(forumName, loggedUsername);
+            //    foreach (string str in cl_privateMsgs)
+            //    {
+            //        MenuItem mi = new MenuItem();
+            //        mi.Header = str;
+            //        mi.Click += new RoutedEventHandler(friendReq_Click);
+            //        privateMsgsMenu.Items.Add(mi);
+            //    }
+            //    notifiedPrivateMsg = false;
+            //}
 
         }
 
