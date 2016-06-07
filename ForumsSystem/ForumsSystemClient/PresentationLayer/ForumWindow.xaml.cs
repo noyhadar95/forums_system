@@ -209,6 +209,11 @@ namespace ForumsSystemClient.PresentationLayer
             }
         }
 
+        private void reportsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new AdminReportsWindow(forumName));
+        }
+
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
             WindowHelper.SwitchWindow(this, new MainWindow());

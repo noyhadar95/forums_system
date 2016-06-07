@@ -15,7 +15,7 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}"/>
-                    <GridViewColumn Header="Forum Name" DisplayMemberBinding="{Binding ForumName}"/>
+                    <GridViewColumn Header="Forum" DisplayMemberBinding="{Binding ForumName}"/>
                     <GridViewColumn Header="Username" DisplayMemberBinding="{Binding Username}"/>
                 </GridView>
             </ListView.View>

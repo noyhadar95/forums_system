@@ -24,8 +24,9 @@
                 <PasswordBox x:Name="passwordBox" TabIndex="2" HorizontalAlignment="Left" Margin="73,50,0,0" VerticalAlignment="Top" Height="22" Width="120"/>
                 <PasswordBox x:Name="sessionTokenPB" HorizontalAlignment="Left" Margin="313,52,0,0" VerticalAlignment="Top"/>
             </Grid>
-            <Grid x:Name="adminGrid" HorizontalAlignment="Left" Height="48" Margin="10,260,0,0" VerticalAlignment="Top" Width="171">
+            <Grid x:Name="adminGrid" HorizontalAlignment="Left" Height="87" Margin="10,301,0,0" VerticalAlignment="Top" Width="171">
                 <Button x:Name="addSubForumBtn" Content="add sub forum" TabIndex="8" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="addSubForumBtn_Click"/>
+                <Button x:Name="reportsBtn" Content="reports" TabIndex="9" HorizontalAlignment="Left" Margin="5,51,0,0" VerticalAlignment="Top" Width="103" Height="30" FontSize="10.667" Click="reportsBtn_Click"  />
             </Grid>
             <Grid x:Name="userGrid" Height="185" Margin="10,118,561,0" VerticalAlignment="Top">
                 <Button x:Name="logoutBtn" Content="logout" TabIndex="5" HorizontalAlignment="Left" Margin="5,54,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="logoutBtn_Click"/>

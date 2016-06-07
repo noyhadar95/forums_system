@@ -90,10 +90,11 @@ namespace ForumsSystemClient.CommunicationLayer
 
                 Console.WriteLine("Received : " + dataReceived);
 
-                // Handle notification------------------
+                // Handle notifications------------------
                 if (parameters[0] is string)
                 {
                     string[] notifArr = ((string)parameters[0]).Split(',');
+                    // Friend Requests
                     try
                     {
                         int friendReqsNum = int.Parse(notifArr[2]);
@@ -101,6 +102,20 @@ namespace ForumsSystemClient.CommunicationLayer
                         {
                             // notify about friend request/s
                             WindowHelper.NotifyFriendRequests(friendReqsNum);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        return;
+                    }
+                    // Private Msgs
+                    try
+                    {
+                        int PrivateMsgsNum = int.Parse(notifArr[1]);
+                        if (PrivateMsgsNum > 0)
+                        {
+                            // notify about private message/s
+                            WindowHelper.NotifyPrivateMessages(PrivateMsgsNum);
                         }
                     }
                     catch (Exception)

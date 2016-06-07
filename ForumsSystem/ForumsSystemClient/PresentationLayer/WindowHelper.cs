@@ -120,6 +120,13 @@ namespace ForumsSystemClient.PresentationLayer
             }
         }
 
+        public static void NotifyPrivateMessages(int privateMsgsNum)
+        {
+            if (currentNotifyWin != null)
+            {
+                currentNotifyWin.NotifyPrivateMessages(privateMsgsNum);
+            }
+        }
 
     }
 }

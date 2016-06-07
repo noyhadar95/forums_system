@@ -14,15 +14,23 @@ namespace ForumsSystemClient.PresentationLayer
     /// </summary>
     public abstract class NotifBarWindow : Window, INotifiableWindow
     {
+        private const string FRIEND_REQUEST_MENU_HEADER = "_Friend Requests";
+        private const string PRIVATE_MSG_MENU_HEADER = "_Private Messages";
+
         protected CL cl;
         protected string forumName;
         protected string loggedUsername;
 
         protected Menu userMenuBar;
-        protected MenuItem friendRequestsMenu;
-        private string friendReqMenuHeader = "_Friend Requests";
         protected MenuItem mi_type; // the menu item for displaying the user type on the user notifications bar
-        private bool notifiedFriendReq;
+
+        // Friend Requests
+        protected MenuItem friendRequestsMenu;
+        private string friendReqMenuHeader = FRIEND_REQUEST_MENU_HEADER;
+        private bool notifiedFriendReq; // used in order to save in calls to CL
+        // Private Msgs
+        protected MenuItem privateMsgsMenu;
+        private string privateMsgsMenuHeader = PRIVATE_MSG_MENU_HEADER;
 
 
         public NotifBarWindow(string forumName)
@@ -37,9 +45,15 @@ namespace ForumsSystemClient.PresentationLayer
 
         protected virtual void Initialize(DockPanel dock)
         {
+            // create Friend Requests menu
             friendRequestsMenu = new MenuItem();
             friendRequestsMenu.Header = GetFriendReqMenuHeader();
             friendRequestsMenu.Click += new RoutedEventHandler(friendReqsMenu_Click);
+
+            // create Private Msgs menu
+            privateMsgsMenu = new MenuItem();
+            privateMsgsMenu.Header = GetPrivateMsgMenuHeader();
+            privateMsgsMenu.Click += new RoutedEventHandler(friendReqsMenu_Click);
 
             userMenuBar = new Menu();
             userMenuBar.Visibility = Visibility.Visible;
@@ -70,7 +84,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void SetFriendReqMenuHeaderOn(int notifNum)
         {
-            friendReqMenuHeader = "_Friend Requests(" + notifNum + ")";
+            friendReqMenuHeader = FRIEND_REQUEST_MENU_HEADER + "(" + notifNum + ")";
         }
 
         public void NotifyFriendRequests(int friendReqsNum)
@@ -141,17 +155,51 @@ namespace ForumsSystemClient.PresentationLayer
 
         #region private messages
 
+        private string GetPrivateMsgMenuHeader()
+        {
+            return privateMsgsMenuHeader;
+        }
+
+        private void SetPrivateMsgMenuHeaderOn(int notifNum)
+        {
+            privateMsgsMenuHeader = PRIVATE_MSG_MENU_HEADER + "(" + notifNum + ")";
+        }
+
         public void NotifyPrivateMessages(int privateMsgsNum)
         {
-            //SetPrivateMsgMenuHeaderOn(privateMsgsNum);
-            //MessageBox.Show("notify PM");
-            //System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
-            //{
-            //    privateMsgsMenu.Items.Clear();
-            //}));
+            SetPrivateMsgMenuHeaderOn(privateMsgsNum);
+            MessageBox.Show("notify PM");
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
+            {
+                privateMsgsMenu.Items.Clear();
+            }));
 
-            //RefreshPrivateMsgMenu();
-            //userMenuBar.Items.Refresh();
+            RefreshPrivateMsgMenu();
+            userMenuBar.Items.Refresh();
+        }
+
+        protected void RefreshPrivateMsgMenu()
+        {
+            privateMsgsMenu.Items.Clear();
+            privateMsgsMenu.Header = GetPrivateMsgMenuHeader();
+        }
+
+        private void privateMsgsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (notifiedPrivateMsg)
+            {
+                MessageBox.Show("bring PM's from db");
+                List<string> cl_privateMsgs = cl.(forumName, loggedUsername);
+                foreach (string str in cl_privateMsgs)
+                {
+                    MenuItem mi = new MenuItem();
+                    mi.Header = str;
+                    mi.Click += new RoutedEventHandler(friendReq_Click);
+                    privateMsgsMenu.Items.Add(mi);
+                }
+                notifiedPrivateMsg = false;
+            }
+
         }
 
         #endregion
