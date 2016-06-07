@@ -13,10 +13,13 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
     [DataContract(IsReference = true)]
     public class PrivateMessageNotification
     {
-        public string sender { get; private set; } 
+        [DataMember]
+        public string sender { get; private set; }
+        [DataMember]
         public string title { get; private set; }
+        [DataMember]
         public string content { get; private set; }
-
+        [DataMember]
         public int id { get; private set; }
         public PrivateMessageNotification(string sender,string title,string content,int id)
         {

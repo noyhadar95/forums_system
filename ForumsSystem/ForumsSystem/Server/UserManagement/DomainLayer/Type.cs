@@ -28,13 +28,14 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return null;
             //policies
             PolicyParametersObject param = new PolicyParametersObject(Policies.MaxModerators);
-            param.NumOfModerators = users.Count;
+            param.NumOfModeratorsToAdd = users.Count;
+            param.CurrNumOfModerators = 0;
             if (forum.GetPolicy() != null) { 
                 if (!forum.GetPolicy().CheckPolicy(param))
                     return null;
              }
             param.SetPolicy(Policies.ModeratorAppointment);
-
+           
             if (!callingUser.isLogin())
                 return null;
             Dictionary<IUser, DateTime> moderators = new Dictionary<IUser, DateTime>();
@@ -85,7 +86,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
             // policies
             PolicyParametersObject param = new PolicyParametersObject(Policies.MaxModerators);
-            param.NumOfModerators = subForum.numOfModerators()+1;
+            param.CurrNumOfModerators = subForum.numOfModerators();
+            param.NumOfModeratorsToAdd = 1;
             if (forum.GetPolicy() != null)
             {
                 if (!forum.GetPolicy().CheckPolicy(param))

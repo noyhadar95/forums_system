@@ -92,8 +92,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private bool checkedModertorAdditionPolicies(IUser modToBe)
         {
             PolicyParametersObject modAddition = new PolicyParametersObject(Policies.MaxModerators);
-            modAddition.NumOfModerators = numOfModerators();
-            if(!this.forum.GetPolicy().CheckPolicy(modAddition))
+            modAddition.CurrNumOfModerators = numOfModerators();
+            modAddition.NumOfModeratorsToAdd = 1;
+            if (!this.forum.GetPolicy().CheckPolicy(modAddition))
                 return false;
             modAddition.SetPolicy(Policies.ModeratorAppointment);
             modAddition.User = modToBe;

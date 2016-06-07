@@ -135,7 +135,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (!policies.CheckPolicy(param))
                 return false;
             param.SetPolicy(Policies.UsersLoad);
-            param.SetNumOfUsers(users.Count);
+            param.SetNumOfUsers(this.GetNumOfUsers());
             if (!policies.CheckPolicy(param))
                 return false;
             param.SetPolicy(Policies.MinimumAge);
@@ -312,7 +312,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public int GetNumOfUsers()
         {
-            return this.users.Count;
+            return this.users.Count-1;//remove DELETED user
         }
 
         public void sendMail(string email, string userName, string subject, string body)

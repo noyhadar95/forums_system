@@ -654,13 +654,14 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                     ""+postNotificationCount+","+ privateMessageNotificationsCount + ","+waitingFriendsCount);
 
 
-                if (waitingFriendsList != null)
+               /* if (waitingFriendsList != null)
                 {
                     foreach (IUser u in waitingFriendsList)
                     {
                         Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, u.getUsername());
                     }
                 }
+                */
 
             }
 

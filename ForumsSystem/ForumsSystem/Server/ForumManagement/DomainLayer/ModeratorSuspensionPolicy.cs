@@ -38,7 +38,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
 
                 User user = (User)param.User;
-                return user.NumOfComplaints > numOfComplaints;
+                int t =
+                 user.NumOfComplaints;
+                return t <= numOfComplaints;
             }
             else
                 return base.CheckPolicy(param);

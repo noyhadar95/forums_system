@@ -371,5 +371,10 @@ namespace ForumsSystemClient.CommunicationLayer
         {
             return (bool)Client.SendRequest("SetUserPassword", forumName, username, newPassword);
         }
+        List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username)
+        {
+            return (List<PrivateMessageNotification>)Client.SendRequest("GetPrivateMessageNotifications", forumName, username);
+
+        }
     }
 }
