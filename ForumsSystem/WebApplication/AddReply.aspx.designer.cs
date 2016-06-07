@@ -10,7 +10,7 @@
 namespace WebApplication {
     
     
-    public partial class AddThread {
+    public partial class AddReply {
         
         /// <summary>
         /// form2 control.
