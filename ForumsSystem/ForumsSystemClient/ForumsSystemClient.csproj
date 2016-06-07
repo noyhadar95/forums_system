@@ -83,6 +83,9 @@
     <Compile Include="PresentationLayer\SendFriendReqWindow.xaml.cs">
       <DependentUpon>SendFriendReqWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\SuperAdminReportsWindow.xaml.cs">
+      <DependentUpon>SuperAdminReportsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\ForumManagement\DomainLayer\AdminAppointmentPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\ConfidentialityPolicy.cs" />
@@ -225,6 +228,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\SuperAdminLoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\SuperAdminReportsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

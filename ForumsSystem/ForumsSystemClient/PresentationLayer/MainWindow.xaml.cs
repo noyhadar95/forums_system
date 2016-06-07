@@ -99,5 +99,10 @@ namespace ForumsSystemClient.PresentationLayer
         {
             WindowHelper.SwitchWindow(this, new EditForumPoliciesWindow());
         }
+
+        private void reportsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new SuperAdminReportsWindow());
+        }
     }
 }
