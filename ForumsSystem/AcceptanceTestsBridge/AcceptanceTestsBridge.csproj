@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AcceptanceTestsBridge</RootNamespace>
     <AssemblyName>AcceptanceTestsBridge</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,6 +48,7 @@
     <Compile Include="ProxyBridge.cs" />
     <Compile Include="RealBridge.cs" />
     <Compile Include="UserStub.cs" />
+    <Compile Include="WebBridge.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ForumsSystemClient\ForumsSystemClient.csproj">
@@ -56,6 +58,10 @@
     <ProjectReference Include="..\ForumsSystem\ForumsSystem.csproj">
       <Project>{488d5473-e8ec-4df6-99c9-8d07d7f30237}</Project>
       <Name>ForumsSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebApplication\WebApplication.csproj">
+      <Project>{0c014490-e132-43f2-8f9e-47cf2f3c968a}</Project>
+      <Name>WebApplication</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
