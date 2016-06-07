@@ -172,16 +172,18 @@ namespace ForumsSystemClient.PresentationLayer
             WindowHelper.SetCurrentWindow(this);
 
             //// fields are not empty try to login
-            //Tuple<User, string> userTokenTuple = null;
-            //if (sessionToken == "")
-            //{
-            //    userTokenTuple = cl.MemberLogin(forumName, username, password);
-            //}
-            //else
-            //{
-            //    userTokenTuple = cl.MemberLogin(forumName, username, password, sessionToken);
-            //}
-            User user = cl.MemberLogin(forumName, username, password);
+            Tuple<User, string> userTokenTuple = null;
+            if (sessionToken == "")
+            {
+                userTokenTuple = cl.MemberLogin(forumName, username, password);
+            }
+            else
+            {
+                userTokenTuple = cl.MemberLogin(forumName, username, password, sessionToken);
+            }
+            User user=null;
+            if(userTokenTuple!=null)
+                user= userTokenTuple.Item1;//cl.MemberLogin(forumName, username, password);
 
             if (user == null)
             {

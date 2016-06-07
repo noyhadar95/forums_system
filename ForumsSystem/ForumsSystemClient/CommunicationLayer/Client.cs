@@ -23,7 +23,10 @@ namespace ForumsSystemClient.CommunicationLayer
         static ThreadStart startNotification;
         static Thread notificationThread;
         static bool notificationsServerActive = false;
-
+        static bool listenerStarted = false;
+        static int id;
+        static Byte[] encKey;
+        static Byte[] authKey;
         private static string connect(string textToSend)
         {
             SERVER_IP = GetLocalIPAddress();
@@ -56,77 +59,105 @@ namespace ForumsSystemClient.CommunicationLayer
             string myIp = GetLocalIPAddress();
             //---listen at the specified IP and port no.---
             IPAddress localAdd = IPAddress.Parse(myIp);
-            TcpListener listener = new TcpListener(localAdd, CLIENT_PORT_NO);
+            TcpListenerEx listener = new TcpListenerEx(localAdd, CLIENT_PORT_NO);
 
-            listener.Start();
-
-            while (true)
+            if (!listenerStarted)
             {
-                Console.WriteLine("Listening...");
-                //---incoming client connected---
-                TcpClient client = listener.AcceptTcpClient();
+                listenerStarted = true;
+                // if(!listener.Active)
 
 
-
-                //---get the incoming data through a network stream---
-                NetworkStream nwStream = client.GetStream();
-                byte[] buffer = new byte[client.ReceiveBufferSize];
-
-                //---read incoming stream---
-                int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
-
-                //---convert the data received into a string---
-                string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                string[] seperators = new string[] { delimeter };
-                string[] items = dataReceived.Split(seperators, StringSplitOptions.None);
-
-                //TODO: MAKE THIS WORK ---------------------
-                List<Object> parameters = new List<object>();
-
-                for (int i = 0; i < items.Length; i += 2)
+                while (true)
                 {
-                    parameters.Add(StringToObject(items[i], items[i + 1]));
-                }
-
-                Console.WriteLine("Received : " + dataReceived);
-
-                // Handle notifications------------------
-                if (parameters[0] is string)
-                {
-                    string[] notifArr = ((string)parameters[0]).Split(',');
-                    // Friend Requests
                     try
                     {
-                        int friendReqsNum = int.Parse(notifArr[2]);
-                        if (friendReqsNum > 0)
+                        listener.Start();
+                        Console.WriteLine("Listening...");
+                        //---incoming client connected---
+                        TcpClient client = listener.AcceptTcpClient();
+
+
+
+                        //---get the incoming data through a network stream---
+                        NetworkStream nwStream = client.GetStream();
+                        byte[] buffer = new byte[client.ReceiveBufferSize];
+
+                        //---read incoming stream---
+                        int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
+
+                        //---convert the data received into a string---
+                        string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                        string[] seperators = new string[] { delimeter };
+                        string[] items = dataReceived.Split(seperators, StringSplitOptions.None);
+
+                        //TODO: MAKE THIS WORK ---------------------
+                        List<Object> parameters = new List<object>();
+
+
+                        for (int i = 0; i < items.Length; i += 2)
                         {
-                            // notify about friend request/s
-                            WindowHelper.NotifyFriendRequests(friendReqsNum);
+                            parameters.Add(StringToObject(items[i], items[i + 1]));
+                        }
+
+                        Console.WriteLine("Received : " + dataReceived);
+
+                        // Handle notification------------------
+                        if (parameters[0] is string)
+                        {
+                            string[] notifArr = ((string)parameters[0]).Split(',');
+                            // Friend Requests
+							try
+                            {
+                                int friendReqsNum = int.Parse(notifArr[2]);
+                                if (friendReqsNum > 0)
+                                {
+                                    // notify about friend request/s
+                                    WindowHelper.NotifyFriendRequests(friendReqsNum);
+
+                                }
+
+                            }
+                            catch (Exception)
+                            {
+                                return;
+                            }
+							
+							// Private Msgs
+							try
+							{
+								int PrivateMsgsNum = int.Parse(notifArr[1]);
+								if (PrivateMsgsNum > 0)
+								{
+									// notify about private message/s
+									WindowHelper.NotifyPrivateMessages(PrivateMsgsNum);
+								}
+							}
+							catch (Exception)
+							{
+								return;
+							}
+
+
+                        }
+                        else
+                        {
                         }
                     }
-                    catch (Exception)
+
+                    catch (SocketException se)
                     {
-                        return;
+                        if (se.ErrorCode != 10048)
+                            throw (se);
                     }
-                    // Private Msgs
-                    try
-                    {
-                        int PrivateMsgsNum = int.Parse(notifArr[1]);
-                        if (PrivateMsgsNum > 0)
-                        {
-                            // notify about private message/s
-                            WindowHelper.NotifyPrivateMessages(PrivateMsgsNum);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        return;
-                    }
+
+                   
 
 
                 }
                 else {
+
                 }
+
 
             }
             //  listener.Stop   
@@ -163,8 +194,9 @@ namespace ForumsSystemClient.CommunicationLayer
                 textToSend += delimeter + pType;
                 textToSend += delimeter + ObjectToString(param);
             }
-
+            textToSend = Encrypt(textToSend);
             string textFromServer = connect(textToSend);
+            textFromServer = Decrypt(textFromServer);
             if (textFromServer.Equals("null"))
                 return null;
 
@@ -172,6 +204,14 @@ namespace ForumsSystemClient.CommunicationLayer
             string[] items = textFromServer.Split(seperators, StringSplitOptions.None);
 
             Object retValue = StringToObject(items[0], items[1]);
+            if (methodName == "StartSecuredConnection")
+            {
+                List<Object> ret = (List<Object>)retValue;
+                id = (int)ret[0];
+                encKey = (Byte[])ret[1];
+                authKey = (Byte[])ret[1];
+                return null;
+            }
             if (methodName == "MemberLogin" && retValue != null && !notificationsServerActive)
             {
                 notificationsServerActive = true;
@@ -182,6 +222,30 @@ namespace ForumsSystemClient.CommunicationLayer
                 notificationThread.Start();
             }
             return retValue;
+
+        }
+
+        public static void StartSecuredConnection()
+        {
+            string textToSend = "StartSecuredConnection";
+
+            // textToSend = Encrypt(textToSend);
+            string textFromServer = connect(textToSend);
+            //textFromServer = Decrypt(textFromServer);
+            if (textFromServer.Equals("null"))
+                return;
+
+            string[] seperators = new string[] { delimeter };
+            string[] items = textFromServer.Split(seperators, StringSplitOptions.None);
+
+            Object retValue = StringToObject(items[0], items[1]);
+
+            List<Object> ret = (List<Object>)retValue;
+            id = (int)ret[0];
+            encKey = (Byte[])ret[1];
+            authKey = (Byte[])ret[2];
+            return;
+
 
         }
 
@@ -307,6 +371,18 @@ namespace ForumsSystemClient.CommunicationLayer
                 DataContractSerializer deserializer = new DataContractSerializer(toType);
                 return deserializer.ReadObject(stream);
             }
+        }
+        private static string Encrypt(string textToSend)
+        {
+            if (encKey != null && authKey != null)
+                return id + delimeter + Encryption.AESThenHMAC.SimpleEncrypt(textToSend, encKey, authKey);
+            return textToSend;
+        }
+        private static string Decrypt(string textFromServer)
+        {
+            if (encKey != null && authKey != null)
+                return Encryption.AESThenHMAC.SimpleDecrypt(textFromServer, encKey, authKey);
+            return textFromServer;
         }
 
     }

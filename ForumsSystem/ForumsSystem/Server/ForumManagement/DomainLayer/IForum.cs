@@ -11,7 +11,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     {
          bool InitForum(); //Needs to get Admins
         string getName();
-        void addSubForum(ISubForum subForum);
+        bool addSubForum(ISubForum subForum);
 
         List<ISubForum> GetSubForums();
             bool AddPolicy(Policy policy);
@@ -24,7 +24,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
          bool RegisterToForum(string userName, string password, string Email, DateTime dateOfBirth);
         bool RegisterToForum(IUser user);
 
-         void CreateSubForum(IUser creator, string subForumName);
+         bool CreateSubForum(IUser creator, string subForumName);
 
          IUser Login(string userName, string password);
         void sendMail(string email, string userName, string subject, string body);
@@ -36,7 +36,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         void DeleteUser(string userName);
 
         IUser GetWaitingUser(string username);
-        void AddWaitingUser(IUser user);
+        bool AddWaitingUser(IUser user);
         Dictionary<string,string> GetAllUsers();
         List<Post> GetPostsByMember(string moderatorName);
         int GetNumOfPostsByUser(string username);
@@ -46,5 +46,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         List<IUser> getUsersInForum();
 
+        bool CheckRegistrationPolicies(string password, DateTime dateOfBirth);
     }
 }
