@@ -13,7 +13,8 @@ namespace WebApplication.Communication
 
 
         // other methods
-
+        Post AddReply(string forumName, string subForumName, int threadID, string publisherName, int postID, string title, string content);
+        int AddThread(string forumName, string subForumName, string publisher, string title, string content);
         Forum GetForum(string forumName);
         string GetUserType(string forumName, string username);
         bool ConfirmRegistration(string forumName, string username);

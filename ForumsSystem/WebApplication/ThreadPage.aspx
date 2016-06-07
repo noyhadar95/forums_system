@@ -51,10 +51,11 @@
             <strong><span class="auto-style4">&nbsp;&nbsp; </span>
             <asp:Label ID="Label1" runat="server" style="font-size: large" Text="Label"></asp:Label>
             </strong><br />
-            <asp:TreeView ID="TreeView1" runat="server" Height="223px" style="margin-left: 20px; margin-top: 32px; background-color: #99CCFF;" Width="543px" BorderColor="#CCCCCC" BorderWidth="3px" ForeColor="Black">
-            </asp:TreeView>
+            <div style="overflow:auto; width:631px; height:305px; background-color: #99CCFF; margin-left: 18px; margin-top: 17px;">
+            <asp:TreeView ID="TreeView1" runat="server" Height="301px" style="margin-left: 2px; margin-top: 1px; background-color: #99CCFF;" Width="625px" BorderColor="#CCCCCC" BorderWidth="0px" ForeColor="Black">
+            </asp:TreeView></div>
             <br />
-            <asp:Button ID="BtnBack" runat="server" style="margin-left: 7px; background-color: #000000; margin-top: 67px; text-decoration: underline; color: #0099FF; font-size: medium;" Text="back" CssClass="auto-style4" Width="56px" Height="28px" OnClick="BtnBack_Click" BackColor="Black" BorderColor="Black" BorderStyle="Solid" BorderWidth="0px" ForeColor="White"/>
+            <asp:Button ID="BtnBack" runat="server" style="margin-left: 7px; background-color: #000000; margin-top: 13px; text-decoration: underline; color: #0099FF; font-size: medium;" Text="back" CssClass="auto-style4" Width="56px" Height="28px" OnClick="BtnBack_Click" BackColor="Black" BorderColor="Black" BorderStyle="Solid" BorderWidth="0px" ForeColor="White"/>
         </asp:Panel>
     </form>
 </body>

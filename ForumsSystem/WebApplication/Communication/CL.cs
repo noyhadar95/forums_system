@@ -9,8 +9,16 @@ namespace WebApplication.Communication
 {
     public class CL : ICL
     {
-        bool serverWorks = false;
 
+        public Post AddReply(string forumName, string subForumName, int threadID, string publisher, int postID, string title, string content)
+        {
+            return (Post)Client.SendRequest("AddReply", forumName, subForumName, threadID, publisher, postID, title, content);
+        }
+
+        public int AddThread(string forumName, string subForumName, string publisher, string title, string content)
+        {
+            return (int)Client.SendRequest("AddThread", forumName, subForumName, publisher, title, content);
+        }
         public List<string> GetForumsList()
         {
             return (List<string>)Client.SendRequest("GetForumsList");
@@ -104,11 +112,6 @@ namespace WebApplication.Communication
         {
             return (SubForum)Client.SendRequest("CreateSubForum", creator, forumName, subForumName, moderators);
         }*/
-
-        public int AddThread(string forumName, string subForumName, string publisher, string title, string content)
-        {
-            return (int)Client.SendRequest("AddThread", forumName, subForumName, publisher, title, content);
-        }
 
         public bool AddModerator(string forumName, string subForumName, string adminUsername, KeyValuePair<string, DateTime> newMod)
         {

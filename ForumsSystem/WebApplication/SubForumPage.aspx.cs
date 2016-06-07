@@ -32,6 +32,8 @@ namespace WebApplication
                 LabelLogin.Visible = false;
                 BtnLogout.Visible = false;
                 BtnLogout.Enabled = false;
+                BtnAdd.Visible = false;
+                BtnAdd.Enabled = false;
             }
             else
             {
@@ -45,6 +47,8 @@ namespace WebApplication
                 LabelLogin.Visible = true;
                 BtnLogout.Visible = true;
                 BtnLogout.Enabled = true;
+                BtnAdd.Visible = true;
+                BtnAdd.Enabled = true;
             }
         }
 
@@ -77,7 +81,8 @@ namespace WebApplication
             LabelLogin.Visible = true;
             BtnLogout.Visible = true;
             BtnLogout.Enabled = true;
-
+            BtnAdd.Visible = true;
+            BtnAdd.Enabled = true;
             Session["Data"] = userName;
         }
 
@@ -94,7 +99,8 @@ namespace WebApplication
             LabelLogin.Visible = false;
             BtnLogout.Visible = false;
             BtnLogout.Enabled = false;
-
+            BtnAdd.Visible = false;
+            BtnAdd.Enabled = false;
             Session["Data"] = "";
         }
 
@@ -119,6 +125,14 @@ namespace WebApplication
             if (ListBox1.SelectedItem != null)
                 Response.Redirect("ThreadPage.aspx?forumName=" + forumName + 
                     "&subforumName="+subforumName+ "&thread=" + ListBox1.SelectedItem.Value);
+        }
+
+        protected void BtnAdd_Click(object sender, EventArgs e)
+        {
+            string forumName = Request.QueryString["forumName"];
+            string subforumName = Request.QueryString["subforumName"];
+            Response.Redirect("AddThread.aspx?forumName=" + forumName +
+                  "&subforumName=" + subforumName);
         }
     }
 }
