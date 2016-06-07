@@ -125,7 +125,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return true;
         }
 
-        private bool CheckRegistrationPolicies(string password, DateTime dateOfBirth)
+        public bool CheckRegistrationPolicies(string password, DateTime dateOfBirth)
         {
             int age = (int)(DateTime.Today.Subtract(dateOfBirth).TotalDays / 365);
             if (policies == null)
@@ -208,13 +208,53 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public bool AddPolicy(Policy policy)
         {
+            bool flag = false;
             Loggers.Logger.GetInstance().AddActivityEntry("Policy: " + policy.Type + "added to forum: " + this.name);
             if (policies == null)
             {
-                policies = policy;
-                return true;
+                if (policy is PasswordPolicy)
+                {
+                    policies = new AuthenticationPolicy(Policies.Authentication);//temp
+                    flag = flag | policies.AddPolicy(policy);
+                    policies = policies.NextPolicy;//delete the temp
+                    policy = policies.NextPolicy;
+                    if (policies != null)
+                        policies.NextPolicy = null;
+                }
+                else
+                {
+                    policies = new PasswordPolicy(Policies.Password, 0, 1);//temp
+                    flag = flag | policies.AddPolicy(policy);
+                    policies = policies.NextPolicy;//delete the temp
+                    policy = policies.NextPolicy;
+                    if(policies!=null)
+                       policies.NextPolicy = null;
+                }
+                //now we added the first policy. need to add the rest:
+                // policy = policy.NextPolicy;
+                Policy temp;
+                while (policy != null)
+                {
+                    temp = policy;
+                    flag = flag | policies.AddPolicy(policy);
+                    policy = policy.NextPolicy;
+                    temp.NextPolicy = null;
+                }
+                if (policies != null)
+                {
+                    dal_forum.SetForumPolicy(this.name,policies.ID);
+                }
+
             }
-            return policies.AddPolicy(policy);
+            else
+            {
+                while (policy != null)
+                {
+                    flag = flag | policies.AddPolicy(policy);
+                    policy = policy.NextPolicy;
+                }
+            }
+            return flag;
         }
 
         public void RemovePolicy(Policies policyType)

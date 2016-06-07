@@ -18,15 +18,15 @@ namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
     {
         [DataMember]
         private string userName;
-        [IgnoreDataMember]
+        [DataMember]
         private string password;
-        [IgnoreDataMember]
+        [DataMember]
         private string email;
         [IgnoreDataMember]
         private int age;
         [IgnoreDataMember]
         private DateTime dateJoined;
-        [IgnoreDataMember]
+        [DataMember]
         private DateTime dateOfBirth;
         [IgnoreDataMember]
         private Forum forum;

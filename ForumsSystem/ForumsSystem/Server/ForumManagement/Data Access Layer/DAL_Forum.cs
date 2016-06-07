@@ -82,7 +82,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
             OleDbCommand cmd = new OleDbCommand(sql);
 
-            cmd.Parameters.AddWithValue("@p2", forumName);
+           
             if (policyID < 0)
             {
                 cmd.Parameters.AddWithValue("@p1", DBNull.Value);
@@ -90,7 +90,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             else
                 cmd.Parameters.AddWithValue("@p1", policyID);
 
-
+            cmd.Parameters.AddWithValue("@p2", forumName);
             connect_me.TakeAction(cmd);
         }
 

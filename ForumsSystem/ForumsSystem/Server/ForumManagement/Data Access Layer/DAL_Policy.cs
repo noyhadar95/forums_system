@@ -72,9 +72,9 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         {
             Connect_to_DB();
             OleDbCommand cmd = new OleDbCommand();
-            cmd.CommandText = "Update [Policies] Set [NextPolicyId]=@p1 Where [PolicyId]=@p2";
-
-            cmd.Parameters.AddWithValue("@p2", policyID);
+            cmd.CommandText = "Update [Policies] Set [NextPolicyId]=" + nextPolicyId +" Where [PolicyId]=" + policyID;
+            
+           
             if (nextPolicyId < 0)
             {
                 cmd.Parameters.AddWithValue("@p1", DBNull.Value);
@@ -83,6 +83,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             {
                 cmd.Parameters.AddWithValue("@p1", nextPolicyId);
             }
+            cmd.Parameters.AddWithValue("@p2", policyID);
             connect_me.TakeAction(cmd);
             cmd = null;
         }

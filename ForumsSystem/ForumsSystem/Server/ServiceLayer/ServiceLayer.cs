@@ -47,7 +47,7 @@ namespace ForumsSystem.Server.ServiceLayer
             if (!SuperAdmin.GetInstance().password.Equals(password))
                 return null;
             creator = SuperAdmin.GetInstance();
-            creator.Login(creatorName, password);//TODO ?????
+           // creator.Login(creatorName, password);//TODO ?????
             return creator.createForum(name, properties, serverAdmins);
         }
 
@@ -79,6 +79,8 @@ namespace ForumsSystem.Server.ServiceLayer
         public ISubForum CreateSubForum(string creatorName, string forumName, string subforumName, Dictionary<string, DateTime> moderators)
         {
             IUser creator = GetForum(forumName).getUser(creatorName);
+            if (creator == null)
+                return null;
             return creator.createSubForum(subforumName, moderators);
 
         }

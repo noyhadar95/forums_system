@@ -46,5 +46,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         List<IUser> getUsersInForum();
 
+        bool CheckRegistrationPolicies(string password, DateTime dateOfBirth);
     }
 }

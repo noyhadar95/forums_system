@@ -129,7 +129,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
                 "blockPassword=@p5, maxModerators=@p6, minAge=@p7, minSeniority=@p8, requiredLength=@p9, passwordValidity=@p10, maxNumOfUsers=@p11, moderatorDeletePermission=@p12 Where PolicyId=@p1";
 
             
-            cmd.Parameters.AddWithValue("@p1", policyId);
+           
 
             if (seniorityInDays < 0)
                 cmd.Parameters.AddWithValue("@p2", DBNull.Value);
@@ -180,7 +180,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
                 cmd.Parameters.AddWithValue("@p11", maxNumOfUsers);
 
             cmd.Parameters.AddWithValue("@p12", moderatorDeletePermission);
-
+            cmd.Parameters.AddWithValue("@p1", policyId);
 
             connect_me.TakeAction(cmd);
             cmd = null;

@@ -16,9 +16,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         [DataMember]
         private int passwordValidity;//in days
 
-        public PasswordPolicy(Policies type, int requiredLength, int passwordValidity) :base(type)
+        public PasswordPolicy(Policies type, int requiredLength, int passwordValidity) : base(type)
         {
-            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1,false, -1, -1, requiredLength, passwordValidity, -1, -1, false);
             this.requiredLength = requiredLength;
             this.passwordValidity = passwordValidity;
         }
@@ -36,13 +35,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
             return policy;
         }
-        
+
         public override bool CheckPolicy(PolicyParametersObject param)
         {
             if (param.GetPolicy() == type)
             {
                 User user = (User)param.User;
-               // int passwordDuration = (int)((DateTime.Today - user.GetDateOfPassLastChange()).TotalDays);
+                // int passwordDuration = (int)((DateTime.Today - user.GetDateOfPassLastChange()).TotalDays);
 
                 return (checkLength(param.GetPassword())); //&& (passwordDuration <= passwordValidity));
             }
@@ -56,5 +55,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return pass.Length >= requiredLength;
         }
+        public override bool AddPolicy(Policy newPolicy)
+        {
+            bool flag = base.AddPolicy(newPolicy);
+            if (flag)
+                newPolicy.AddParamObject();
+            return flag;
+        }
+        public override void AddParamObject()
+        {
+            dal_policyParameter = new Data_Access_Layer.DAL_PolicyParameter();
+            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1, false, -1, -1, requiredLength, passwordValidity, -1, -1, false);
+
+        }
     }
-}
+    }
