@@ -8,6 +8,14 @@
         Title="ForumWindow" Height="450" Width="750">
     <DockPanel x:Name="dockPanel">
         <!--<Menu x:Name="userMenuBar" DockPanel.Dock="Top">
+            <Menu.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FF5978D6" Offset="0.01"/>
+                    <GradientStop Color="#FF9BACCF" Offset="1"/>
+                    <GradientStop Color="#FFB3D8EA" Offset="0.528"/>
+                    <GradientStop Color="#FF293991" Offset="1"/>
+                </LinearGradientBrush>
+            </Menu.Background>
             <MenuItem  x:Name="friendRequestsMenu" Header="_Friend Requests">
             </MenuItem>
         </Menu>-->

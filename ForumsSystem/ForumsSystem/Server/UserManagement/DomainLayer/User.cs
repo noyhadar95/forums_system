@@ -348,7 +348,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 int waitingFriendsCount = waitingFriendsList.Count;
                 // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
                 Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
-                    "" + postNotificationCount + "," + privateMessageNotifications + "," + waitingFriendsCount);
+                    "" + postNotificationCount + "," + privateMessageNotificationsCount + "," + waitingFriendsCount);
             }
         }
         public void removeFromWaitingFriendsList(IUser user)
@@ -622,15 +622,15 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
                 dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
                 postNotifications = new List<PostNotification>();
-                if (privateMessageNotifications!=null)
+            /*    if (privateMessageNotifications!=null)
                 {
                     foreach (PrivateMessageNotification m in privateMessageNotifications)
                     {
                         //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, m);
                     }
                 }
-                privateMessageNotifications = new List<PrivateMessageNotification>();
-
+                //privateMessageNotifications = new List<PrivateMessageNotification>();
+                */
                 int postNotificationCount = postNotifications.Count;
 
                 /*DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
@@ -710,7 +710,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 int waitingFriendsCount = waitingFriendsList.Count;
                 // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
                 Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
-                    "" + postNotificationCount + "," + privateMessageNotifications + "," + waitingFriendsCount);
+                    "" + postNotificationCount + "," + privateMessageNotificationsCount + "," + waitingFriendsCount);
             }
 
         }
@@ -744,7 +744,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                     waitingFriendsCount = 0;
                 // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
                 Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
-                    "" + postNotificationCount + "," + privateMessageNotifications + "," + waitingFriendsCount);
+                    "" + postNotificationCount + "," + privateMessageNotificationsCount + "," + waitingFriendsCount);
             }
         }
 

@@ -121,8 +121,10 @@ namespace ForumsSystemClient.PresentationLayer
 
             // hide and clear user menu bar
             userMenuBar.Visibility = Visibility.Hidden;
-            friendRequestsMenu.Items.Clear();
+            //friendRequestsMenu.Items.Clear();
+            ResetHeaders();
             userMenuBar.Items.Refresh();
+
         }
 
 

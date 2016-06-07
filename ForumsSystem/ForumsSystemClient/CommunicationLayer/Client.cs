@@ -65,14 +65,14 @@ namespace ForumsSystemClient.CommunicationLayer
             {
                 listenerStarted = true;
                 // if(!listener.Active)
-
+                listener.Start();
+                Console.WriteLine("Listening...");
 
                 while (true)
                 {
-                    try
-                    {
-                        listener.Start();
-                        Console.WriteLine("Listening...");
+                    //try
+                    //{
+                      
                         //---incoming client connected---
                         TcpClient client = listener.AcceptTcpClient();
 
@@ -87,80 +87,96 @@ namespace ForumsSystemClient.CommunicationLayer
 
                         //---convert the data received into a string---
                         string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                        string[] seperators = new string[] { delimeter };
-                        string[] items = dataReceived.Split(seperators, StringSplitOptions.None);
-
-                        //TODO: MAKE THIS WORK ---------------------
-                        List<Object> parameters = new List<object>();
 
 
-                        for (int i = 0; i < items.Length; i += 2)
-                        {
-                            parameters.Add(StringToObject(items[i], items[i + 1]));
-                        }
+                    Console.WriteLine("Adding to threadpool");
+                    ThreadParameter tp = new ThreadParameter(dataReceived, client);
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(task), (Object)tp);
 
-                        Console.WriteLine("Received : " + dataReceived);
-
-                        // Handle notification------------------
-                        if (parameters[0] is string)
-                        {
-                            string[] notifArr = ((string)parameters[0]).Split(',');
-                            // Friend Requests
-							try
-                            {
-                                int friendReqsNum = int.Parse(notifArr[2]);
-                                if (friendReqsNum > 0)
-                                {
-                                    // notify about friend request/s
-                                    WindowHelper.NotifyFriendRequests(friendReqsNum);
-
-                                }
-
-                            }
-                            catch (Exception)
-                            {
-                                return;
-                            }
-							
-							// Private Msgs
-							try
-							{
-								int PrivateMsgsNum = int.Parse(notifArr[1]);
-								if (PrivateMsgsNum > 0)
-								{
-									// notify about private message/s
-									WindowHelper.NotifyPrivateMessages(PrivateMsgsNum);
-								}
-							}
-							catch (Exception)
-							{
-								return;
-							}
-
-
-                        }
-                        else
-                        {
-                        }
-                    }
-
-                    catch (SocketException se)
-                    {
-                        if (se.ErrorCode != 10048)
-                            throw (se);
-                    }
-
-                   
 
 
                 }
-                else {
+            }
+
+            else {
+
+            }
+
+
+
+            //  listener.Stop   
+        }
+
+        public static void task(object tp)
+        {
+            TcpClient client = ((ThreadParameter)tp).client;
+            string dataReceived = ((ThreadParameter)tp).param;
+
+            string[] seperators = new string[] { delimeter };
+            string[] items = dataReceived.Split(seperators, StringSplitOptions.None);
+
+            //TODO: MAKE THIS WORK ---------------------
+            List<Object> parameters = new List<object>();
+
+
+            for (int i = 0; i < items.Length; i += 2)
+            {
+                parameters.Add(StringToObject(items[i], items[i + 1]));
+            }
+
+            Console.WriteLine("Received : " + dataReceived);
+
+            // Handle notification------------------
+            if (parameters[0] is string)
+            {
+                string[] notifArr = ((string)parameters[0]).Split(',');
+                // Friend Requests
+                try
+                {
+                    int friendReqsNum = int.Parse(notifArr[2]);
+                    if (friendReqsNum > 0)
+                    {
+                        // notify about friend request/s
+                        WindowHelper.NotifyFriendRequests(friendReqsNum);
+
+                    }
+
+                }
+                catch (Exception)
+                {
+
+                }
+
+                // Private Msgs
+                try
+                {
+                    int PrivateMsgsNum = int.Parse(notifArr[1]);
+                    if (PrivateMsgsNum > 0)
+                    {
+                        // notify about private message/s
+                        WindowHelper.NotifyPrivateMessages(PrivateMsgsNum);
+                    }
+                }
+                catch (Exception)
+                {
 
                 }
 
 
             }
-            //  listener.Stop   
+            else
+            {
+            }
+            //}
+
+            //catch (SocketException se)
+            //{
+            //    if (se.ErrorCode != 10048)
+            //        throw (se);
+            //}
+
+
+
         }
         static string GetString(byte[] bytes, int bytesRead)
         {
@@ -217,9 +233,7 @@ namespace ForumsSystemClient.CommunicationLayer
                 notificationsServerActive = true;
                 //should be only on login
                 // ThreadStart startNotification = new ThreadStart(WaitForNotification);
-                startNotification = new ThreadStart(WaitForNotification);
-                notificationThread = new Thread(startNotification);
-                notificationThread.Start();
+             
             }
             return retValue;
 
@@ -244,6 +258,14 @@ namespace ForumsSystemClient.CommunicationLayer
             id = (int)ret[0];
             encKey = (Byte[])ret[1];
             authKey = (Byte[])ret[2];
+
+
+            if (!listenerStarted)
+            {
+                startNotification = new ThreadStart(WaitForNotification);
+                notificationThread = new Thread(startNotification);
+                notificationThread.Start();
+            }
             return;
 
 
