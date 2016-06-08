@@ -55,9 +55,9 @@ namespace WebApplication
             pTextBoxTitle.ForeColor = System.Drawing.Color.Black;
             pTextBoxUser.ForeColor = System.Drawing.Color.Black;
             pTextBoxBody.ForeColor = System.Drawing.Color.Black;
-            pTextBoxUser.Width = 600;
-            pTextBoxTitle.Width = 600;
-            pTextBoxBody.Width = 600;
+            pTextBoxUser.Width = 500;
+            pTextBoxTitle.Width = 500;
+            pTextBoxBody.Width = 500;
             pTextBoxUser.Font.Size = FontUnit.XSmall;
             pTextBoxTitle.Font.Bold = true;
 
