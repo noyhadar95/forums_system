@@ -70,23 +70,52 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
         public int numOfModerators()
         {
-            return moderators.Count;
+            int val = 0;
+            foreach (string mod in moderators.Keys)
+            {
+                if (isModerator(mod))
+                    val++;
+            }
+            return val;
         }
 
-        public void addModerator(IUser admin, IUser user, DateTime expirationDate)
+        public bool addModerator(IUser admin, IUser user, DateTime expirationDate)
         {
-            
+            if (!checkedModertorAdditionPolicies(user))
+                return false;
             Moderator mod = new Moderator(admin,user, expirationDate);
             moderators[user.getUsername()]= mod;
             Loggers.Logger.GetInstance().AddActivityEntry("Moderator: " + user.getUsername() + "added to subforum: " + this.name + " by: " + admin.getUsername());
+            return true;
+        }
+
+        private bool checkedModertorAdditionPolicies(IUser modToBe)
+        {
+            PolicyParametersObject modAddition = new PolicyParametersObject(Policies.MaxModerators);
+            modAddition.CurrNumOfModerators = numOfModerators();
+            modAddition.NumOfModeratorsToAdd = 1;
+            if (!this.forum.GetPolicy().CheckPolicy(modAddition))
+                return false;
+            modAddition.SetPolicy(Policies.ModeratorAppointment);
+            modAddition.User = modToBe;
+            if (!this.forum.GetPolicy().CheckPolicy(modAddition))
+                return false;
+            return true;
+
         }
 
         public bool isModerator(string userName)
-        {
+        {//TODO suspension policy?
             Moderator moderator = getModeratorByUserName(userName);
             if (moderator == null)
                 return false;
-            return moderator.expirationDate>DateTime.Today;
+            if (moderator.expirationDate <= DateTime.Today)
+                return false;
+            PolicyParametersObject modSuspension = new PolicyParametersObject(Policies.ModeratorSuspension);
+            modSuspension.User = getModeratorByUserName(userName).user;
+            if (!this.forum.GetPolicy().CheckPolicy(modSuspension))
+                return false;
+            return true;
         }
 
         public bool changeModeratorExpirationDate(IUser user, DateTime newExpirationDate)
@@ -112,8 +141,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return name;
         }
 
-        public bool removeThread(int threadNumber) //TODO need an identifier for threads in the future
+      /*  public bool removeThread(int threadNumber) //TODO need an identifier for threads in the future
         {
+            
             int newThreadNumber = threadNumber - 1;
             if (newThreadNumber <= threads.Count)
                 return false;
@@ -121,7 +151,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             Loggers.Logger.GetInstance().AddActivityEntry("Thread removed from subforum: " + name);
             return true;
         }
-
+        */
         public bool removeThread(Thread thread) //TODO need an identifier for threads in the future
         {
             return threads.Remove(thread);
@@ -197,7 +227,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             List<string> res = new List<string>();
             foreach (KeyValuePair<string, Moderator> mod in moderators?? new Dictionary<string, Moderator>())
             {
-                res.Add(mod.Key);
+                if(isModerator(mod.Key))
+                    res.Add(mod.Key);
             }
             return res;
         }

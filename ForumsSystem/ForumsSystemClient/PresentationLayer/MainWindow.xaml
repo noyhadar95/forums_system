@@ -20,6 +20,8 @@
             <Button x:Name="createForumBtn" TabIndex="3" HorizontalAlignment="Center" Content="add forum" Width="100" Margin="0,100,24,110" Click="createForumBtn_Click" />
             <TextBlock x:Name="welcomeTB" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Welcome " VerticalAlignment="Top" Margin="10,10,0,10"/>
             <Button x:Name="logoutBtn" Content="logout" TabIndex="2" HorizontalAlignment="Left" Margin="0,56,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="logoutBtn_Click"/>
+            <Button x:Name="editPoliciesBtn" Content="edit forum policies" TabIndex="4" HorizontalAlignment="Left" Margin="0,145,0,0" VerticalAlignment="Top" Width="103" Height="30" FontSize="10.667" Click="editPoliciesBtn_Click" />
+            <Button x:Name="reportsBtn" Content="reports" TabIndex="5" HorizontalAlignment="Left" Margin="0,190,0,0" VerticalAlignment="Top" Width="103" Height="30" FontSize="10.667" Click="reportsBtn_Click"  />
         </Grid>
         <Grid x:Name="superAdminLoginGrid" HorizontalAlignment="Left" Height="54" Margin="603,10,0,0" VerticalAlignment="Top" Width="115">
             <Button x:Name="superAdminLoginBtn" Content="Super Admin Login" TabIndex="1" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="115"  Height="30" Click="superAdminLoginBtn_Click"/>

@@ -19,7 +19,8 @@ namespace ForumsSystemClient.CommunicationLayer
 
         private void StartSecuredConnection()
         {
-            Client.StartSecuredConnection();  
+            Client.StartSecuredConnection();
+              
         }
 
         public List<string> GetForumsList()
@@ -365,6 +366,15 @@ namespace ForumsSystemClient.CommunicationLayer
         public bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer)
         {
             return (bool)Client.SendRequest("CheckSecurityQuestion", forumName, username, question, answer);
+
+        }
+        public bool SetUserPassword(string forumName, string username, string newPassword)
+        {
+            return (bool)Client.SendRequest("SetUserPassword", forumName, username, newPassword);
+        }
+        public List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username)
+        {
+            return (List<PrivateMessageNotification>)Client.SendRequest("GetPrivateMessageNotifications", forumName, username);
 
         }
     }

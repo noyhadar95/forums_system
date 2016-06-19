@@ -8,6 +8,10 @@ namespace ForumsSystemClient.PresentationLayer
 {
     interface INotifiableWindow
     {
-        void Notify();
+        void NotifyFriendRequests(int friendReqsNum);
+
+        void NotifyPrivateMessages(int privateMsgsNum);
+
+
     }
 }

@@ -59,56 +59,124 @@ namespace ForumsSystemClient.CommunicationLayer
             string myIp = GetLocalIPAddress();
             //---listen at the specified IP and port no.---
             IPAddress localAdd = IPAddress.Parse(myIp);
-            TcpListener listener = new TcpListener(localAdd, CLIENT_PORT_NO);
+            TcpListenerEx listener = new TcpListenerEx(localAdd, CLIENT_PORT_NO);
 
             if (!listenerStarted)
             {
                 listenerStarted = true;
+                // if(!listener.Active)
                 listener.Start();
+                Console.WriteLine("Listening...");
 
                 while (true)
                 {
-                    Console.WriteLine("Listening...");
-                    //---incoming client connected---
-                    TcpClient client = listener.AcceptTcpClient();
+                    //try
+                    //{
+                      
+                        //---incoming client connected---
+                        TcpClient client = listener.AcceptTcpClient();
 
 
 
-                    //---get the incoming data through a network stream---
-                    NetworkStream nwStream = client.GetStream();
-                    byte[] buffer = new byte[client.ReceiveBufferSize];
+                        //---get the incoming data through a network stream---
+                        NetworkStream nwStream = client.GetStream();
+                        byte[] buffer = new byte[client.ReceiveBufferSize];
 
-                    //---read incoming stream---
-                    int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
+                        //---read incoming stream---
+                        int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
 
-                    //---convert the data received into a string---
-                    string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                    string[] seperators = new string[] { delimeter };
-                    string[] items = dataReceived.Split(seperators, StringSplitOptions.None);
+                        //---convert the data received into a string---
+                        string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
 
-                    //TODO: MAKE THIS WORK ---------------------
-                    List<Object> parameters = new List<object>();
 
-                    for (int i = 0; i < items.Length; i += 2)
-                    {
-                        parameters.Add(StringToObject(items[i], items[i + 1]));
-                    }
+                    Console.WriteLine("Adding to threadpool");
+                    ThreadParameter tp = new ThreadParameter(dataReceived, client);
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(task), (Object)tp);
 
-                    Console.WriteLine("Received : " + dataReceived);
 
-                    if (parameters[0] is string)
-                    {
-                        // friend request
-                        WindowHelper.NotifyFriendRequest();
-                    }
-                    else
-                    {
-                    }
-                    //TODO: Handle notification------------------
 
                 }
             }
+
+            else {
+
+            }
+
+
+
             //  listener.Stop   
+        }
+
+        public static void task(object tp)
+        {
+            TcpClient client = ((ThreadParameter)tp).client;
+            string dataReceived = ((ThreadParameter)tp).param;
+
+            string[] seperators = new string[] { delimeter };
+            string[] items = dataReceived.Split(seperators, StringSplitOptions.None);
+
+            //TODO: MAKE THIS WORK ---------------------
+            List<Object> parameters = new List<object>();
+
+
+            for (int i = 0; i < items.Length; i += 2)
+            {
+                parameters.Add(StringToObject(items[i], items[i + 1]));
+            }
+
+            Console.WriteLine("Received : " + dataReceived);
+
+            // Handle notification------------------
+            if (parameters[0] is string)
+            {
+                string[] notifArr = ((string)parameters[0]).Split(',');
+                // Friend Requests
+                try
+                {
+                    int friendReqsNum = int.Parse(notifArr[2]);
+                    if (friendReqsNum > 0)
+                    {
+                        // notify about friend request/s
+                        WindowHelper.NotifyFriendRequests(friendReqsNum);
+
+                    }
+
+                }
+                catch (Exception)
+                {
+
+                }
+
+                // Private Msgs
+                try
+                {
+                    int PrivateMsgsNum = int.Parse(notifArr[1]);
+                    if (PrivateMsgsNum > 0)
+                    {
+                        // notify about private message/s
+                        WindowHelper.NotifyPrivateMessages(PrivateMsgsNum);
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
+
+
+            }
+            else
+            {
+            }
+            //}
+
+            //catch (SocketException se)
+            //{
+            //    if (se.ErrorCode != 10048)
+            //        throw (se);
+            //}
+
+
+
         }
         static string GetString(byte[] bytes, int bytesRead)
         {
@@ -165,9 +233,7 @@ namespace ForumsSystemClient.CommunicationLayer
                 notificationsServerActive = true;
                 //should be only on login
                 // ThreadStart startNotification = new ThreadStart(WaitForNotification);
-                startNotification = new ThreadStart(WaitForNotification);
-                notificationThread = new Thread(startNotification);
-                notificationThread.Start();
+             
             }
             return retValue;
 
@@ -176,8 +242,8 @@ namespace ForumsSystemClient.CommunicationLayer
         public static void StartSecuredConnection()
         {
             string textToSend = "StartSecuredConnection";
-            
-           // textToSend = Encrypt(textToSend);
+
+            // textToSend = Encrypt(textToSend);
             string textFromServer = connect(textToSend);
             //textFromServer = Decrypt(textFromServer);
             if (textFromServer.Equals("null"))
@@ -188,13 +254,21 @@ namespace ForumsSystemClient.CommunicationLayer
 
             Object retValue = StringToObject(items[0], items[1]);
 
-                List<Object> ret = (List<Object>)retValue;
-                id = (int)ret[0];
-                encKey = (Byte[])ret[1];
-                authKey = (Byte[])ret[2];
-                return;
+            List<Object> ret = (List<Object>)retValue;
+            id = (int)ret[0];
+            encKey = (Byte[])ret[1];
+            authKey = (Byte[])ret[2];
 
-           
+
+            if (!listenerStarted)
+            {
+                startNotification = new ThreadStart(WaitForNotification);
+                notificationThread = new Thread(startNotification);
+                notificationThread.Start();
+            }
+            return;
+
+
         }
 
         /*   public static string ObjectToString(Object obj)
@@ -322,8 +396,8 @@ namespace ForumsSystemClient.CommunicationLayer
         }
         private static string Encrypt(string textToSend)
         {
-            if(encKey!=null&&authKey!=null)
-                return id+delimeter+Encryption.AESThenHMAC.SimpleEncrypt(textToSend, encKey, authKey);
+            if (encKey != null && authKey != null)
+                return id + delimeter + Encryption.AESThenHMAC.SimpleEncrypt(textToSend, encKey, authKey);
             return textToSend;
         }
         private static string Decrypt(string textFromServer)

@@ -65,11 +65,19 @@
     <Compile Include="CommunicationLayer\Client.cs" />
     <Compile Include="CommunicationLayer\Encryption\AESThenHMAC.cs" />
     <Compile Include="CommunicationLayer\ICL.cs" />
+    <Compile Include="CommunicationLayer\TcpListenerEx.cs" />
+    <Compile Include="CommunicationLayer\ThreadParameter.cs" />
     <Compile Include="PresentationLayer\AddAdminWindow.xaml.cs">
       <DependentUpon>AddAdminWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLayer\AddThreadWindow.xaml.cs">
       <DependentUpon>AddThreadWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\AdminReportsWindow.xaml.cs">
+      <DependentUpon>AdminReportsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\EditForumPoliciesWindow.xaml.cs">
+      <DependentUpon>EditForumPoliciesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLayer\EditModeratorsWindow.xaml.cs">
       <DependentUpon>EditModeratorsWindow.xaml</DependentUpon>
@@ -78,8 +86,12 @@
       <DependentUpon>EditPostWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLayer\INotifiableWindow.cs" />
+    <Compile Include="PresentationLayer\NotifBarWindow.cs" />
     <Compile Include="PresentationLayer\SendFriendReqWindow.xaml.cs">
       <DependentUpon>SendFriendReqWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\SuperAdminReportsWindow.xaml.cs">
+      <DependentUpon>SuperAdminReportsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\ForumManagement\DomainLayer\AdminAppointmentPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
@@ -101,6 +113,7 @@
     <Compile Include="Resources\ForumManagement\DomainLayer\SuperAdmin.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\System.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\Thread.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\PrivateMessageNotification.cs" />
     <Compile Include="Resources\UserManagement\DomainLayer\SecurityQuestions.cs" />
     <Compile Include="Resources\UserManagement\DomainLayer\User.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\UsersLoadPolicy.cs" />
@@ -183,6 +196,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PresentationLayer\AdminReportsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\EditForumPoliciesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLayer\EditModeratorsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -220,6 +241,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\SuperAdminLoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\SuperAdminReportsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

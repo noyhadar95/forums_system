@@ -44,6 +44,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (instance == null)
             {
                 instance= new SuperAdmin(userName, password, forumSystem);
+                DAL_SuperAdmin ds = new DAL_SuperAdmin();
+                ds.createSuperAdmin(userName, password);
             }
             
                 return instance;
@@ -70,11 +72,20 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             IForum forum = this.forumSystem.createForum(forumName);
             if (forum == null)
                 return null;
-
             forum.AddPolicy(properties);
             foreach (IUser user in adminUsername.ToList<IUser>())
             {
-                user.SetForum(forum);
+                if (!forum.CheckRegistrationPolicies(user.getPassword(), user.GetDateOfBirth()))
+                {//check if user can register 
+                    this.forumSystem.removeForum(forumName);
+                    return null;
+                }
+            }
+
+            
+            foreach (IUser user in adminUsername.ToList<IUser>())
+            {
+                user.RegisterToForum(user.getUsername(),user.getPassword(),forum,user.getEmail(),user.GetDateOfBirth());
                 user.ChangeType(new Admin());
             }
 

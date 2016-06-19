@@ -100,6 +100,8 @@ namespace ForumsSystem.Server.ServiceLayer
 
         void SendFriendRequest(string forumName, string sender, string reciever);
         List<string> GetUsersNotFriends(string forumName, string username);
+
+        bool SetUserPassword(string forumName, string username, string newPassword);
         bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
         bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question);
         bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);

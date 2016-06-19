@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+
 using System.Xml.Serialization;
 
 namespace ForumsSystem.Server.CommunicationLayer
@@ -24,21 +24,27 @@ namespace ForumsSystem.Server.CommunicationLayer
         private static Dictionary<Tuple<string, string>, string> halfClients; //not yet subscribed
 
         private static Dictionary<Tuple<string, string>, string> clients; //<Forum,Username> Ip address
-        private static Dictionary<int,Client> clientsDetails = new Dictionary<int, Client>();
-        private static Dictionary<Tuple<string, string>, Tuple<string, List<string>>> clientSessions = new Dictionary<Tuple<string, string>, Tuple<string, List<string>>>();//session token, list of logged in users
-
+        private static Dictionary<int, Client> clientsDetails = new Dictionary<int, Client>();
+        private static Dictionary<Tuple<string, string>, Tuple<string, int>> clientSessions = new Dictionary<Tuple<string, string>, Tuple<string, int>>();//session token, list of logged in users
+        private static Queue<Tuple<string, string, object>> pendingNotifications = new Queue<Tuple<string, string, object>>();
         public static void StartServer()
         {
             SERVER_IP = GetLocalIPAddress();
             clients = new Dictionary<Tuple<string, string>, string>();
             halfClients = new Dictionary<Tuple<string, string>, string>();
             sl = new ServiceLayer.ServiceLayer();
-                //---listen at the specified IP and port no.---
-                IPAddress localAdd = IPAddress.Parse(SERVER_IP);
-                TcpListener listener = new TcpListener(localAdd, SERVER_PORT_NO);
-           
-                listener.Start();
-            ThreadPool.SetMaxThreads(10, 10);
+            //---listen at the specified IP and port no.---
+            IPAddress localAdd = IPAddress.Parse(SERVER_IP);
+            TcpListener listener = new TcpListener(localAdd, SERVER_PORT_NO);
+
+            ThreadStart threadDelegate = new ThreadStart(Server.NotificationsThread);
+            System.Threading.Thread newThread = new System.Threading.Thread(threadDelegate);
+            newThread.Start();
+
+
+            listener.Start();
+
+
 
             while (true)
             {
@@ -46,7 +52,7 @@ namespace ForumsSystem.Server.CommunicationLayer
                 //---incoming client connected---
                 TcpClient client = listener.AcceptTcpClient();
 
-             
+
                 //---get the incoming data through a network stream---
                 NetworkStream nwStream = client.GetStream();
                 byte[] buffer = new byte[client.ReceiveBufferSize];
@@ -59,23 +65,23 @@ namespace ForumsSystem.Server.CommunicationLayer
                 Console.WriteLine("Received : " + dataReceived);
 
                 Console.WriteLine("Adding to threadpool");
-                ThreadParameter tp = new ThreadParameter(dataReceived,client);
+                ThreadParameter tp = new ThreadParameter(dataReceived, client);
                 ThreadPool.QueueUserWorkItem(new WaitCallback(task), (Object)tp);
 
-               
+
             }
-          //  listener.Stop   
+            //  listener.Stop   
 
         }
 
         //should be done only on login
-        public static void HalfSubscribeClient(TcpClient client ,string forumName, string userName)
+        public static void HalfSubscribeClient(TcpClient client, string forumName, string userName)
         {
             string ip = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
             // int port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
 
             halfClients[new Tuple<string, string>(forumName, userName)] = ip;
-            
+
         }
 
         public static void SubscribeClient(string forumName, string userName)
@@ -85,24 +91,54 @@ namespace ForumsSystem.Server.CommunicationLayer
         }
         public static void UnSubscribeClient(string forumName, string userName)
         {
-            clients.Remove(new Tuple<string, string>(forumName, userName)); 
+            clients.Remove(new Tuple<string, string>(forumName, userName));
         }
 
 
         public static void notifyClient(string forumName, string userName, Object notification)
         {
-            Tuple<string, string> clientTuple = new Tuple<string, string>(forumName, userName);
-            if (clients == null)
-                return;
-            if (!clients.ContainsKey(clientTuple))
-                return;
-            string ip = clients[clientTuple];
 
-            //---data to send to the server---
-            string pType = notification.GetType().ToString();
-           // pType = pType.Substring(pType.LastIndexOf('.') + 1);
+            pendingNotifications.Enqueue(new Tuple<string, string, object>(forumName, userName, notification));
 
-            string textToSend = pType + delimeter + ObjectToString(notification);
+        }
+
+        public static void NotificationsThread()
+        {
+            while (true)
+            {
+                while (pendingNotifications.Count == 0) ;
+                Tuple<string, string, object> nextNotif = pendingNotifications.Dequeue();
+                string forumName = nextNotif.Item1;
+                string userName = nextNotif.Item2;
+                Object notification = nextNotif.Item3;
+                Console.WriteLine("\n ######################1 " + (string)notification + " ###################### \n");
+                while (halfClients.ContainsKey(new Tuple<string, string>(forumName, userName)))
+                    Console.WriteLine("\n ######################2 " + (string)notification + " ###################### \n");
+
+                string[] notifArr = ((string)notification).Split(',');
+                Console.WriteLine("\n ######################3 " + (string)notification + " ###################### \n");
+                try
+                {
+                    if (int.Parse(notifArr[0]) == 0 && int.Parse(notifArr[1]) == 0 && int.Parse(notifArr[2]) == 0)
+                        continue;
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+
+                Tuple<string, string> clientTuple = new Tuple<string, string>(forumName, userName);
+                if (clients == null)
+                    continue;
+                if (!clients.ContainsKey(clientTuple))
+                    continue;
+                string ip = clients[clientTuple];
+
+                //---data to send to the server---
+                string pType = notification.GetType().ToString();
+                // pType = pType.Substring(pType.LastIndexOf('.') + 1);
+
+                string textToSend = pType + delimeter + ObjectToString(notification);
 
                 //---create a TCPClient object at the IP and port no.---
                 TcpClient client = new TcpClient(ip, CLIENT_PORT_NO);
@@ -118,7 +154,7 @@ namespace ForumsSystem.Server.CommunicationLayer
                 nwStream.Write(bytesToSend, 0, bytesToSend.Length);
 
                 client.Close();
-            
+            }
         }
 
         public static string GetLocalIPAddress()
@@ -151,10 +187,10 @@ namespace ForumsSystem.Server.CommunicationLayer
         }
         public static void task(Object tp)
         {
-            int clientId=-1;
+            int clientId = -1;
             TcpClient client = ((ThreadParameter)tp).client;
             string textFromClient = ((ThreadParameter)tp).param;
-            if(textFromClient.StartsWith("StartSecuredConnection"))
+            if (textFromClient.StartsWith("StartSecuredConnection"))
             {
                 StartSecuredConnection(client);
                 return;
@@ -162,47 +198,49 @@ namespace ForumsSystem.Server.CommunicationLayer
             }
             else
             {
-                Object[] temp= Decrypt(textFromClient);
+                Object[] temp = Decrypt(textFromClient);
                 clientId = (int)temp[0];
                 textFromClient = (string)temp[1];
             }
             string[] seperators = new string[] { delimeter };
             string[] items = textFromClient.Split(seperators, StringSplitOptions.None);
-           
+
 
             string method = items[0];
 
             List<Object> parameters = new List<object>();
 
-            for (int i = 1; i < items.Length; i+=2)
+            for (int i = 1; i < items.Length; i += 2)
             {
                 parameters.Add(StringToObject(items[i], items[i + 1]));
             }
 
 
+
             if (method.Equals("GetSessionKey"))
             {
-                SendSessionKey(client,clientId, (string)parameters.ElementAt(0),(string)parameters.ElementAt(1));
+                SendSessionKey(client, clientId, (string)parameters.ElementAt(0), (string)parameters.ElementAt(1));
                 return;
             }
 
 
-           
-            if (method.Equals("MemberLogin")){//check if login then Halfsubscribe
+
+            if (method.Equals("MemberLogin"))
+            {//check if login then Halfsubscribe
+
                 string username = (string)parameters.ElementAt(0);
                 //Forum f = (Forum)parameters.ElementAt(2);
                 string forumName = (string)parameters.ElementAt(2);
-                string clientSession=null;
-                if ( parameters.ElementAt(3) != null && (string)parameters.ElementAt(3) != "")
+                string clientSession = null;
+                if (parameters.ElementAt(3) != null && (string)parameters.ElementAt(3) != "")
                 {
-                    
                     clientSession = (string)parameters.ElementAt(3);
                     string realSession;
                     if (clientSessions.ContainsKey(new Tuple<string, string>(forumName, username)))
                         realSession = clientSessions[new Tuple<string, string>(forumName, username)].Item1;
                     else
                         realSession = null;
-                    if (realSession==null || !realSession.Equals(clientSession))
+                    if (realSession == null || !realSession.Equals(clientSession))
                     {
                         string returnValue = "null";
                         returnValue = Encrypt(clientId, returnValue);
@@ -215,24 +253,34 @@ namespace ForumsSystem.Server.CommunicationLayer
                         client.Close();
                         return;
                     }
-                    
+
                 }
                 else
                 {
-                    //TODO: check if user exists. if exists return null because he didnt provide session key
+                    //check if user exists. if exists return null because he didnt provide session key
+                    if (clientSessions.ContainsKey(new Tuple<string, string>(forumName, username)))
+                    {
+                        string returnValue = "null";
+                        returnValue = Encrypt(clientId, returnValue);
+
+                        //---write back the text to the client---
+                        Console.WriteLine("Sending back : " + returnValue);
+                        NetworkStream nwStream = client.GetStream();
+                        byte[] buf = GetBytes(returnValue);
+                        nwStream.Write(buf, 0, buf.Length);
+                        client.Close();
+                        return;
+                    }
 
                     //new client - create session:
-                    Tuple<string, List<string>> newSession = new Tuple<string, List<string>>(PRG.ClientSessionKeyGenerator.GetUniqueKey(), new List<string>());
-                    string clientIP = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
-                    newSession.Item2.Add(clientIP);
+                    Tuple<string, int> newSession = new Tuple<string, int>(PRG.ClientSessionKeyGenerator.GetUniqueKey(), 0);
                     clientSessions[new Tuple<string, string>(forumName, username)] = newSession;
                 }
                 //client session is correct:
                 //add to current session:
-                List<string> cliSession = clientSessions[new Tuple<string, string>(forumName, username)].Item2;
-                string ip = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
-                if (!cliSession.Contains(ip))
-                    cliSession.Add(ip);
+                clientSessions[new Tuple<string, string>(forumName, username)] = new Tuple<string, int>(
+                    clientSessions[new Tuple<string, string>(forumName, username)].Item1,
+                    clientSessions[new Tuple<string, string>(forumName, username)].Item2 + 1);
 
                 parameters.RemoveAt(3);//no longer need the client session
                 HalfSubscribeClient(client, forumName, username);
@@ -240,8 +288,8 @@ namespace ForumsSystem.Server.CommunicationLayer
             if (method.Equals("MemberLogout"))
             {
                 string username = (string)parameters.ElementAt(1);
-               // Forum f = (Forum)parameters.ElementAt(2);
-                string forumName = (string) parameters.ElementAt(0);
+                // Forum f = (Forum)parameters.ElementAt(2);
+                string forumName = (string)parameters.ElementAt(0);
                 RemoveClientFromSession(client, username, forumName);
                 UnSubscribeClient(forumName, username);
             }
@@ -251,10 +299,10 @@ namespace ForumsSystem.Server.CommunicationLayer
             MethodInfo theMethod = thisType.GetMethod(method);
             Object returnObj = theMethod.Invoke(sl, parameters.ToArray());
             if (method.Equals("MemberLogin"))
-            { 
+            {
                 string username = (string)parameters.ElementAt(0);
                 string forumName = (string)parameters.ElementAt(2);
-            
+
                 if (returnObj == null)
                 {
                     UnSubscribeClient(forumName, username);
@@ -264,12 +312,12 @@ namespace ForumsSystem.Server.CommunicationLayer
                 {
                     SubscribeClient(forumName, username);
                     //update session key in return object:
-                 //   List<Object> tokenRetObj = new List<Object>();
-                 //   tokenRetObj.Add(returnObj);
-                 //   tokenRetObj.Add(clientSessions[new Tuple<string, string>(forumName, username)].Item1);
-                 //  returnObj = tokenRetObj;
+                    //   List<Object> tokenRetObj = new List<Object>();
+                    //   tokenRetObj.Add(returnObj);
+                    //   tokenRetObj.Add(clientSessions[new Tuple<string, string>(forumName, username)].Item1);
+                    //  returnObj = tokenRetObj;
                 }
-                
+
                 //HalfSubscribeClient(client, forumName, username);
             }
             if (returnObj == null)
@@ -304,18 +352,18 @@ namespace ForumsSystem.Server.CommunicationLayer
 
         private static void RemoveClientFromSession(TcpClient client, string username, string forumName)
         {
-            List<string> cliSession = clientSessions[new Tuple<string, string>(forumName, username)].Item2;
-            string ip = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
-            if (cliSession.Contains(ip))
-                cliSession.Remove(ip);
+            clientSessions[new Tuple<string, string>(forumName, username)] = new Tuple<string, int>(
+                    clientSessions[new Tuple<string, string>(forumName, username)].Item1,
+                    clientSessions[new Tuple<string, string>(forumName, username)].Item2 - 1);
+            int cliSession = clientSessions[new Tuple<string, string>(forumName, username)].Item2;
+
             //if clisession empty:
-            if (cliSession.Count == 0)
+            if (cliSession == 0)
             {
                 //remove session:
-                Tuple<string, List<string>> newSession = new Tuple<string, List<string>>("", new List<string>());
-                string clientIP = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
-                newSession.Item2.Add(clientIP);
-                clientSessions[new Tuple<string, string>(forumName, username)] = newSession;
+                clientSessions.Remove(new Tuple<string, string>(forumName, username));
+                // Tuple<string,int> newSession = new Tuple<string,int>("", 0);
+                // clientSessions[new Tuple<string, string>(forumName, username)] = newSession;
             }
         }
 
@@ -324,7 +372,7 @@ namespace ForumsSystem.Server.CommunicationLayer
             Object[] ret = new Object[2];
             string[] seperators = new string[] { delimeter };
             string[] items = textFromClient.Split(seperators, StringSplitOptions.None);
-            int cid= int.Parse(items[0]);
+            int cid = int.Parse(items[0]);
             string message = items[1];
             Client c = clientsDetails[cid];
             if (c == null)
@@ -333,7 +381,7 @@ namespace ForumsSystem.Server.CommunicationLayer
                 ret[1] = textFromClient;
                 return ret;
             }
-            message= Encryption.AESThenHMAC.SimpleDecrypt(message, c.encKey, c.authKey);
+            message = Encryption.AESThenHMAC.SimpleDecrypt(message, c.encKey, c.authKey);
             ret[0] = cid;
             ret[1] = message;
             return ret;
@@ -345,7 +393,7 @@ namespace ForumsSystem.Server.CommunicationLayer
                 return "ERROR ENCRYPTING MESSAGE";
             }
             Client c = clientsDetails[cid];
-           
+
             return Encryption.AESThenHMAC.SimpleEncrypt(textToClient, c.encKey, c.authKey);
         }
 
@@ -392,7 +440,7 @@ namespace ForumsSystem.Server.CommunicationLayer
                     classType += items[i] + "ForumsSystem.Server" + items[i + 1];
                 }
             }
-            
+
 
             Type type = Type.GetType(classType);
             /*
@@ -400,7 +448,7 @@ namespace ForumsSystem.Server.CommunicationLayer
             StringReader reader = new StringReader(str);
             return serializer.Deserialize(reader);
             */
-             return Deserialize(str, type);
+            return Deserialize(str, type);
         }
 
         public static string ObjectToString(Object obj)
@@ -431,7 +479,8 @@ namespace ForumsSystem.Server.CommunicationLayer
         public static object Deserialize(string xml, Type toType)
         {
             int index = xml.IndexOf("ForumsSystemClient.Resources");
-            if (index > -1) {
+            if (index > -1)
+            {
                 string[] seperators = new string[] { "ForumsSystemClient.Resources" };
                 string[] items = xml.Split(seperators, StringSplitOptions.None);
                 xml = items[0];
@@ -450,9 +499,9 @@ namespace ForumsSystem.Server.CommunicationLayer
             }
         }
 
-        private static void SendSessionKey(TcpClient client, int clientId, string username,string forumName)
+        private static void SendSessionKey(TcpClient client, int clientId, string username, string forumName)
         {
-            Object returnObj= clientSessions[new Tuple<string, string>(forumName, username)].Item1;
+            Object returnObj = clientSessions[new Tuple<string, string>(forumName, username)].Item1;
 
             string pType = returnObj.GetType().ToString();
             // if(!pType.StartsWith("System."))

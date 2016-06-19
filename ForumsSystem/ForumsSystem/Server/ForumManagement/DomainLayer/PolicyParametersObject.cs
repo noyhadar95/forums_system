@@ -46,7 +46,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         private IUser user;
 
-        private int numOfModerators;
+        private int currNumOfModerators;
+
+        private int numOfModeratorsToAdd;
 
         private int moderatorSeniority;
 
@@ -55,7 +57,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         private Boolean moderatorDeletePermission; 
 
         public IUser User { get { return this.user; } set { this.user = value; } }
-        public int NumOfModerators { get { return this.numOfModerators; } set { this.numOfModerators = value; } }
+        public int CurrNumOfModerators { get { return this.currNumOfModerators; } set { this.currNumOfModerators = value; } }
+        public int NumOfModeratorsToAdd { get { return this.numOfModeratorsToAdd; } set { this.numOfModeratorsToAdd = value; } }
 
         public string GetPassword()
         {

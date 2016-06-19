@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace ForumsSystemClient.PresentationLayer
 {
@@ -15,29 +17,13 @@ namespace ForumsSystemClient.PresentationLayer
         // that the user is logged in.
         private static Dictionary<string, User> loggedUsers = new Dictionary<string, User>();
         private static SuperAdmin loggedSuperAdmin = null;
-        private static INotifiableWindow currentWin;
-        private static string friendReqMenuHeader = "_Friend Requests";
+        private static INotifiableWindow currentNotifyWin;
 
-        public static string GetFriendReqMenuHeader()
-        {
-            return friendReqMenuHeader;
-        }
 
-        public static void SetFriendReqMenuHeaderOn(int notifNum)
-        {
-            friendReqMenuHeader = "_Friend Requests(" + notifNum + ")";
-        }
-
-        public static void SetFriendReqMenuHeaderOff()
-        {
-            friendReqMenuHeader = "_Friend Requests";
-        }
-
+        // not including super admin
         public static string GetLoggedUsername(string forumName)
         {
-            if (IsLoggedSuperAdmin())
-                return GetLoggedSuperAdmin().userName;
-            else if (IsLoggedUser(forumName))
+            if (IsLoggedUser(forumName))
                 return GetLoggedUser(forumName).Username;
             else
                 return null;
@@ -69,11 +55,11 @@ namespace ForumsSystemClient.PresentationLayer
             SetLoggedUser(forumName, null);
         }
 
-        public static void LogoutAllUsers()
-        {
-            // forget all logged users by reseting the dict
-            loggedUsers = new Dictionary<string, User>();
-        }
+        //public static void LogoutAllUsers()
+        //{
+        //    // forget all logged users by reseting the dict
+        //    loggedUsers = new Dictionary<string, User>();
+        //}
 
         public static bool IsLoggedSuperAdmin()
         {
@@ -97,7 +83,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         public static void SetCurrentWindow(INotifiableWindow newWin)
         {
-            currentWin = newWin;
+            currentNotifyWin = newWin;
         }
 
         public static void SwitchWindow(Window oldWin, Window newWin)
@@ -109,7 +95,7 @@ namespace ForumsSystemClient.PresentationLayer
 
             // handle INotifiableWindow
             if (newWin is INotifiableWindow)
-                currentWin = (INotifiableWindow)newWin;
+                currentNotifyWin = (INotifiableWindow)newWin;
         }
 
         // show newWin without closing oldWin.
@@ -126,13 +112,21 @@ namespace ForumsSystemClient.PresentationLayer
             win.Style = style;
         }
 
-        public static void NotifyFriendRequest()
+        public static void NotifyFriendRequests(int friendReqsNum)
         {
-            SetFriendReqMenuHeaderOn(1);
-            if (currentWin != null)
-                currentWin.Notify();
+            if (currentNotifyWin != null)
+            {
+                currentNotifyWin.NotifyFriendRequests(friendReqsNum);
+            }
         }
 
+        public static void NotifyPrivateMessages(int privateMsgsNum)
+        {
+            if (currentNotifyWin != null)
+            {
+                currentNotifyWin.NotifyPrivateMessages(privateMsgsNum);
+            }
+        }
 
     }
 }

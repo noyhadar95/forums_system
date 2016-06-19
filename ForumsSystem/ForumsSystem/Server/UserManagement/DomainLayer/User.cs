@@ -21,15 +21,15 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
     {
         [DataMember]
         private string userName;
-        [IgnoreDataMember]
+        [DataMember]
         private string password;
-        [IgnoreDataMember]
+        [DataMember]
         private string email;
         [IgnoreDataMember]
         private int age;
         [IgnoreDataMember]
         private DateTime dateJoined;
-        [IgnoreDataMember]
+        [DataMember]
         private DateTime dateOfBirth;
         [IgnoreDataMember]
         private IForum forum;
@@ -348,7 +348,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 int waitingFriendsCount = waitingFriendsList.Count;
                 // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
                 Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
-                    "" + postNotificationCount + "," + privateMessageNotifications + "," + waitingFriendsCount);
+                    "" + postNotificationCount + "," + privateMessageNotificationsCount + "," + waitingFriendsCount);
             }
         }
         public void removeFromWaitingFriendsList(IUser user)
@@ -622,15 +622,15 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
                 dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
                 postNotifications = new List<PostNotification>();
-                if (privateMessageNotifications!=null)
+            /*    if (privateMessageNotifications!=null)
                 {
                     foreach (PrivateMessageNotification m in privateMessageNotifications)
                     {
                         //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, m);
                     }
                 }
-                privateMessageNotifications = new List<PrivateMessageNotification>();
-
+                //privateMessageNotifications = new List<PrivateMessageNotification>();
+                */
                 int postNotificationCount = postNotifications.Count;
 
                 /*DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
@@ -654,13 +654,14 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                     ""+postNotificationCount+","+ privateMessageNotificationsCount + ","+waitingFriendsCount);
 
 
-                if (waitingFriendsList != null)
+               /* if (waitingFriendsList != null)
                 {
                     foreach (IUser u in waitingFriendsList)
                     {
                         Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, u.getUsername());
                     }
                 }
+                */
 
             }
 
@@ -709,7 +710,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 int waitingFriendsCount = waitingFriendsList.Count;
                 // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
                 Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
-                    "" + postNotificationCount + "," + privateMessageNotifications + "," + waitingFriendsCount);
+                    "" + postNotificationCount + "," + privateMessageNotificationsCount + "," + waitingFriendsCount);
             }
 
         }
@@ -743,7 +744,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                     waitingFriendsCount = 0;
                 // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
                 Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
-                    "" + postNotificationCount + "," + privateMessageNotifications + "," + waitingFriendsCount);
+                    "" + postNotificationCount + "," + privateMessageNotificationsCount + "," + waitingFriendsCount);
             }
         }
 
@@ -807,8 +808,14 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return type.GetModeratorsList(this, subforum);
         }
 
-        public void SetPassword(string password)
+        public bool SetPassword(string password)
         {
+            //check password policies
+            PolicyParametersObject checkPass = new PolicyParametersObject(Policies.Password);
+            checkPass.SetPassword(password);
+            if (!this.forum.GetPolicy().CheckPolicy(checkPass))
+                return false;
+            //policies ok, change password
             this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
             password = this.passwordSalt + password;
             this.password = PRG.Hash.GetHash(password);
@@ -826,7 +833,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
                    this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,DateTime.Today, this.passwordSalt);
             }
-
+            return true;
         }
         public DateTime GetDateOfPassLastChange()
         {
@@ -908,6 +915,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (!passwordSecurityQuestions.ContainsKey(question))
                 return false;
             return passwordSecurityQuestions[question].ToUpper().Equals(answer.ToUpper());
+        }
+
+        public DateTime GetDateOfBirth()
+        {
+            return this.dateOfBirth;
         }
     }
 

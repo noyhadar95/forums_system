@@ -22,54 +22,41 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for ForumWindow.xaml
     /// </summary>
-    public partial class ForumWindow : Window, INotifiableWindow
+    public partial class ForumWindow : NotifBarWindow
     {
 
-        private CL cl;
-        private string forumName;
-        private string loggedUsername;
         private string badLoginMsg = "your username/password are incorrect";
-        private ObservableCollection<MenuItem> friendRequestsOC;
-        private MenuItem mi_type;
 
-        public ForumWindow(string forumName)
+        public ForumWindow(string forumName) : base(forumName)
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
 
             // initialize fields
-            this.forumName = forumName;
             Title = forumName;
             loggedUsername = "";
             cl = new CL();
-            friendRequestsOC = new ObservableCollection<MenuItem>();
-            mi_type = new MenuItem();
+
+            base.Initialize(dockPanel);
+
 
             // initialize sub-forums list
             List<string> items = cl.GetSubForumsList(forumName);
             subForumsListView.ItemsSource = items;
 
-            // initialize different types grids (login, user, admin, super admin)
+            // initialize different types grids (login, user, admin)
             userGrid.Visibility = Visibility.Hidden;
             userGrid.Margin = loginGrid.Margin;
             adminGrid.Visibility = Visibility.Hidden;
             adminGrid.Margin = new Thickness(userGrid.Margin.Left, userGrid.Margin.Top + userGrid.Height,
                 userGrid.Margin.Right, userGrid.Margin.Bottom);
-            superAdminGrid.Visibility = Visibility.Hidden;
-            superAdminGrid.Margin = new Thickness(adminGrid.Margin.Left, adminGrid.Margin.Top + adminGrid.Height,
-                adminGrid.Margin.Right, adminGrid.Margin.Bottom);
+
 
             // hide user menu bar (notifications bar included)
             userMenuBar.Visibility = Visibility.Hidden;
 
-            if (WindowHelper.IsLoggedSuperAdmin())
-            {
-                // super admin is already logged in
-                SuperAdmin superAdmin = WindowHelper.GetLoggedSuperAdmin();
-                SwitchLoginToSuperAdminViewMode(superAdmin.userName);
-            }
-            else if (WindowHelper.IsLoggedUser(forumName))
+            if (WindowHelper.IsLoggedUser(forumName))
             {
                 // user is already logged in
                 User user = WindowHelper.GetLoggedUser(forumName);
@@ -79,47 +66,11 @@ namespace ForumsSystemClient.PresentationLayer
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
 
-                IniNotificationsBar(user.Username);
+                RefreshNotificationsBar(user.Username);
             }
 
         }
 
-        private void IniNotificationsBar(string username)
-        {
-            string type = cl.GetUserType(forumName, username);
-            mi_type.Header = "logged in as " + type;
-            if (userMenuBar.Items.Count < 2)
-                userMenuBar.Items.Add(mi_type);
-
-            // initialize friend requests menu bar
-            IniFriendReqsMenu(username);
-        }
-
-        private void IniFriendReqsMenu(string username)
-        {
-            friendRequestsMenu.Header = WindowHelper.GetFriendReqMenuHeader();
-            List<string> cl_friendReqs = cl.GetFriendRequests(forumName, username);
-            List<MenuItem> menuItems = new List<MenuItem>();
-            foreach (string str in cl_friendReqs)
-            {
-                MenuItem mi = new MenuItem();
-                mi.Header = str;
-                mi.Click += new RoutedEventHandler(friendReqsMenu_Click);
-                menuItems.Add(mi);
-                //friendRequestsOC.Add(mi);
-                friendRequestsMenu.Items.Add(mi);
-            }
-            //friendRequestsMenu.ItemsSource = friendRequestsOC;
-        }
-
-        public void Notify()
-        {
-            MessageBox.Show("Got here!! ");
-            //friendRequestsOC.Clear();
-            friendRequestsMenu.Items.Clear();
-            IniFriendReqsMenu(loggedUsername);
-            userMenuBar.Items.Refresh();
-        }
 
         private void subForumsListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -140,7 +91,7 @@ namespace ForumsSystemClient.PresentationLayer
             welcomeTextBlock.Text = "welcome " + username;
             userGrid.Visibility = Visibility.Visible;
 
-            IniNotificationsBar(username);
+            RefreshNotificationsBar(username);
             userMenuBar.Visibility = Visibility.Visible;
         }
 
@@ -148,14 +99,6 @@ namespace ForumsSystemClient.PresentationLayer
         {
             ShowMemberViewMode(username);
             adminGrid.Visibility = Visibility.Visible;
-        }
-
-        private void SwitchLoginToSuperAdminViewMode(string superAdmin)
-        {
-            ShowMemberViewMode(superAdmin);
-            ShowAdminViewMode(superAdmin);
-            logoutBtn.Visibility = Visibility.Hidden;
-            superAdminGrid.Visibility = Visibility.Visible;
         }
 
         private void ShowBadLoginMsg()
@@ -178,9 +121,10 @@ namespace ForumsSystemClient.PresentationLayer
 
             // hide and clear user menu bar
             userMenuBar.Visibility = Visibility.Hidden;
-            //friendRequestsOC.Clear();
-            friendRequestsMenu.Items.Clear();
+            //friendRequestsMenu.Items.Clear();
+            ResetHeaders();
             userMenuBar.Items.Refresh();
+
         }
 
 
@@ -229,7 +173,7 @@ namespace ForumsSystemClient.PresentationLayer
 
             WindowHelper.SetCurrentWindow(this);
 
-            // fields are not empty try to login
+            //// fields are not empty try to login
             Tuple<User, string> userTokenTuple = null;
             if (sessionToken == "")
             {
@@ -239,8 +183,11 @@ namespace ForumsSystemClient.PresentationLayer
             {
                 userTokenTuple = cl.MemberLogin(forumName, username, password, sessionToken);
             }
+            User user=null;
+            if(userTokenTuple!=null)
+                user= userTokenTuple.Item1;//cl.MemberLogin(forumName, username, password);
 
-            if (userTokenTuple == null)
+            if (user == null)
             {
                 // failed login
                 WindowHelper.SetCurrentWindow(null);
@@ -249,42 +196,26 @@ namespace ForumsSystemClient.PresentationLayer
             }
             else
             {
-                User user = userTokenTuple.Item1;
+                //TODO: User user = userTokenTuple.Item1;
+
                 // save the user in WindowHelper so all windows will know 
                 // that the user is logged in.
                 WindowHelper.SetLoggedUser(forumName, user);
 
                 // user is logged in, get type of user and change window accordingly.
                 string type = cl.GetUserType(forumName, username);
+                MessageBox.Show(type);
                 if (type == UserTypes.Member)
                     ShowMemberViewMode(user.Username);
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
 
-                IniNotificationsBar(user.Username);
-
             }
         }
 
-        private void friendReqsMenu_Click(object sender, RoutedEventArgs e)
+        private void reportsBtn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Do you accept the friend request?",
-                                                    "Confirmation", MessageBoxButton.YesNoCancel);
-            if (result == MessageBoxResult.Yes)
-            {
-                // accept friend request
-
-            }
-            else if (result == MessageBoxResult.No)
-            {
-                // ignore friend request
-
-
-            }
-            else
-            {
-                // canel, do nothing
-            }
+            WindowHelper.SwitchWindow(this, new AdminReportsWindow(forumName));
         }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)

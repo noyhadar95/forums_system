@@ -79,7 +79,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
 
 
-        void SetPassword(string password);
+        bool SetPassword(string password);
 
         DateTime GetDateOfPassLastChange();
 
@@ -97,10 +97,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         List<IUser> GetWaitingFriendsList();
 
 
-
+        DateTime GetDateOfBirth();
         bool AddSecurityQuestion(SecurityQuestionsEnum question, string answer);
         bool RemoveSecurityQuestion(SecurityQuestionsEnum question);
         bool CheckSecurityQuestion(SecurityQuestionsEnum question, string answer);
+
 
     }
 
