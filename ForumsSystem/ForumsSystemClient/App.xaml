@@ -381,7 +381,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <!--style for all list views-->
         <Style TargetType="ListView">
             <Setter Property="SnapsToDevicePixels"
@@ -436,6 +436,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
 
 
     </Application.Resources>

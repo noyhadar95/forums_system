@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.CommunicationLayer
 {
-    interface ICL
+    public interface ICL
     {
         #region Use Cases Methods
 
@@ -28,8 +28,8 @@ namespace ForumsSystemClient.CommunicationLayer
         bool InitializeSystem(string username, string pass);
         bool IsInitialized();
 
-        User MemberLogin(string forumName, string username, string password);
-
+        Tuple<User, string> MemberLogin(string forumName, string username, string password);
+        Tuple<User, string> MemberLogin(string forumName, string username, string password, string sessionToken);
         bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob);
 
 
@@ -96,5 +96,13 @@ namespace ForumsSystemClient.CommunicationLayer
         void AcceptFriendRequest(string forumName, string accepter, string toAccept);
         void SendFriendRequest(string forumName, string sender, string reciever);
         List<string> GetUsersNotFriends(string forumName,string username);
+        
+        List<string> GetFriendRequests(string forumName, string username);
+
+        bool SetUserPassword(string forumName, string username, string newPassword);
+        bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
+        bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question);
+        bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
+        List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username);
     }
 }

@@ -12,7 +12,7 @@ namespace AcceptanceTestsBridge
         #region Add/Create Methods
 
         bool CreateForum(string creator,string creatorPass, string forumName, List<UserStub> admins, PoliciesStub forumPolicies);
-
+        bool CreateForum(string creator, string creatorPass, string forumName, List<UserStub> admins, PoliciesStub forumPolicies, params object[] policyParams);
         bool CreateSubForum(string creator, string forumName, string subForumName, Dictionary<string, DateTime> moderators);
 
         // add thread also means adding the opening post of the thread
@@ -98,5 +98,9 @@ namespace AcceptanceTestsBridge
         List<string> GetNotifications(string forumName, string username);
  
         List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1);
+
+        string getUserClientSession(string forumName, string userName);
+        bool LoginUserWithClientSession(string forumName, string username, string pass, string clientServer);
+
     }
 }

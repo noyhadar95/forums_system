@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         Title="AddThreadWindow" Height="450" Width="750">
     <Grid>
-        <TextBox x:Name="titleTB" HorizontalAlignment="Left" Height="23" Margin="208,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="387"/>
-        <TextBox x:Name="contentTB" HorizontalAlignment="Left" Height="211" Margin="208,116,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="387"/>
-        <Button x:Name="addThreadBtn" Content="add topic" HorizontalAlignment="Left" Margin="520,367,0,0" VerticalAlignment="Top" Width="75" Click="addThreadBtn_Click" />
-        <Button x:Name="cancelBtn" Content="cancel" HorizontalAlignment="Left" Margin="208,367,0,0" VerticalAlignment="Top" Width="75" Click="cancelBtn_Click" />
+        <TextBox x:Name="titleTB" TabIndex="1" HorizontalAlignment="Left" Height="23" Margin="208,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="387"/>
+        <TextBox x:Name="contentTB" TabIndex="2" HorizontalAlignment="Left" Height="211" Margin="208,116,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="387"/>
+        <Button x:Name="addThreadBtn" Content="add topic" TabIndex="3" HorizontalAlignment="Left" Margin="520,367,0,0" VerticalAlignment="Top" Width="75" Click="addThreadBtn_Click" />
+        <Button x:Name="cancelBtn" Content="cancel" TabIndex="4" HorizontalAlignment="Left" Margin="208,367,0,0" VerticalAlignment="Top" Width="75" Click="cancelBtn_Click" />
         <Label x:Name="titleLbl" Content="title" HorizontalAlignment="Left" Margin="111,57,0,0" VerticalAlignment="Top"/>
         <Label x:Name="contentLbl" Content="content" HorizontalAlignment="Left" Margin="111,116,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label" Content="Add a new topic in the sub forum" HorizontalAlignment="Left" Margin="278,10,0,0" VerticalAlignment="Top"/>

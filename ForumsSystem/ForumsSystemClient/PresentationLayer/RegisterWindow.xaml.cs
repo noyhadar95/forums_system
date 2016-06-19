@@ -46,13 +46,6 @@ namespace ForumsSystemClient.PresentationLayer
             if (username == "")
             {
                 MessageBox.Show("please enter a username");
-                //Label markFieldLbl = new Label();
-                //markFieldLbl.Content = "*";
-                //markFieldLbl.Foreground = Brushes.Red;
-                //markFieldLbl.Margin = new Thickness(usernameTB.Margin.Left - 20, usernameTB.Margin.Top,
-                //    usernameTB.Margin.Right, usernameTB.Margin.Bottom);
-                //grid.Children.Add(markFieldLbl);
-
                 return;
             }
             if (password == "")

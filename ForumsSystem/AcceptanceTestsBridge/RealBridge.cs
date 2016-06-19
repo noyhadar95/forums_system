@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace AcceptanceTestsBridge
 {
-    class RealBridge : IBridge
+    public class RealBridge : IBridge
     {
 
         private IServiceLayer sl;
@@ -22,7 +22,8 @@ namespace AcceptanceTestsBridge
         private int maxNumOfUsers = 200;
         private int minAge = 1;
         private int maxModerators = 20;
-
+        private Dictionary<Tuple<string, string>, string> sessionKeys = new Dictionary<Tuple<string, string>, string>();
+        private int randomCounter = 1;
         public RealBridge()
         {
             sl = new ServiceLayer();
@@ -186,7 +187,7 @@ namespace AcceptanceTestsBridge
             ISubForum subForum = forum.getSubForum(subForumName);
             Thread thread = subForum.GetThreadById(threadID);
             Post post = thread.GetPostById(postID);
-            return sl.DeletePost(user, post);
+            return sl.DeletePost(forumName, subForumName, deleter, threadID, postID);
         }
 
         #endregion
@@ -334,8 +335,22 @@ namespace AcceptanceTestsBridge
         {
             //IForum forum = sl.GetForum(forumName);
             IUser user = sl.MemberLogin(username, pass, forumName);
+
+            if (!sessionKeys.ContainsKey(new Tuple<string, string>(forumName, username)))
+            {
+                sessionKeys.Add(new Tuple<string, string>(forumName, username), username + randomCounter++);
+                return user != null;
+            }
+            else
+            return false;
+        }
+
+        private bool LoginUserWithSessionOK(string forumName, string username, string pass)
+        {
+            IUser user = sl.MemberLogin(username, pass, forumName);
             return user != null;
         }
+
 
         public bool LoginSuperAdmin(string username, string pass)
         {
@@ -495,7 +510,7 @@ namespace AcceptanceTestsBridge
 
         public List<string> GetNotifications(string forumName, string username)
         {
-            List<PrivateMessageNotification> notif = sl.GetNotifications(forumName, username);
+            List<PrivateMessageNotification> notif = sl.GetPrivateMessageNotifications(forumName, username);
             List<string> res = new List<string>();
             if (notif == null)
                 return res;
@@ -527,7 +542,78 @@ namespace AcceptanceTestsBridge
 
         public void LogoutUser(string forumName, string username)
         {
+
+            if (sessionKeys.ContainsKey(new Tuple<string, string>(forumName, username)))
+                sessionKeys.Remove(new Tuple<string, string>(forumName, username));
             sl.MemberLogout(forumName, username);
+        }
+
+        public string getUserClientSession(string forumName, string userName)
+        {
+            string key = "";
+            if (!sessionKeys.TryGetValue(new Tuple<string, string>(forumName, userName), out key))
+                key = "";
+            return key;
+        }
+
+        public bool LoginUserWithClientSession(string forumName, string username, string pass, string clientServer)
+        {
+            string key = getUserClientSession(forumName, username);
+            if (clientServer.Equals(key))
+                return LoginUserWithSessionOK(forumName, username, pass);
+            return false;
+        }
+
+        public bool CreateForum(string creator, string creatorPass, string forumName, List<UserStub> admins, PoliciesStub forumPolicies, params object[] policyParams)
+        {
+            List<User> newAdmins = new List<User>();
+
+            foreach (UserStub user in admins)
+            {
+                User u = new User(user.Username, user.Password, user.Email, DateTime.Today.AddDays(100));
+                newAdmins.Add(u);
+            }
+            SuperAdmin superAdmin = SuperAdmin.GetInstance();
+            Policies forumPol = ConvertPolicyStubToReal(forumPolicies);
+            Policy policy;
+            switch (forumPol)
+            {
+                case Policies.Password:
+                    policy = new PasswordPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1));
+                    break;
+                case Policies.Authentication:
+                    policy = new AuthenticationPolicy(forumPol);
+                    break;
+                case Policies.ModeratorSuspension:
+                    policy = new ModeratorSuspensionPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.Confidentiality:
+                    policy = new ConfidentialityPolicy(forumPol, (bool)policyParams.ElementAt(0));
+                    break;
+                case Policies.ModeratorAppointment:
+                    policy = new ModeratorAppointmentPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1), (int)policyParams.ElementAt(2));
+                    break;
+                case Policies.AdminAppointment:
+                    policy = new AdminAppointmentPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1), (int)policyParams.ElementAt(2));
+                    break;
+                case Policies.MemberSuspension:
+                    policy = new MemberSuspensionPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.UsersLoad:
+                    policy = new UsersLoadPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.MinimumAge:
+                    policy = new MinimumAgePolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.MaxModerators:
+                    policy = new MaxModeratorsPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                default:
+                    policy = new PasswordPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1));
+                    break;
+            }
+            IForum newForum = sl.CreateForum(creator, creatorPass, forumName, policy, newAdmins);
+            return newForum != null;
         }
     }
 }

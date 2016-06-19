@@ -37,6 +37,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return base.CheckPolicy(param);
 
         }
+       
 
-    }
+
+        }
 }

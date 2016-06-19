@@ -28,10 +28,9 @@ namespace ForumsSystemClient.PresentationLayer
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
-            WindowHelper.SetCurrentWindow(this);
 
             cl = new CL();
-            
+
             // check if the system is initialized
             if (!cl.IsInitialized())
             {
@@ -94,6 +93,16 @@ namespace ForumsSystemClient.PresentationLayer
             superAdminLoginGrid.Visibility = Visibility.Visible;
             superAdminGrid.Visibility = Visibility.Hidden;
             WindowHelper.LogoutSuperAdmin();
+        }
+
+        private void editPoliciesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new EditForumPoliciesWindow());
+        }
+
+        private void reportsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new SuperAdminReportsWindow());
         }
     }
 }

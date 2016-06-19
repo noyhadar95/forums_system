@@ -30,10 +30,12 @@ namespace ForumsSystemClient.PresentationLayer
         public EditPostWindow(string forumName, string subForumName, int threadID, Post post)
         {
             InitializeComponent();
+            WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
             this.forumName = forumName;
             this.subForumName = subForumName;
+            this.threadID = threadID;
             this.post = post;
 
             contentTB.Text = post.Content;

@@ -19,11 +19,9 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for ThreadWindow.xaml
     /// </summary>
-    public partial class ThreadWindow : Window
+    public partial class ThreadWindow : NotifBarWindow
     {
         private double firstLevelItemOffset = 70; // offset of the items in the first level of the treeview
-        private CL cl;
-        private string forumName;
         private string subForumName;
         private int threadID;
         private List<Post> posts;
@@ -32,18 +30,30 @@ namespace ForumsSystemClient.PresentationLayer
         private bool isAddReplyMode = false;
         private Button addReplyModeCancelBtn = null; // save the cancel button, so we will be able to exit add-reply-mode when another reply-button is clicked
 
-        public ThreadWindow(string forumName, string subForumName, int threadID)
+        public ThreadWindow(string forumName, string subForumName, int threadID) : base(forumName)
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
-            this.forumName = forumName;
             this.subForumName = subForumName;
             this.threadID = threadID;
             btnSPParents = new Dictionary<Button, StackPanel>();
             borderPostDict = new Dictionary<Border, Post>();
+
+            base.Initialize(dockPanel);
+
+
+            // hide user menu bar (notifications bar included)
+            userMenuBar.Visibility = Visibility.Hidden;
+
+            if (WindowHelper.IsLoggedUser(forumName))
+            {
+                RefreshNotificationsBar(loggedUsername);
+                userMenuBar.Visibility = Visibility.Visible;
+            }
+
         }
 
         private void postsTreeView_Loaded(object sender, RoutedEventArgs e)
@@ -83,34 +93,28 @@ namespace ForumsSystemClient.PresentationLayer
         // return border with stack pnael that contains the controls for a post
         private Border CreatePostBorder(Post post)
         {
+            // post title
             TextBlock titleTB = new TextBlock();
             titleTB.Text = post.Title;
             titleTB.Background = Brushes.AliceBlue;
 
+            // post content
             TextBlock contentTB = new TextBlock();
             contentTB.MaxWidth = postsTreeView.Width;
             contentTB.TextWrapping = TextWrapping.WrapWithOverflow;
             contentTB.Text = post.Content;
 
-            // create the reply button
-            Button replyBtn = new Button();
-            replyBtn.Content = "reply";
-            replyBtn.Margin = new Thickness(5);
-            replyBtn.Click += new RoutedEventHandler(replyBtn_Click);
-            TextBlock replyTB = new TextBlock();
-            replyTB.Inlines.Add(replyBtn);
-
+            // horizontal stack panel for buttons (reply, edit, delete, ...)
             AlignStackPanel horizontalSP = new AlignStackPanel();
             horizontalSP.Orientation = Orientation.Horizontal;
-            horizontalSP.Children.Add(replyTB);
 
+            // stack panel for the whole post
             StackPanel sp = new StackPanel();
             sp.Children.Add(WrapElementWithBorder(titleTB));
             sp.Children.Add(WrapElementWithBorder(contentTB));
             sp.Children.Add(WrapElementWithBorder(horizontalSP));
 
-            btnSPParents.Add(replyBtn, sp);
-
+            // post border
             Border border = new Border();
             border.Margin = new Thickness(0, 10, 15, 0);
             border.BorderThickness = new Thickness(0.3);
@@ -119,6 +123,21 @@ namespace ForumsSystemClient.PresentationLayer
 
             // save the created border with it's associated post
             borderPostDict.Add(border, post);
+
+            // show reply button only if user is logged in
+            if (WindowHelper.IsLoggedUser(forumName))
+            {
+                // create the reply button
+                Button replyBtn = new Button();
+                replyBtn.Content = "reply";
+                replyBtn.Margin = new Thickness(5);
+                replyBtn.Click += new RoutedEventHandler(replyBtn_Click);
+                TextBlock replyTB = new TextBlock();
+                replyTB.Inlines.Add(replyBtn);
+
+                horizontalSP.Children.Add(replyTB);
+                btnSPParents.Add(replyBtn, sp);
+            }
 
             // check if the logged user is the post publisher
             if (IsLoggedUserPostPublisher(post))
@@ -131,7 +150,9 @@ namespace ForumsSystemClient.PresentationLayer
                 TextBlock deleteTB = new TextBlock();
                 deleteTB.Inlines.Add(deleteBtn);
 
+                horizontalSP.Children.Add(deleteTB);
                 btnSPParents.Add(deleteBtn, sp);
+
 
                 // add edit content button
                 Button editBtn = new Button();
@@ -142,7 +163,7 @@ namespace ForumsSystemClient.PresentationLayer
                 editTB.Inlines.Add(editBtn);
 
                 horizontalSP.Children.Add(editTB);
-                horizontalSP.Children.Add(deleteTB);
+                btnSPParents.Add(editBtn, sp);
             }
 
             return border;
@@ -150,8 +171,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         private bool IsLoggedUserPostPublisher(Post post)
         {
-            return (WindowHelper.IsLoggedSuperAdmin() && WindowHelper.GetLoggedSuperAdmin().userName == post.Publisher.Username)
-                || (WindowHelper.IsLoggedUser(forumName) && WindowHelper.GetLoggedUser(forumName).Username == post.Publisher.Username);
+            return (WindowHelper.IsLoggedUser(forumName) && WindowHelper.GetLoggedUser(forumName).Username == post.Publisher.Username);
         }
 
         private Border WrapElementWithBorder(UIElement c)
@@ -274,7 +294,9 @@ namespace ForumsSystemClient.PresentationLayer
             }
             Border parentBorder = (Border)parentSP.Parent;
             Post parentPost = borderPostDict[parentBorder];
-            cl.AddReply(forumName, subForumName, threadID, parentPost.Publisher.Username, parentPost.GetId(), replyTitle, replyContent);
+
+            cl.AddReply(forumName, subForumName, threadID, WindowHelper.GetLoggedUsername(forumName), parentPost.GetId(), replyTitle, replyContent);
+
 
             // refresh window
             WindowHelper.SwitchWindow(this, new ThreadWindow(forumName, subForumName, threadID));

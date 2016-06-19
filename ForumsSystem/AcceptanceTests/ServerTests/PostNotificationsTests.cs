@@ -198,7 +198,7 @@ namespace AcceptanceTests.ServerTests
                 //now check that the users received a notification about the edition
                 Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName,friend1, postID));
                 Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend2, postID));
-                Assert.IsFalse(bridge.IsExistNotificationOfPost(forumName, friend11, postID));
+                Assert.IsTrue(bridge.IsExistNotificationOfPost(forumName, friend11, postID));
             }
             catch (Exception e)
             {

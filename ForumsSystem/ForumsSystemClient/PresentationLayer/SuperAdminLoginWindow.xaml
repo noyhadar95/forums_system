@@ -7,12 +7,12 @@
         mc:Ignorable="d"
         Title="SuperAdminLoginWindow" Height="450" Width="750">
     <Grid>
-        <Button x:Name="loginBtn" Content="Login" HorizontalAlignment="Left" Margin="378,314,0,0" VerticalAlignment="Top" Width="75" Click="loginBtn_Click"/>
+        <Button x:Name="loginBtn" Content="Login" TabIndex="3" HorizontalAlignment="Left" Margin="378,314,0,0" VerticalAlignment="Top" Width="75" Click="loginBtn_Click"/>
         <Label x:Name="usernameLbl" Content="Username" HorizontalAlignment="Left" Margin="188,117,0,0" VerticalAlignment="Top"/>
         <Label x:Name="passwordLbl" Content="Password" HorizontalAlignment="Left" Margin="190,189,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="usernameTB" HorizontalAlignment="Left" Height="23" Margin="333,121,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="cancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="190,314,0,0" VerticalAlignment="Top" Width="75" Click="cancelBtn_Click"/>
-        <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="333,192,0,0" VerticalAlignment="Top" Width="120" Height="23"/>
+        <TextBox x:Name="usernameTB" TabIndex="1" HorizontalAlignment="Left" Height="23" Margin="333,121,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="cancelBtn" Content="Cancel" TabIndex="4" HorizontalAlignment="Left" Margin="190,314,0,0" VerticalAlignment="Top" Width="75" Click="cancelBtn_Click"/>
+        <PasswordBox x:Name="passwordBox" TabIndex="2" HorizontalAlignment="Left" Margin="333,192,0,0" VerticalAlignment="Top" Width="120" Height="23"/>
         <Label x:Name="label" Content="Super Admin Login" HorizontalAlignment="Left" Margin="241,35,0,0" VerticalAlignment="Top" FontSize="16"/>
 
     </Grid>

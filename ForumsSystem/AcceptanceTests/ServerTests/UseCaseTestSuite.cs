@@ -45,6 +45,18 @@ namespace AcceptanceTests.ServerTests
             // create the forum
             return bridge.CreateForum(superAdminUsername, this.superAdminPass, forumName, admins, forumPolicy);
         }
+
+        protected bool CreateForum(string forumName, PoliciesStub forumPolicy, params object[] policyParams)
+        {
+            List<UserStub> admins = new List<UserStub>();
+            UserStub user1 = new UserStub(adminUserName1, adminPass1, adminEmail1, forumName);
+            admins.Add(user1);
+
+            // create the forum
+            return bridge.CreateForum(superAdminUsername, this.superAdminPass, forumName, admins, forumPolicy,policyParams);
+        }
+
+
         private void DeleteForum(string forumName)
         {
             bridge.DeleteForum(forumName);

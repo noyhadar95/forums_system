@@ -48,7 +48,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             cmd.Parameters.AddWithValue("@p1", postId);
             cmd.Parameters.AddWithValue("@p2", publisherUserName);
             cmd.Parameters.AddWithValue("@p3", forumName);
-
+                
             if (parentPostId <= 0)
                 cmd.Parameters.AddWithValue("@p4", DBNull.Value);
             else

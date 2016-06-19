@@ -21,7 +21,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public ModeratorAppointmentPolicy(Policies type, int seniority, int numOfMessages, int numOfComplaints):base(type)
         {
-            dal_policyParameter.CreatePolicyParameter(ID, seniority, numOfMessages, numOfComplaints,false, -1, -1, -1, -1, -1, -1, false);
             this.seniorityInDays = seniority;
             this.numOfMessages = numOfMessages;
             this.numOfComplaints = numOfComplaints;
@@ -54,6 +53,19 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
             else
                 return base.CheckPolicy(param);
+
+        }
+        public override bool AddPolicy(Policy newPolicy)
+        {
+            bool flag = base.AddPolicy(newPolicy);
+            if (flag)
+                newPolicy.AddParamObject();
+            return flag;
+        }
+        public override void AddParamObject()
+        {
+            dal_policyParameter = new Data_Access_Layer.DAL_PolicyParameter();
+            dal_policyParameter.CreatePolicyParameter(ID, seniorityInDays, numOfMessages, numOfComplaints, false, -1, -1, -1, -1, -1, -1, false);
 
         }
     }

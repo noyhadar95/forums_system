@@ -11,15 +11,14 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     /// <summary>
     /// check if a member should be suspended
     /// </summary>
-     [DataContract(IsReference = true)]
-    public class MemberSuspensionPolicy :Policy
-    { 
+    [DataContract(IsReference = true)]
+    public class MemberSuspensionPolicy : Policy
+    {
         [DataMember]
         private int numOfComplaints;
         //TODO: maybe add more things
-        public MemberSuspensionPolicy(Policies type, int numOfComplaints):base(type)
+        public MemberSuspensionPolicy(Policies type, int numOfComplaints) : base(type)
         {
-            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, numOfComplaints, false, -1, -1, -1, -1, -1, -1, false);
             this.numOfComplaints = numOfComplaints;
         }
 
@@ -47,11 +46,24 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (param.GetPolicy() == type)
             {
                 User user = (User)param.User;
-                return user.NumOfComplaints>numOfComplaints; 
+                return user.NumOfComplaints > numOfComplaints;
             }
             else
                 return base.CheckPolicy(param);
 
         }
+        public override bool AddPolicy(Policy newPolicy)
+        {
+            bool flag = base.AddPolicy(newPolicy);
+            if (flag)
+                newPolicy.AddParamObject();
+            return flag;
+        }
+        public override void AddParamObject()
+        {
+            dal_policyParameter = new Data_Access_Layer.DAL_PolicyParameter();
+            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, numOfComplaints, false, -1, -1, -1, -1, -1, -1, false);
+
+        }
     }
-}
+    }
