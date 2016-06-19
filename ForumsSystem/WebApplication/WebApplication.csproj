@@ -207,6 +207,7 @@
     <Content Include="Account\ResetPasswordConfirmation.aspx" />
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
     <Content Include="Account\VerifyPhoneNumber.aspx" />
+    <Content Include="AddReply.aspx" />
     <Content Include="AddThread.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap.css" />
@@ -380,6 +381,13 @@
     </Compile>
     <Compile Include="Account\VerifyPhoneNumber.aspx.designer.cs">
       <DependentUpon>VerifyPhoneNumber.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddReply.aspx.cs">
+      <DependentUpon>AddReply.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddReply.aspx.designer.cs">
+      <DependentUpon>AddReply.aspx</DependentUpon>
     </Compile>
     <Compile Include="AddThread.aspx.cs">
       <DependentUpon>AddThread.aspx</DependentUpon>

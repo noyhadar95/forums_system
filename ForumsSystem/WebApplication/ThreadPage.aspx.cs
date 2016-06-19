@@ -12,37 +12,41 @@ namespace WebApplication
 {
     public partial class ThreadPage : System.Web.UI.Page, IPostBackEventHandler
     {
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
+
             MyTreeNode node1 = new MyTreeNode();
-         //   if (!Page.IsPostBack)
-          //  {
-                string forumName = Request.QueryString["forumName"];
-                string subforumName = Request.QueryString["subforumName"];
-                string threadID = Request.QueryString["thread"];
-                ICL cl = new CL();
-                Label myLabel = this.FindControl("Label1") as Label;
-                myLabel.Text = forumName + "/" + subforumName;
+            string forumName = Request.QueryString["forumName"];
+            string subforumName = Request.QueryString["subforumName"];
+            string threadID = Request.QueryString["thread"];
+            ICL cl = new CL();
+            Label myLabel = this.FindControl("Label1") as Label;
+            myLabel.Text = forumName + "/" + subforumName;
 
-                List<Post> posts = cl.GetPosts(forumName, subforumName, int.Parse(threadID));
-                TreeView1.Nodes.Clear();
+            List<Post> posts = cl.GetPosts(forumName, subforumName, int.Parse(threadID));
+            TreeView1.Nodes.Clear();
 
-                var tree = sender as TreeView;
+            var tree = sender as TreeView;
 
-                foreach (Post post in posts)
-                {
-                    MyTreeNode node = new MyTreeNode(post.Title, post.Content, post.GetId());
-                    TreeView1.Nodes.Add(node);
-                    node.enableButtonSave(false);
-                    CreateNested(post, node);
-                }
-                TreeView1.NodeStyle.BorderColor = System.Drawing.Color.Black;
-                TreeView1.NodeStyle.BorderWidth = 1;
-                TreeView1.NodeStyle.HorizontalPadding = 3;
-                TreeView1.NodeStyle.VerticalPadding = 2;
-                TreeView1.NodeStyle.Width = 600;
-                TreeView1.DataBind();
-        //    }
+            foreach (Post post in posts)
+            {
+                MyTreeNode node;
+                if (Session["Data"].Equals(""))
+                    node = new MyTreeNode(post.Title, post.Content,post.Publisher.Username,post.GetId(),false);
+                else
+                    node = new MyTreeNode(post.Title, post.Content, post.Publisher.Username,post.GetId(), true);
+
+                TreeView1.Nodes.Add(node);
+                CreateNested(post, node);
+            }
+            TreeView1.NodeStyle.BorderColor = System.Drawing.Color.Black;
+            TreeView1.NodeStyle.BorderWidth = 1;
+            TreeView1.NodeStyle.HorizontalPadding = 3;
+            TreeView1.NodeStyle.VerticalPadding = 2;
+            TreeView1.NodeStyle.Width = 600;
+            TreeView1.DataBind();
                 
 
             if (Session["Data"].Equals(""))
@@ -72,9 +76,12 @@ namespace WebApplication
             node.Expanded = true;
             foreach (Post reply in replies)
             {
-                MyTreeNode child = new MyTreeNode(reply.Title ,reply.Content,reply.GetId());
+                MyTreeNode child;
+                if (Session["Data"].Equals(""))
+                    child = new MyTreeNode(reply.Title ,reply.Content, reply.Publisher.Username,reply.GetId(),false);
+                else
+                    child = new MyTreeNode(reply.Title, reply.Content, reply.Publisher.Username,reply.GetId(), true);
                 node.ChildNodes.Add(child);
-                child.enableButtonSave(false);
                 CreateNested(reply, child);
             }
            
@@ -83,6 +90,8 @@ namespace WebApplication
         protected void Button1_Click(object sender, EventArgs e)
         {
             string forumName = Request.QueryString["forumName"];
+            string subforumName = Request.QueryString["subforumName"];
+            string thread = Request.QueryString["thread"];
             string userName = TextBox1.Text;
             string password = TextBox2.Text;
             if (userName == "" || password == "")
@@ -111,10 +120,28 @@ namespace WebApplication
             BtnLogout.Enabled = true;
 
             Session["Data"] = userName;
+
+
+            List<Post> posts = cl.GetPosts(forumName, subforumName, int.Parse(thread));
+            TreeView1.Nodes.Clear();
+
+            var tree = sender as TreeView;
+
+            foreach (Post post in posts)
+            {
+                MyTreeNode node;
+                node = new MyTreeNode(post.Title, post.Content, post.Publisher.Username, post.GetId(), true);
+
+                TreeView1.Nodes.Add(node);
+                CreateNested(post, node);
+            }
         }
 
         protected void BtnLogout_Click(object sender, EventArgs e)
         {
+            string forumName = Request.QueryString["forumName"];
+            string subforumName = Request.QueryString["subforumName"];
+            string thread = Request.QueryString["thread"];
             ICL cl = new CL();
             cl.MemberLogout(Request.QueryString["forumName"], (string)Session["Data"]);
             LabelUserName.Visible = true;
@@ -128,6 +155,20 @@ namespace WebApplication
             BtnLogout.Enabled = false;
 
             Session["Data"] = "";
+
+            List<Post> posts = cl.GetPosts(forumName, subforumName, int.Parse(thread));
+            TreeView1.Nodes.Clear();
+
+            var tree = sender as TreeView;
+
+            foreach (Post post in posts)
+            {
+                MyTreeNode node;
+                node = new MyTreeNode(post.Title, post.Content, post.Publisher.Username,post.GetId(), false);
+
+                TreeView1.Nodes.Add(node);
+                CreateNested(post, node);
+            }
         }
 
         private void displayMessage(string Message)
@@ -147,44 +188,23 @@ namespace WebApplication
 
         public void RaisePostBackEvent(string eventArgument)
         {
+            
             Page page = HttpContext.Current.CurrentHandler as Page;
             ClientScriptManager csm = page.ClientScript;
             string[] stringSeparators = new string[] { "@" };
             string[] result;
             result = eventArgument.Split(stringSeparators, StringSplitOptions.None);
-            int idarg = int.Parse(result[1]);
-            TreeNodeCollection col = TreeView1.Nodes;
-            
-            if (result[0] == "Save")
+            if (result[0] == "Reply")
             {
-                MyTreeNode selected = findNodeByPostId(col, idarg);
-                csm.RegisterStartupScript(
-                 this.GetType(),
-                 "Scripts",
-                 "<script language='javascript'>alert('" + "title: " + "selected.GetTitle()" + " content: " + "selected.GetBody()" + "');</script>");
+                int idarg = int.Parse(result[1]);
+                string forumName = Request.QueryString["forumName"];
+                string subforumName = Request.QueryString["subforumName"];
+                string thread = Request.QueryString["thread"];
+                Response.Redirect("AddReply.aspx?forumName=" + forumName + "&subforumName=" + subforumName +
+                    "&thread=" + thread + "&post=" + idarg);
             }
-            else
-            {
-                MyTreeNode selected = findNodeByPostId(col, idarg);
-                if (selected == null)
-                {
-                    csm.RegisterStartupScript(
-                     this.GetType(),
-                     "Scripts",
-                      "<script language='javascript'>alert('" + "an error occured " + "');</script>");
-                    return;
-                }
-                                
-                csm.RegisterStartupScript(
-                 this.GetType(),
-                 "Scripts",
-                 "<script language='javascript'>alert('" + "click on reply " + idarg + "');</script>");
-                
-                MyTreeNode newNode = new MyTreeNode("", "");
-                selected.ChildNodes.Add(newNode);
-                newNode.enableTextBoxes();
-                newNode.enableButtonSave(true);
-            }
+
+
         }
 
         private MyTreeNode findNodeById(TreeNodeCollection col, int id)

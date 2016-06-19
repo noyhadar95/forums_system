@@ -49,7 +49,7 @@
             <strong><span class="auto-style4">&nbsp;&nbsp; </span>
             <asp:Label ID="Label1" runat="server" style="font-size: large" Text="Label"></asp:Label>
             </strong><br />
-            <asp:ListBox ID="ListBox1" runat="server" Height="304px" style="background-color: #99CCFF; margin-left: 11px; margin-top: 30px;" Width="580px" ForeColor="Black" ></asp:ListBox>
+            <asp:ListBox ID="ListBox1" runat="server" Height="304px" style="background-color: #99CCFF; margin-left: 11px; margin-top: 25px;" Width="580px" ForeColor="Black" ></asp:ListBox>
             <asp:Button ID="Button2" runat="server" style="margin-left: 41px; background-color: #CCCCCC;" Text="Ok" CssClass="rounded-corners-light" OnClick="Button2_Click" Width="56px" Height="28px"/>
             <br />
         </asp:Panel>

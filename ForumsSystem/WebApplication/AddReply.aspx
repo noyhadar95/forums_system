@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddThread.aspx.cs" Inherits="WebApplication.AddThread" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddReply.aspx.cs" Inherits="WebApplication.AddReply" %>
 
 <!DOCTYPE html>
 
@@ -6,6 +6,7 @@
 <head runat="server">
     <title></title>
     <style type="text/css">
+
 
 
 .HellowWorldPopup
@@ -25,20 +26,20 @@
             width: 263px;
             height: 113px;
         }
-		.rounded-corners-light{
+		 
+		.auto-style4 {
+            font-size: medium;
+        }
+        .rounded-corners-light{
 	 
 		-webkit-border-radius: 5px; 
 		-moz-border-radius: 5px;
 		}
  
-		.auto-style4 {
-            font-size: medium;
-        }
-        </style>
+		</style>
 </head>
 <body style="background-color: #C0C0C0">
     <form id="form2" runat="server">
-
     <div>
         <asp:Panel ID="Panel1" runat="server" BackColor="Black" BorderColor="Black" BorderWidth="4px" CssClass="rounded-corners" Height="81px" Width ="1104px">
             <img alt="" class="auto-style3" src="images/logo.png" />
@@ -64,7 +65,7 @@
             <br />
             <asp:Button ID="BtnBack" runat="server"  style="margin-left: 16px; margin-top: 20px;" CssClass="rounded-corners-light" Height="28px" Width="55px" Text="cancel" OnClick="BtnBack_Click"/>
             
-            <asp:Button ID="BtnAdd" runat="server" style="margin-left: 20px" Text="save" CssClass="rounded-corners-light" Height="28px" Width="55px" OnClick="BtnAdd_Click"/>
+            <asp:Button ID="BtnAdd" runat="server" style="margin-left: 20px" Text="save" CssClass="rounded-corners-light" Height="28px" Width="55px" OnClick="BtnAdd_Click" />
             
         </asp:Panel>
     </form>

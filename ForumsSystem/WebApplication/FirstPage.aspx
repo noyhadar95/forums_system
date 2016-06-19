@@ -36,7 +36,7 @@
         <asp:Panel ID="Panel2" runat="server" BackColor="Black" CssClass="rounded-corners" Height="423px" style="margin-right: 4px; margin-top: 10px; color: #FFFFFF;" >
             <br />
             <strong><span class="auto-style4">&nbsp;&nbsp; </span><span class="auto-style5">Welcome to TimTimTeam Forum system! please choose a forum</span></strong><br />
-            <asp:ListBox ID="ListBox1" runat="server" Height="304px" style="background-color: #99CCFF; margin-left: 11px; margin-top: 10px;" Width="580px" ForeColor="Black" ></asp:ListBox>
+            <asp:ListBox ID="ListBox1" runat="server" Height="304px" style="background-color: #99CCFF; margin-left: 11px; margin-top: 25px;" Width="580px" ForeColor="Black" ></asp:ListBox>
             <asp:Button ID="Button1" runat="server" style="margin-left: 30px; margin-top: 0px" Text="Ok" Width="56px" BackColor="#CCCCCC" CssClass="rounded-corners-light" Height="28px" OnClick="Button1_Click1" />
         </asp:Panel>
         <p>
