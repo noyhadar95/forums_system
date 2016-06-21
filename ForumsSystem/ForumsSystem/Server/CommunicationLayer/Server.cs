@@ -19,7 +19,7 @@ namespace ForumsSystem.Server.CommunicationLayer
         const int CLIENT_PORT_NO = 4000;
         const int SERVER_PORT_NO = 5000;
         const string delimeter = "$|deli|$";
-        static string SERVER_IP = "79.179.27.79";
+        static string SERVER_IP = "132.72.226.107";
         private static ServiceLayer.IServiceLayer sl;
         private static Dictionary<Tuple<string, string>, string> halfClients; //not yet subscribed
 
