@@ -593,5 +593,20 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user = forum.getUser(username);
             return user.SetPassword(newPassword);
         }
+
+        public int getNumOfPostsInSubForum(string forumName, string subForumName)
+        {
+            int total = 0;
+            IForum forum = GetForum(forumName);
+            foreach (SubForum sub in forum.GetSubForums())
+            {
+                foreach (Thread thread in sub.GetThreads())
+                {
+                    total += thread.GetNumOfNestedReplies();
+                }
+            }
+
+            return total;
+        }
     }
 }

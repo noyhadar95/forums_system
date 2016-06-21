@@ -382,5 +382,10 @@ namespace ForumsSystemClient.CommunicationLayer
             return (List<PrivateMessageNotification>)Client.SendRequest("GetPrivateMessageNotifications", forumName, username);
 
         }
+
+        public int getNumOfPostsInSubForum(string forumName, string subForum)
+        {
+            return (int)Client.SendRequest("getNumOfPostsInSubForum", forumName, subForum);
+        }
     }
 }

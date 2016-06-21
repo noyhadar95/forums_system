@@ -105,5 +105,6 @@ namespace ForumsSystem.Server.ServiceLayer
         bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
         bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question);
         bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
+        int getNumOfPostsInSubForum(string forumName, string subForumName);
     }
 }
