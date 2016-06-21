@@ -738,7 +738,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (isLoggedIn)
             {
                 int postNotificationCount = postNotifications.Count;
-                int privateMessageNotificationsCount = privateMessageNotifications.Count;
+                int privateMessageNotificationsCount = 0;
+                if(privateMessageNotifications != null)
+                    privateMessageNotificationsCount = privateMessageNotifications.Count;
                 int waitingFriendsCount;
 
                 if (waitingFriendsList != null)

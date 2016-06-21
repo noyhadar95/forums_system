@@ -94,12 +94,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             PolicyParametersObject modAddition = new PolicyParametersObject(Policies.MaxModerators);
             modAddition.CurrNumOfModerators = numOfModerators();
             modAddition.NumOfModeratorsToAdd = 1;
-            if (!this.forum.GetPolicy().CheckPolicy(modAddition))
-                return false;
+            if (this.forum.GetPolicy() != null)
+            {
+                if (!this.forum.GetPolicy().CheckPolicy(modAddition))
+                    return false;
+            }
             modAddition.SetPolicy(Policies.ModeratorAppointment);
             modAddition.User = modToBe;
-            if (!this.forum.GetPolicy().CheckPolicy(modAddition))
-                return false;
+            if (this.forum.GetPolicy() != null)
+            {
+                if (!this.forum.GetPolicy().CheckPolicy(modAddition))
+                    return false;
+            }
             return true;
 
         }
@@ -113,8 +119,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return false;
             PolicyParametersObject modSuspension = new PolicyParametersObject(Policies.ModeratorSuspension);
             modSuspension.User = getModeratorByUserName(userName).user;
-            if (!this.forum.GetPolicy().CheckPolicy(modSuspension))
-                return false;
+            if (this.forum.GetPolicy() != null)
+            {
+                if (!this.forum.GetPolicy().CheckPolicy(modSuspension))
+                    return false;
+            }
             return true;
         }
 

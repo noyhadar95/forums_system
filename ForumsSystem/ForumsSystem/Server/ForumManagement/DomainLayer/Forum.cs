@@ -183,8 +183,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                     //check if the member is suspended
                     PolicyParametersObject susp = new PolicyParametersObject(Policies.MemberSuspension);
                     susp.User = users[userName];
-                    if (!this.policies.CheckPolicy(susp))
-                        return null;
+                    if (this.policies != null)
+                    {
+                        if (!this.policies.CheckPolicy(susp))
+                            return null;
+                    }
                     users[userName].Login();
                     Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
                     return users[userName];
