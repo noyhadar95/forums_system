@@ -9,7 +9,7 @@
     <Grid>
         <Label x:Name="label2" Content="System Reports" HorizontalAlignment="Left" Margin="412,10,0,0" VerticalAlignment="Top" FontSize="18.667"/>
         <Button x:Name="backBtn" Content="back" TabIndex="1" HorizontalAlignment="Left" Margin="36,574,0,0" VerticalAlignment="Top" Width="75" Click="backBtn_Click"/>
-        <ListView x:Name="subForumsListView" HorizontalAlignment="Left" Height="178" Margin="596,61,0,0" VerticalAlignment="Top" Width="302" >
+        <ListView x:Name="subForumsListView" HorizontalAlignment="Left" Height="178" Margin="570,61,0,0" VerticalAlignment="Top" Width="302" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Sub Forum" DisplayMemberBinding="{Binding SubForum}"/>
@@ -17,11 +17,20 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView x:Name="subForumsListView_Copy" HorizontalAlignment="Left" Height="178" Margin="78,61,0,0" VerticalAlignment="Top" Width="302" >
+        <ListView x:Name="membersListView" HorizontalAlignment="Left" Height="178" Margin="78,61,0,0" VerticalAlignment="Top" Width="302" PreviewMouseLeftButtonUp="membersListView_PreviewMouseLeftButtonUp" >
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="Member" DisplayMemberBinding="{Binding Member}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView x:Name="moderatorsListView" HorizontalAlignment="Left" Height="178" Margin="78,294,0,0" VerticalAlignment="Top" Width="302" PreviewMouseLeftButtonUp="moderatorsListView_PreviewMouseLeftButtonUp" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Username" DisplayMemberBinding="{Binding Username}"/>
+                    <GridViewColumn Header="Appointer" DisplayMemberBinding="{Binding Appointer}"/>
+                    <GridViewColumn Header="Appointment Date" DisplayMemberBinding="{Binding AppointmentDate}"/>
                     <GridViewColumn Header="Sub Forum" DisplayMemberBinding="{Binding SubForum}"/>
-                    <GridViewColumn Header="Total Posts" DisplayMemberBinding="{Binding TotalPosts}"/>
                 </GridView>
             </ListView.View>
         </ListView>

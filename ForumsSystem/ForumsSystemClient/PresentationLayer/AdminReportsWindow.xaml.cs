@@ -1,4 +1,5 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,9 +42,44 @@ namespace ForumsSystemClient.PresentationLayer
                 subForumsListView.Items.Add(new SubForumListItem { SubForum = subForumName, TotalPosts = totalPost });
             }
 
+            List<string> members = cl.GetForumMembers(forumName);
+            foreach (string mem in members)
+            {
+                membersListView.Items.Add(new MembersListItem { Member = mem });
+            }
 
+            List<Tuple<string, string, DateTime, string, List<Post>>> modsDetailsList = cl.ReportModeratorsDetails(forumName, WindowHelper.GetLoggedUsername(forumName));
+            foreach (Tuple<string, string, DateTime, string, List<Post>> modsDetails in modsDetailsList)
+            {
+                moderatorsListView.Items.Add(new ModeratorsListItem
+                {
+                    Username = modsDetails.Item1,
+                    Appointer = modsDetails.Item2,
+                    AppointmentDate = modsDetails.Item3,
+                    SubForum = modsDetails.Item4
+                });
+            }
 
+        }
 
+        private void membersListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var item = (sender as ListView).SelectedItem;
+            if (item != null)
+            {
+                Window newWin = new UserPostsWindow(forumName, (string)item);
+                WindowHelper.ShowWindow(this, newWin);
+            }
+        }
+
+        private void moderatorsListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var item = (sender as ListView).SelectedItem;
+            if (item != null)
+            {
+                Window newWin = new UserPostsWindow(forumName, (string)item);
+                WindowHelper.ShowWindow(this, newWin);
+            }
         }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
@@ -57,6 +93,19 @@ namespace ForumsSystemClient.PresentationLayer
         public string SubForum { get; set; }
 
         public int TotalPosts { get; set; }
+    }
+
+    public class MembersListItem
+    {
+        public string Member { get; set; }
+    }
+
+    public class ModeratorsListItem
+    {
+        public string Username { get; set; }
+        public string Appointer { get; set; }
+        public DateTime AppointmentDate { get; set; }
+        public string SubForum { get; set; }
     }
 
 }

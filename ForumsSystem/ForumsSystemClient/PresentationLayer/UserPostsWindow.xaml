@@ -7,7 +7,6 @@
         mc:Ignorable="d"
         Title="UserPostsWindow" Height="450" Width="750">
     <Grid>
-        <Button x:Name="backBtn" Content="back" TabIndex="1" HorizontalAlignment="Left" Margin="36,370,0,0" VerticalAlignment="Top" Width="75" Click="backBtn_Click"/>
         <TreeView x:Name="postsTreeView" HorizontalAlignment="Left" Height="258" Margin="110,65,0,0" VerticalAlignment="Top" Width="496" />
 
     </Grid>
