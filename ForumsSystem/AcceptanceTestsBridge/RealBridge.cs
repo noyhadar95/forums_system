@@ -39,6 +39,7 @@ namespace AcceptanceTestsBridge
             foreach (UserStub user in admins)
             {
                 User u = new User(user.Username, user.Password, user.Email, DateTime.Today.AddDays(100));
+                u.Password = user.Password;
                 newAdmins.Add(u);
             }
             SuperAdmin superAdmin = SuperAdmin.GetInstance();

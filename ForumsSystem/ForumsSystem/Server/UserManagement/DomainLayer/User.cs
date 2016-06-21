@@ -396,13 +396,13 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public bool RegisterToForum(string userName, string password, IForum forum, string email, DateTime dateOfBirth)
         {
-            this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
+          
             
             if (forum == null)
                 return false;
             if (this.forum == null)
             {
-
+               
                 PolicyParametersObject param = new PolicyParametersObject(Policies.MinimumAge);
                 param.SetAgeOfUser((int)((DateTime.Today- dateOfBirth).TotalDays) / 365);
                 if (forum.GetPolicy() != null && !forum.GetPolicy().CheckPolicy(param))
@@ -418,6 +418,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
 
                 this.userName = userName;
+                this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
                 password = this.passwordSalt + password;
                 this.password = PRG.Hash.GetHash(password);
                 this.dateOfPassLastchange = DateTime.Today;
@@ -509,9 +510,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
             set
             {
-                this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
-                string temp = this.passwordSalt + value;
-                this.password = PRG.Hash.GetHash(temp);
+                this.password = value;
             }
         }
 
@@ -622,22 +621,26 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
                 dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
                 postNotifications = new List<PostNotification>();
-            /*    if (privateMessageNotifications!=null)
-                {
-                    foreach (PrivateMessageNotification m in privateMessageNotifications)
+                /*    if (privateMessageNotifications!=null)
                     {
-                        //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, m);
+                        foreach (PrivateMessageNotification m in privateMessageNotifications)
+                        {
+                            //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, m);
+                        }
                     }
-                }
-                //privateMessageNotifications = new List<PrivateMessageNotification>();
-                */
-                int postNotificationCount = postNotifications.Count;
+                    //privateMessageNotifications = new List<PrivateMessageNotification>();
+                    */
+                int postNotificationCount = 0;
+                if (postNotifications != null)
+                     postNotificationCount = postNotifications.Count;
 
                 /*DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
                 dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
                 postNotifications = new List<PostNotification>();*/
 
-                int privateMessageNotificationsCount = privateMessageNotifications.Count;
+                int privateMessageNotificationsCount = 0;
+                if (privateMessageNotifications != null)
+                    privateMessageNotificationsCount = privateMessageNotifications.Count;
 
                 /* privateMessageNotifications = new List<PrivateMessageNotification>();
 
