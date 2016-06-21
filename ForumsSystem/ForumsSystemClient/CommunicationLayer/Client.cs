@@ -27,6 +27,8 @@ namespace ForumsSystemClient.CommunicationLayer
         static int id;
         static Byte[] encKey;
         static Byte[] authKey;
+
+        static bool testing = false;
         private static string connect(string textToSend)
         {
             SERVER_IP = GetLocalIPAddress();
@@ -137,7 +139,8 @@ namespace ForumsSystemClient.CommunicationLayer
                     if (friendReqsNum > 0)
                     {
                         // notify about friend request/s
-                        WindowHelper.NotifyFriendRequests(friendReqsNum);
+                        if(!testing)
+                            WindowHelper.NotifyFriendRequests(friendReqsNum);
 
                     }
 
@@ -154,7 +157,8 @@ namespace ForumsSystemClient.CommunicationLayer
                     if (PrivateMsgsNum > 0)
                     {
                         // notify about private message/s
-                        WindowHelper.NotifyPrivateMessages(PrivateMsgsNum);
+                        if(!testing)
+                            WindowHelper.NotifyPrivateMessages(PrivateMsgsNum);
                     }
                 }
                 catch (Exception)
@@ -239,10 +243,10 @@ namespace ForumsSystemClient.CommunicationLayer
 
         }
 
-        public static void StartSecuredConnection()
+        public static void StartSecuredConnection(bool isTesting)
         {
             string textToSend = "StartSecuredConnection";
-
+            testing = isTesting;
             // textToSend = Encrypt(textToSend);
             string textFromServer = connect(textToSend);
             //textFromServer = Decrypt(textFromServer);

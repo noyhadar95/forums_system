@@ -19,7 +19,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
         private void StartSecuredConnection()
         {
-            Client.StartSecuredConnection();
+            Client.StartSecuredConnection(false);
               
         }
 
