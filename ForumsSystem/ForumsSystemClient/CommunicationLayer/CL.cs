@@ -23,6 +23,11 @@ namespace ForumsSystemClient.CommunicationLayer
               
         }
 
+        public void startTesting()
+        {
+            Client.setTesting(true);
+        }
+
         public List<string> GetForumsList()
         {
             return (List<string>)Client.SendRequest("GetForumsList");

@@ -27,6 +27,7 @@ namespace AcceptanceTestsBridge
         public ClientBridge()
         {
             cl = new CL();
+            cl.startTesting();
         }
         #region Add/Create Methods
 
@@ -538,6 +539,12 @@ namespace AcceptanceTestsBridge
             }
             Forum newForum = cl.CreateForum(superAdmin.userName, superAdmin.password, forumName, policy, newAdmins);
             return newForum != null;
+        }
+
+     
+        public bool recievedNotification(string forumName, string userName)
+        {
+            return NotificationHelper.recievedNotification();
         }
     }
 }

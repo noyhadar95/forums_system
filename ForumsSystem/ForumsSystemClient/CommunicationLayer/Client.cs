@@ -19,7 +19,7 @@ namespace ForumsSystemClient.CommunicationLayer
         const int CLIENT_PORT_NO = 4000;
         const int SERVER_PORT_NO = 5000;
         const string delimeter = "$|deli|$";
-        static string SERVER_IP = "132.72.226.107";
+        static string SERVER_IP = "132.72.224.248";
         static ThreadStart startNotification;
         static Thread notificationThread;
         static bool notificationsServerActive = false;
@@ -31,7 +31,7 @@ namespace ForumsSystemClient.CommunicationLayer
         static bool testing = false;
         private static string connect(string textToSend)
         {
-            SERVER_IP = GetLocalIPAddress();
+           // SERVER_IP = GetLocalIPAddress();
             //---create a TCPClient object at the IP and port no.---
             TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
 
@@ -141,6 +141,10 @@ namespace ForumsSystemClient.CommunicationLayer
                         // notify about friend request/s
                         if(!testing)
                             WindowHelper.NotifyFriendRequests(friendReqsNum);
+                        else
+                        {
+                            NotificationHelper.recieveFriendRequest();
+                        }
 
                     }
 
@@ -159,6 +163,10 @@ namespace ForumsSystemClient.CommunicationLayer
                         // notify about private message/s
                         if(!testing)
                             WindowHelper.NotifyPrivateMessages(PrivateMsgsNum);
+                        else
+                        {
+                            NotificationHelper.recievePrivateMessage();
+                        }
                     }
                 }
                 catch (Exception)
@@ -241,6 +249,11 @@ namespace ForumsSystemClient.CommunicationLayer
             }
             return retValue;
 
+        }
+
+        public static void setTesting (bool istesting)
+        {
+            testing = istesting;
         }
 
         public static void StartSecuredConnection(bool isTesting)

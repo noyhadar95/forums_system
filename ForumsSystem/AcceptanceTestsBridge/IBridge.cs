@@ -102,5 +102,6 @@ namespace AcceptanceTestsBridge
         string getUserClientSession(string forumName, string userName);
         bool LoginUserWithClientSession(string forumName, string username, string pass, string clientServer);
 
+        bool recievedNotification(string forumName, string userName);
     }
 }

@@ -331,5 +331,10 @@ namespace AcceptanceTestsBridge
         {
             throw new NotImplementedException();
         }
+
+        public bool recievedNotification(string forumName, string userName)
+        {
+            return true;
+        }
     }
 }
