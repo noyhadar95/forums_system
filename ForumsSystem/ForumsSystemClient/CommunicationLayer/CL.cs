@@ -89,10 +89,15 @@ namespace ForumsSystemClient.CommunicationLayer
             User user = (User)Client.SendRequest("MemberLogin", username, password,forumName, sessionToken);
             string sessionKey = null;
             if (user != null)
-                sessionKey = (string)Client.SendRequest("GetSessionKey", username, forumName);
+                sessionKey = GetSessionKey(username, forumName);
             else return null;
             Tuple<User, string> res = new Tuple<User, string>(user, sessionKey);
             return res;
+        }
+
+        public string GetSessionKey(string username, string forumName)
+        {
+            return (string)Client.SendRequest("GetSessionKey", username, forumName);
         }
 
         public bool IsExistUser(string username, string forumName)

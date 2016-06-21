@@ -25,7 +25,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <TreeView x:Name="postsTreeView" HorizontalAlignment="Left" Height="258" Margin="78,272,0,0" VerticalAlignment="Top" Width="496" />
 
     </Grid>
 </Window>

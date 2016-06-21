@@ -66,7 +66,6 @@ namespace ForumsSystemClient.PresentationLayer
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
 
-                RefreshNotificationsBar(user.Username);
             }
 
         }
@@ -183,9 +182,9 @@ namespace ForumsSystemClient.PresentationLayer
             {
                 userTokenTuple = cl.MemberLogin(forumName, username, password, sessionToken);
             }
-            User user=null;
-            if(userTokenTuple!=null)
-                user= userTokenTuple.Item1;//cl.MemberLogin(forumName, username, password);
+            User user = null;
+            if (userTokenTuple != null)
+                user = userTokenTuple.Item1;
 
             if (user == null)
             {
@@ -196,20 +195,22 @@ namespace ForumsSystemClient.PresentationLayer
             }
             else
             {
-                //TODO: User user = userTokenTuple.Item1;
-
+                base.session_token = userTokenTuple.Item2;
                 // save the user in WindowHelper so all windows will know 
                 // that the user is logged in.
                 WindowHelper.SetLoggedUser(forumName, user);
+                
 
                 // user is logged in, get type of user and change window accordingly.
                 string type = cl.GetUserType(forumName, username);
                 MessageBox.Show(type);
+
                 if (type == UserTypes.Member)
                     ShowMemberViewMode(user.Username);
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
 
+                
             }
         }
 

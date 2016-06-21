@@ -36,7 +36,7 @@ namespace ForumsSystemClient.PresentationLayer
             foreach (string subForumName in subForums)
             {
                 // TODO::
-                // int totalPosts = cl
+                // int totalPosts = cl.GetTotalPosts(forumName, );
                 int totalPost = -1;
                 subForumsListView.Items.Add(new SubForumListItem { SubForum = subForumName, TotalPosts = totalPost });
             }
@@ -45,26 +45,6 @@ namespace ForumsSystemClient.PresentationLayer
 
 
         }
-
-
-        //private void postsTreeView_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    string username;
-        //    cl.ReportPostsByMember(forumName, WindowHelper.GetLoggedUsername(forumName), username);
-        //    posts = cl.GetPosts(forumName, subForumName, threadID);
-
-        //    // Get TreeView reference and add the items for the posts.
-        //    var tree = sender as TreeView;
-        //    foreach (Post post in posts)
-        //    {
-        //        TreeViewItem item = new TreeViewItem();
-        //        tree.Items.Add(item);
-        //        // handles nested posts too
-        //        CreatePostTVItem(item, post, firstLevelItemOffset);
-        //    }
-
-        //}
-
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
