@@ -48,7 +48,7 @@ namespace AcceptanceTestsBridge
 
         public bool AddModerator(string forumName, string subForumName, string adminUsername, KeyValuePair<string, DateTime> newMod)
         {
-            return cl.AddModerator(forumName, subForumName, adminUsername, newMod);
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -57,17 +57,17 @@ namespace AcceptanceTestsBridge
 
         public void DeleteUser(string forumName, string userName)
         {
-            cl.DeleteUser(userName, forumName);
+            throw new NotImplementedException();
         }
 
         public void DeleteForum(string forumName)
         {
-            cl.DeleteForum(forumName);
+            throw new NotImplementedException();
         }
 
         public bool DeletePost(string forumName, string subForumName, int threadID, string deleter, int postID)
         {
-            return cl.DeletePost(forumName, subForumName, threadID, deleter, postID);
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -77,37 +77,37 @@ namespace AcceptanceTestsBridge
 
         public bool IsExistForum(string forumName)
         {
-            return cl.IsExistForum(forumName);
+            throw new NotImplementedException();
         }
 
         public bool IsRegisteredToForum(string username, string forumName)
         {
-            return cl.IsRegisteredToForum(username, forumName);
+            throw new NotImplementedException();
         }
 
         public bool IsAdmin(string username, string forumName)
         {
-            return cl.IsAdmin(username, forumName);
+            throw new NotImplementedException();
         }
 
         public bool IsModerator(string forumName, string subForumName, string username)
         {
-            return cl.IsModerator(forumName, subForumName, username);
+            throw new NotImplementedException();
         }
 
         public bool IsExistThread(string forumName, string subForumName, int threadID)
         {
-            return cl.IsExistThread(forumName, subForumName, threadID);
+            throw new NotImplementedException();
         }
 
         public bool IsMsgReceived(string forumName, string username, string msgTitle, string msgContent)
         {
-            return cl.IsMsgReceived(forumName, username, msgTitle, msgContent);
+            throw new NotImplementedException();
         }
 
         public bool IsMsgSent(string forumName, string username, string msgTitle, string msgContent)
         {
-            return cl.IsMsgSent(forumName, username, msgTitle, msgContent);
+            throw new NotImplementedException();
         }
 
 
@@ -122,30 +122,30 @@ namespace AcceptanceTestsBridge
         public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
         {
             // Forum forum = cl.GetForum(forumName);
-            return cl.RegisterToForum(forumName, username, password, email, dateOfBirth);
+            throw new NotImplementedException();
         }
 
         public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
         {
-            return cl.CountNestedReplies(forumName, subForumName, threadID, postID);
+            throw new NotImplementedException();
         }
 
         public bool SendPrivateMsg(string forumName, string senderUsername, string receiverUsername, string msgTitle, string msgContent)
         {
 
-            return cl.SendPrivateMessage(forumName, senderUsername, receiverUsername, msgTitle, msgContent);
+            throw new NotImplementedException();
         }
 
         public bool EditModeratorExpDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate)
         {
-            return cl.ChangeExpirationDate(forumName, subForumName, admin, moderator, newDate);
+            throw new NotImplementedException();
         }
 
         public DateTime GetModeratorExpDate(string forumName, string subForumName, string username)
         {
             //Forum forum = cl.GetForum(forumName);
             //SubForum subForum = forum.getSubForum(subForumName);
-            return cl.GetModeratorExpDate(forumName, subForumName, username);
+            throw new NotImplementedException();
         }
 
         public bool LoginUser(string forumName, string username, string pass)
@@ -158,22 +158,22 @@ namespace AcceptanceTestsBridge
 
         public bool LoginSuperAdmin(string username, string pass)
         {
-            return cl.LoginSuperAdmin(username, pass);
+            throw new NotImplementedException();
         }
 
         public bool InitializeSystem(string username, string pass)
         {
-            return cl.InitializeSystem(username, pass);
+            throw new NotImplementedException();
         }
 
         public bool ConfirmRegistration(string forumName, string username)
         {
-            return cl.ConfirmRegistration(forumName, username);
+            throw new NotImplementedException();
         }
 
         public int GetOpenningPostID(string forumName, string subForumName, int threadID)
         {
-            return cl.GetOpenningPostID(forumName, subForumName, threadID);
+            throw new NotImplementedException();
         }
 
         //===============================================================
@@ -206,7 +206,7 @@ namespace AcceptanceTestsBridge
 
         public void AddFriend(string forumName, string username1, string username2)
         {
-            cl.AddFriend(forumName, username1, username2);
+            throw new NotImplementedException(); ;
         }
 
 
@@ -215,7 +215,7 @@ namespace AcceptanceTestsBridge
             if (newTitle == "" && newContent == "")
                 return;//illegal post
 
-            cl.EditPost(forumName, subForumName, threadId, editor, postId, newTitle, newContent);
+            throw new NotImplementedException();
         }
 
         /*  public void DeletePost(string forumName, string subForumName, int threadId, string deleter, int postId)
@@ -229,50 +229,36 @@ namespace AcceptanceTestsBridge
           */
         public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
         {
-            return cl.RemoveModerator(forumName, subForumName, remover, moderatorName);
+            throw new NotImplementedException();
         }
 
         public int GetNumOfPostsInForumByMember(string forumName, string adminUserName, string username)
         {
-            try
-            {
-                return cl.ReportNumOfPostsByMember(forumName, adminUserName, username);
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
+            throw new NotImplementedException();
         }
 
         public List<string> GetListOfModerators(string forumName, string subForumName, string adminUserName)
         {
-            try
-            {
-                return cl.GetModeratorsList(forumName, subForumName, adminUserName);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            throw new NotImplementedException();
         }
 
         //TUPLE: postId,title,content
 
         public int GetNumOfForums(string username, string password)
         {
-            return cl.GetNumOfForums(username, password);
+            throw new NotImplementedException();
         }
 
         public Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo(string userName, string password)
         {
-            return cl.GetMultipleUsersInfoBySuperAdmin(userName, password);
+            throw new NotImplementedException();
         }
 
 
 
         public Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1)
         {
-            return cl.GetModeratorAppointmentsDetails(forumName, subForumName, adminUserName1, username1);
+            throw new NotImplementedException();
         }
 
         public void LogoutUser(string forumName, string username)
