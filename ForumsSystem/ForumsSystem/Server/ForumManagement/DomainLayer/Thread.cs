@@ -195,6 +195,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
             return posts;
         }
+        public bool EditPost(int postId,string newTitle, string newContent)
+        {
+            Post post = this.GetPostById(postId);
+            post.Title = newTitle;
+            post.Content = newContent;
+            return true;
+        }
         
     }
 }

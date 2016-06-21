@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomailLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
@@ -376,9 +377,9 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             ISubForum subforum = forum.getSubForum(subForumName);
             Thread thread = subforum.GetThreadById(threadId);
-            Post post = thread.GetPostById(postId);
-            post.Title = newTitle;
-            post.Content = newContent;
+            thread.EditPost(postId, newTitle, newContent);
+            DAL_Posts dp = new DAL_Posts();
+            dp.EditPost(postId, newTitle, newContent);
         }
         public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
         {
