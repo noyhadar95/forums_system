@@ -40,14 +40,14 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         public DataTable GetAllUsers()
         {
             Connect_to_DB();
-            string sql = "Select * From Users WHERE UserName!=Deleted";
+            string sql = "Select * From Users WHERE UserName<>'Deleted'";
             return connect_me.DownloadData(sql, "Users");
         }
 
         public DataTable GetAllUsersFromForum(string forumName)
         {       
             Connect_to_DB();
-            string sql = "Select * From Users Where UserName!=Deleted AND ForumName='" + forumName+"'";
+            string sql = "Select * From Users Where UserName<>'Deleted' AND ForumName='" + forumName+"'";
             return connect_me.DownloadData(sql, "Users");
         }
 
