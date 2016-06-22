@@ -203,6 +203,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
                     user.passwordSalt = userRow["PasswordSalt"].ToString();
 
+                    user.notifyOffline = (bool)userRow["notifyOffline"];
+
                 }
             }
             return users;
@@ -253,6 +255,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
 
                     user.passwordSalt = userRow["PasswordSalt"].ToString();
+
+                    user.notifyOffline = (bool)userRow["notifyOffline"];
                 }
             }
             return users;

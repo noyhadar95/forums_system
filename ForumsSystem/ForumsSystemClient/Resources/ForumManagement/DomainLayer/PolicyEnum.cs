@@ -35,6 +35,9 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
         [EnumMember]
         PasswordValidity = 11,
         [EnumMember]
-        ModeratorPermissionToDelete = 12
+        ModeratorPermissionToDelete = 12,
+        [EnumMember]
+        InteractivePolicy = 13
+
     }
 }

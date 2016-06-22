@@ -23,6 +23,7 @@ namespace AcceptanceTestsBridge
         private int minAge = 1;
         private int maxModerators = 20;
         private Dictionary<Tuple<string,string>, string> sessionKeys =  new Dictionary<Tuple<string, string>, string>();
+        private int notifyMode = 1;
 
         public ClientBridge()
         {
@@ -74,6 +75,9 @@ namespace AcceptanceTestsBridge
                     break;
                 case Policies.MaxModerators:
                     policy = new MaxModeratorsPolicy(forumPol, maxModerators);
+                    break;
+                case Policies.InteractivePolicy:
+                    policy = new InteractivePolicy(forumPol, notifyMode);
                     break;
                 default:
                     policy = new PasswordPolicy(forumPol, 2, 100);
