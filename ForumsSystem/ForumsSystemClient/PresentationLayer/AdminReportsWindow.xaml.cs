@@ -48,8 +48,8 @@ namespace ForumsSystemClient.PresentationLayer
                 membersListView.Items.Add(new MembersListItem { Member = mem });
             }
 
-            List<Tuple<string, string, DateTime, string, List<Post>>> modsDetailsList = cl.ReportModeratorsDetails(forumName, WindowHelper.GetLoggedUsername(forumName));
-            foreach (Tuple<string, string, DateTime, string, List<Post>> modsDetails in modsDetailsList)
+            List<Tuple<string, string, DateTime, string>> modsDetailsList = cl.ReportModeratorsDetails(forumName, WindowHelper.GetLoggedUsername(forumName));
+            foreach (Tuple<string, string, DateTime, string> modsDetails in modsDetailsList)
             {
                 moderatorsListView.Items.Add(new ModeratorsListItem
                 {
@@ -67,7 +67,7 @@ namespace ForumsSystemClient.PresentationLayer
             var item = (sender as ListView).SelectedItem;
             if (item != null)
             {
-                Window newWin = new UserPostsWindow(forumName, (string)item);
+                Window newWin = new UserPostsWindow(forumName, ((MembersListItem)item).Member);
                 WindowHelper.ShowWindow(this, newWin);
             }
         }
@@ -77,7 +77,7 @@ namespace ForumsSystemClient.PresentationLayer
             var item = (sender as ListView).SelectedItem;
             if (item != null)
             {
-                Window newWin = new UserPostsWindow(forumName, (string)item);
+                Window newWin = new UserPostsWindow(forumName, ((ModeratorsListItem)item).Username);
                 WindowHelper.ShowWindow(this, newWin);
             }
         }

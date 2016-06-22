@@ -1,4 +1,5 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
 using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
@@ -100,9 +101,12 @@ namespace ForumsSystemClient.PresentationLayer
                 moderators.Add(pair.Key, pair.Value);
             }
             string creator = WindowHelper.GetLoggedUsername(forumName);
-            cl.CreateSubForum(creator, forumName, subForumName, moderators);
 
-            WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
+            SubForum sb= cl.CreateSubForum(creator, forumName, subForumName, moderators);
+            if (sb != null)
+                WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
+            else
+                MessageBox.Show("sub-forum creation was unsuccessfull, please try again");
         }
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)

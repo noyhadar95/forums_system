@@ -318,7 +318,7 @@ namespace ForumsSystem.Server.ServiceLayer
         }
         
         // <moderatorUserName,appointerUserName,appointmentDate,subForumName,moderatorPosts>
-        public List<Tuple<string, string, DateTime, string, List<Post>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        public List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
             IForum forum = GetForum(forumName);
             IUser admin = forum.getUser(adminUserName1);

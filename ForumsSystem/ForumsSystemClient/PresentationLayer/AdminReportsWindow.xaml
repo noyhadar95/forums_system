@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
         mc:Ignorable="d"
-        Title="AdminReportsWindow" Height="652" Width="950">
+        Title="AdminReportsWindow" Height="700" Width="900">
     <Grid>
-        <Label x:Name="label2" Content="System Reports" HorizontalAlignment="Left" Margin="412,10,0,0" VerticalAlignment="Top" FontSize="18.667"/>
-        <Button x:Name="backBtn" Content="back" TabIndex="1" HorizontalAlignment="Left" Margin="36,574,0,0" VerticalAlignment="Top" Width="75" Click="backBtn_Click"/>
-        <ListView x:Name="subForumsListView" HorizontalAlignment="Left" Height="178" Margin="570,61,0,0" VerticalAlignment="Top" Width="302" >
+        <Label x:Name="label2" Content="System Reports" HorizontalAlignment="Left" Margin="343,10,0,0" VerticalAlignment="Top" FontSize="21.333"/>
+        <Button x:Name="backBtn" Content="back" TabIndex="1" HorizontalAlignment="Left" Margin="36,617,0,0" VerticalAlignment="Top" Width="75" Click="backBtn_Click"/>
+        <ListView x:Name="subForumsListView" HorizontalAlignment="Left" Height="178" Margin="492,106,0,0" VerticalAlignment="Top" Width="302" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Sub Forum" DisplayMemberBinding="{Binding SubForum}"/>
@@ -17,14 +17,14 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView x:Name="membersListView" HorizontalAlignment="Left" Height="178" Margin="78,61,0,0" VerticalAlignment="Top" Width="302" PreviewMouseLeftButtonUp="membersListView_PreviewMouseLeftButtonUp" >
+        <ListView x:Name="membersListView" HorizontalAlignment="Left" Height="178" Margin="76,106,0,0" VerticalAlignment="Top" Width="302" PreviewMouseLeftButtonUp="membersListView_PreviewMouseLeftButtonUp" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Member" DisplayMemberBinding="{Binding Member}"/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView x:Name="moderatorsListView" HorizontalAlignment="Left" Height="178" Margin="78,294,0,0" VerticalAlignment="Top" Width="302" PreviewMouseLeftButtonUp="moderatorsListView_PreviewMouseLeftButtonUp" >
+        <ListView x:Name="moderatorsListView" HorizontalAlignment="Left" Height="241" Margin="76,340,0,0" VerticalAlignment="Top" Width="718" PreviewMouseLeftButtonUp="moderatorsListView_PreviewMouseLeftButtonUp" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Username" DisplayMemberBinding="{Binding Username}"/>
@@ -34,6 +34,9 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Label x:Name="label" Content="Forum Members: click on a member to see it's posts" HorizontalAlignment="Left" Margin="76,79,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label3" Content="Moderators: click on a moderator to see it's posts" HorizontalAlignment="Left" Margin="76,310,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label5" Content="Sub forums" HorizontalAlignment="Left" Margin="498,79,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

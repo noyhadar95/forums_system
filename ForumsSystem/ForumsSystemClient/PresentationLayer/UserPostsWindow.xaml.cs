@@ -26,7 +26,6 @@ namespace ForumsSystemClient.PresentationLayer
         private string username; // show the posts of this user
 
         private double firstLevelItemOffset = 70; // offset of the items in the first level of the treeview
-        private string subForumName;
         private List<Post> posts;
 
         public UserPostsWindow(string forumName, string username)
@@ -38,12 +37,21 @@ namespace ForumsSystemClient.PresentationLayer
             cl = new CL();
             this.forumName = forumName;
             this.username = username;
+            usernameTB.Text = username;
 
+            noPostsLbl.Visibility = Visibility.Hidden;
         }
 
         private void postsTreeView_Loaded(object sender, RoutedEventArgs e)
         {
             posts = cl.ReportPostsByMember(forumName, WindowHelper.GetLoggedUsername(forumName), username);
+            // update postsCount text block
+            postsCountTB.Text = "" + posts.Count;
+
+            if (posts.Count == 0)
+            {
+                noPostsLbl.Visibility = Visibility.Visible;
+            }
 
             // Get TreeView reference and add the items for the posts.
             var tree = sender as TreeView;
@@ -66,12 +74,6 @@ namespace ForumsSystemClient.PresentationLayer
             border.Width = postsTreeView.Width - nestedItemOffset;
             item.Header = border;
 
-            foreach (Post p in post.GetNestedPosts())
-            {
-                TreeViewItem newItem = new TreeViewItem();
-                item.Items.Add(newItem);
-                CreatePostTVItem(newItem, p, nestedItemOffset + 30);
-            }
         }
 
         // return border with stack pnael that contains the controls for a post

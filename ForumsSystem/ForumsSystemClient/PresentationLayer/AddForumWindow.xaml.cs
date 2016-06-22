@@ -153,6 +153,11 @@ namespace ForumsSystemClient.PresentationLayer
                 MessageBox.Show("please enter the name of the forum");
                 return;
             }
+            if (admins.Count == 0)
+            {
+                MessageBox.Show("please add at least 1 admin for the forum");
+                return;
+            }
             if (!WindowHelper.IsLoggedSuperAdmin())
             {
                 MessageBox.Show("error: super admin is not logged in");
@@ -161,9 +166,12 @@ namespace ForumsSystemClient.PresentationLayer
             SuperAdmin creator = WindowHelper.GetLoggedSuperAdmin();
 
             Policy policy = GetForumPolicy();
-            cl.CreateForum(creator.userName, creator.password, forumName, policy, admins);
-
-            WindowHelper.SwitchWindow(this, new MainWindow());
+           
+            Forum forum = cl.CreateForum(creator.userName, creator.password, forumName, policy, admins);
+            if (forum != null)
+                WindowHelper.SwitchWindow(this, new MainWindow());
+            else
+                MessageBox.Show("forum creation was unsuccessfull, please try again");
         }
 
         private Policy GetForumPolicy()

@@ -522,19 +522,15 @@ namespace AcceptanceTestsBridge
         }
 
  
-        public List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        public List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
-            List<Tuple<string, string, DateTime, string, List<int>>> res = new List<Tuple<string, string, DateTime, string, List<int>>>();
-            List<Tuple<string, string, DateTime, string, List<Post>>> l = sl.ReportModeratorsDetails(forumName, adminUserName1);
-            foreach(Tuple<string, string, DateTime, string, List<Post>> t in l)
+            List<Tuple<string, string, DateTime, string>> res = new List<Tuple<string, string, DateTime, string>>();
+            List<Tuple<string, string, DateTime, string>> l = sl.ReportModeratorsDetails(forumName, adminUserName1);
+            foreach(Tuple<string, string, DateTime, string> t in l)
             {
-                List<int> postIds = new List<int>();
-                foreach(Post p in t.Item5)
-                {
-                    postIds.Add(p.GetId());
-                }
-                Tuple < string, string, DateTime, string, List<int>> newt = new Tuple<string, string, DateTime, string, List<int>>(
-                    t.Item1, t.Item2, t.Item3, t.Item4, postIds);
+               
+                Tuple < string, string, DateTime, string> newt = new Tuple<string, string, DateTime, string>(
+                    t.Item1, t.Item2, t.Item3, t.Item4);
                 res.Add(newt);
             }
             return res;

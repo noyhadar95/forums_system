@@ -232,9 +232,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         }
 
         // <moderatorUserName,appointerUserName,appointmentDate,subForumName,moderatorPosts>
-        public virtual List<Tuple<string,string,DateTime,string,List<Post>>> ReportModerators(IUser callingUser)
+        public virtual List<Tuple<string,string,DateTime,string>> ReportModerators(IUser callingUser)
         {
-            List<Tuple<string, string, DateTime, string, List<Post>>> res = new List<Tuple<string, string, DateTime, string, List<Post>>>();
+            List<Tuple<string, string, DateTime, string>> res = new List<Tuple<string, string, DateTime, string>>();
             IForum forum = callingUser.getForum();
             List<ISubForum> subForums = forum.GetSubForums();
             foreach(ISubForum sf in subForums)
@@ -243,9 +243,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 foreach(string m in moderators)
                 {
                     Moderator mod = sf.getModeratorByUserName(m);
-                    Tuple<string, string, DateTime, string, List<Post>> t = new Tuple<string, string, DateTime, string, List<Post>>(
+                    Tuple<string, string, DateTime, string> t = new Tuple<string, string, DateTime, string>(
                         mod.user.getUsername(), mod.appointer.getUsername(), mod.appointmentDate,
-                        sf.getName(), ReportPostsByMember(callingUser, mod.user.getUsername()));
+                        sf.getName());
                     res.Add(t);
                 }
             }

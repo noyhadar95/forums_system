@@ -29,7 +29,7 @@ namespace ForumsSystemClient.CommunicationLayer
         static Byte[] authKey;
         private static string connect(string textToSend)
         {
-            //SERVER_IP = GetLocalIPAddress();
+            SERVER_IP = GetLocalIPAddress();
             //---create a TCPClient object at the IP and port no.---
             TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
 

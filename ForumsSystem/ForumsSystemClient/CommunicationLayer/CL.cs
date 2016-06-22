@@ -317,9 +317,9 @@ namespace ForumsSystemClient.CommunicationLayer
             return (bool)Client.SendRequest("AddModerator", forumName, subForumName, adminUsername,username,expiratoinDate);
         }
 
-        public List<Tuple<string, string, DateTime, string, List<Post>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        public List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
-            return (List<Tuple<string, string, DateTime, string, List<Post>>>)Client.SendRequest(" ReportModeratorsDetails", forumName, adminUserName1);
+            return (List<Tuple<string, string, DateTime, string>>)Client.SendRequest("ReportModeratorsDetails", forumName, adminUserName1);
         }
 
         public void MemberLogout(string forumName, string username)

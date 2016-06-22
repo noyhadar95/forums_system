@@ -846,7 +846,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return type.ReportNumOfPostsInSubForum(this, subForum);
         }
 
-        public List<Tuple<string, string, DateTime, string, List<Post>>> ReportModerators()
+        public List<Tuple<string, string, DateTime, string>> ReportModerators()
         {
             return type.ReportModerators(this);
         }
