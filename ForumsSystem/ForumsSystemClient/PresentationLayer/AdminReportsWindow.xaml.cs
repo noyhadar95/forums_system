@@ -86,6 +86,7 @@ namespace ForumsSystemClient.PresentationLayer
         {
             WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
         }
+
     }
 
     public class SubForumListItem

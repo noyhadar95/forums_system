@@ -23,26 +23,25 @@ namespace ForumsSystemClient.PresentationLayer
     /// </summary>
     public partial class AddForumWindow : Window
     {
-        // TODO:: SET THE MAX VALUES
         // password
         public static int MAX_PASS_LENGTH = 12;
-        public static int MAX_PASS_VALIDITY = 12; // in days
+        public static int MAX_PASS_VALIDITY = 30; // in days
         // mod appointment
-        public static int MAX_MOD_SENIORITY = 12;
+        public static int MAX_MOD_SENIORITY = 30;
         public static int MAX_MOD_MSGS = 12;
         public static int MAX_MOD_APP_COMPLAINTS = 5;
         // admin appointment
-        public static int MAX_ADMIN_SENIORITY = 12;
+        public static int MAX_ADMIN_SENIORITY = 30;
         public static int MAX_ADMIN_MSGS = 12;
         public static int MAX_ADMIN_COMPLAINTS = 5;
         // mod suspension
-        public static int MAX_MOD_SUSP_COMPLAINTS = 5;
+        public static int MAX_MOD_SUSP_COMPLAINTS = 10;
         // member suspension
-        public static int MAX_MEMBER_SUSP_COMPLAINTS = 5;
+        public static int MAX_MEMBER_SUSP_COMPLAINTS = 10;
         // users load
         public static int MAX_USERS = 100;
         // minimum age
-        public static int MIN_AGE = 12;
+        public static int MIN_AGE = 21;
         // max moderators
         public static int MAX_MODS = 5;
 

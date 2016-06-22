@@ -219,6 +219,11 @@ namespace ForumsSystemClient.PresentationLayer
             WindowHelper.SwitchWindow(this, new AdminReportsWindow(forumName));
         }
 
+        private void confirmEmailBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new ConfirmEmailWindow(forumName));
+        }
+
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
             WindowHelper.SwitchWindow(this, new MainWindow());
@@ -226,5 +231,6 @@ namespace ForumsSystemClient.PresentationLayer
 
         #endregion
 
+        
     }
 }
