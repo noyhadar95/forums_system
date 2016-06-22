@@ -105,10 +105,15 @@ namespace ForumsSystemClient.CommunicationLayer
         bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
         List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username);
 
+
         string GetSessionKey(string username, string forumName);
 
         void AddComplaint(string forumName, string subforum, string username);
         void DeactivateUser(string forumName, string username);
+
+
+        int getNumOfPostsInSubForum(string forumName, string subForum);
+        bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, string postId);
 
     }
 }

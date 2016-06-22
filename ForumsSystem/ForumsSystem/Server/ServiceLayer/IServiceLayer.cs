@@ -105,8 +105,14 @@ namespace ForumsSystem.Server.ServiceLayer
         bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
         bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question);
         bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
+
         void AddComplaint(string forum, string subforum, string username);
         bool CheckPasswordValidity(string forumName, string username);
         void DeactivateUser(string forumName, string username);
+
+        int getNumOfPostsInSubForum(string forumName, string subForumName);
+
+        bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, int postId);
+
     }
 }

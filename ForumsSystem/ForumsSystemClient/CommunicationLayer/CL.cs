@@ -19,8 +19,13 @@ namespace ForumsSystemClient.CommunicationLayer
 
         private void StartSecuredConnection()
         {
-            Client.StartSecuredConnection();
+            Client.StartSecuredConnection(false);
               
+        }
+
+        public void startTesting()
+        {
+            Client.setTesting(true);
         }
 
         public List<string> GetForumsList()
@@ -390,6 +395,7 @@ namespace ForumsSystemClient.CommunicationLayer
             return (List<PrivateMessageNotification>)Client.SendRequest("GetPrivateMessageNotifications", forumName, username);
 
         }
+
         public void AddComplaint(string forumName, string subforum, string username)
         {
             Client.SendRequest("AddComplaint", forumName, subforum, username);
@@ -397,6 +403,17 @@ namespace ForumsSystemClient.CommunicationLayer
         public void DeactivateUser(string forumName, string username)
         {
             Client.SendRequest("DeactivateUser", forumName, username);
+		}
+
+
+        public int getNumOfPostsInSubForum(string forumName, string subForum)
+        {
+            return (int)Client.SendRequest("getNumOfPostsInSubForum", forumName, subForum);
+        }
+
+        public bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, string postId)
+        {
+            return (bool)Client.SendRequest("HasSeniorityPriviledge", forumName, subForumName, threadId, username, postId);
         }
     }
 }

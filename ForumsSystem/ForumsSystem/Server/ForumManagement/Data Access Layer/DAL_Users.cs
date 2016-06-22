@@ -11,7 +11,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
     public class DAL_Users : DAL_Connection
     {
         //TODO: REMEMBER TO CHANGE STUFF ABOUT THE WAITING
-        public void CreateUser(string ForumName, string userName, string password, string email, DateTime dateJoined, DateTime DateOfBirth, int numOfComplaints, UserType.UserTypes type, DateTime dateLastPasswordChanged, string passwordSalt)
+        public void CreateUser(string ForumName, string userName, string password, string email, DateTime dateJoined, DateTime DateOfBirth, int numOfComplaints, UserType.UserTypes type, DateTime dateLastPasswordChanged, string passwordSalt, bool notifyOffline)
         {
 
             Connect_to_DB();
@@ -22,7 +22,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
                 "','"+userName+"', '" + password + "', '" + email +
                 "',#" + dateJoined.ToShortDateString() +
                 "#, #" + DateOfBirth.ToShortDateString() + "#, " + numOfComplaints + 
-                ", " + (int)type + ","+false+" ,#" + dateLastPasswordChanged + "#, '" + passwordSalt+"')";
+                ", " + (int)type + ","+false+" ,#" + dateLastPasswordChanged + "#, '" + passwordSalt+"', " + notifyOffline + ")";
 
             connect_me.TakeAction(sql);
         }
@@ -40,14 +40,14 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         public DataTable GetAllUsers()
         {
             Connect_to_DB();
-            string sql = "Select * From Users";
+            string sql = "Select * From Users WHERE UserName<>'Deleted'";
             return connect_me.DownloadData(sql, "Users");
         }
 
         public DataTable GetAllUsersFromForum(string forumName)
         {       
             Connect_to_DB();
-            string sql = "Select * From Users Where ForumName='"+forumName+"'";
+            string sql = "Select * From Users Where UserName<>'Deleted' AND ForumName='" + forumName+"'";
             return connect_me.DownloadData(sql, "Users");
         }
 
@@ -58,12 +58,12 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             return connect_me.DownloadData(sql, "Users");
         }
 
-        public void editUser(string ForumName, string userName, string password, string email, DateTime dateJoined, DateTime DateOfBirth, int numOfComplaints, UserType.UserTypes type, DateTime dateLastPasswordChanged, string passwordSalt)
+        public void editUser(string ForumName, string userName, string password, string email, DateTime dateJoined, DateTime DateOfBirth, int numOfComplaints, UserType.UserTypes type, DateTime dateLastPasswordChanged, string passwordSalt, bool notifyOffline)
         {
             Connect_to_DB();
             OleDbCommand sql = new OleDbCommand();
 
-            sql.CommandText = "Update Users Set [password]='" + password + "', [email]='" + email + "', [DateJoined]=#"+ dateJoined.ToShortDateString() + "#, [DateOfBirth]=#" + DateOfBirth.ToShortDateString() + "#, [Complaints]=" + numOfComplaints + ", [Type]="+ (int)type + ", [DateLastPasswordChanged]=#"+ dateLastPasswordChanged+"#, [PasswordSalt]='" + passwordSalt + "' Where [ForumName]='" + ForumName +"' AND [UserName]='" + userName +"'";
+            sql.CommandText = "Update Users Set [password]='" + password + "', [email]='" + email + "', [DateJoined]=#"+ dateJoined.ToShortDateString() + "#, [DateOfBirth]=#" + DateOfBirth.ToShortDateString() + "#, [Complaints]=" + numOfComplaints + ", [Type]="+ (int)type + ", [DateLastPasswordChanged]=#"+ dateLastPasswordChanged+"#, [PasswordSalt]='" + passwordSalt + "', [notifyOffline]=" + notifyOffline +" Where [ForumName]='" + ForumName +"' AND [UserName]='" + userName +"'";
 
 
 

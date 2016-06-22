@@ -23,10 +23,12 @@ namespace AcceptanceTestsBridge
         private int minAge = 1;
         private int maxModerators = 20;
         private Dictionary<Tuple<string,string>, string> sessionKeys =  new Dictionary<Tuple<string, string>, string>();
+        private int notifyMode = 1;
 
         public ClientBridge()
         {
             cl = new CL();
+            cl.startTesting();
         }
         #region Add/Create Methods
 
@@ -73,6 +75,9 @@ namespace AcceptanceTestsBridge
                     break;
                 case Policies.MaxModerators:
                     policy = new MaxModeratorsPolicy(forumPol, maxModerators);
+                    break;
+                case Policies.InteractivePolicy:
+                    policy = new InteractivePolicy(forumPol, notifyMode);
                     break;
                 default:
                     policy = new PasswordPolicy(forumPol, 2, 100);
@@ -538,6 +543,12 @@ namespace AcceptanceTestsBridge
             }
             Forum newForum = cl.CreateForum(superAdmin.userName, superAdmin.password, forumName, policy, newAdmins);
             return newForum != null;
+        }
+
+     
+        public bool recievedNotification(string forumName, string userName)
+        {
+            return NotificationHelper.recievedNotification();
         }
     }
 }

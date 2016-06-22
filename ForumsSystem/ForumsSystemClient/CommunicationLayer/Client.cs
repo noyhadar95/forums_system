@@ -19,6 +19,7 @@ namespace ForumsSystemClient.CommunicationLayer
         const int CLIENT_PORT_NO = 4000;
         const int SERVER_PORT_NO = 5000;
         const string delimeter = "$|deli|$";
+
         static string SERVER_IP = "132.72.225.146";
         static ThreadStart startNotification;
         static Thread notificationThread;
@@ -27,9 +28,11 @@ namespace ForumsSystemClient.CommunicationLayer
         static int id;
         static Byte[] encKey;
         static Byte[] authKey;
+
+        static bool testing = false;
         private static string connect(string textToSend)
         {
-            SERVER_IP = GetLocalIPAddress();
+           // SERVER_IP = GetLocalIPAddress();
             //---create a TCPClient object at the IP and port no.---
             TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
 
@@ -137,7 +140,12 @@ namespace ForumsSystemClient.CommunicationLayer
                     if (friendReqsNum > 0)
                     {
                         // notify about friend request/s
-                        WindowHelper.NotifyFriendRequests(friendReqsNum);
+                        if(!testing)
+                            WindowHelper.NotifyFriendRequests(friendReqsNum);
+                        else
+                        {
+                            NotificationHelper.recieveFriendRequest();
+                        }
 
                     }
 
@@ -154,7 +162,12 @@ namespace ForumsSystemClient.CommunicationLayer
                     if (PrivateMsgsNum > 0)
                     {
                         // notify about private message/s
-                        WindowHelper.NotifyPrivateMessages(PrivateMsgsNum);
+                        if(!testing)
+                            WindowHelper.NotifyPrivateMessages(PrivateMsgsNum);
+                        else
+                        {
+                            NotificationHelper.recievePrivateMessage();
+                        }
                     }
                 }
                 catch (Exception)
@@ -239,10 +252,15 @@ namespace ForumsSystemClient.CommunicationLayer
 
         }
 
-        public static void StartSecuredConnection()
+        public static void setTesting (bool istesting)
+        {
+            testing = istesting;
+        }
+
+        public static void StartSecuredConnection(bool isTesting)
         {
             string textToSend = "StartSecuredConnection";
-
+            testing = isTesting;
             // textToSend = Encrypt(textToSend);
             string textFromServer = connect(textToSend);
             //textFromServer = Decrypt(textFromServer);
