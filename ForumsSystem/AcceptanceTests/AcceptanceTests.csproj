@@ -72,6 +72,7 @@
     <Compile Include="ServerTests\ForumRegistrationTests.cs" />
     <Compile Include="ServerTests\InitializeSystemTests.cs" />
     <Compile Include="ServerTests\LoadTest.cs" />
+    <Compile Include="ServerTests\MultipleInterfacesTests.cs" />
     <Compile Include="ServerTests\PostNotificationsTests.cs" />
     <Compile Include="ServerTests\SuperAdminLoginTests.cs" />
     <Compile Include="ServerTests\SendPrivateMsgTests.cs" />

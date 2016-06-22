@@ -99,10 +99,10 @@ namespace AcceptanceTests.ServerTests
             DateTime dateOfBirth1 = DateTime.Now, dateOfBirth2 = DateTime.Now;
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
             moderators.Add(username1, DateTime.Today.AddDays(100));
-            moderators.Add(username2, DateTime.Today.AddDays(100));
+           // moderators.Add(username2, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
-            string adminUserName1 = "ad1", adminPass1 = "pass", adminEmail1 = adminUserName1 + "@gmail.com";
-            string adminUserName2 = "ad1", adminPass2 = "pass", adminEmail2 = adminUserName2 + "@gmail.com";
+            string adminUserName1 = base.adminUserName1, adminPass1 = base.adminPass1, adminEmail1 = adminUserName1 + "@gmail.com";
+            string adminUserName2 = "ad2", adminPass2 = "pass", adminEmail2 = adminUserName2 + "@gmail.com";
             List<UserStub> admins = new List<UserStub>();
             UserStub user1 = new UserStub(adminUserName1, adminPass1, adminEmail1, forumName);
             UserStub user2 = new UserStub(adminUserName2, adminPass2, adminEmail2, forumName);
@@ -118,16 +118,16 @@ namespace AcceptanceTests.ServerTests
                 bridge.LoginUser(forumName, adminUserName1, adminPass1);
                 bridge.LoginUser(forumName, adminUserName2, adminPass2);
                 // create a forum, sub-forum and a thread to add a post to.
-                base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
+                bool flag=base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
                 bridge.LoginUser(forumName, adminUserName1, adminPass1);
                 bridge.LoginUser(forumName, adminUserName2, adminPass2);
                 //KeyValuePair<string, DateTime> newMod = new KeyValuePair<string, DateTime>(username2, DateTime.Today.AddDays(100));
                 //bridge.AddModerator(forumName, subForumName, adminUserName1, newMod);
                 //remove the moderator:
-                bool res = bridge.RemoveModerator(forumName, subForumName, adminUserName2, username2);
+                bool res = bridge.RemoveModerator(forumName, subForumName, adminUserName2, username1);
 
                 Assert.IsFalse(res);
-                Assert.IsTrue(bridge.IsModerator(forumName, subForumName, username2));
+                Assert.IsTrue(bridge.IsModerator(forumName, subForumName, username1));
             }
             catch (Exception e)
             {

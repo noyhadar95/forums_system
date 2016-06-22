@@ -39,7 +39,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             connect_me.TakeAction(cmd);
 
             DAL_Users du = new DAL_Users();
-            du.CreateUser(name, "Deleted", "Deleted4Ever", "Deleted", DateTime.Now, DateTime.Now, 0, UserType.UserTypes.Member,DateTime.Now);
+            du.CreateUser(name, "Deleted", "Deleted4Ever", "Deleted", DateTime.Now, DateTime.Now, 0, UserType.UserTypes.Member,DateTime.Now,"deleted");
 
         }
 
@@ -82,7 +82,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
             OleDbCommand cmd = new OleDbCommand(sql);
 
-            cmd.Parameters.AddWithValue("@p2", forumName);
+           
             if (policyID < 0)
             {
                 cmd.Parameters.AddWithValue("@p1", DBNull.Value);
@@ -90,7 +90,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             else
                 cmd.Parameters.AddWithValue("@p1", policyID);
 
-
+            cmd.Parameters.AddWithValue("@p2", forumName);
             connect_me.TakeAction(cmd);
         }
 

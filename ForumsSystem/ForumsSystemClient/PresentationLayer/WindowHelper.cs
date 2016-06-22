@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace ForumsSystemClient.PresentationLayer
 {
@@ -15,31 +17,18 @@ namespace ForumsSystemClient.PresentationLayer
         // that the user is logged in.
         private static Dictionary<string, User> loggedUsers = new Dictionary<string, User>();
         private static SuperAdmin loggedSuperAdmin = null;
-        private static List<string> userFriendReqs = new List<string>();
-        private static Window currentWin;
-        private static string friendReqMenuHeader = "_Friend Requests";
+        private static INotifiableWindow currentNotifyWin;
 
-        public static string GetFriendReqMenuHeader()
-        {
-            return friendReqMenuHeader;
-        }
 
-        public static void SetFriendReqMenuHeaderOn()
-        {
-            friendReqMenuHeader = "_Friend Requests *";
-        }
-
-        public static void SetFriendReqMenuHeaderOff()
-        {
-            friendReqMenuHeader = "_Friend Requests";
-        }
 
         public static string GetLoggedUsername(string forumName)
         {
-            if (WindowHelper.IsLoggedSuperAdmin())
-                return WindowHelper.GetLoggedSuperAdmin().userName;
+            if (IsLoggedSuperAdmin())
+                return GetLoggedSuperAdmin().userName;
+            else if (IsLoggedUser(forumName))
+                return GetLoggedUser(forumName).Username;
             else
-                return WindowHelper.GetLoggedUser(forumName).Username;
+                return null;
         }
 
         public static bool IsLoggedUser(string forumName)
@@ -94,9 +83,9 @@ namespace ForumsSystemClient.PresentationLayer
             loggedSuperAdmin = null;
         }
 
-        public static void SetCurrentWindow(Window newWin)
+        public static void SetCurrentWindow(INotifiableWindow newWin)
         {
-            currentWin = newWin;
+            currentNotifyWin = newWin;
         }
 
         public static void SwitchWindow(Window oldWin, Window newWin)
@@ -105,7 +94,10 @@ namespace ForumsSystemClient.PresentationLayer
             newWin.Top = oldWin.Top;
             newWin.Show();
             oldWin.Close();
-            currentWin = newWin;
+
+            // handle INotifiableWindow
+            if (newWin is INotifiableWindow)
+                currentNotifyWin = (INotifiableWindow)newWin;
         }
 
         // show newWin without closing oldWin.
@@ -122,19 +114,14 @@ namespace ForumsSystemClient.PresentationLayer
             win.Style = style;
         }
 
-        public static void AddLoggedUserFriendRequest(string reqSender)
+        public static void NotifyFriendRequests(int friendReqsNum)
         {
-            userFriendReqs.Add(reqSender);
-            SetFriendReqMenuHeaderOn();
-            if(currentWin is ForumWindow)
+            if (currentNotifyWin != null)
             {
-                ((ForumWindow)currentWin).RefreshMenuBar();
+                currentNotifyWin.NotifyFriendRequests(friendReqsNum);
             }
         }
 
-        public static List<string> GetFriendRequests(string forumName, string username)
-        {
-            return userFriendReqs;
-        }
+
     }
 }

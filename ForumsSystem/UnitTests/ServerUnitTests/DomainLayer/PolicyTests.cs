@@ -84,9 +84,10 @@ namespace UnitTests.ServerUnitTests.DomainLayer
         {
             policy = new MaxModeratorsPolicy(Policies.MaxModerators, 4);
             PolicyParametersObject param = new PolicyParametersObject(Policies.MaxModerators);
-            param.NumOfModerators = 1;
+            param.CurrNumOfModerators = 0;
+            param.NumOfModeratorsToAdd = 1;
             Assert.IsTrue(policy.CheckPolicy(param));
-            param.NumOfModerators = 5;
+            param.NumOfModeratorsToAdd = 5;
             Assert.IsFalse(policy.CheckPolicy(param));
 
         }

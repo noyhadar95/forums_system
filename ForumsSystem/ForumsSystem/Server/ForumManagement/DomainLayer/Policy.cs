@@ -49,7 +49,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             this.type = type;
             this.nextPolicy = null;
-            id = dal_policy.createPolicy((int)type, -1);
         }
 
         public static Policy populatePolicy(int id)
@@ -157,16 +156,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                return nextPolicy.CheckPolicy(param);
             return true;//TODO: check this - no policy specified
         }
-        
 
         /// <summary>
         /// Add new policy to the end of the chain
         /// </summary>
         /// <param name="newPolicy"></param>
-        public bool AddPolicy(Policy newPolicy)
+        public virtual bool AddPolicy(Policy newPolicy)
         {
+            dal_policy = new DAL_Policy();
+            dal_policyParameter = new DAL_PolicyParameter();
             if (CheckIfPolicyExists(newPolicy.type))
                 return false;
+            newPolicy.id = dal_policy.createPolicy((int)(newPolicy.type), -1);
             AddPolicyHelper(newPolicy);
             return true;
         }
@@ -178,7 +179,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             else
             {
                 this.nextPolicy = newPolicy;
-                dal_policy.SetNextPolicy(id, newPolicy.id);
+                dal_policy = new DAL_Policy();
+                if(id!=0)
+                    dal_policy.SetNextPolicy(id, newPolicy.id);
             }
         }
 
@@ -226,5 +229,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 //return 
                 this.nextPolicy.RemovePolicyHelper(type);
         }
+        public virtual void AddParamObject()
+        {
+
+        } 
     }
 }

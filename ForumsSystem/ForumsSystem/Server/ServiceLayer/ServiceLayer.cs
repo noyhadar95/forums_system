@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
+using ForumsSystem.Server.UserManagement.DomailLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
@@ -38,7 +40,7 @@ namespace ForumsSystem.Server.ServiceLayer
             List<User> serverAdmins = new List<User>();
             foreach (User admin in adminUsername)
             {
-                serverAdmins.Add(new User(admin.UserName, admin.Password, admin.Email, admin.DateOfBirth));
+                serverAdmins.Add(new User(admin));
             }
             SuperAdmin creator;
             if (!SuperAdmin.GetInstance().userName.Equals(creatorName))
@@ -46,7 +48,7 @@ namespace ForumsSystem.Server.ServiceLayer
             if (!SuperAdmin.GetInstance().password.Equals(password))
                 return null;
             creator = SuperAdmin.GetInstance();
-            creator.Login(creatorName, password);//TODO ?????
+           // creator.Login(creatorName, password);//TODO ?????
             return creator.createForum(name, properties, serverAdmins);
         }
 
@@ -78,6 +80,8 @@ namespace ForumsSystem.Server.ServiceLayer
         public ISubForum CreateSubForum(string creatorName, string forumName, string subforumName, Dictionary<string, DateTime> moderators)
         {
             IUser creator = GetForum(forumName).getUser(creatorName);
+            if (creator == null)
+                return null;
             return creator.createSubForum(subforumName, moderators);
 
         }
@@ -126,7 +130,7 @@ namespace ForumsSystem.Server.ServiceLayer
             return admin.editExpirationTimeOfModerator(moderator, newDate, subforum);
         }
 
-        public bool DeletePost(IUser deleter, Post post)
+        private bool DeletePostHelper(IUser deleter, Post post)
         {
             return deleter.deletePost(post);
         }
@@ -228,12 +232,19 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public bool DeletePost(string forumName, string subForumName,string deleter, int threadID, int postID)
         {
-            //TODO: fix this to user deleter parameter!!!
-            SuperAdmin superAdmin = SuperAdmin.GetInstance();
-            ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
-            Thread thread = sys.getForum(forumName).getSubForum(subForumName).GetThreadById(threadID);
-            IUser user = thread.GetOpeningPost().getPublisher();
-            return user.deletePost(thread.GetPostById(postID));
+            IForum forum = GetForum(forumName);
+            Thread thread = forum.getSubForum(subForumName).GetThreadById(threadID);
+            IUser user = forum.getUser(deleter);
+            if (thread != null && user != null)
+            {
+                Post post = thread.GetPostById(postID);
+                if (post == null)
+                    return false;
+
+                return DeletePostHelper(user, post);
+            }
+            else
+                return false;
         }
 
         public void DeleteForum(string forumName)
@@ -291,7 +302,7 @@ namespace ForumsSystem.Server.ServiceLayer
                 return -1;
         }
 
-        public List<PrivateMessageNotification> GetNotifications(string forumName, string username)
+        public List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username)
         {
             IForum forum = sys.getForum(forumName);
             IUser user = sys.getForum(forumName).getUser(username);
@@ -345,6 +356,19 @@ namespace ForumsSystem.Server.ServiceLayer
             return user.GetPostNotifications();
         }
 
+        public List<string> GetWaitingFriendsList(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            List<IUser> waitingFriends =  user.GetWaitingFriendsList();
+            List<string> res = new List<string>();
+            foreach(IUser u in waitingFriends)
+            {
+                res.Add(u.getUsername());
+            }
+            return res;
+        }
+
         public void EditPost(string forumName, string subForumName, int threadId, string editor, int postId, string newTitle, string newContent)
         {
             if (newTitle == "" && newContent == "")
@@ -353,14 +377,16 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             ISubForum subforum = forum.getSubForum(subForumName);
             Thread thread = subforum.GetThreadById(threadId);
-            Post post = thread.GetPostById(postId);
-            post.Title = newTitle;
-            post.Content = newContent;
+            thread.EditPost(postId, newTitle, newContent);
+            DAL_Posts dp = new DAL_Posts();
+            dp.EditPost(postId, newTitle, newContent);
         }
         public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
         {
             IForum forum = GetForum(forumName);
+            if (forum == null) return false;
             ISubForum subforum = forum.getSubForum(subForumName);
+            if (subforum == null) return false;
             Moderator moderator = subforum.getModeratorByUserName(moderatorName);
             //IUser user = forum.getUser(remover);
             //IUser moderator = forum.getUser(moderatorName);
@@ -538,6 +564,34 @@ namespace ForumsSystem.Server.ServiceLayer
             }
             users.Remove(username);
             return users;
+        }
+
+        public bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            return user.AddSecurityQuestion(question, answer);
+        }
+
+        public bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            return user.RemoveSecurityQuestion(question);
+        }
+
+        public bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            return user.CheckSecurityQuestion(question,answer);
+        }
+
+        public bool SetUserPassword(string forumName, string username, string newPassword)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            return user.SetPassword(newPassword);
         }
     }
 }

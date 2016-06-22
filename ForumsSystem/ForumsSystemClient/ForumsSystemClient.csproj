@@ -63,7 +63,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CommunicationLayer\Client.cs" />
+    <Compile Include="CommunicationLayer\Encryption\AESThenHMAC.cs" />
     <Compile Include="CommunicationLayer\ICL.cs" />
+    <Compile Include="CommunicationLayer\TcpListenerEx.cs" />
     <Compile Include="PresentationLayer\AddAdminWindow.xaml.cs">
       <DependentUpon>AddAdminWindow.xaml</DependentUpon>
     </Compile>
@@ -76,6 +78,8 @@
     <Compile Include="PresentationLayer\EditPostWindow.xaml.cs">
       <DependentUpon>EditPostWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\INotifiableWindow.cs" />
+    <Compile Include="PresentationLayer\NotifBarWindow.cs" />
     <Compile Include="PresentationLayer\SendFriendReqWindow.xaml.cs">
       <DependentUpon>SendFriendReqWindow.xaml</DependentUpon>
     </Compile>
@@ -99,8 +103,11 @@
     <Compile Include="Resources\ForumManagement\DomainLayer\SuperAdmin.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\System.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\Thread.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\PrivateMessageNotification.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\SecurityQuestions.cs" />
     <Compile Include="Resources\UserManagement\DomainLayer\User.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\UsersLoadPolicy.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\UserTypes.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommunicationLayer\CL.cs" />

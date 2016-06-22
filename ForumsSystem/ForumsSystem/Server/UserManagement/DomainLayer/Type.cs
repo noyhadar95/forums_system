@@ -28,13 +28,14 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return null;
             //policies
             PolicyParametersObject param = new PolicyParametersObject(Policies.MaxModerators);
-            param.NumOfModerators = users.Count;
+            param.NumOfModeratorsToAdd = users.Count;
+            param.CurrNumOfModerators = 0;
             if (forum.GetPolicy() != null) { 
                 if (!forum.GetPolicy().CheckPolicy(param))
                     return null;
              }
             param.SetPolicy(Policies.ModeratorAppointment);
-
+           
             if (!callingUser.isLogin())
                 return null;
             Dictionary<IUser, DateTime> moderators = new Dictionary<IUser, DateTime>();
@@ -85,7 +86,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
             // policies
             PolicyParametersObject param = new PolicyParametersObject(Policies.MaxModerators);
-            param.NumOfModerators = subForum.numOfModerators()+1;
+            param.CurrNumOfModerators = subForum.numOfModerators();
+            param.NumOfModeratorsToAdd = 1;
             if (forum.GetPolicy() != null)
             {
                 if (!forum.GetPolicy().CheckPolicy(param))
@@ -288,7 +290,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 List<IUser> users = forum.getUsersInForum();
                 foreach(IUser u in users)
                 {
-                    u.AddPostNotification(reply, NotificationType.Posted);
+                    if(!u.getUsername().Equals(callingUser.getUsername()))
+                        u.AddPostNotification(reply, NotificationType.Posted);
                 }
                 return reply;
             }
@@ -345,6 +348,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             {
                 p.getPublisher().AddPostNotification(post, NotificationType.Changed);
             }
+            if(!post.Thread.GetOpeningPost().getPublisher().getUsername().Equals(callingUser.getUsername()))
+            post.Thread.GetOpeningPost().getPublisher().AddPostNotification(post, NotificationType.Changed);
+
             return true;
         }
 
@@ -354,7 +360,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return false;
             if (post == null)
                 return false;
-            if (post.getPublisher() == callingUser)
+            //check if caling user is the publisher or an admin
+            if (post.getPublisher() == callingUser
+                ||((callingUser.getForum().getName().Equals(post.getPublisher().getForum().getName()))&& callingUser.getType() is Admin))
             {
                 List<Post> replies = post.GetReplies();
                 foreach (Post p in replies)
@@ -363,6 +371,23 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 }
                 dal_posts.DeletePost(post.GetId());
                 return post.DeletePost();
+            }
+            else
+            {
+                //check if moderators can delete a post
+                PolicyParametersObject checkMod = new PolicyParametersObject(Policies.ModeratorPermissionToDelete);
+                if (!post.getPublisher().getForum().GetPolicy().CheckPolicy(checkMod))
+                    return false;
+                if(post.Thread.GetSubforum().isModerator(callingUser.getUsername()))
+                {
+                    List<Post> replies = post.GetReplies();
+                    foreach (Post p in replies)
+                    {
+                        p.getPublisher().AddPostNotification(post, NotificationType.Deleted);
+                    }
+                    dal_posts.DeletePost(post.GetId());
+                    return post.DeletePost();
+                }
             }
             return false; // user can't delete other user's posts
         }

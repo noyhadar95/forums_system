@@ -15,7 +15,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         
         public ConfidentialityPolicy(Policies type, bool blockPassword):base(type)
         {
-            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1, blockPassword, -1, -1, -1, -1, -1, -1,false);
             this.blockPassword = blockPassword;
         }
         private ConfidentialityPolicy() : base()
@@ -38,6 +37,19 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
             else
                 return base.CheckPolicy(param);
+
+        }
+        public override bool AddPolicy(Policy newPolicy)
+        {
+            bool flag = base.AddPolicy(newPolicy);
+            if (flag)
+                newPolicy.AddParamObject();
+            return flag;
+        }
+        public override void AddParamObject()
+        {
+            dal_policyParameter = new Data_Access_Layer.DAL_PolicyParameter();
+            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1, blockPassword, -1, -1, -1, -1, -1, -1, false);
 
         }
     }
