@@ -40,14 +40,18 @@ namespace ForumsSystemClient.PresentationLayer
             string token = tokenTB.Text;
             if (token == "" || username == "")
             {
-                MessageBox.Show("incorrect information, please try again");
+                MessageBox.Show("please enter all fields");
                 return;
             }
 
-            // TODO: bool res = cl.ConfirmRegistration(forumName, username, token);
-
-            MessageBox.Show("registration has been completed\ntry to login");
-            WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
+            bool res = cl.ConfirmRegistration(forumName, username, token);
+            if (res)
+            {
+                MessageBox.Show("registration has been completed\ntry to login");
+                WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
+            }
+            else
+                MessageBox.Show("incorrect information, please try again");
         }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
