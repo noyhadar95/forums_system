@@ -8,29 +8,38 @@ using System.Threading.Tasks;
 namespace ForumsSystem.Server.ForumManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
-    public class MaxModeratorsPolicy:Policy
+    public class InteractivePolicy : Policy
     {
+        
         [DataMember]
-        private int maxModerators;
+        public int notifyMode;
+        /// <summary>
+        /// 0 - online only
+        /// 1 - offline and online
+        /// 2 - selective
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="notifyOffline"></param>
 
-        public MaxModeratorsPolicy(Policies type, int maxModerators):base(type)
+        public InteractivePolicy(Policies type, int notifyMode) : base(type)
         {
-            this.maxModerators = maxModerators;
+            this.notifyMode = notifyMode;
         }
-        private MaxModeratorsPolicy() : base()
+        private InteractivePolicy() : base()
         {
 
         }
 
-        public static MaxModeratorsPolicy createMaxModeratorsPolicyForInit(int maxModerators)
+        public static InteractivePolicy createInteractivePolicyForInit(int notifyMode)
         {
-            MaxModeratorsPolicy policy = new MaxModeratorsPolicy();
-            policy.maxModerators = maxModerators;
+            InteractivePolicy policy = new InteractivePolicy();
+            policy.notifyMode = notifyMode;
 
             return policy;
         }
+
         /// <summary>
-        /// check if a there is a free slot for a moderator 
+        /// returns true if policy is selective
         /// </summary>
         /// <param name="param"></param>
         /// <returns></returns>
@@ -38,9 +47,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if (param.GetPolicy() == type)
             {
-
-                //Console.WriteLine(maxModerators+" "+param.NumOfModerators);
-                return this.maxModerators >= param.CurrNumOfModerators+ param.NumOfModeratorsToAdd;
+                return notifyMode==2;
             }
             else
                 return base.CheckPolicy(param);
@@ -56,7 +63,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public override void AddParamObject()
         {
             dal_policyParameter = new Data_Access_Layer.DAL_PolicyParameter();
-            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1, false, maxModerators, -1, -1, -1, -1, -1, false, -1);
+            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1, false, -1, -1, -1, -1, -1, -1, false,notifyMode);
 
         }
     }

@@ -65,7 +65,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public override void AddParamObject()
         {
             dal_policyParameter = new Data_Access_Layer.DAL_PolicyParameter();
-            dal_policyParameter.CreatePolicyParameter(ID, seniorityInDays, numOfMessages, numOfComplaints, false, -1, -1, -1, -1, -1, -1, false);
+            dal_policyParameter.CreatePolicyParameter(ID, seniorityInDays, numOfMessages, numOfComplaints, false, -1, -1, -1, -1, -1, -1, false, -1);
 
         }
     }
