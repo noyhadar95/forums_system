@@ -93,6 +93,9 @@
     <Compile Include="PresentationLayer\SuperAdminReportsWindow.xaml.cs">
       <DependentUpon>SuperAdminReportsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\UserPostsWindow.xaml.cs">
+      <DependentUpon>UserPostsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\ForumManagement\DomainLayer\AdminAppointmentPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\ConfidentialityPolicy.cs" />
@@ -249,6 +252,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\ThreadWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\UserPostsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
