@@ -82,8 +82,8 @@ namespace UnitTests.ServerIntegrationTests
             IUser user2 = new User("m2", "mp2", "nimrodh@post.bgu.ac.il", forum, year);
             moderators.Add(user1.getUsername(), DateTime.Today.AddMonths(1));
             moderators.Add(user2.getUsername(), DateTime.Today.AddMonths(3));
-            user1.AcceptEmail();
-            user2.AcceptEmail();
+            user1.AcceptEmail(((User)user1).emailConfirmationToken);
+            user2.AcceptEmail(((User)user2).emailConfirmationToken);
             ISubForum subforum = admin.createSubForum(subforumName, moderators);
             Assert.IsNotNull(subforum);
 

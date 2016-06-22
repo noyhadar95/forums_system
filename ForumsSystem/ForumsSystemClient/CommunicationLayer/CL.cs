@@ -90,7 +90,13 @@ namespace ForumsSystemClient.CommunicationLayer
             string sessionKey = null;
             if (user != null)
                 sessionKey = (string)Client.SendRequest("GetSessionKey", username, forumName);
-            else return null;
+            else
+            {
+                //check if password is expired
+                bool passwordValid = (bool)Client.SendRequest("CheckPasswordValidity", forumName, username);
+                if (!passwordValid)
+                    sessionKey = "-1";
+            }
             Tuple<User, string> res = new Tuple<User, string>(user, sessionKey);
             return res;
         }
@@ -213,9 +219,9 @@ namespace ForumsSystemClient.CommunicationLayer
             return (DateTime)Client.SendRequest("GetModeratorExpDate", forumName, subForumName, username);
         }
 
-        public bool ConfirmRegistration(string forumName, string username)
+        public bool ConfirmRegistration(string forumName, string username, string token)
         {
-            return (bool)Client.SendRequest("ConfirmRegistration", forumName, username);
+            return (bool)Client.SendRequest("ConfirmRegistration", forumName, username, token);
         }
 
         public int GetOpenningPostID(string forumName, string subForumName, int threadID)
@@ -368,14 +374,22 @@ namespace ForumsSystemClient.CommunicationLayer
             return (bool)Client.SendRequest("CheckSecurityQuestion", forumName, username, question, answer);
 
         }
-        public bool SetUserPassword(string forumName, string username, string newPassword)
+        public bool SetUserPassword(string forumName, string username, string oldPassword, string newPassword)
         {
-            return (bool)Client.SendRequest("SetUserPassword", forumName, username, newPassword);
+            return (bool)Client.SendRequest("SetUserPassword", forumName, username, oldPassword, newPassword);
         }
         public List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username)
         {
             return (List<PrivateMessageNotification>)Client.SendRequest("GetPrivateMessageNotifications", forumName, username);
 
+        }
+        public void AddComplaint(string forumName, string subforum, string username)
+        {
+            Client.SendRequest("AddComplaint", forumName, subforum, username);
+        }
+        public void DeactivateUser(string forumName, string username)
+        {
+            Client.SendRequest("DeactivateUser", forumName, username);
         }
     }
 }

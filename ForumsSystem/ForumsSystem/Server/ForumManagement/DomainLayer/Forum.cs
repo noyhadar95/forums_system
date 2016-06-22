@@ -91,8 +91,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             //PolicyParametersObject param = new PolicyParametersObject(Policies.Authentication);
             if (policies != null && policies.CheckIfPolicyExists(Policies.Authentication))
             {
+                ((User)user).emailConfirmationToken = PRG.ClientSessionKeyGenerator.GetUniqueKey();
                 sendMail(user.getEmail(), user.getUsername(), "Successfully Registered To Forum: " + this.name,
-                   "Hello" + user.getUsername() + ",\n You have registered to the Forum: " + this.name + ". Please click on this link to  complete your registration: " + createLinkForRegistration(user));
+                   "Hello" + user.getUsername() + ",\n You have registered to the Forum: " + this.name + ". Please enter this token to  complete your registration: " + ((User)user).emailConfirmationToken);
             }
             
 
@@ -121,7 +122,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             users.Add(user.getUsername(), user);
             Loggers.Logger.GetInstance().AddActivityEntry("User: " + user.getUsername() + " Registered");
             waiting_users.Remove(user.getUsername());
-             SendMailWhenRegistered(user);
+            // SendMailWhenRegistered(user);
             return true;
         }
 
@@ -389,6 +390,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (waiting_users.ContainsKey(user.getUsername()))
                 return false;
             waiting_users.Add(user.getUsername(), user);
+            SendMailWhenRegistered(user);
             return true;
         }
 
@@ -476,6 +478,23 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
             while (p != null) ;
             return true;
+        }
+        public void AddComplaint(string subforum, string username)
+        {
+            if (!users.ContainsKey(username))
+                return;
+            bool isMod = false; ;
+            if (getSubForum(subforum) != null)
+                isMod = getSubForum(subforum).isModerator(username);
+            users[username].AddComplaint(isMod);
+
+
+        }
+        public void DeactivateUser(string username)
+        {
+            if (!users.ContainsKey(username))
+                return;
+            users[username].DeactivateUser();
         }
     }
 }
