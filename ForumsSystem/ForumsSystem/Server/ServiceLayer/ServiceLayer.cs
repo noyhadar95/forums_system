@@ -104,8 +104,8 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             Post post = GetForum(forumName).getSubForum(subForumName).getThread(threadID).GetPostById(postID);
             IUser publisher = GetForum(forumName).getUser(publisherName);
-            return publisher.postReply(post, post.Thread, title, content);
-
+            Post res = publisher.postReply(post, post.Thread, title, content);
+            return res;
         }
 
         public IUser MemberLogin(string username, string password, string forumName)
@@ -377,7 +377,20 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             ISubForum subforum = forum.getSubForum(subForumName);
             Thread thread = subforum.GetThreadById(threadId);
-            thread.EditPost(postId, newTitle, newContent);
+            bool updated = thread.EditPost(postId, newTitle, newContent);
+            //notify users:
+            if (updated)
+            {
+                Post post = thread.GetPostById(postId);
+                string pub = post.getPublisher().getUsername();
+                List<Post> replies = post.GetReplies();
+                foreach (Post p in replies.ToArray())
+                {
+                    if(((Forum)forum).ShouldNotify(pub,p.getPublisher().getUsername()))
+                        p.getPublisher().AddPostNotification(post, NotificationType.Changed);
+                }
+            }
+            //update db
             DAL_Posts dp = new DAL_Posts();
             dp.EditPost(postId, newTitle, newContent);
         }
