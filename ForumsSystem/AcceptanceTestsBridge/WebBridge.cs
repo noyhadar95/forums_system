@@ -13,7 +13,7 @@ namespace AcceptanceTestsBridge
 {
     public class WebBridge : IBridge
     {
-        private CL cl;
+        private WebApplication.Communication.CL cl;
         // default values for policies params
         private int numOfComplaints = 100;
         private bool blockPassword = false;
@@ -26,7 +26,7 @@ namespace AcceptanceTestsBridge
 
         public WebBridge()
         {
-            cl = new CL();
+            cl = new WebApplication.Communication.CL();
         }
         #region Add/Create Methods
 

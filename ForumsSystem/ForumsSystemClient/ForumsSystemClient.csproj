@@ -98,6 +98,7 @@
     <Compile Include="Resources\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\ConfidentialityPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\Forum.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\InteractivePolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\MaxModeratorsPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\MemberSuspensionPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\MinimumAgePolicy.cs" />

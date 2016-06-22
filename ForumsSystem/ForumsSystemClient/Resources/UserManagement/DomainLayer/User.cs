@@ -56,6 +56,8 @@ namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
         private string clientSession;
         [DataMember]
         private string passwordSalt;
+        [DataMember]
+        private bool notifyOffline;
 
         #region Gettes/Setters
 

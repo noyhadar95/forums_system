@@ -104,7 +104,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.waitingFriendsList = new List<IUser>();
             Policy policy = forum.GetPolicy();
             dal_users.CreateUser(this.forum.getName(), this.userName, this.password, this.email,
-                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange, this.passwordSalt);
+                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange, this.passwordSalt, this.notifyOffline);
             if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
                 this.forum.RegisterToForum(this);
             else
@@ -313,7 +313,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             {
                 this.forum = forum;
                 dal_users.CreateUser(forum.getName(), this.userName, this.password, this.email,
-               this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange,this.passwordSalt);
+               this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange,this.passwordSalt, this.notifyOffline);
                 Policy policy = forum.GetPolicy();
                 if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
                     this.forum.RegisterToForum(this);
@@ -389,13 +389,13 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.type = type;
             if (type is Guest)
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.dateJoined,
-                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Guest,this.dateOfPassLastchange,this.passwordSalt);
+                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Guest,this.dateOfPassLastchange,this.passwordSalt, this.notifyOffline);
             else if (type is Member)
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.dateJoined,
-                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange, this.passwordSalt);
+                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange, this.passwordSalt, this.notifyOffline);
             else if (type is Admin)
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.dateJoined,
-                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Admin,this.dateOfPassLastchange, this.passwordSalt);
+                this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Admin,this.dateOfPassLastchange, this.passwordSalt, this.notifyOffline);
 
         }
 
@@ -435,7 +435,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 this.dateOfPassLastchange = DateTime.Today;
                 type = new Member();
                 dal_users.CreateUser(this.forum.getName(), this.userName, this.password, this.email,
-                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange, this.passwordSalt);
+                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange, this.passwordSalt, this.notifyOffline);
                 Policy policy = forum.GetPolicy();
                      if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
                          return forum.RegisterToForum(this);
@@ -834,15 +834,15 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (type is Guest)
             {
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
-                    this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Guest,DateTime.Today,this.passwordSalt);
+                    this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Guest,DateTime.Today,this.passwordSalt, this.notifyOffline);
             } else if(type is Member)
             {
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
-                   this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,DateTime.Today, this.passwordSalt);
+                   this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,DateTime.Today, this.passwordSalt, this.notifyOffline);
             } else if(type is Admin)
             {
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
-                   this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,DateTime.Today, this.passwordSalt);
+                   this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,DateTime.Today, this.passwordSalt, this.notifyOffline);
             }
             return true;
         }

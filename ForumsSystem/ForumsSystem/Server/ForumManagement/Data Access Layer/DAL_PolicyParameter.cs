@@ -26,7 +26,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         /// <param name="passwordValidity"></param>
         /// <param name="maxNumOfUsers"></param>
         public void CreatePolicyParameter(int policyId, int seniorityInDays, int numOfMessages,
-            int numOfComplaints, bool blockPassword, int maxModerators, int minAge,int minSeniority, int requiredLength,int passwordValidity, int maxNumOfUsers, bool moderatorDeletePermission, int notifyOffline, int notifyMode)
+            int numOfComplaints, bool blockPassword, int maxModerators, int minAge,int minSeniority, int requiredLength,int passwordValidity, int maxNumOfUsers, bool moderatorDeletePermission, int notifyMode)
         {
 
             Connect_to_DB();
@@ -86,10 +86,10 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
             cmd.Parameters.AddWithValue("@p12", moderatorDeletePermission);
 
-            if(notifyOffline < 0)
+            if(notifyMode < 0)
                 cmd.Parameters.AddWithValue("@p13", DBNull.Value);
             else
-                cmd.Parameters.AddWithValue("@p13", notifyOffline);
+                cmd.Parameters.AddWithValue("@p13", notifyMode);
 
             connect_me.TakeAction(cmd);
 
@@ -185,10 +185,10 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 
             cmd.Parameters.AddWithValue("@p12", moderatorDeletePermission);
 
-            if (notifyOffline < 0)
+            if (notifyMode < 0)
                 cmd.Parameters.AddWithValue("@p13", DBNull.Value);
             else
-                cmd.Parameters.AddWithValue("@p13", notifyOffline);
+                cmd.Parameters.AddWithValue("@p13", notifyMode);
 
             cmd.Parameters.AddWithValue("@p1", policyId);
 
