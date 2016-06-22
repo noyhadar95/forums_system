@@ -47,5 +47,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         List<IUser> getUsersInForum();
 
         bool CheckRegistrationPolicies(string password, DateTime dateOfBirth);
+
+        bool ShouldNotify(string notifier, string username);
     }
 }

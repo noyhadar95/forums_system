@@ -735,6 +735,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public void AddPostNotification(Post post,NotificationType type)
         {
+            if (!forum.ShouldNotify(post.getPublisher().getUsername(), this.userName))
+                return;
+
             PostNotification notification = new PostNotification(type, post.getPublisher().getForum().getName(),
                 post.getPublisher().getUsername(), post.Thread.GetSubforum().getName(),
                 post.Title, post.Content, post.GetId());
