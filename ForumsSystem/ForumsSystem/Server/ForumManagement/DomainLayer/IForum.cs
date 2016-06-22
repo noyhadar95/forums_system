@@ -47,5 +47,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         List<IUser> getUsersInForum();
 
         bool CheckRegistrationPolicies(string password, DateTime dateOfBirth);
+        void AddComplaint(string subforum, string username);
+        void DeactivateUser (string username);
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ForumsSystem.Server.ForumManagement.DomainLayer;
 using ForumsSystem.Server.UserManagement.DomailLayer;
 using ForumsSystem.Server.UserManagement.DomainLayer;
+using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
 
 namespace ForumsSystem.Server.ServiceLayer
 {
@@ -164,7 +165,7 @@ namespace ForumsSystem.Server.ServiceLayer
         }
         */
 
-        public bool ConfirmRegistration(string forumName, string username)
+        public bool ConfirmRegistration(string forumName, string username, string token)
         {
             IForum forum = this.GetForum(forumName);
             if (forum == null)
@@ -172,7 +173,7 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user = forum.GetWaitingUser(username);
             if (user == null)
                 return false;
-            user.AcceptEmail();
+            user.AcceptEmail(token);
             return true;
         }
 
@@ -376,9 +377,9 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             ISubForum subforum = forum.getSubForum(subForumName);
             Thread thread = subforum.GetThreadById(threadId);
-            Post post = thread.GetPostById(postId);
-            post.Title = newTitle;
-            post.Content = newContent;
+            thread.EditPost(postId, newTitle, newContent);
+            DAL_Posts dp = new DAL_Posts();
+            dp.EditPost(postId, newTitle, newContent);
         }
         public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
         {
@@ -586,11 +587,41 @@ namespace ForumsSystem.Server.ServiceLayer
             return user.CheckSecurityQuestion(question,answer);
         }
 
-        public bool SetUserPassword(string forumName, string username, string newPassword)
+        public bool SetUserPassword(string forumName, string username,string oldPassword, string newPassword)
         {
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
-            return user.SetPassword(newPassword);
+            return user.SetPassword(oldPassword, newPassword);
+        }
+        public void AddComplaint(string forumName, string subforum, string username)
+        {
+            IForum forum = GetForum(forumName);
+            forum.AddComplaint(subforum, username);
+        }
+        public bool CheckPasswordValidity(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            if (forum == null)
+                return true;
+            PolicyParametersObject expPass = new PolicyParametersObject(Policies.PasswordValidity);
+            Policy p = forum.GetPolicy();
+            while (p != null)
+            {
+                if (p is PasswordPolicy)
+                {
+                    if (((PasswordPolicy)p).passwordValidity < (DateTime.Now - forum.getUser(username).GetDateOfPassLastChange()).TotalDays)
+                        return false;
+                    break;
+                }
+                p = p.NextPolicy;
+            }
+            return true;
+        }
+        public void DeactivateUser(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            if (forum != null)
+                forum.DeactivateUser(username);
         }
     }
 }

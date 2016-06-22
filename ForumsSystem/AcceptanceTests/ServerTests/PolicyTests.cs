@@ -135,7 +135,7 @@ namespace AcceptanceTests.ServerTests
 
         [TestMethod]
         public void TestMinAgePolicyFail()
-        {
+         {
             string forumName = GetNextForum();
             PoliciesStub forumPolicy = PoliciesStub.MinimumAge;
             string username = "user1";

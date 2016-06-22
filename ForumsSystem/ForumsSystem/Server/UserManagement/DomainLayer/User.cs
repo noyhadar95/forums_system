@@ -59,7 +59,11 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         [DataMember]
         private string passwordSalt;
         [IgnoreDataMember]
-        private string clientSession=null;
+        public bool notifyOffline=true;
+        [DataMember]
+        private bool isActive = true;
+        [DataMember]
+        public string emailConfirmationToken;
         private Dictionary<SecurityQuestionsEnum, string> passwordSecurityQuestions;
         public User()
         {
@@ -159,6 +163,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.DateOfBirth = usr.DateOfBirth;
             this.passwordSalt = usr.passwordSalt;
             this.passwordSecurityQuestions = usr.passwordSecurityQuestions;
+            this.notifyOffline = usr.notifyOffline;
+            this.numOfComplaints = usr.numOfComplaints;
+            this.isActive = usr.isActive;
+            this.emailConfirmationToken = usr.emailConfirmationToken;
         }
         public static Dictionary<string, IUser> populateUsers(Forum forum)//Not waiting
         {
@@ -347,6 +355,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 int privateMessageNotificationsCount = privateMessageNotifications.Count;
                 int waitingFriendsCount = waitingFriendsList.Count;
                 // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
+               
                 Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
                     "" + postNotificationCount + "," + privateMessageNotificationsCount + "," + waitingFriendsCount);
             }
@@ -396,13 +405,13 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
         public bool RegisterToForum(string userName, string password, IForum forum, string email, DateTime dateOfBirth)
         {
-            this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
+          
             
             if (forum == null)
                 return false;
             if (this.forum == null)
             {
-
+               
                 PolicyParametersObject param = new PolicyParametersObject(Policies.MinimumAge);
                 param.SetAgeOfUser((int)((DateTime.Today- dateOfBirth).TotalDays) / 365);
                 if (forum.GetPolicy() != null && !forum.GetPolicy().CheckPolicy(param))
@@ -418,6 +427,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
 
                 this.userName = userName;
+                this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
                 password = this.passwordSalt + password;
                 this.password = PRG.Hash.GetHash(password);
                 this.dateOfPassLastchange = DateTime.Today;
@@ -509,9 +519,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
             set
             {
-                this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
-                string temp = this.passwordSalt + value;
-                this.password = PRG.Hash.GetHash(temp);
+                this.password = value;
             }
         }
 
@@ -611,7 +619,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 //                Server.CommunicationLayer.Server.SubscribeClient(this.forum.getName(), this.userName);
                 this.isLoggedIn = true;
 
-                this.clientSession = PRG.ClientSessionKeyGenerator.GetUniqueKey();
+               
                 if (postNotifications != null)
                 {
                     foreach (PostNotification p in postNotifications)
@@ -622,22 +630,26 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
                 dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
                 postNotifications = new List<PostNotification>();
-            /*    if (privateMessageNotifications!=null)
-                {
-                    foreach (PrivateMessageNotification m in privateMessageNotifications)
+                /*    if (privateMessageNotifications!=null)
                     {
-                        //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, m);
+                        foreach (PrivateMessageNotification m in privateMessageNotifications)
+                        {
+                            //      Server.CommunicationLayer.Server.notifyClient(forum.getName(), userName, m);
+                        }
                     }
-                }
-                //privateMessageNotifications = new List<PrivateMessageNotification>();
-                */
-                int postNotificationCount = postNotifications.Count;
+                    //privateMessageNotifications = new List<PrivateMessageNotification>();
+                    */
+                int postNotificationCount = 0;
+                if (postNotifications != null)
+                     postNotificationCount = postNotifications.Count;
 
                 /*DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
                 dal_postNotification.RemoveAllNotifications(forum.getName(), userName);
                 postNotifications = new List<PostNotification>();*/
 
-                int privateMessageNotificationsCount = privateMessageNotifications.Count;
+                int privateMessageNotificationsCount = 0;
+                if (privateMessageNotifications != null)
+                    privateMessageNotificationsCount = privateMessageNotifications.Count;
 
                 /* privateMessageNotifications = new List<PrivateMessageNotification>();
 
@@ -671,7 +683,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
 //            Server.CommunicationLayer.Server.UnSubscribeClient(this.userName, this.forum.getName());
             this.isLoggedIn = false;
-            this.clientSession = null;
+            Loggers.Logger.GetInstance().AddActivityEntry("User: " + this.userName + " logged in");
 
         }
 
@@ -735,7 +747,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             if (isLoggedIn)
             {
                 int postNotificationCount = postNotifications.Count;
-                int privateMessageNotificationsCount = privateMessageNotifications.Count;
+                int privateMessageNotificationsCount = 0;
+                if(privateMessageNotifications != null)
+                    privateMessageNotificationsCount = privateMessageNotifications.Count;
                 int waitingFriendsCount;
 
                 if (waitingFriendsList != null)
@@ -766,10 +780,14 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return friends;
         }
 
-        public void AcceptEmail()
+        public bool AcceptEmail(string token)
         {
-            this.emailAccepted = true;
-            this.forum.RegisterToForum(this);
+            if (token.Equals(this.emailConfirmationToken))
+            {
+                this.emailAccepted = true;
+                this.forum.RegisterToForum(this);
+            }
+            return this.emailAccepted;
 
         }
 
@@ -808,17 +826,22 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return type.GetModeratorsList(this, subforum);
         }
 
-        public bool SetPassword(string password)
+        public bool SetPassword(string oldPassword, string newPassword)
         {
+            //check that old password is correct
+            oldPassword = this.passwordSalt + oldPassword;
+            oldPassword= PRG.Hash.GetHash(oldPassword);
+            if (!this.password.Equals(oldPassword))
+                return false;
             //check password policies
             PolicyParametersObject checkPass = new PolicyParametersObject(Policies.Password);
-            checkPass.SetPassword(password);
+            checkPass.SetPassword(newPassword);
             if (!this.forum.GetPolicy().CheckPolicy(checkPass))
                 return false;
             //policies ok, change password
             this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
-            password = this.passwordSalt + password;
-            this.password = PRG.Hash.GetHash(password);
+            newPassword = this.passwordSalt + newPassword;
+            this.password = PRG.Hash.GetHash(newPassword);
             this.dateOfPassLastchange = DateTime.Today;
             if (type is Guest)
             {
@@ -920,6 +943,22 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public DateTime GetDateOfBirth()
         {
             return this.dateOfBirth;
+        }
+        public void AddComplaint(bool isModerator)
+        {
+            this.numOfComplaints++;
+            if (this.isActive)
+            {
+                //TODO: check if reached limit and ban if necessary
+                PolicyParametersObject pObj = new PolicyParametersObject(Policies.ModeratorSuspension);
+                pObj.User = this;
+                if (isModerator && this.forum.GetPolicy() != null && this.forum.GetPolicy().CheckPolicy(pObj) == false)
+                    this.isActive = false;
+            }
+        }
+        public void DeactivateUser()
+        {
+            this.isActive = false;
         }
     }
 

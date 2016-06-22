@@ -34,11 +34,15 @@ namespace AcceptanceTests.ServerTests
             moderators.Add(username1, DateTime.Today.AddDays(100));
             string subForumName = "sub forum 1";
 
+           
+
             // create a forum, sub-forum and a thread to add a post to.
             bool flag=base.CreateSubForumByAdmin1(forumName, forumPolicy, subForumName, moderators);
             bridge.RegisterToForum(forumName, username2, pass2, email2, dateOfBirth2);
             KeyValuePair<string, DateTime> newMod = new KeyValuePair<string, DateTime>(username2, DateTime.Today.AddDays(100));
-            bool res = bridge.AddModerator(forumName, subForumName, this.adminUserName1, newMod);
+
+
+           bool res = bridge.AddModerator(forumName, subForumName, this.adminUserName1, newMod);
             Assert.IsTrue(res);
             Assert.IsTrue(bridge.IsModerator(forumName, subForumName, username2));
 

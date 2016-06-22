@@ -39,6 +39,7 @@ namespace AcceptanceTestsBridge
             foreach (UserStub user in admins)
             {
                 User u = new User(user.Username, user.Password, user.Email, DateTime.Today.AddDays(100));
+                u.Password = user.Password;
                 newAdmins.Add(u);
             }
             SuperAdmin superAdmin = SuperAdmin.GetInstance();
@@ -298,7 +299,16 @@ namespace AcceptanceTestsBridge
         public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
         {
             //IForum forum = sl.GetForum(forumName);
-            return sl.RegisterToForum(forumName, username, password, email, dateOfBirth);
+            bool res= sl.RegisterToForum(forumName, username, password, email, dateOfBirth);
+            if (res)
+            {
+                User u = (User)sl.GetForum(forumName).getUser(username);
+                if (u != null)
+                {
+                    u.emailConfirmationToken = "";
+                }
+            }
+            return res;
         }
 
         public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
@@ -364,7 +374,7 @@ namespace AcceptanceTestsBridge
 
         public bool ConfirmRegistration(string forumName, string username)
         {
-            return sl.ConfirmRegistration(forumName, username);
+            return sl.ConfirmRegistration(forumName, username, "");
         }
 
         public int GetOpenningPostID(string forumName, string subForumName, int threadID)
@@ -566,7 +576,7 @@ namespace AcceptanceTestsBridge
 
             foreach (UserStub user in admins)
             {
-                User u = new User(user.Username, user.Password, user.Email, DateTime.Today.AddDays(100));
+                User u = new User(user.Username, user.Password, user.Email, DateTime.Today.AddYears(-25));
                 newAdmins.Add(u);
             }
             SuperAdmin superAdmin = SuperAdmin.GetInstance();

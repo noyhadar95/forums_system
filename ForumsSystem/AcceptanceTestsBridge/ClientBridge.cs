@@ -315,7 +315,7 @@ namespace AcceptanceTestsBridge
 
         public bool ConfirmRegistration(string forumName, string username)
         {
-            return cl.ConfirmRegistration(forumName, username);
+            return cl.ConfirmRegistration(forumName, username,"");
         }
 
         public int GetOpenningPostID(string forumName, string subForumName, int threadID)

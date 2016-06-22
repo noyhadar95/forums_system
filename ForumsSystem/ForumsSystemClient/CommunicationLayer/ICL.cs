@@ -48,7 +48,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
         bool AddModerator(string forumName, string subForumName, string adminUsername, string username, DateTime expiratoinDate);
        // void removeForum(string forumName);
-        bool ConfirmRegistration(string forumName, string username);
+        bool ConfirmRegistration(string forumName, string username, string token);
         bool LoginSuperAdmin(string username, string pass);
         DateTime GetModeratorExpDate(string forumName, string subForumName, string username);
         int CountNestedReplies(string forumName, string subForumName, int threadID, int postID);
@@ -99,11 +99,16 @@ namespace ForumsSystemClient.CommunicationLayer
         
         List<string> GetFriendRequests(string forumName, string username);
 
-        bool SetUserPassword(string forumName, string username, string newPassword);
+        bool SetUserPassword(string forumName, string username, string oldPassword, string newPassword);
         bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
         bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question);
         bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
         List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username);
+
         string GetSessionKey(string username, string forumName);
+
+        void AddComplaint(string forumName, string subforum, string username);
+        void DeactivateUser(string forumName, string username);
+
     }
 }
