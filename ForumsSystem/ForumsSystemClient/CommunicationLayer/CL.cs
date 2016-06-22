@@ -387,5 +387,10 @@ namespace ForumsSystemClient.CommunicationLayer
         {
             return (int)Client.SendRequest("getNumOfPostsInSubForum", forumName, subForum);
         }
+
+        public bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, string postId)
+        {
+            return (bool)Client.SendRequest("HasSeniorityPriviledge", forumName, subForumName, threadId, username, postId);
+        }
     }
 }

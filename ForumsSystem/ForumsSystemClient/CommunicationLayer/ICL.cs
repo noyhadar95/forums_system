@@ -104,5 +104,7 @@ namespace ForumsSystemClient.CommunicationLayer
         bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question);
         bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
         List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username);
+        int getNumOfPostsInSubForum(string forumName, string subForum);
+        bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, string postId);
     }
 }

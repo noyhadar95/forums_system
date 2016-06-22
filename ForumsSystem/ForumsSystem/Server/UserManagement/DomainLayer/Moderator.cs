@@ -70,5 +70,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             //only the appointer is able to delete the modeartor
             return appointer.getUsername().Equals(user);
         }
+
+        public bool hasSeniority()
+        {
+            return (DateTime.Now - appointmentDate).TotalDays > 10;
+        }
     }
 }

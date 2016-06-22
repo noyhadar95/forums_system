@@ -608,5 +608,30 @@ namespace ForumsSystem.Server.ServiceLayer
 
             return total;
         }
+
+
+        public bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, int postId)
+        {
+            IForum forum = GetForum(forumName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+
+
+            IUser user = forum.getUser(username);
+            if (user.getType() is Admin)
+                return true;
+
+            Moderator mod = subforum.getModeratorByUserName(username);
+            if (mod != null)
+            {
+                if (mod.hasSeniority())
+                    return true;
+            }
+
+
+            Thread thread = subforum.GetThreadById(threadId);
+            Post post = thread.GetPostById(postId);
+            return post.getPublisher().getUsername().Equals(username);
+
+        }
     }
 }
