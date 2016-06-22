@@ -7,6 +7,7 @@ using WebApplication.Communication;
 using WebApplication.Resources.ForumManagement.DomainLayer;
 using System.Xml.Linq;
 using WebApplication.Resources.UserManagement.DomainLayer;
+using ForumsSystemClient.CommunicationLayer;
 
 namespace AcceptanceTestsBridge
 {

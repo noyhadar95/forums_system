@@ -188,6 +188,22 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                         if (!this.policies.CheckPolicy(susp))
                             return null;
                     }
+
+                    //check if password is expired
+                    PolicyParametersObject expPass = new PolicyParametersObject(Policies.PasswordValidity);
+                    Policy p = this.GetPolicy();
+                    while (p != null)
+                    {
+                        if(p is PasswordPolicy)
+                        {
+                            if (((PasswordPolicy)p).passwordValidity < (DateTime.Now - users[userName].GetDateOfPassLastChange()).TotalDays)
+                                return null;//TODO: need to let the client know that passwors is expired
+                            break;
+                        }
+                        p = p.NextPolicy;
+                    }
+                    
+                   
                     users[userName].Login();
                     Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
                     return users[userName];
@@ -429,6 +445,37 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
             return users_res;
 
+        }
+        public bool ShouldNotify(string notifier, string username)
+        {
+            Policy p = this.GetPolicy();
+            if (p == null)
+                return true;
+            do
+            {
+                if(p is InteractivePolicy)
+                {
+                    switch (((InteractivePolicy)p).notifyMode)
+                    {
+                        case 0://online only
+                            return users[username].isLogin();
+                        case 1://online and offline
+                            return true;
+
+                        default: //selective
+                            if(((User) users[notifier]).notifyOffline)
+                                return true;
+                            else
+                                return users[username].isLogin();
+
+
+                    }
+                    
+                }
+                p = p.NextPolicy;
+            }
+            while (p != null) ;
+            return true;
         }
     }
 }

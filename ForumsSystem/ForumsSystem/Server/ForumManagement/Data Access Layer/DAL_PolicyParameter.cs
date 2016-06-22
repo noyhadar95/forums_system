@@ -26,7 +26,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         /// <param name="passwordValidity"></param>
         /// <param name="maxNumOfUsers"></param>
         public void CreatePolicyParameter(int policyId, int seniorityInDays, int numOfMessages,
-            int numOfComplaints, bool blockPassword, int maxModerators, int minAge,int minSeniority, int requiredLength,int passwordValidity, int maxNumOfUsers, bool moderatorDeletePermission)
+            int numOfComplaints, bool blockPassword, int maxModerators, int minAge,int minSeniority, int requiredLength,int passwordValidity, int maxNumOfUsers, bool moderatorDeletePermission, int notifyOffline)
         {
 
             Connect_to_DB();

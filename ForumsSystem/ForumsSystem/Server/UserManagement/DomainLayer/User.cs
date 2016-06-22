@@ -59,7 +59,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         [DataMember]
         private string passwordSalt;
         [IgnoreDataMember]
-        private string clientSession=null;
+        public bool notifyOffline=true;
         private Dictionary<SecurityQuestionsEnum, string> passwordSecurityQuestions;
         public User()
         {
@@ -159,6 +159,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.DateOfBirth = usr.DateOfBirth;
             this.passwordSalt = usr.passwordSalt;
             this.passwordSecurityQuestions = usr.passwordSecurityQuestions;
+            this.notifyOffline = usr.notifyOffline;
         }
         public static Dictionary<string, IUser> populateUsers(Forum forum)//Not waiting
         {
@@ -347,6 +348,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 int privateMessageNotificationsCount = privateMessageNotifications.Count;
                 int waitingFriendsCount = waitingFriendsList.Count;
                 // send notification to the client :   <num of posts>,<num of private messages>,<num of friend requests>
+               
                 Server.CommunicationLayer.Server.notifyClient(this.forum.getName(), this.userName,
                     "" + postNotificationCount + "," + privateMessageNotificationsCount + "," + waitingFriendsCount);
             }
@@ -610,7 +612,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 //                Server.CommunicationLayer.Server.SubscribeClient(this.forum.getName(), this.userName);
                 this.isLoggedIn = true;
 
-                this.clientSession = PRG.ClientSessionKeyGenerator.GetUniqueKey();
+               
                 if (postNotifications != null)
                 {
                     foreach (PostNotification p in postNotifications)
@@ -674,7 +676,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
 //            Server.CommunicationLayer.Server.UnSubscribeClient(this.userName, this.forum.getName());
             this.isLoggedIn = false;
-            this.clientSession = null;
+            Loggers.Logger.GetInstance().AddActivityEntry("User: " + this.userName + " logged in");
 
         }
 
