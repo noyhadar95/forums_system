@@ -224,7 +224,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if (users[userName] == null)
                 return true;
-            return ((User)users[userName]).isActive;
+            return !((User)users[userName]).isActive;
         }
 
         public bool InitForum()

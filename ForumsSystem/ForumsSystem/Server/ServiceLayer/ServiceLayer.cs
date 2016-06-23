@@ -173,8 +173,8 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user = forum.GetWaitingUser(username);
             if (user == null)
                 return false;
-            user.AcceptEmail(token);
-            return true;
+            return user.AcceptEmail(token);
+            
         }
 
         public bool LoginSuperAdmin(string username, string pass)

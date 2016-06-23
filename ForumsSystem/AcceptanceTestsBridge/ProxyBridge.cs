@@ -200,6 +200,7 @@ namespace AcceptanceTestsBridge
             if (realBridge != null)
             {
                 bool res = realBridge.RegisterToForum(forumName, username, password, email, dateOfBirth);
+                return res;
             }
 
             return true;

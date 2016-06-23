@@ -302,7 +302,7 @@ namespace AcceptanceTestsBridge
             bool res= sl.RegisterToForum(forumName, username, password, email, dateOfBirth);
             if (res)
             {
-                User u = (User)sl.GetForum(forumName).getUser(username);
+                User u = (User)sl.GetForum(forumName).GetWaitingUser(username);
                 if (u != null)
                 {
                     u.emailConfirmationToken = "";
