@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -162,6 +163,19 @@ namespace ForumsSystemClient.PresentationLayer
                 MessageBox.Show("error: super admin is not logged in");
                 return;
             }
+
+
+            Regex rgx = new Regex(@"^[a-z0-9_-]{1,30}$");
+            if (!rgx.IsMatch(forumName))
+            {
+                MessageBox.Show("Enter valid Forum Name");
+                return;
+            }
+
+
+
+
+
             SuperAdmin creator = WindowHelper.GetLoggedSuperAdmin();
 
             Policy policy = GetForumPolicy();

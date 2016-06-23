@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -56,6 +57,13 @@ namespace ForumsSystemClient.PresentationLayer
                 MessageBox.Show("please enter either a title or a content for the message");
                 return;
             }
+            Regex rgx = new Regex(@"^[a-z0-9_-]{1,16}$");
+            if (!rgx.IsMatch(receiver))
+            {
+                MessageBox.Show("Enter Valid UserName");
+                return;
+            }
+
 
             bool isSuccess = cl.SendPrivateMessage(forumName,this.sender, receiver, title, content);
             if (isSuccess)

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -92,6 +93,13 @@ namespace ForumsSystemClient.PresentationLayer
             if (subForumName == "")
             {
                 MessageBox.Show("please enter the name of the sub forum");
+                return;
+            }
+
+            Regex rgx = new Regex(@"^[a-z0-9_-]{1,30}$");
+            if (!rgx.IsMatch(subForumName))
+            {
+                MessageBox.Show("Enter valid Sub Forum Name");
                 return;
             }
 

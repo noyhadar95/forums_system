@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,6 +42,13 @@ namespace ForumsSystemClient.PresentationLayer
                 MessageBox.Show("please enter valid information");
                 return;
             }
+            Regex rgx = new Regex(@"^[a-z0-9_-]{1,16}$");
+            if (!rgx.IsMatch(username))
+            {
+                MessageBox.Show("Enter Valid UserName");
+                return;
+            }
+
             cl.InitializeSystem(username, password);
             WindowHelper.SwitchWindow(this, new MainWindow());
         }

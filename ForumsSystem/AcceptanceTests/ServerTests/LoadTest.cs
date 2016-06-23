@@ -40,12 +40,12 @@ namespace AcceptanceTests.ServerTests
             catch(Exception e)
             {
                 numOfusers = 100;
-                Console.WriteLine(numOfusers + " Users In The Forum - Default Value");
+                Console.WriteLine(numOfusers + 20 + " Users In The Forum - Default Value");
             }
-            notifications = new int[numOfusers+1];
+            notifications = new int[numOfusers+1 + 20];
             Console.WriteLine("Creating Users...");
             int userIndex = 1;
-            for (; userIndex<= numOfusers; userIndex++)
+            for (; userIndex<= numOfusers; userIndex++) //senders
             {
                 //create user
                 bridge.RegisterToForum(forumName, "user" + userIndex, "pass" + userIndex, "user" + userIndex + "@gmail.com", DateTime.Today.AddYears(-30));
@@ -53,7 +53,18 @@ namespace AcceptanceTests.ServerTests
                 bridge.LoginUser(forumName, "user" + userIndex, "pass" + userIndex);
                 notifications[userIndex] = 0;
             }
-            
+
+
+
+            for (int i = 0; i < 20; i++, userIndex++) //recievers
+            {
+                //create user
+                bridge.RegisterToForum(forumName, "user" + userIndex, "pass" + userIndex, "user" + userIndex + "@gmail.com", DateTime.Today.AddYears(-30));
+                bridge.ConfirmRegistration(forumName, "user" + userIndex);
+                bridge.LoginUser(forumName, "user" + userIndex, "pass" + userIndex);
+                notifications[userIndex] = 0;
+            }
+
             Console.WriteLine("Users Created");
             //create message
             //read message
@@ -75,6 +86,14 @@ namespace AcceptanceTests.ServerTests
             {
                 threads[i].Join();
             }
+
+            for (int i = 1; i <= 20; i++)
+            {
+
+                Console.WriteLine(numOfusers + i  + " received " + notifications[numOfusers + i] + " notifications");
+            }
+
+
             Console.WriteLine("Total Notifications: "+notifications.Sum());
             if(notifications.Sum()==numOfusers*numOfRounds)
                 Console.WriteLine("LOAD TEST PASSED");
@@ -114,16 +133,16 @@ namespace AcceptanceTests.ServerTests
                 int receiver = GetUserIndex(sender);
                 Console.WriteLine(sender + " to " + receiver);
                 bridge.SendPrivateMsg(forumName, "user" + sender, "user" + receiver, sender + " to " + receiver, sender + " to " + receiver);
-                notifications[sender] += bridge.GetNotifications(forumName, "user" + sender).Count;
+                notifications[receiver] += bridge.GetNotifications(forumName, "user" + receiver).Count;
                 Thread.Sleep(10 * 1000);
             }
             notifications[sender] += bridge.GetNotifications(forumName, "user" + sender).Count;
-            Console.WriteLine(sender+" received "+notifications[sender] + " notifications");
+            
         }
 
         private static int GetUserIndex(int sender)
         {
-            int temp=rand.Next(1,numOfusers+1);
+            int temp=rand.Next(numOfusers + 1,numOfusers+ 20 + 1);
             while (temp == sender)
                 temp = rand.Next(1,numOfusers+1);
             return temp;
