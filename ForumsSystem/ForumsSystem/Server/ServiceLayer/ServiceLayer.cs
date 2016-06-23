@@ -683,5 +683,11 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             return forum.isBanned(userName);
         }
+
+        public bool AddAdmin(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            return forum.AddAdmin(username); 
+        }
     }
 }

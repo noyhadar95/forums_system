@@ -212,7 +212,10 @@ namespace ForumsSystem.Server.CommunicationLayer
 
             for (int i = 1; i < items.Length; i += 2)
             {
-                parameters.Add(StringToObject(items[i], items[i + 1]));
+                if (items[i].Equals("null"))
+                    parameters.Add(null);
+                else
+                    parameters.Add(StringToObject(items[i], items[i + 1]));
             }
 
 

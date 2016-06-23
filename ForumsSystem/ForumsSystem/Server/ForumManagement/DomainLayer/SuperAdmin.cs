@@ -65,7 +65,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             foreach (IUser user in adminUsername.ToList<IUser>())
             {
                 param.User = user;
-                if (!properties.CheckPolicy(param))//check if user can be an admin (Policies) 
+                if (properties!=null&&!properties.CheckPolicy(param))//check if user can be an admin (Policies) 
                     return null;
             }
 

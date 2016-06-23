@@ -29,31 +29,40 @@ namespace ForumsSystemClient.CommunicationLayer
         static Byte[] authKey;
 
         static bool testing = false;
+        static string connectionErrorString = "!@#!#connectionerror!@!#@";
         private static string connect(string textToSend)
         {
-            SERVER_IP = GetLocalIPAddress();
-            //---create a TCPClient object at the IP and port no.---
-            TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
+            try
+            {
+                SERVER_IP = GetLocalIPAddress();
+                //---create a TCPClient object at the IP and port no.---
+                TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
 
-            int port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
+                int port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
 
 
-            NetworkStream nwStream = client.GetStream();
-            byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
+                NetworkStream nwStream = client.GetStream();
+                byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
 
-            //---send the text---
-            Console.WriteLine("Sending : " + textToSend);
-            nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+                //---send the text---
+                Console.WriteLine("Sending : " + textToSend);
+                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
 
-            //---read back the text---
-            byte[] bytesToRead = new byte[client.ReceiveBufferSize];
-            int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
-            // Console.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
-            string textFromServer = GetString(bytesToRead, bytesRead);
-            client.Close();
+                //---read back the text---
+                byte[] bytesToRead = new byte[client.ReceiveBufferSize];
+                int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
+                // Console.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
+                string textFromServer = GetString(bytesToRead, bytesRead);
+                client.Close();
 
-            return textFromServer;
-
+                return textFromServer;
+            }
+            catch(Exception e)
+            {
+                if (!testing)
+                    WindowHelper.ShowNoConnectionAlert();
+                return connectionErrorString;
+            }
 
         }
         public static void WaitForNotification()
@@ -215,15 +224,27 @@ namespace ForumsSystemClient.CommunicationLayer
             string textToSend = methodName;
             foreach (Object param in methodParameter)
             {
-                string pType = param.GetType().ToString();
-                //  if(!pType.StartsWith("System."))
-                //     pType = pType.Substring(pType.LastIndexOf('.') + 1);
+                string pType;
+                pType = null;
+                if (param != null)
+                {
+                    pType = param.GetType().ToString();
+                    //  if(!pType.StartsWith("System."))
+                    //     pType = pType.Substring(pType.LastIndexOf('.') + 1);
 
-                textToSend += delimeter + pType;
-                textToSend += delimeter + ObjectToString(param);
+                    textToSend += delimeter + pType;
+                    textToSend += delimeter + ObjectToString(param);
+                }
+                else
+                {
+                    textToSend += delimeter + "null";
+                    textToSend += delimeter + "null";
+                }
             }
             textToSend = Encrypt(textToSend);
             string textFromServer = connect(textToSend);
+            if (textFromServer.Equals(connectionErrorString))
+                return null;
             textFromServer = Decrypt(textFromServer);
             if (textFromServer.Equals("null"))
                 return null;
@@ -262,6 +283,8 @@ namespace ForumsSystemClient.CommunicationLayer
             testing = isTesting;
             // textToSend = Encrypt(textToSend);
             string textFromServer = connect(textToSend);
+            if (textFromServer.Equals(connectionErrorString))
+                return;
             //textFromServer = Decrypt(textFromServer);
             if (textFromServer.Equals("null"))
                 return;

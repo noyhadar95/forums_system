@@ -167,6 +167,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         /// <param name="newPolicy"></param>
         public virtual bool AddPolicy(Policy newPolicy)
         {
+            if (newPolicy == null)
+                return false;
             dal_policy = new DAL_Policy();
             dal_policyParameter = new DAL_PolicyParameter();
             if (CheckIfPolicyExists(newPolicy.type))
