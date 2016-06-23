@@ -438,5 +438,27 @@ namespace ForumsSystemClient.CommunicationLayer
             return (bool)Client.SendRequest("HasSeniorityPriviledge", forumName, subForumName, threadId, username, postId);
 
         }
+        public PrivateMessage GetPrivateMsg(string forumName, string msgReceiver, string msgSender, int pmID)
+        {
+            try
+            {
+                return (PrivateMessage)Client.SendRequest("GetPrivateMsg", forumName, msgReceiver, msgSender, pmID);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public List<PrivateMessage> getReceivedMessages(string forumName, string username)
+        {
+            try
+            {
+                return (List<PrivateMessage>)Client.SendRequest("getReceivedMessages", forumName, username);
+            }
+            catch (Exception)
+            {
+                return new List<PrivateMessage>();
+            }
+        }
     }
 }

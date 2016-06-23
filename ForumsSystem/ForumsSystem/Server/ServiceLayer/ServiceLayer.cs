@@ -683,5 +683,22 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             return forum.isBanned(userName);
         }
+        public PrivateMessage GetPrivateMsg(string forumName, string msgReceiver, string msgSender, int pmID)
+        {
+            IForum forum = GetForum(forumName);
+            IUser receiver = forum.getUser(msgReceiver);
+            if (receiver == null)
+                return null;
+            return receiver.GetPrivateMsg(pmID);
+        }
+        public List<PrivateMessage> getReceivedMessages(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            if (user == null)
+                return null;
+            return user.getReceivedMessages();
+        }
+
     }
 }

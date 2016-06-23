@@ -115,6 +115,7 @@ namespace ForumsSystem.Server.ServiceLayer
         void DeactivateUser(string forumName, string username);
 
         bool isBanned(string forumName, string userName);
-
+        PrivateMessage GetPrivateMsg(string forumName, string msgReceiver, string msgSender, int pmID);
+        List<PrivateMessage> getReceivedMessages(string forumName, string username);
     }
 }

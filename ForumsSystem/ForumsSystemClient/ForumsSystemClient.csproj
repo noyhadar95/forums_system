@@ -91,6 +91,9 @@
     </Compile>
     <Compile Include="PresentationLayer\INotifiableWindow.cs" />
     <Compile Include="PresentationLayer\NotifBarWindow.cs" />
+    <Compile Include="PresentationLayer\PrivateMsgWindow.xaml.cs">
+      <DependentUpon>PrivateMsgWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\SendFriendReqWindow.xaml.cs">
       <DependentUpon>SendFriendReqWindow.xaml</DependentUpon>
     </Compile>
@@ -233,6 +236,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\PrivateMsgWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -986,6 +986,23 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         {
             this.isActive = false;
         }
+
+
+        public PrivateMessage GetPrivateMsg(int pmID)
+        {
+            if (receivedMessages == null)
+                return null;
+            foreach (PrivateMessage pm in receivedMessages)
+            {
+                if (pm.id == pmID)
+                    return pm;
+            }
+            return null;
+        }
+
+
+
+
     }
 
 

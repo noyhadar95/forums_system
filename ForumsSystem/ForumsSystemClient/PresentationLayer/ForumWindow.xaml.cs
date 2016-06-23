@@ -31,7 +31,7 @@ namespace ForumsSystemClient.PresentationLayer
         public ForumWindow(string forumName) : base(forumName)
         {
             InitializeComponent();
-
+            
             WindowHelper.SetWindowBGImg(this);
 
             // initialize fields
@@ -40,7 +40,6 @@ namespace ForumsSystemClient.PresentationLayer
             cl = new CL();
 
             base.Initialize(dockPanel);
-
 
             // initialize sub-forums list
             List<string> items = cl.GetSubForumsList(forumName);
@@ -235,6 +234,7 @@ namespace ForumsSystemClient.PresentationLayer
         {
             WindowHelper.SwitchWindow(this, new MainWindow());
         }
+
 
         #endregion
 
