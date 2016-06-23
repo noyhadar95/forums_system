@@ -172,7 +172,7 @@ namespace ForumsSystemClient.PresentationLayer
             }
 
             Regex rgx = new Regex(@"([0-9]8)$");
-            if (!rgx.IsMatch(sessionToken))
+            if (sessionToken!="" && !rgx.IsMatch(sessionToken))
             {
                 MessageBox.Show("Session Token must be 8 numbers");
             }

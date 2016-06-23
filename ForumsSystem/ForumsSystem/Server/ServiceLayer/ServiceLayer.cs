@@ -345,6 +345,8 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             IForum forum = GetForum(forumName);
             Policy policy = forum.GetPolicy();
+            if (policy == null)
+                return false;
             bool res = policy.CheckIfPolicyExists(expectedPolicy);
             return res;
         }

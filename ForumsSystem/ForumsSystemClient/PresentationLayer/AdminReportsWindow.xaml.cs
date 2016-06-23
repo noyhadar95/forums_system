@@ -36,10 +36,8 @@ namespace ForumsSystemClient.PresentationLayer
             List<string> subForums = cl.GetSubForumsList(forumName);
             foreach (string subForumName in subForums)
             {
-                // TODO::
-                // int totalPosts = cl.GetTotalPosts(forumName, );
-                int totalPost = -1;
-                subForumsListView.Items.Add(new SubForumListItem { SubForum = subForumName, TotalPosts = totalPost });
+                int totalPosts = cl.getNumOfPostsInSubForum(forumName, subForumName);
+                subForumsListView.Items.Add(new SubForumListItem { SubForum = subForumName, TotalPosts = totalPosts });
             }
 
             List<string> members = cl.GetForumMembers(forumName);

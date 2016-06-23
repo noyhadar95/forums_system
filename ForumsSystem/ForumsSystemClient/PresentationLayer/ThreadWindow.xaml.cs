@@ -176,12 +176,10 @@ namespace ForumsSystemClient.PresentationLayer
 
         private bool HasSeniorityPrivilege(Post post)
         {
-            // TODO: 
-            //if (WindowHelper.IsLoggedUser(forumName))
-            //    return cl.HasSeniorityPriviledge(forumName, subForumName, threadID, WindowHelper.GetLoggedUser(forumName).Username, post.Id);
-            //else
-            //    return false;
-            return false;
+            if (WindowHelper.IsLoggedUser(forumName))
+                return cl.HasSeniorityPriviledge(forumName, subForumName, threadID, WindowHelper.GetLoggedUser(forumName).Username, post.Id);
+            else
+                return false;
         }
 
         private Border WrapElementWithBorder(UIElement c)

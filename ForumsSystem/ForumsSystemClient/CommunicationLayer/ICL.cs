@@ -113,7 +113,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
 
         int getNumOfPostsInSubForum(string forumName, string subForum);
-        bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, string postId);
+        bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, int postId);
 
     }
 }

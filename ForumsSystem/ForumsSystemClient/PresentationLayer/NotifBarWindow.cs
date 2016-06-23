@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace ForumsSystemClient.PresentationLayer
@@ -31,7 +32,8 @@ namespace ForumsSystemClient.PresentationLayer
 
         // Friend Requests
         private MenuItem friendRequestsMenu;
-        private string friendReqMenuHeader;
+        //private string friendReqMenuHeader;
+        public string friendReqMenuHeader { get; set; }
         // Private Msgs
         protected MenuItem privateMsgsMenu;
         private string privateMsgsMenuHeader;
@@ -58,7 +60,11 @@ namespace ForumsSystemClient.PresentationLayer
         {
             // create Friend Requests menu
             friendRequestsMenu = new MenuItem();
-            friendRequestsMenu.Header = GetFriendReqMenuHeader();
+
+            //friendRequestsMenu.Header = GetFriendReqMenuHeader();
+            Binding b = new Binding(friendReqMenuHeader);
+            BindingOperations.SetBinding(friendRequestsMenu, MenuItem.HeaderProperty, b);
+
             friendRequestsMenu.Click += new RoutedEventHandler(friendReqsMenu_Click);
             friendRequestsMenu.ToolTip = "See pending friend requests.";
 
@@ -156,7 +162,7 @@ namespace ForumsSystemClient.PresentationLayer
 
                 MessageBox.Show("notify friend request: count=" + friendReqsNum);
 
-                friendRequestsMenu.Header = GetFriendReqMenuHeader();
+                //friendRequestsMenu.Header = GetFriendReqMenuHeader();
                 MessageBox.Show("notify 333333333333");
                 friendRequestsMenu.Items.Clear();
 
