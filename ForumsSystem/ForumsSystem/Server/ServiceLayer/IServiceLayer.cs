@@ -113,6 +113,6 @@ namespace ForumsSystem.Server.ServiceLayer
         void AddComplaint(string forum, string subforum, string username);
         bool CheckPasswordValidity(string forumName, string username);
         void DeactivateUser(string forumName, string username);
-
+        bool isBanned(string forumName, string userName);
     }
 }

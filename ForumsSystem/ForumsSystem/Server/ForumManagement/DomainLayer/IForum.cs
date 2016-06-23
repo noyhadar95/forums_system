@@ -53,6 +53,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         void AddComplaint(string subforum, string username);
         void DeactivateUser (string username);
+        bool isBanned(string userName);
 
     }
 }

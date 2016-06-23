@@ -61,7 +61,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         [IgnoreDataMember]
         public bool notifyOffline=true;
         [DataMember]
-        private bool isActive = true;
+        public bool isActive = true;
         [DataMember]
         public string emailConfirmationToken;
         private Dictionary<SecurityQuestionsEnum, string> passwordSecurityQuestions;
@@ -960,7 +960,13 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 PolicyParametersObject pObj = new PolicyParametersObject(Policies.ModeratorSuspension);
                 pObj.User = this;
                 if (isModerator && this.forum.GetPolicy() != null && this.forum.GetPolicy().CheckPolicy(pObj) == false)
-                    this.isActive = false;
+                    this.DeactivateUser();
+                else
+                {
+                    pObj.SetPolicy(Policies.MemberSuspension);
+                    if (this.forum.GetPolicy() != null && this.forum.GetPolicy().CheckPolicy(pObj) == false)
+                        this.DeactivateUser();
+                }
             }
         }
         public void DeactivateUser()
