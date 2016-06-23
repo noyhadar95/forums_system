@@ -319,7 +319,7 @@ namespace ForumsSystem.Server.ServiceLayer
         }
         
         // <moderatorUserName,appointerUserName,appointmentDate,subForumName,moderatorPosts>
-        public List<Tuple<string, string, DateTime, string, List<Post>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        public List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
             IForum forum = GetForum(forumName);
             IUser admin = forum.getUser(adminUserName1);
@@ -345,6 +345,8 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             IForum forum = GetForum(forumName);
             Policy policy = forum.GetPolicy();
+            if (policy == null)
+                return false;
             bool res = policy.CheckIfPolicyExists(expectedPolicy);
             return res;
         }

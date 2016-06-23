@@ -475,7 +475,7 @@ namespace AcceptanceTestsBridge
             cl.MemberLogout(forumName, username);
         }
 
-        public List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        public List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
             throw new NotImplementedException();
         }

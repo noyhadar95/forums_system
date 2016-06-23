@@ -1,4 +1,5 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,6 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void submitBtn_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: consider forum policies, maybe email confirmation is needed
             string username = usernameTB.Text;
             string password = passwordBox.Password;
             string confPassword = confPasswordBox.Password;
@@ -81,6 +81,21 @@ namespace ForumsSystemClient.PresentationLayer
                 return;
             }
 
+
+            if (cl.CheckIfPolicyExists(forumName, Policies.Password))
+            {
+                Forum forum = cl.GetForum(forumName);
+                Policy p = forum.GetPolicy();
+                while (p != null && p.Type != Policies.Password)
+                    p = p.NextPolicy;
+                if (p != null && password.Length < ((PasswordPolicy)p).RequiredLength)
+                {
+                    MessageBox.Show("password length is required to be at least " + ((PasswordPolicy)p).RequiredLength);
+                    return;
+                }
+            }
+
+
             Regex rgx = new Regex(@"^[a-z0-9_-]{1,16}$");
             if (!rgx.IsMatch(username))
             {
@@ -100,6 +115,7 @@ namespace ForumsSystemClient.PresentationLayer
                 MessageBox.Show("Enter valid Email");
                 return;
             }
+
 
 
 

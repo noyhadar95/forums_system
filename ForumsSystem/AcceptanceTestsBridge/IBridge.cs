@@ -97,7 +97,7 @@ namespace AcceptanceTestsBridge
         Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfo(string userName, string password);//<email,List<forum,username>> - only superadmin can use this
         List<string> GetNotifications(string forumName, string username);
  
-        List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1);
+        List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1);
 
         string getUserClientSession(string forumName, string userName);
         bool LoginUserWithClientSession(string forumName, string username, string pass, string clientServer);

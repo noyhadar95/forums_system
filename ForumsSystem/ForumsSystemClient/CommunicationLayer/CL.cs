@@ -20,7 +20,7 @@ namespace ForumsSystemClient.CommunicationLayer
         private void StartSecuredConnection()
         {
             Client.StartSecuredConnection(false);
-              
+
         }
 
         public void startTesting()
@@ -38,7 +38,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
             return (List<string>)Client.SendRequest("GetSubForumsList", forumName);
 
-            
+
         }
 
         // return a list of titles of all threads in the subforum.
@@ -46,7 +46,7 @@ namespace ForumsSystemClient.CommunicationLayer
         {
             return (List<string>)Client.SendRequest("GetThreadsList", forumName, subForumName);
         }
-        public Dictionary<int,string> GetThreads(string forumName, string subForumName)
+        public Dictionary<int, string> GetThreads(string forumName, string subForumName)
         {
             return (Dictionary<int, string>)Client.SendRequest("GetThreads", forumName, subForumName);
         }
@@ -83,7 +83,7 @@ namespace ForumsSystemClient.CommunicationLayer
             return res;
         }
 
-        public Tuple<User,string> MemberLogin(string forumName, string username, string password)
+        public Tuple<User, string> MemberLogin(string forumName, string username, string password)
         {
             return MemberLogin(forumName, username, password, "");
         }
@@ -91,10 +91,11 @@ namespace ForumsSystemClient.CommunicationLayer
         {
             if (sessionToken == null)
                 sessionToken = "";
-            User user = (User)Client.SendRequest("MemberLogin", username, password,forumName, sessionToken);
+            User user = (User)Client.SendRequest("MemberLogin", username, password, forumName, sessionToken);
             string sessionKey = null;
             if (user != null)
-                sessionKey = (string)Client.SendRequest("GetSessionKey", username, forumName);
+                sessionKey = GetSessionKey(username, forumName);
+
             else
             {
                 //check if user is banned
@@ -108,8 +109,14 @@ namespace ForumsSystemClient.CommunicationLayer
                         sessionKey = "-1";
                 }
             }
+
             Tuple<User, string> res = new Tuple<User, string>(user, sessionKey);
             return res;
+        }
+
+        public string GetSessionKey(string username, string forumName)
+        {
+            return (string)Client.SendRequest("GetSessionKey", username, forumName);
         }
 
         public bool IsExistUser(string username, string forumName)
@@ -117,7 +124,7 @@ namespace ForumsSystemClient.CommunicationLayer
             return (bool)Client.SendRequest("IsExistUser", forumName, username);
         }
 
-        public List<Post> GetPosts(string forumName, string subforumName,int threadID)
+        public List<Post> GetPosts(string forumName, string subforumName, int threadID)
         {
             List<Post> posts = (List<Post>)Client.SendRequest("GetPosts", forumName, subforumName, threadID);
             return posts;
@@ -126,7 +133,7 @@ namespace ForumsSystemClient.CommunicationLayer
         public Forum CreateForum(string userName, string password, string forumName, Policy policy, List<User> newAdmins)
         {
 
-            Forum f= (Forum)Client.SendRequest("CreateForum", userName, password, forumName, policy, newAdmins);
+            Forum f = (Forum)Client.SendRequest("CreateForum", userName, password, forumName, policy, newAdmins);
             return f;
         }
 
@@ -167,12 +174,12 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public bool DeletePost(string forumName, string subForumName, int threadID, string deleter, int postID)
         {
-            return (bool)Client.SendRequest("DeletePost", forumName, subForumName,deleter, threadID, postID);
+            return (bool)Client.SendRequest("DeletePost", forumName, subForumName, deleter, threadID, postID);
         }
 
         public bool IsExistForum(string forumName)
         {
-                return (bool)Client.SendRequest("IsExistForum", forumName);
+            return (bool)Client.SendRequest("IsExistForum", forumName);
         }
 
         public bool IsRegisteredToForum(string username, string forumName)
@@ -187,7 +194,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public bool IsModerator(string forumName, string subForumName, string username)
         {
-            return (bool)Client.SendRequest("IsModerator", forumName,subForumName,username);
+            return (bool)Client.SendRequest("IsModerator", forumName, subForumName, username);
         }
 
         public bool IsExistThread(string forumName, string subForumName, int threadID)
@@ -212,17 +219,17 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public bool SetForumProperties(string user, string forum, Policy policy)
         {
-            return (bool)Client.SendRequest("SetForumProperties",user,forum,policy);
+            return (bool)Client.SendRequest("SetForumProperties", user, forum, policy);
         }
 
         public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
         {
-            return (int)Client.SendRequest("CountNestedReplies", forumName, subForumName, threadID,postID);
+            return (int)Client.SendRequest("CountNestedReplies", forumName, subForumName, threadID, postID);
         }
 
         public bool ChangeExpirationDate(string forumName, string subForumName, string admin, string moderator, DateTime newDate)
         {
-            return (bool)Client.SendRequest("ChangeExpirationDate", forumName, subForumName, admin,moderator,newDate);
+            return (bool)Client.SendRequest("ChangeExpirationDate", forumName, subForumName, admin, moderator, newDate);
         }
 
         public DateTime GetModeratorExpDate(string forumName, string subForumName, string username)
@@ -237,7 +244,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public int GetOpenningPostID(string forumName, string subForumName, int threadID)
         {
-            return (int)Client.SendRequest("GetOpenningPostID", forumName, subForumName,threadID);
+            return (int)Client.SendRequest("GetOpenningPostID", forumName, subForumName, threadID);
         }
 
         public void AddFriend(string forumName, string username1, string username2)
@@ -257,17 +264,17 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
         {
-            return (bool)Client.SendRequest("RemoveModerator",forumName, subForumName, remover, moderatorName);
+            return (bool)Client.SendRequest("RemoveModerator", forumName, subForumName, remover, moderatorName);
         }
 
         public int ReportNumOfPostsByMember(string forumName, string adminUserName, string username)
         {
-            return (int)Client.SendRequest("ReportNumOfPostsByMember",adminUserName, forumName, username);
+            return (int)Client.SendRequest("ReportNumOfPostsByMember", adminUserName, forumName, username);
         }
 
         public List<string> GetModeratorsList(string forumName, string subForumName, string adminUserName)
         {
-            return (List<string>)Client.SendRequest("GetModeratorsList",forumName, subForumName, adminUserName);
+            return (List<string>)Client.SendRequest("GetModeratorsList", forumName, subForumName, adminUserName);
         }
 
         public List<Post> ReportPostsByMember(string forumName, string adminUserName, string username)
@@ -287,16 +294,16 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public List<PrivateMessage> GetNotifications(string forumName, string username)
         {
-            List<PrivateMessage> notifications=(List<PrivateMessage>) Client.SendRequest("GetNotifications",forumName, username);
+            List<PrivateMessage> notifications = (List<PrivateMessage>)Client.SendRequest("GetNotifications", forumName, username);
             return notifications;
-          /*
-             List<string> res = new List<string>();
-            foreach(PrivateMessage msg in notifications)
-            {
-                res.Add(msg.title);
-            }
-            return res;
-            */
+            /*
+               List<string> res = new List<string>();
+              foreach(PrivateMessage msg in notifications)
+              {
+                  res.Add(msg.title);
+              }
+              return res;
+              */
         }
 
         public Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1)
@@ -321,17 +328,17 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public bool DeleteForumProperties(string deleter, string forumName, List<Policies> properties)
         {
-            return (bool)Client.SendRequest("DeleteForumProperties",deleter, forumName, properties);
+            return (bool)Client.SendRequest("DeleteForumProperties", deleter, forumName, properties);
         }
 
         public bool AddModerator(string forumName, string subForumName, string adminUsername, string username, DateTime expiratoinDate)
         {
-            return (bool)Client.SendRequest("AddModerator", forumName, subForumName, adminUsername,username,expiratoinDate);
+            return (bool)Client.SendRequest("AddModerator", forumName, subForumName, adminUsername, username, expiratoinDate);
         }
 
-        public List<Tuple<string, string, DateTime, string, List<Post>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        public List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
-            return (List<Tuple<string, string, DateTime, string, List<Post>>>)Client.SendRequest(" ReportModeratorsDetails", forumName, adminUserName1);
+            return (List<Tuple<string, string, DateTime, string>>)Client.SendRequest("ReportModeratorsDetails", forumName, adminUserName1);
         }
 
         public void MemberLogout(string forumName, string username)
@@ -346,7 +353,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
         public bool IgnoreFriend(string forumName, string userName, string userToIgnore)
         {
-            return (bool)Client.SendRequest("IgnoreFriend", forumName,userName,userToIgnore);
+            return (bool)Client.SendRequest("IgnoreFriend", forumName, userName, userToIgnore);
         }
 
         public void AcceptFriendRequest(string forumName, string accepter, string toAccept)
@@ -364,13 +371,13 @@ namespace ForumsSystemClient.CommunicationLayer
         }
 
         public List<string> GetFriendRequests(string forumName, string username)
-        {            
+        {
             return (List<string>)Client.SendRequest("GetWaitingFriendsList", forumName, username);
         }
 
         public bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer)
         {
-            return (bool)Client.SendRequest("AddSecurityQuestion", forumName, username,question,answer);
+            return (bool)Client.SendRequest("AddSecurityQuestion", forumName, username, question, answer);
 
         }
 
@@ -406,6 +413,7 @@ namespace ForumsSystemClient.CommunicationLayer
             return (bool)Client.SendRequest("HasSeniorityPriviledge", forumName, subForumName, threadId, username, postId);
         }
 
+
         public void AddComplaint(string forumName, string subforum, string username)
         {
             Client.SendRequest("AddComplaint", forumName, subforum, username);
@@ -413,11 +421,21 @@ namespace ForumsSystemClient.CommunicationLayer
         public void DeactivateUser(string forumName, string username)
         {
             Client.SendRequest("DeactivateUser", forumName, username);
-
         }
+
+
+
+
         public bool isBanned(string forumName, string userName)
         {
             return (bool)Client.SendRequest("isBanned", forumName, userName);
+        }
+
+
+
+        public bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, int postId)
+        {
+            return (bool)Client.SendRequest("HasSeniorityPriviledge", forumName, subForumName, threadId, username, postId);
 
         }
     }

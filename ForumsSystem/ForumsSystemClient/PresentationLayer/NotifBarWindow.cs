@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace ForumsSystemClient.PresentationLayer
@@ -18,6 +19,8 @@ namespace ForumsSystemClient.PresentationLayer
     {
         private const string FRIEND_REQUEST_MENU_HEADER = "_Friend Requests";
         private const string PRIVATE_MSG_MENU_HEADER = "_Private Messages";
+        private const string TYPE_MENU_HEADER = "_logged in as ";
+        private const string SESSION_TOKEN_MENU_HEADER = "_session token: ";
 
         protected CL cl;
         protected string forumName;
@@ -25,20 +28,27 @@ namespace ForumsSystemClient.PresentationLayer
 
         protected Menu userMenuBar;
         protected MenuItem mi_type; // the menu item for displaying the user type on the user notifications bar
+        protected MenuItem mi_sessionToken; // the menu item for displaying the user type on the user notifications bar
 
         // Friend Requests
-        protected MenuItem friendRequestsMenu;
-        private string friendReqMenuHeader;
+        private MenuItem friendRequestsMenu;
+        //private string friendReqMenuHeader;
+        public string friendReqMenuHeader { get; set; }
         // Private Msgs
         protected MenuItem privateMsgsMenu;
         private string privateMsgsMenuHeader;
         private bool notifiedPrivateMsg; // used in order to save in calls to CL
+
+        protected string session_token;
+
 
 
         public NotifBarWindow(string forumName)
         {
             this.forumName = forumName;
             mi_type = new MenuItem();
+            mi_sessionToken = new MenuItem();
+            session_token = "";
             friendReqMenuHeader = FRIEND_REQUEST_MENU_HEADER;
             privateMsgsMenuHeader = PRIVATE_MSG_MENU_HEADER;
 
@@ -50,7 +60,11 @@ namespace ForumsSystemClient.PresentationLayer
         {
             // create Friend Requests menu
             friendRequestsMenu = new MenuItem();
-            friendRequestsMenu.Header = GetFriendReqMenuHeader();
+
+            //friendRequestsMenu.Header = GetFriendReqMenuHeader();
+            Binding b = new Binding(friendReqMenuHeader);
+            BindingOperations.SetBinding(friendRequestsMenu, MenuItem.HeaderProperty, b);
+
             friendRequestsMenu.Click += new RoutedEventHandler(friendReqsMenu_Click);
             friendRequestsMenu.ToolTip = "See pending friend requests.";
 
@@ -65,6 +79,7 @@ namespace ForumsSystemClient.PresentationLayer
             userMenuBar.Items.Add(friendRequestsMenu);
             userMenuBar.Items.Add(privateMsgsMenu);
             userMenuBar.Items.Add(mi_type);
+            userMenuBar.Items.Add(mi_sessionToken);
 
             //// Create a linear gradient brush with five stops 
             //LinearGradientBrush fourColorLGB = new LinearGradientBrush();
@@ -109,15 +124,21 @@ namespace ForumsSystemClient.PresentationLayer
         protected void RefreshNotificationsBar(string username)
         {
             string type = cl.GetUserType(forumName, username);
-            mi_type.Header = "_logged in as " + type;
-            //if (userMenuBar.Items.Count < 2)
-            //    userMenuBar.Items.Add(mi_type);
+            mi_type.Header = TYPE_MENU_HEADER + type;
+            if (session_token != "")
+                mi_sessionToken.Header = SESSION_TOKEN_MENU_HEADER + session_token;
+            else
+            {
+                string session_token = cl.GetSessionKey(username, forumName);
+                mi_sessionToken.Header = SESSION_TOKEN_MENU_HEADER + session_token;
+            }
 
             // refresh friend requests menu bar
             RefreshFriendReqsMenu();
             // refresh private msgs menu bar
             RefreshPrivateMsgMenu();
         }
+
 
 
         #region friend requests
@@ -134,19 +155,42 @@ namespace ForumsSystemClient.PresentationLayer
 
         public void NotifyFriendRequests(int friendReqsNum)
         {
-            SetFriendReqMenuHeaderOn(friendReqsNum);
-            MessageBox.Show("notify friend request");
             System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
             {
+                MessageBox.Show("notify 111111");
+                SetFriendReqMenuHeaderOn(friendReqsNum);
+
+                MessageBox.Show("notify friend request: count=" + friendReqsNum);
+
+                //friendRequestsMenu.Header = GetFriendReqMenuHeader();
+                MessageBox.Show("notify 333333333333");
                 friendRequestsMenu.Items.Clear();
+
+                MessageBox.Show("NotifyFriendRequests: header=" + GetFriendReqMenuHeader());
+
+                //RefreshFriendReqsMenu();
+                userMenuBar.Items.Refresh();
             }));
 
-            RefreshFriendReqsMenu();
-            userMenuBar.Items.Refresh();
+
+            //this.Invoke((MethodInvoker)delegate {
+            //    SetFriendReqMenuHeaderOn(friendReqsNum);
+
+            //    MessageBox.Show("notify friend request: count=" + friendReqsNum);
+
+            //    friendRequestsMenu.Header = GetFriendReqMenuHeader();
+            //    friendRequestsMenu.Items.Clear();
+
+            //    MessageBox.Show("NotifyFriendRequests: header=" + GetFriendReqMenuHeader());
+
+            //    //RefreshFriendReqsMenu();
+            //    userMenuBar.Items.Refresh();
+            //});
         }
 
         protected void RefreshFriendReqsMenu()
         {
+            MessageBox.Show("RefreshFriendReqsMenu: header=" + GetFriendReqMenuHeader());
             friendRequestsMenu.Items.Clear();
             friendRequestsMenu.Header = GetFriendReqMenuHeader();
         }

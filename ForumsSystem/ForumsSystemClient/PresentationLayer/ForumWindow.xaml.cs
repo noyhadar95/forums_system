@@ -67,7 +67,6 @@ namespace ForumsSystemClient.PresentationLayer
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
 
-                RefreshNotificationsBar(user.Username);
             }
 
         }
@@ -173,7 +172,7 @@ namespace ForumsSystemClient.PresentationLayer
             }
 
             Regex rgx = new Regex(@"([0-9]8)$");
-            if (!rgx.IsMatch(sessionToken))
+            if (sessionToken!="" && !rgx.IsMatch(sessionToken))
             {
                 MessageBox.Show("Session Token must be 8 numbers");
             }
@@ -190,9 +189,9 @@ namespace ForumsSystemClient.PresentationLayer
             {
                 userTokenTuple = cl.MemberLogin(forumName, username, password, sessionToken);
             }
-            User user=null;
-            if(userTokenTuple!=null)
-                user= userTokenTuple.Item1;//cl.MemberLogin(forumName, username, password);
+            User user = null;
+            if (userTokenTuple != null)
+                user = userTokenTuple.Item1;
 
             if (user == null)
             {
@@ -203,26 +202,33 @@ namespace ForumsSystemClient.PresentationLayer
             }
             else
             {
-                //TODO: User user = userTokenTuple.Item1;
-
+                base.session_token = userTokenTuple.Item2;
                 // save the user in WindowHelper so all windows will know 
                 // that the user is logged in.
                 WindowHelper.SetLoggedUser(forumName, user);
+                
 
                 // user is logged in, get type of user and change window accordingly.
                 string type = cl.GetUserType(forumName, username);
                 MessageBox.Show(type);
+
                 if (type == UserTypes.Member)
                     ShowMemberViewMode(user.Username);
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
 
+                
             }
         }
 
         private void reportsBtn_Click(object sender, RoutedEventArgs e)
         {
             WindowHelper.SwitchWindow(this, new AdminReportsWindow(forumName));
+        }
+
+        private void confirmEmailBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new ConfirmEmailWindow(forumName));
         }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
@@ -232,5 +238,6 @@ namespace ForumsSystemClient.PresentationLayer
 
         #endregion
 
+        
     }
 }

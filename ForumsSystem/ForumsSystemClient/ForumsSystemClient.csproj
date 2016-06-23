@@ -77,6 +77,9 @@
     <Compile Include="PresentationLayer\AdminReportsWindow.xaml.cs">
       <DependentUpon>AdminReportsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\ConfirmEmailWindow.xaml.cs">
+      <DependentUpon>ConfirmEmailWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\EditForumPoliciesWindow.xaml.cs">
       <DependentUpon>EditForumPoliciesWindow.xaml</DependentUpon>
     </Compile>
@@ -93,6 +96,9 @@
     </Compile>
     <Compile Include="PresentationLayer\SuperAdminReportsWindow.xaml.cs">
       <DependentUpon>SuperAdminReportsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\UserPostsWindow.xaml.cs">
+      <DependentUpon>UserPostsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\ForumManagement\DomainLayer\AdminAppointmentPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
@@ -202,6 +208,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PresentationLayer\ConfirmEmailWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLayer\EditForumPoliciesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -251,6 +261,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\ThreadWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\UserPostsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

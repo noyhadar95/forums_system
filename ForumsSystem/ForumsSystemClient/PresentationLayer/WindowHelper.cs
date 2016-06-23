@@ -88,9 +88,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         public static void SwitchWindow(Window oldWin, Window newWin)
         {
-            newWin.Left = oldWin.Left;
-            newWin.Top = oldWin.Top;
-            newWin.Show();
+            ShowWindow(oldWin, newWin);
             oldWin.Close();
 
             // handle INotifiableWindow

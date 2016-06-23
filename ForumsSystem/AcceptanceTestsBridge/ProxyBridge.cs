@@ -370,7 +370,7 @@ namespace AcceptanceTestsBridge
 
  
 
-        public List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        public List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
             if (realBridge != null)
                 return realBridge.ReportModeratorsDetails(forumName,adminUserName1);

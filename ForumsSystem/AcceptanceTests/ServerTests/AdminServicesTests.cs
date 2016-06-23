@@ -288,7 +288,7 @@ namespace AcceptanceTests.ServerTests
                  bridge.ConfirmRegistration(forumName, username3);
                  newMod = new KeyValuePair<string, DateTime>(username3, DateTime.Today.AddDays(100));
                  bridge.AddModerator(forumName, subForumName, this.adminUserName1, newMod);
-                 List<Tuple<string, string, DateTime, string, List<int>>> moderatorsList = bridge.ReportModeratorsDetails(forumName,this.adminUserName1);
+                 List<Tuple<string, string, DateTime, string>> moderatorsList = bridge.ReportModeratorsDetails(forumName,this.adminUserName1);
                  Assert.IsTrue(moderatorsList.Count == 3);
                  /*Assert.IsTrue(moderatorsList.Contains(username1));
                  Assert.IsTrue(moderatorsList.Contains(username2));
