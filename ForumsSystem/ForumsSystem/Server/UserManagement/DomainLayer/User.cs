@@ -60,6 +60,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         private string passwordSalt;
         [IgnoreDataMember]
         public bool notifyOffline=true;
+        [DataMember]
+        private bool isActive = true;
+        [DataMember]
+        public string emailConfirmationToken;
         private Dictionary<SecurityQuestionsEnum, string> passwordSecurityQuestions;
         public User()
         {
@@ -160,6 +164,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.passwordSalt = usr.passwordSalt;
             this.passwordSecurityQuestions = usr.passwordSecurityQuestions;
             this.notifyOffline = usr.notifyOffline;
+            this.numOfComplaints = usr.numOfComplaints;
+            this.isActive = usr.isActive;
+            this.emailConfirmationToken = usr.emailConfirmationToken;
         }
         public static Dictionary<string, IUser> populateUsers(Forum forum)//Not waiting
         {
@@ -780,10 +787,14 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return friends;
         }
 
-        public void AcceptEmail()
+        public bool AcceptEmail(string token)
         {
-            this.emailAccepted = true;
-            this.forum.RegisterToForum(this);
+            if (token.Equals(this.emailConfirmationToken))
+            {
+                this.emailAccepted = true;
+                this.forum.RegisterToForum(this);
+            }
+            return this.emailAccepted;
 
         }
 
@@ -822,17 +833,22 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return type.GetModeratorsList(this, subforum);
         }
 
-        public bool SetPassword(string password)
+        public bool SetPassword(string oldPassword, string newPassword)
         {
+            //check that old password is correct
+            oldPassword = this.passwordSalt + oldPassword;
+            oldPassword= PRG.Hash.GetHash(oldPassword);
+            if (!this.password.Equals(oldPassword))
+                return false;
             //check password policies
             PolicyParametersObject checkPass = new PolicyParametersObject(Policies.Password);
-            checkPass.SetPassword(password);
+            checkPass.SetPassword(newPassword);
             if (!this.forum.GetPolicy().CheckPolicy(checkPass))
                 return false;
             //policies ok, change password
             this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
-            password = this.passwordSalt + password;
-            this.password = PRG.Hash.GetHash(password);
+            newPassword = this.passwordSalt + newPassword;
+            this.password = PRG.Hash.GetHash(newPassword);
             this.dateOfPassLastchange = DateTime.Today;
             if (type is Guest)
             {
@@ -934,6 +950,22 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public DateTime GetDateOfBirth()
         {
             return this.dateOfBirth;
+        }
+        public void AddComplaint(bool isModerator)
+        {
+            this.numOfComplaints++;
+            if (this.isActive)
+            {
+                //TODO: check if reached limit and ban if necessary
+                PolicyParametersObject pObj = new PolicyParametersObject(Policies.ModeratorSuspension);
+                pObj.User = this;
+                if (isModerator && this.forum.GetPolicy() != null && this.forum.GetPolicy().CheckPolicy(pObj) == false)
+                    this.isActive = false;
+            }
+        }
+        public void DeactivateUser()
+        {
+            this.isActive = false;
         }
     }
 

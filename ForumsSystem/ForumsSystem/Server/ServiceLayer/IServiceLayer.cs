@@ -46,7 +46,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
         bool AddModerator(string forumName, string subForumName, string adminUsername, string username, DateTime expiratoinDate);
         //void removeForum(string forumName);
-        bool ConfirmRegistration(string forumName, string username);
+        bool ConfirmRegistration(string forumName, string username, string token);
         bool LoginSuperAdmin(string username, string pass);
         DateTime GetModeratorExpDate(string forumName, string subForumName, string username);
         int CountNestedReplies(string forumName, string subForumName, int threadID, int postID);
@@ -101,12 +101,18 @@ namespace ForumsSystem.Server.ServiceLayer
         void SendFriendRequest(string forumName, string sender, string reciever);
         List<string> GetUsersNotFriends(string forumName, string username);
 
-        bool SetUserPassword(string forumName, string username, string newPassword);
+        bool SetUserPassword(string forumName, string username,string oldPassword, string newPassword);
         bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
         bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question);
         bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
+
         int getNumOfPostsInSubForum(string forumName, string subForumName);
 
         bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, int postId);
+
+        void AddComplaint(string forum, string subforum, string username);
+        bool CheckPasswordValidity(string forumName, string username);
+        void DeactivateUser(string forumName, string username);
+
     }
 }

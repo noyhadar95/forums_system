@@ -104,8 +104,8 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             Post post = GetForum(forumName).getSubForum(subForumName).getThread(threadID).GetPostById(postID);
             IUser publisher = GetForum(forumName).getUser(publisherName);
-            return publisher.postReply(post, post.Thread, title, content);
-
+            Post res = publisher.postReply(post, post.Thread, title, content);
+            return res;
         }
 
         public IUser MemberLogin(string username, string password, string forumName)
@@ -165,7 +165,7 @@ namespace ForumsSystem.Server.ServiceLayer
         }
         */
 
-        public bool ConfirmRegistration(string forumName, string username)
+        public bool ConfirmRegistration(string forumName, string username, string token)
         {
             IForum forum = this.GetForum(forumName);
             if (forum == null)
@@ -173,7 +173,7 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user = forum.GetWaitingUser(username);
             if (user == null)
                 return false;
-            user.AcceptEmail();
+            user.AcceptEmail(token);
             return true;
         }
 
@@ -377,7 +377,20 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             ISubForum subforum = forum.getSubForum(subForumName);
             Thread thread = subforum.GetThreadById(threadId);
-            thread.EditPost(postId, newTitle, newContent);
+            bool updated = thread.EditPost(postId, newTitle, newContent);
+            //notify users:
+            if (updated)
+            {
+                Post post = thread.GetPostById(postId);
+                string pub = post.getPublisher().getUsername();
+                List<Post> replies = post.GetReplies();
+                foreach (Post p in replies.ToArray())
+                {
+                    if(((Forum)forum).ShouldNotify(pub,p.getPublisher().getUsername()))
+                        p.getPublisher().AddPostNotification(post, NotificationType.Changed);
+                }
+            }
+            //update db
             DAL_Posts dp = new DAL_Posts();
             dp.EditPost(postId, newTitle, newContent);
         }
@@ -587,11 +600,41 @@ namespace ForumsSystem.Server.ServiceLayer
             return user.CheckSecurityQuestion(question,answer);
         }
 
-        public bool SetUserPassword(string forumName, string username, string newPassword)
+        public bool SetUserPassword(string forumName, string username,string oldPassword, string newPassword)
         {
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
-            return user.SetPassword(newPassword);
+            return user.SetPassword(oldPassword, newPassword);
+        }
+        public void AddComplaint(string forumName, string subforum, string username)
+        {
+            IForum forum = GetForum(forumName);
+            forum.AddComplaint(subforum, username);
+        }
+        public bool CheckPasswordValidity(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            if (forum == null)
+                return true;
+            PolicyParametersObject expPass = new PolicyParametersObject(Policies.PasswordValidity);
+            Policy p = forum.GetPolicy();
+            while (p != null)
+            {
+                if (p is PasswordPolicy)
+                {
+                    if (((PasswordPolicy)p).passwordValidity < (DateTime.Now - forum.getUser(username).GetDateOfPassLastChange()).TotalDays)
+                        return false;
+                    break;
+                }
+                p = p.NextPolicy;
+            }
+            return true;
+        }
+        public void DeactivateUser(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            if (forum != null)
+                forum.DeactivateUser(username);
         }
 
         public int getNumOfPostsInSubForum(string forumName, string subForumName)

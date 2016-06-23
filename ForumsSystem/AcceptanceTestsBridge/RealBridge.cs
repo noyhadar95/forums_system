@@ -299,7 +299,16 @@ namespace AcceptanceTestsBridge
         public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
         {
             //IForum forum = sl.GetForum(forumName);
-            return sl.RegisterToForum(forumName, username, password, email, dateOfBirth);
+            bool res= sl.RegisterToForum(forumName, username, password, email, dateOfBirth);
+            if (res)
+            {
+                User u = (User)sl.GetForum(forumName).getUser(username);
+                if (u != null)
+                {
+                    u.emailConfirmationToken = "";
+                }
+            }
+            return res;
         }
 
         public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
@@ -365,7 +374,7 @@ namespace AcceptanceTestsBridge
 
         public bool ConfirmRegistration(string forumName, string username)
         {
-            return sl.ConfirmRegistration(forumName, username);
+            return sl.ConfirmRegistration(forumName, username, "");
         }
 
         public int GetOpenningPostID(string forumName, string subForumName, int threadID)

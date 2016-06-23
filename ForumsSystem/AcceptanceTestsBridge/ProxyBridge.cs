@@ -198,7 +198,9 @@ namespace AcceptanceTestsBridge
         public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
         {
             if (realBridge != null)
-                return realBridge.RegisterToForum(forumName, username, password, email, dateOfBirth);
+            {
+                bool res = realBridge.RegisterToForum(forumName, username, password, email, dateOfBirth);
+            }
 
             return true;
         }
