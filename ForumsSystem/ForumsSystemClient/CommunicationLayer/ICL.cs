@@ -111,5 +111,7 @@ namespace ForumsSystemClient.CommunicationLayer
         void AddComplaint(string forumName, string subforum, string username);
         void DeactivateUser(string forumName, string username);
 
+        bool isBanned(string forumName, string userName);
+
     }
 }

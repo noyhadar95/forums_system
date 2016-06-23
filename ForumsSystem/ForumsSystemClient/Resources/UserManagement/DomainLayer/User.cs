@@ -57,11 +57,13 @@ namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
         [DataMember]
         private string passwordSalt;
         [DataMember]
-        private bool notifyOffline;
+        public bool notifyOffline;
         [DataMember]
-        private bool isActive = true;
+        public bool isActive = true;
         [DataMember]
         public string emailConfirmationToken;
+
+
 
         #region Gettes/Setters
 

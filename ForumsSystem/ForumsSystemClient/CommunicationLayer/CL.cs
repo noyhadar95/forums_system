@@ -97,10 +97,16 @@ namespace ForumsSystemClient.CommunicationLayer
                 sessionKey = (string)Client.SendRequest("GetSessionKey", username, forumName);
             else
             {
-                //check if password is expired
-                bool passwordValid = (bool)Client.SendRequest("CheckPasswordValidity", forumName, username);
-                if (!passwordValid)
-                    sessionKey = "-1";
+                //check if user is banned
+                if (isBanned(forumName, username))
+                    sessionKey = "-2";
+                else
+                {
+                    //check if password is expired
+                    bool passwordValid = (bool)Client.SendRequest("CheckPasswordValidity", forumName, username);
+                    if (!passwordValid)
+                        sessionKey = "-1";
+                }
             }
             Tuple<User, string> res = new Tuple<User, string>(user, sessionKey);
             return res;
@@ -407,6 +413,11 @@ namespace ForumsSystemClient.CommunicationLayer
         public void DeactivateUser(string forumName, string username)
         {
             Client.SendRequest("DeactivateUser", forumName, username);
+
+        }
+        public bool isBanned(string forumName, string userName)
+        {
+            return (bool)Client.SendRequest("isBanned", forumName, userName);
 
         }
     }

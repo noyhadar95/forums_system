@@ -11,6 +11,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
     public class DAL_Users : DAL_Connection
     {
         //TODO: REMEMBER TO CHANGE STUFF ABOUT THE WAITING
+
         public void CreateUser(string ForumName, string userName, string password, string email, DateTime dateJoined, DateTime DateOfBirth, int numOfComplaints, UserType.UserTypes type, DateTime dateLastPasswordChanged, string passwordSalt, bool notifyOffline, bool isActive, string emailConfirmationToken)
         {
 
@@ -23,6 +24,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
                 "',#" + dateJoined.ToShortDateString() +
                 "#, #" + DateOfBirth.ToShortDateString() + "#, " + numOfComplaints + 
                 ", " + (int)type + ","+false+" ,#" + dateLastPasswordChanged + "#, '" + passwordSalt+"', " + notifyOffline + ", " + isActive +", '" + emailConfirmationToken +"')";
+
 
             connect_me.TakeAction(sql);
         }
@@ -58,12 +60,13 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             return connect_me.DownloadData(sql, "Users");
         }
 
+
         public void editUser(string ForumName, string userName, string password, string email, DateTime dateJoined, DateTime DateOfBirth, int numOfComplaints, UserType.UserTypes type, DateTime dateLastPasswordChanged, string passwordSalt, bool notifyOffline, bool isActive, string emailConfirmationToken)
         {
             Connect_to_DB();
             OleDbCommand sql = new OleDbCommand();
-
             sql.CommandText = "Update Users Set [password]='" + password + "', [email]='" + email + "', [DateJoined]=#"+ dateJoined.ToShortDateString() + "#, [DateOfBirth]=#" + DateOfBirth.ToShortDateString() + "#, [Complaints]=" + numOfComplaints + ", [Type]="+ (int)type + ", [DateLastPasswordChanged]=#"+ dateLastPasswordChanged+"#, [PasswordSalt]='" + passwordSalt + "', [notifyOffline]=" + notifyOffline + ", [isActive]=" + isActive + ", [emailConfirmationToken]='" + emailConfirmationToken +  "' Where [ForumName]='" + ForumName +"' AND [UserName]='" + userName +"'";
+
 
 
 

@@ -203,8 +203,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                         }
                         p = p.NextPolicy;
                     }
-                    
-                   
+
+                    //check if user is banned
+                    if (isBanned(userName))
+                        return null;
+
                     users[userName].Login();
                     Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
                     return users[userName];
@@ -215,6 +218,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
             else
                 return null;
+        }
+
+        public bool isBanned(string userName)
+        {
+            if (users[userName] == null)
+                return true;
+            return ((User)users[userName]).isActive;
         }
 
         public bool InitForum()
@@ -495,6 +505,18 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (!users.ContainsKey(username))
                 return;
             users[username].DeactivateUser();
+        }
+        public bool AddAdmin(string username)
+        {
+            if (users[username] == null)
+                return false;
+            PolicyParametersObject param = new PolicyParametersObject(Policies.AdminAppointment);
+                param.User = users[username];
+            if (this.GetPolicy() != null && !this.GetPolicy().CheckPolicy(param))//check if user can be an admin (Policies) 
+                return false; ;
+
+            users[username].ChangeType(new Admin());
+            return true;
         }
     }
 }

@@ -676,5 +676,10 @@ namespace ForumsSystem.Server.ServiceLayer
             return post.getPublisher().getUsername().Equals(username);
 
         }
+        public bool isBanned(string forumName, string userName)
+        {
+            IForum forum = GetForum(forumName);
+            return forum.isBanned(userName);
+        }
     }
 }

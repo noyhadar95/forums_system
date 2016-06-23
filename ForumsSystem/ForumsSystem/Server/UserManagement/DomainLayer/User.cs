@@ -61,7 +61,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         [IgnoreDataMember]
         public bool notifyOffline=true;
         [DataMember]
-        private bool isActive = true;
+        public bool isActive = true;
         [DataMember]
         public string emailConfirmationToken;
         private Dictionary<SecurityQuestionsEnum, string> passwordSecurityQuestions;
@@ -108,7 +108,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.waitingFriendsList = new List<IUser>();
             Policy policy = forum.GetPolicy();
             dal_users.CreateUser(this.forum.getName(), this.userName, this.password, this.email,
+
                 this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange, this.passwordSalt, this.notifyOffline,this.isActive, this.emailConfirmationToken);
+
             if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
                 this.forum.RegisterToForum(this);
             else
@@ -212,8 +214,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
                     user.notifyOffline = (bool)userRow["notifyOffline"];
 
+
                     user.isActive = (bool)userRow["isActive"];
                     user.emailConfirmationToken = userRow["emailConfirmationToken"].ToString();
+
 
                 }
             }
@@ -325,6 +329,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 dal_users.CreateUser(forum.getName(), this.userName, this.password, this.email,
                this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange,this.passwordSalt, this.notifyOffline
                ,this.isActive, this.emailConfirmationToken);
+
                 Policy policy = forum.GetPolicy();
                 if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
                     this.forum.RegisterToForum(this);
@@ -400,6 +405,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.type = type;
             if (type is Guest)
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.dateJoined,
+
                 this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Guest,this.dateOfPassLastchange,this.passwordSalt, this.notifyOffline, this.isActive, this.emailConfirmationToken);
             else if (type is Member)
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.dateJoined,
@@ -407,6 +413,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             else if (type is Admin)
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.dateJoined,
                 this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Admin,this.dateOfPassLastchange, this.passwordSalt, this.notifyOffline, this.isActive, this.emailConfirmationToken);
+
 
         }
 
@@ -447,6 +454,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 type = new Member();
                 dal_users.CreateUser(this.forum.getName(), this.userName, this.password, this.email,
                 this.dateJoined, this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,this.dateOfPassLastchange, this.passwordSalt, this.notifyOffline, this.isActive, this.emailConfirmationToken);
+
                 Policy policy = forum.GetPolicy();
                      if ((policy == null) || (!policy.CheckIfPolicyExists(Policies.Authentication)))
                          return forum.RegisterToForum(this);
@@ -866,6 +874,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             {
                 dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
                    this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member,DateTime.Today, this.passwordSalt, this.notifyOffline, this.isActive, this.emailConfirmationToken);
+
             }
             return true;
         }
@@ -964,7 +973,13 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 PolicyParametersObject pObj = new PolicyParametersObject(Policies.ModeratorSuspension);
                 pObj.User = this;
                 if (isModerator && this.forum.GetPolicy() != null && this.forum.GetPolicy().CheckPolicy(pObj) == false)
-                    this.isActive = false;
+                    this.DeactivateUser();
+                else
+                {
+                    pObj.SetPolicy(Policies.MemberSuspension);
+                    if (this.forum.GetPolicy() != null && this.forum.GetPolicy().CheckPolicy(pObj) == false)
+                        this.DeactivateUser();
+                }
             }
         }
         public void DeactivateUser()
