@@ -65,6 +65,7 @@
     <Compile Include="CommunicationLayer\Client.cs" />
     <Compile Include="CommunicationLayer\Encryption\AESThenHMAC.cs" />
     <Compile Include="CommunicationLayer\ICL.cs" />
+    <Compile Include="CommunicationLayer\NotificationHelper.cs" />
     <Compile Include="CommunicationLayer\TcpListenerEx.cs" />
     <Compile Include="CommunicationLayer\ThreadParameter.cs" />
     <Compile Include="PresentationLayer\AddAdminWindow.xaml.cs">
@@ -97,6 +98,7 @@
     <Compile Include="Resources\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\ConfidentialityPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\Forum.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\InteractivePolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\MaxModeratorsPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\MemberSuspensionPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\MinimumAgePolicy.cs" />

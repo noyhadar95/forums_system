@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -169,6 +170,12 @@ namespace ForumsSystemClient.PresentationLayer
             {
                 ShowBadLoginMsg();
                 return;
+            }
+
+            Regex rgx = new Regex(@"([0-9]8)$");
+            if (!rgx.IsMatch(sessionToken))
+            {
+                MessageBox.Show("Session Token must be 8 numbers");
             }
 
             WindowHelper.SetCurrentWindow(this);

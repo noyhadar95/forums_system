@@ -636,5 +636,45 @@ namespace ForumsSystem.Server.ServiceLayer
             if (forum != null)
                 forum.DeactivateUser(username);
         }
+
+        public int getNumOfPostsInSubForum(string forumName, string subForumName)
+        {
+            int total = 0;
+            IForum forum = GetForum(forumName);
+            foreach (SubForum sub in forum.GetSubForums())
+            {
+                foreach (Thread thread in sub.GetThreads())
+                {
+                    total += thread.GetNumOfNestedReplies();
+                }
+            }
+
+            return total;
+        }
+
+
+        public bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, int postId)
+        {
+            IForum forum = GetForum(forumName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+
+
+            IUser user = forum.getUser(username);
+            if (user.getType() is Admin)
+                return true;
+
+            Moderator mod = subforum.getModeratorByUserName(username);
+            if (mod != null)
+            {
+                if (mod.hasSeniority())
+                    return true;
+            }
+
+
+            Thread thread = subforum.GetThreadById(threadId);
+            Post post = thread.GetPostById(postId);
+            return post.getPublisher().getUsername().Equals(username);
+
+        }
     }
 }

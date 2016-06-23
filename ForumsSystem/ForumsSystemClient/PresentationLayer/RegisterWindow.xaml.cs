@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -79,6 +80,29 @@ namespace ForumsSystemClient.PresentationLayer
                 MessageBox.Show("please choose date of birth");
                 return;
             }
+
+            Regex rgx = new Regex(@"^[a-z0-9_-]{1,16}$");
+            if (!rgx.IsMatch(username))
+            {
+                MessageBox.Show("Enter valid UserName");
+                return;
+            }
+
+            if (!rgx.IsMatch(password))
+            {
+                MessageBox.Show("Enter valid Password");
+                return;
+            }
+
+            rgx = new Regex(@"^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$");
+            if (!rgx.IsMatch(email))
+            {
+                MessageBox.Show("Enter valid Email");
+                return;
+            }
+
+
+
 
             DateTime dob = nullable_dob.Value;
             bool isRegistered = cl.RegisterToForum(forumName, username, password, email, dob);

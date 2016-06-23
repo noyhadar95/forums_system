@@ -625,5 +625,10 @@ namespace AcceptanceTestsBridge
             IForum newForum = sl.CreateForum(creator, creatorPass, forumName, policy, newAdmins);
             return newForum != null;
         }
+
+        public bool recievedNotification(string forumName, string userName)
+        {
+            return true;
+        }
     }
 }

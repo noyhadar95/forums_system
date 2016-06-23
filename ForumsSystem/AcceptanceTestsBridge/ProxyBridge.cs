@@ -413,6 +413,14 @@ namespace AcceptanceTestsBridge
 
             return true;
         }
+
+        public bool recievedNotification(string forumName, string userName)
+        {
+            if (realBridge != null)
+                return realBridge.recievedNotification( forumName,  userName);
+
+            return true;
+        }
     }
     
 }

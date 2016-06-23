@@ -76,6 +76,7 @@
     <Compile Include="ServerTests\MultipleInterfacesTests.cs" />
     <Compile Include="ServerTests\PolicyTests.cs" />
     <Compile Include="ServerTests\PostNotificationsTests.cs" />
+    <Compile Include="ServerTests\ReactiveTests.cs" />
     <Compile Include="ServerTests\SuperAdminLoginTests.cs" />
     <Compile Include="ServerTests\SendPrivateMsgTests.cs" />
     <Compile Include="ServerTests\SetForumPropTests.cs" />
@@ -88,6 +89,10 @@
     <ProjectReference Include="..\AcceptanceTestsBridge\AcceptanceTestsBridge.csproj">
       <Project>{d1d70200-d8d2-4a3e-8719-ffeb78327624}</Project>
       <Name>AcceptanceTestsBridge</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ForumsSystemClient\ForumsSystemClient.csproj">
+      <Project>{C6FE9229-006B-4583-AA50-8198620BDD6F}</Project>
+      <Name>ForumsSystemClient</Name>
     </ProjectReference>
     <ProjectReference Include="..\ForumsSystem\ForumsSystem.csproj">
       <Project>{488D5473-E8EC-4DF6-99C9-8D07D7F30237}</Project>
