@@ -15,13 +15,16 @@ namespace WebApplication.Communication
         int AddThread(string forumName, string subForumName, string publisher, string title, string content);
         
         void MemberLogout(string forumName, string username);
-        User MemberLogin(string forumName, string username, string password);
-       
+        Tuple<User, string> MemberLogin(string forumName, string username, string password);
+        Tuple<User, string> MemberLogin(string forumName, string username, string password, string sessionToken);
+
         List<Post> GetPosts(string forumName, string subforumName, int threadId);
 
         Dictionary<int, string> GetThreads(string forumName, string subForumName);
         List<string> GetSubForumsList(string forumName);
         List<string> GetForumsList();
-       
+
+        string GetSessionKey(string username, string forumName);
+
     }
 }

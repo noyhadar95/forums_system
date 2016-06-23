@@ -89,7 +89,7 @@ namespace WebApplication
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            string forumName = Request.QueryString["forumName"];
+          /*  string forumName = Request.QueryString["forumName"];
             string subforumName = Request.QueryString["subforumName"];
             string thread = Request.QueryString["thread"];
             string userName = TextBox1.Text;
@@ -135,6 +135,7 @@ namespace WebApplication
                 TreeView1.Nodes.Add(node);
                 CreateNested(post, node);
             }
+            */
         }
 
         protected void BtnLogout_Click(object sender, EventArgs e)

@@ -152,9 +152,10 @@ namespace AcceptanceTestsBridge
         public bool LoginUser(string forumName, string username, string pass)
         {
             //   Tuple<User, string> t = cl.MemberLogin(forumName, username, pass);
-            User t = cl.MemberLogin(forumName, username, pass);
+            // User t = cl.MemberLogin(forumName, username, pass);
             //    sessionKeys.Add(new Tuple<string, string>(forumName, username), t.Item2);
-            return t != null;
+            // return t != null;
+            return false;
         }
 
         public bool LoginSuperAdmin(string username, string pass)

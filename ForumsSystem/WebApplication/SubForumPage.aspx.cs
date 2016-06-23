@@ -54,7 +54,7 @@ namespace WebApplication
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            string forumName = Request.QueryString["forumName"];
+        /*    string forumName = Request.QueryString["forumName"];
             string userName = TextBox1.Text;
             string password = TextBox2.Text;
             if (userName == "" || password == "")
@@ -84,6 +84,7 @@ namespace WebApplication
             BtnAdd.Visible = true;
             BtnAdd.Enabled = true;
             Session["Data"] = userName;
+            */
         }
 
         protected void BtnLogout_Click(object sender, EventArgs e)

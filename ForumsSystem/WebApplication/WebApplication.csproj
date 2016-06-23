@@ -409,6 +409,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Communication\CL.cs" />
     <Compile Include="Communication\Client.cs" />
+    <Compile Include="Communication\Encryption\AESThenHMAC.cs" />
     <Compile Include="Communication\ICL.cs" />
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
@@ -446,6 +447,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\Forum.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\Post.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\PrivateMessage.cs" />
     <Compile Include="Resources\UserManagement\DomainLayer\User.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
