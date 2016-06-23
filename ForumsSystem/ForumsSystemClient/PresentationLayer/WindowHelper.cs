@@ -125,6 +125,10 @@ namespace ForumsSystemClient.PresentationLayer
                 currentNotifyWin.NotifyPrivateMessages(privateMsgsNum);
             }
         }
+        public static void ShowNoConnectionAlert()
+        {
+            MessageBox.Show("Whoops!\nIt seems as if we were ubable to connect to the server.\nPlease try again later.");
+        }
 
     }
 }

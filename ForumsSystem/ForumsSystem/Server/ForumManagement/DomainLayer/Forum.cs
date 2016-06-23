@@ -238,8 +238,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public bool AddPolicy(Policy policy)
         {
+            if (policy == null)
+                return true;
             bool flag = false;
-            Loggers.Logger.GetInstance().AddActivityEntry("Policy: " + policy.Type + "added to forum: " + this.name);
+            if(policy!=null)
+                 Loggers.Logger.GetInstance().AddActivityEntry("Policy: " + policy.Type + "added to forum: " + this.name);
             if (policies == null)
             {
                 if (policy is PasswordPolicy)
