@@ -1,6 +1,7 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,8 @@ namespace ForumsSystemClient.PresentationLayer
     {
         CL cl;
         private string forumName;
+        private string loggedUsername;
+        private ObservableCollection<string> users;
 
         public AddComplaintWindow(string forumName)
         {
@@ -32,16 +35,37 @@ namespace ForumsSystemClient.PresentationLayer
             cl = new CL();
             this.forumName = forumName;
 
+            this.loggedUsername = WindowHelper.GetLoggedUsername(forumName);
+            List<string> usersList = cl.GetUsersInForum(forumName);
+            users = new ObservableCollection<string>(usersList);
+            usersLV.ItemsSource = users;
         }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
         }
 
         private void sendBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var selectedItems = usersLV.SelectedItems;
+            List<string> selectedItemsCopy = new List<string>();
+            if (selectedItemsCopy.Count != 1)
+            {
+                MessageBox.Show("Can only complaint one user at a time");
+                return;
+            }
+            foreach (string item in selectedItems)
+            {
+                selectedItemsCopy.Add(item);
+            }
+            foreach (string selectedItem in selectedItemsCopy)
+            {
+                cl.AddComplaint(forumName,"", selectedItem);
+            }
+            
+            MessageBox.Show("your complaint has been successfully sent");
+            WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
         }
     }
 }

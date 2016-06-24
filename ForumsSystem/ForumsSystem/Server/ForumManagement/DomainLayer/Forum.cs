@@ -496,9 +496,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             if (!users.ContainsKey(username))
                 return;
-            bool isMod = false; ;
-            if (getSubForum(subforum) != null)
-                isMod = getSubForum(subforum).isModerator(username);
+            bool isMod = false;
+            List<ISubForum> subforums = this.GetSubForums();
+            foreach (ISubForum sf in subforums.ToArray()) 
+            {
+                isMod = isMod | sf.isModerator(username);
+                if (isMod)
+                    break;
+            }
+
             users[username].AddComplaint(isMod);
 
 
