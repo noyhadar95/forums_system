@@ -79,6 +79,9 @@
     <Compile Include="PresentationLayer\AdminReportsWindow.xaml.cs">
       <DependentUpon>AdminReportsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\BanUserWindow.xaml.cs">
+      <DependentUpon>BanUserWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\ConfirmEmailWindow.xaml.cs">
       <DependentUpon>ConfirmEmailWindow.xaml</DependentUpon>
     </Compile>
@@ -121,6 +124,8 @@
     <Compile Include="Resources\ForumManagement\DomainLayer\Policy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\PolicyEnum.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\Post.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\NotificationType.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\PostNotification.cs" />
     <Compile Include="Resources\UserManagement\DomainLayer\PrivateMessage.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\SubForum.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\SuperAdmin.cs" />
@@ -210,6 +215,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\AdminReportsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\BanUserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
