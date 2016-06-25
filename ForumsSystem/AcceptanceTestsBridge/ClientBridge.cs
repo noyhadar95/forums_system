@@ -275,7 +275,7 @@ namespace AcceptanceTestsBridge
         public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
         {
            // Forum forum = cl.GetForum(forumName);
-            return cl.RegisterToForum( forumName, username, password, email, dateOfBirth);
+            return cl.RegisterToForum( forumName, username, password, email, dateOfBirth, 1, "Bonzo");
         }
 
         public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)

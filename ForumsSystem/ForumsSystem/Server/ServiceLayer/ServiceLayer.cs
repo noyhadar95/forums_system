@@ -581,25 +581,26 @@ namespace ForumsSystem.Server.ServiceLayer
             return users;
         }
 
-        public bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer)
+        public bool AddSecurityQuestion(string forumName, string username, int question, string answer)
         {
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
-            return user.AddSecurityQuestion(question, answer);
+            return user.AddSecurityQuestion((SecurityQuestionsEnum)question, answer);
         }
 
-        public bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question)
+        public bool RemoveSecurityQuestion(string forumName, string username, int question)
         {
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
-            return user.RemoveSecurityQuestion(question);
+            return user.RemoveSecurityQuestion((SecurityQuestionsEnum)question);
         }
 
-        public bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer)
+        public bool CheckSecurityQuestion(string forumName, string username, int question, string answer,string newPassword)
         {
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
-            return user.CheckSecurityQuestion(question,answer);
+            return user.CheckSecurityQuestion((SecurityQuestionsEnum)question, answer) && user.SetPassword(newPassword);
+
         }
 
         public bool SetUserPassword(string forumName, string username,string oldPassword, string newPassword)

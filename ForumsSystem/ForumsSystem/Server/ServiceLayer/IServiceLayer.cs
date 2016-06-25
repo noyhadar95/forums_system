@@ -102,9 +102,9 @@ namespace ForumsSystem.Server.ServiceLayer
         List<string> GetUsersNotFriends(string forumName, string username);
 
         bool SetUserPassword(string forumName, string username,string oldPassword, string newPassword);
-        bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
-        bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question);
-        bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
+        bool AddSecurityQuestion(string forumName, string username, int question, string answer);
+        bool RemoveSecurityQuestion(string forumName, string username, int question);
+        bool CheckSecurityQuestion(string forumName, string username, int question, string answer,string newPassword);
 
         int getNumOfPostsInSubForum(string forumName, string subForumName);
 

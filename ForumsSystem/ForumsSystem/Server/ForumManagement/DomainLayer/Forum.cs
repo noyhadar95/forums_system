@@ -49,6 +49,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             //----privateMessageNotifications
             PrivateMessageNotification.populateMessageNotification(forum.users, forum.waiting_users);
 
+            User.populateSecurityQuestions(forum.users, forum.waiting_users, forumName);
+
+
             //--subForums (includes threads, posts and moderators)
             forum.sub_forums = SubForum.populateSubForums(forum);
 

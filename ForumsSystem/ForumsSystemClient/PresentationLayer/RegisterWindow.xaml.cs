@@ -1,5 +1,6 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
 using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
+using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,10 @@ namespace ForumsSystemClient.PresentationLayer
 
             cl = new CL();
             this.forumName = forumName;
+
+            this.SecurityQuestionCB.ItemsSource = SecurityQuestions.questions;//(typeof(SecurityQuestionsEnum)).Cast<SecurityQuestionsEnum>();
+            
+            this.SecurityQuestionCB.SelectedIndex = 0;
         }
 
         private void submitBtn_Click(object sender, RoutedEventArgs e)
@@ -42,6 +47,7 @@ namespace ForumsSystemClient.PresentationLayer
             string confPassword = confPasswordBox.Password;
             string email = emailTB.Text;
             DateTime? nullable_dob = dateOfBirthDP.SelectedDate;
+            string answer = SecurityAnswerTB.Text;
 
             // check that all fields are not empty
             if (username == "")
@@ -80,7 +86,11 @@ namespace ForumsSystemClient.PresentationLayer
                 MessageBox.Show("please choose date of birth");
                 return;
             }
-
+            if (answer == "")
+            {
+                MessageBox.Show("please enter an answer");
+                return;
+            }
 
             if (cl.CheckIfPolicyExists(forumName, Policies.Password))
             {
@@ -121,7 +131,13 @@ namespace ForumsSystemClient.PresentationLayer
 
 
             DateTime dob = nullable_dob.Value;
-            bool isRegistered = cl.RegisterToForum(forumName, username, password, email, dob);
+            int question = SecurityQuestionCB.SelectedIndex;
+            bool isRegistered = cl.RegisterToForum(forumName, username, password, email, dob, question,answer);
+            
+
+            
+           
+
             if (isRegistered)
             {
                 MessageBox.Show("you have been successfully registered to the forum");

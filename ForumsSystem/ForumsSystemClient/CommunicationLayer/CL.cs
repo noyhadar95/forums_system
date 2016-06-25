@@ -119,11 +119,12 @@ namespace ForumsSystemClient.CommunicationLayer
             }
         }
 
-        public bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob)
+        public bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob, int question, string answer)
         {
             try
             {
-                return (bool)Client.SendRequest("RegisterToForum", forumName, guestName, password, email, dob);
+                return (bool)Client.SendRequest("RegisterToForum", forumName, guestName, password, email, dob)  &&
+                    this.AddSecurityQuestion(forumName,guestName,question, answer);
             }
             catch (Exception)
             {
@@ -746,7 +747,7 @@ namespace ForumsSystemClient.CommunicationLayer
             }
         }
 
-        public bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer)
+        public bool AddSecurityQuestion(string forumName, string username, int question, string answer)
         {
             try
             {
@@ -758,7 +759,7 @@ namespace ForumsSystemClient.CommunicationLayer
             }
         }
 
-        public bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question)
+        public bool RemoveSecurityQuestion(string forumName, string username, int question)
         {
             try
             {
@@ -770,11 +771,11 @@ namespace ForumsSystemClient.CommunicationLayer
             }
         }
 
-        public bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer)
+        public bool CheckSecurityQuestion(string forumName, string username, int question, string answer, string newPassword)
         {
             try
             {
-                return (bool)Client.SendRequest("CheckSecurityQuestion", forumName, username, question, answer);
+                return (bool)Client.SendRequest("CheckSecurityQuestion", forumName, username, question, answer, newPassword);
             }
             catch (Exception)
             {

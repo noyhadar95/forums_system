@@ -30,7 +30,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
         Tuple<User, string> MemberLogin(string forumName, string username, string password);
         Tuple<User, string> MemberLogin(string forumName, string username, string password, string sessionToken);
-        bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob);
+        bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob, int question, string answer);
 
 
         bool SendPrivateMessage(string forumName, string from, string to, string title, string content);
@@ -100,9 +100,9 @@ namespace ForumsSystemClient.CommunicationLayer
         List<string> GetFriendRequests(string forumName, string username);
 
         bool SetUserPassword(string forumName, string username, string oldPassword, string newPassword);
-        bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
-        bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question);
-        bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
+        bool AddSecurityQuestion(string forumName, string username, int question, string answer);
+        bool RemoveSecurityQuestion(string forumName, string username, int question);
+        bool CheckSecurityQuestion(string forumName, string username, int question, string answer, string newPassword);
         List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username);
 
 

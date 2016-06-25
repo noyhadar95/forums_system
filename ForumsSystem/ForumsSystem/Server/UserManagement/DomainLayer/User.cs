@@ -84,7 +84,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.dateOfBirth = new DateTime();
             this.privateMessageNotifications = new List<PrivateMessageNotification>();
             this.postNotifications = new List<PostNotification>();
-            this.dateOfPassLastchange = new DateTime(); 
+            this.dateOfPassLastchange = new DateTime();
+            this.passwordSecurityQuestions = new Dictionary<SecurityQuestionsEnum, string>();
 
         }
 
@@ -313,8 +314,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             {
                 User user = (User)allUsers[answerRow["UserName"].ToString()];
                 string answer = answerRow["Answer"].ToString();
-                user.AddSecurityQuestion((SecurityQuestionsEnum)(int)answerRow["QuestionNumber"], answer);
-
+                user.passwordSecurityQuestions[(SecurityQuestionsEnum)(int)answerRow["QuestionNum"]] = answer.ToUpper();
             }
         }
 
@@ -985,6 +985,40 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public void DeactivateUser()
         {
             this.isActive = false;
+        }
+
+        public bool SetPassword(string newPassword)
+        {
+            //check password policies
+            PolicyParametersObject checkPass = new PolicyParametersObject(Policies.Password);
+            checkPass.SetPassword(newPassword);
+            if (this.forum.GetPolicy() != null)
+            {
+                if (!this.forum.GetPolicy().CheckPolicy(checkPass))
+                    return false;
+            }
+            //policies ok, change password
+            this.passwordSalt = PRG.PasswordSaltGenerator.GetUniqueKey(10);
+            newPassword = this.passwordSalt + newPassword;
+            this.password = PRG.Hash.GetHash(newPassword);
+            this.dateOfPassLastchange = DateTime.Today;
+            if (type is Guest)
+            {
+                dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
+                    this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Guest, DateTime.Today, this.passwordSalt, this.notifyOffline, this.isActive, this.emailConfirmationToken);
+            }
+            else if (type is Member)
+            {
+                dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
+                   this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member, DateTime.Today, this.passwordSalt, this.notifyOffline, this.isActive, this.emailConfirmationToken);
+            }
+            else if (type is Admin)
+            {
+                dal_users.editUser(this.forum.getName(), this.userName, this.password, this.email, this.DateJoined,
+                   this.dateOfBirth, this.numOfComplaints, UserType.UserTypes.Member, DateTime.Today, this.passwordSalt, this.notifyOffline, this.isActive, this.emailConfirmationToken);
+
+            }
+            return true;
         }
     }
 

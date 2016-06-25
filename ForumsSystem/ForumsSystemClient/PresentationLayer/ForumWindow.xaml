@@ -33,6 +33,7 @@
                 <PasswordBox x:Name="sessionTokenPB" HorizontalAlignment="Left" Margin="73,82,0,0" VerticalAlignment="Top" Width="120"/>
                 <Label x:Name="sessionLbl" Content="session" HorizontalAlignment="Left" Margin="0,82,0,0" VerticalAlignment="Top"/>
                 <Button x:Name="confirmEmailBtn" Content="confirm email" TabIndex="3" HorizontalAlignment="Left" Margin="593,10,0,0" VerticalAlignment="Top" Width="90" Height="30" Click="confirmEmailBtn_Click" />
+                <Button x:Name="forgotPasswordBtn" Content="Forgot Password" TabIndex="3" HorizontalAlignment="Left" Margin="593,62,0,0" VerticalAlignment="Top" Width="90" Height="30" Click="forgotPasswordBtn_Click" />
             </Grid>
             <Grid x:Name="adminGrid" HorizontalAlignment="Left" Height="87" Margin="10,301,0,0" VerticalAlignment="Top" Width="171">
                 <Button x:Name="addSubForumBtn" Content="add sub forum" TabIndex="8" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="addSubForumBtn_Click"/>

@@ -103,6 +103,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         bool CheckSecurityQuestion(SecurityQuestionsEnum question, string answer);
         void AddComplaint(bool isModerator);
         void DeactivateUser();
+        bool SetPassword(string newPassword);
     }
 
 

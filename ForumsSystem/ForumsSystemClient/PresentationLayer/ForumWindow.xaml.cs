@@ -236,8 +236,14 @@ namespace ForumsSystemClient.PresentationLayer
             WindowHelper.SwitchWindow(this, new MainWindow());
         }
 
-        #endregion
 
-        
+  
+
+        private void forgotPasswordBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new ForgotPassword(forumName));
+        }
+
+        #endregion
     }
 }
