@@ -831,6 +831,12 @@ namespace ForumsSystemClient.CommunicationLayer
         }
 
 
+        /// <summary>
+        /// subforum will not be used
+        /// </summary>
+        /// <param name="forumName"></param>
+        /// <param name="subforum"></param>
+        /// <param name="username"></param>
         public void AddComplaint(string forumName, string subforum, string username)
         {
             try
