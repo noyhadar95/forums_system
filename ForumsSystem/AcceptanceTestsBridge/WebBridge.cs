@@ -338,5 +338,10 @@ namespace AcceptanceTestsBridge
         {
             return true;
         }
+
+        public bool SetForumProperties(string forumName, string username, PoliciesStub forumPolicies, params object[] policyParams)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

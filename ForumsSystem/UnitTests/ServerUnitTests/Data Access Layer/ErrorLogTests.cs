@@ -22,7 +22,7 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
         }
 
         [TestMethod]
-        public void Test1()
+        public void TestErrorLog()
         {
             DateTime now = DateTime.Now;
             DateTime next = now.AddMinutes(10);

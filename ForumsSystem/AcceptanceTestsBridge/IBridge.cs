@@ -103,5 +103,7 @@ namespace AcceptanceTestsBridge
         bool LoginUserWithClientSession(string forumName, string username, string pass, string clientServer);
 
         bool recievedNotification(string forumName, string userName);
+
+        bool SetForumProperties(string forumName, string username, PoliciesStub forumPolicies, params object[] policyParams);
     }
 }

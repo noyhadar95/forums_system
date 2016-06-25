@@ -422,6 +422,14 @@ namespace AcceptanceTestsBridge
 
             return true;
         }
+
+        public bool SetForumProperties(string forumName, string username, PoliciesStub forumPolicies, params object[] policyParams)
+        {
+            if (realBridge != null)
+                return realBridge.SetForumProperties(forumName, username, forumPolicies, policyParams);
+
+            return true;
+        }
     }
     
 }
