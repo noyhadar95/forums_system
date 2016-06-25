@@ -118,5 +118,11 @@ namespace ForumsSystemClient.PresentationLayer
         {
             WindowHelper.SwitchWindow(this, new EditModeratorsWindow(forumName, subForumName));
         }
+
+        private void addModsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new AddModeratorsWindow(forumName, subForumName));
+        }
+
     }
 }

@@ -18,21 +18,21 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for AddThreadWindow.xaml
     /// </summary>
-    public partial class AddThreadWindow : Window
+    public partial class AddThreadWindow : NotifBarWindow
     {
-        private string forumName;
         private string subForumName;
-        private CL cl;
 
-        public AddThreadWindow(string forumName, string subForumName)
+        public AddThreadWindow(string forumName, string subForumName) : base(forumName)
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
-            this.forumName = forumName;
             this.subForumName = subForumName;
+
+            base.Initialize(dockPanel);
+            RefreshNotificationsBar(loggedUsername);
         }
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
@@ -52,15 +52,15 @@ namespace ForumsSystemClient.PresentationLayer
             }
 
             string publisher = WindowHelper.GetLoggedUsername(forumName);
-          //  try
-          //  {
-                cl.AddThread(forumName, subForumName, publisher, title, content);
-          //  }
-          //  catch (Exception)
-          //  {
-          //      MessageBox.Show("an error occured while sending your request");
-          //      return;
-          //  }
+            //  try
+            //  {
+            cl.AddThread(forumName, subForumName, publisher, title, content);
+            //  }
+            //  catch (Exception)
+            //  {
+            //      MessageBox.Show("an error occured while sending your request");
+            //      return;
+            //  }
             WindowHelper.SwitchWindow(this, new SubForumWindow(forumName, subForumName));
         }
     }

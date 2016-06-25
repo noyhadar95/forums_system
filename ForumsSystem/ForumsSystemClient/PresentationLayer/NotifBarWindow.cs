@@ -1,4 +1,5 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
 using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace ForumsSystemClient.PresentationLayer
     {
         private const string FRIEND_REQUEST_MENU_HEADER = "_Friend Requests";
         private const string PRIVATE_MSG_MENU_HEADER = "_Private Messages";
+        private const string POSTS_MENU_HEADER = "_New Posts";
         private const string TYPE_MENU_HEADER = "_logged in as ";
         private const string SESSION_TOKEN_MENU_HEADER = "_session token: ";
 
@@ -52,6 +54,15 @@ namespace ForumsSystemClient.PresentationLayer
         }
         protected bool isPrivateMsgsMenuHeaderChanged = false;
         private bool notifiedPrivateMsg; // used in order to save in calls to CL
+        // Posts
+        protected MenuItem postsMenu;
+        private string _postsMenuHeader;
+        private string PostsMenuHeader
+        {
+            get { return _postsMenuHeader; }
+            set { _postsMenuHeader = value; isPostsMenuHeaderChanged = true; }
+        }
+        protected bool isPostsMenuHeaderChanged = false;
 
         protected string session_token;
 
@@ -65,6 +76,7 @@ namespace ForumsSystemClient.PresentationLayer
             session_token = "";
             FriendReqMenuHeader = FRIEND_REQUEST_MENU_HEADER;
             PrivateMsgsMenuHeader = PRIVATE_MSG_MENU_HEADER;
+            PostsMenuHeader = POSTS_MENU_HEADER;
 
             if (WindowHelper.IsLoggedUser(forumName))
                 loggedUsername = WindowHelper.GetLoggedUsername(forumName);
@@ -72,6 +84,11 @@ namespace ForumsSystemClient.PresentationLayer
 
             // on mouse move the notif bar checks if a new nitification has been recieved
             this.MouseMove += NotifBarWindow_MouseMove;
+        }
+
+        public string GetForumName()
+        {
+            return forumName;
         }
 
         private void NotifBarWindow_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
@@ -90,6 +107,14 @@ namespace ForumsSystemClient.PresentationLayer
                 {
                     RefreshPrivateMsgMenu();
                     isPrivateMsgsMenuHeaderChanged = false;
+                }
+            }
+            if (isPostsMenuHeaderChanged)
+            {
+                lock (this)
+                {
+                    RefreshPostsMenu();
+                    isPostsMenuHeaderChanged = false;
                 }
             }
         }
@@ -113,10 +138,17 @@ namespace ForumsSystemClient.PresentationLayer
             privateMsgsMenu.Click += new RoutedEventHandler(privateMsgsMenu_Click);
             privateMsgsMenu.ToolTip = "See pending messages.";
 
+            // create New Posts menu
+            postsMenu = new MenuItem();
+            postsMenu.Header = GetPostsMenuHeader();
+            postsMenu.Click += new RoutedEventHandler(postsMenu_Click);
+            postsMenu.ToolTip = "See new posts in the forum.";
+
             userMenuBar = new Menu();
             userMenuBar.Visibility = Visibility.Visible;
             userMenuBar.Items.Add(friendRequestsMenu);
             userMenuBar.Items.Add(privateMsgsMenu);
+            userMenuBar.Items.Add(postsMenu);
             userMenuBar.Items.Add(mi_type);
             userMenuBar.Items.Add(mi_sessionToken);
 
@@ -129,6 +161,7 @@ namespace ForumsSystemClient.PresentationLayer
         {
             FriendReqMenuHeader = FRIEND_REQUEST_MENU_HEADER;
             PrivateMsgsMenuHeader = PRIVATE_MSG_MENU_HEADER;
+            PostsMenuHeader = POSTS_MENU_HEADER;
         }
 
         protected void RefreshNotificationsBar(string username)
@@ -150,7 +183,11 @@ namespace ForumsSystemClient.PresentationLayer
             RefreshFriendReqsMenu();
             // refresh private msgs menu bar
             RefreshPrivateMsgMenu();
+            // refresh posts menu bar
+            RefreshPostsMenu();
         }
+
+
 
 
 
@@ -168,35 +205,36 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void SetFriendReqMenuHeaderMinus1()
         {
-            if (FriendReqMenuHeader != FRIEND_REQUEST_MENU_HEADER)
+            int notifNum = GetFRNotifNum();
+            if (notifNum <= 0)
+                return;
+
+            if (notifNum == 1)
             {
-                // FriendReqMenuHeader is of the form: FRIEND_REQUEST_MENU_HEADER(notifNum)
-                char notifNum = FriendReqMenuHeader[FRIEND_REQUEST_MENU_HEADER.Length + 1];
-                try
-                {
-                    int num = int.Parse(notifNum.ToString());
-                    FriendReqMenuHeader = FRIEND_REQUEST_MENU_HEADER + "(" + (num - 1) + ")";
-                }
-                catch (Exception)
-                {
-                    return;
-                }
+                FriendReqMenuHeader = FRIEND_REQUEST_MENU_HEADER;
+                return;
             }
+
+            // in case notifNum > 1
+            FriendReqMenuHeader = FRIEND_REQUEST_MENU_HEADER + "(" + (notifNum - 1) + ")";
+
         }
 
         public void NotifyFriendRequests(int friendReqsNum)
         {
-            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
+            if (friendReqsNum > 0)
             {
-                SetFriendReqMenuHeaderOn(friendReqsNum);
+                System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
+                {
+                    SetFriendReqMenuHeaderOn(friendReqsNum);
 
-                //friendRequestsMenu.Header = GetFriendReqMenuHeader();
-                //isFriendReqMenuHeaderChanged = true;
+                    //friendRequestsMenu.Header = GetFriendReqMenuHeader();
+                    //isFriendReqMenuHeaderChanged = true;
 
-                //RefreshFriendReqsMenu();
-                userMenuBar.Items.Refresh();
-            }));
-
+                    //RefreshFriendReqsMenu();
+                    userMenuBar.Items.Refresh();
+                }));
+            }
         }
 
         protected void RefreshFriendReqsMenu()
@@ -264,31 +302,33 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void SetPrivateMsgMenuHeaderMinus1()
         {
-            if (PrivateMsgsMenuHeader != FRIEND_REQUEST_MENU_HEADER)
+            int notifNum = GetPMNotifNum();
+            if (notifNum <= 0)
+                return;
+
+            if (notifNum == 1)
             {
-                // FriendReqMenuHeader is of the form: FRIEND_REQUEST_MENU_HEADER(notifNum)
-                char notifNum = PrivateMsgsMenuHeader[PRIVATE_MSG_MENU_HEADER.Length + 1];
-                try
-                {
-                    int num = int.Parse(notifNum.ToString());
-                    PrivateMsgsMenuHeader = PRIVATE_MSG_MENU_HEADER + "(" + (num - 1) + ")";
-                }
-                catch (Exception)
-                {
-                    return;
-                }
+                PrivateMsgsMenuHeader = PRIVATE_MSG_MENU_HEADER;
+                return;
             }
+
+            // in case notifNum > 1
+            PrivateMsgsMenuHeader = PRIVATE_MSG_MENU_HEADER + "(" + (notifNum - 1) + ")";
+
         }
 
         public void NotifyPrivateMessages(int privateMsgsNum)
         {
-            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
+            if (privateMsgsNum > 0)
             {
-                SetPrivateMsgMenuHeaderOn(privateMsgsNum);
-                //isPrivateMsgsMenuHeaderChanged = true;
-                userMenuBar.Items.Refresh();
+                System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
+                {
+                    SetPrivateMsgMenuHeaderOn(privateMsgsNum);
+                    //isPrivateMsgsMenuHeaderChanged = true;
+                    userMenuBar.Items.Refresh();
 
-            }));
+                }));
+            }
         }
 
         protected void RefreshPrivateMsgMenu()
@@ -327,7 +367,149 @@ namespace ForumsSystemClient.PresentationLayer
         #endregion
 
 
+        #region posts
 
+        private string GetPostsMenuHeader()
+        {
+            return PostsMenuHeader;
+        }
+
+        private void SetPostsMenuHeaderOn(int notifNum)
+        {
+            PostsMenuHeader = POSTS_MENU_HEADER + "(" + notifNum + ")";
+        }
+
+        private void SetPostsMenuHeaderMinus1()
+        {
+            int notifNum = GetPostsNotifNum();
+            if (notifNum <= 0)
+                return;
+
+            if (notifNum == 1)
+            {
+                PostsMenuHeader = POSTS_MENU_HEADER;
+                return;
+            }
+
+            // in case notifNum > 1
+            PostsMenuHeader = POSTS_MENU_HEADER + "(" + (notifNum - 1) + ")";
+
+        }
+
+        public void NotifyPosts(int postsNum)
+        {
+            if (postsNum > 0)
+            {
+                System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
+                {
+                    SetPostsMenuHeaderOn(postsNum);
+                    userMenuBar.Items.Refresh();
+                }));
+            }
+        }
+
+        protected void RefreshPostsMenu()
+        {
+            postsMenu.Items.Clear();
+            postsMenu.Header = GetPostsMenuHeader();
+        }
+
+        private void postsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            postsMenu.Items.Clear();
+            List<Post> cl_posts = cl.GetPostNotifications(forumName, loggedUsername);
+            foreach (Post post in cl_posts)
+            {
+                MenuItem mi = new MenuItem();
+                mi.Header = post.Publisher + " : " + post.Title;
+                mi.Tag = post.Id;
+                mi.Click += new RoutedEventHandler(post_Click);
+                postsMenu.Items.Add(mi);
+            }
+            postsMenu.IsSubmenuOpen = true;
+
+        }
+
+        private void post_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO:
+        }
+
+        #endregion
+
+
+
+        public int GetFRNotifNum()
+        {
+            if (FriendReqMenuHeader != FRIEND_REQUEST_MENU_HEADER)
+            {
+                // FriendReqMenuHeader is of the form: FRIEND_REQUEST_MENU_HEADER(notifNum)
+                int numStartIndex = FRIEND_REQUEST_MENU_HEADER.Length + 1;
+                int digitsCount = 0;
+                while (FriendReqMenuHeader[numStartIndex + digitsCount] != ')')
+                    digitsCount++;
+                string notifNumSrt = FriendReqMenuHeader.Substring(numStartIndex, digitsCount);
+                try
+                {
+                    int num = int.Parse(notifNumSrt);
+                    return num;
+                }
+                catch (Exception)
+                {
+                    return 0;
+                }
+            }
+            else
+                return 0;
+        }
+
+        public int GetPMNotifNum()
+        {
+            if (PrivateMsgsMenuHeader != PRIVATE_MSG_MENU_HEADER)
+            {
+                // PrivateMsgsMenuHeader is of the form: PRIVATE_MSG_MENU_HEADER(notifNum)
+                int numStartIndex = PRIVATE_MSG_MENU_HEADER.Length + 1;
+                int digitsCount = 0;
+                while (PrivateMsgsMenuHeader[numStartIndex + digitsCount] != ')')
+                    digitsCount++;
+                string notifNumSrt = PrivateMsgsMenuHeader.Substring(numStartIndex, digitsCount);
+                try
+                {
+                    int num = int.Parse(notifNumSrt);
+                    return num;
+                }
+                catch (Exception)
+                {
+                    return 0;
+                }
+            }
+            else
+                return 0;
+        }
+
+        public int GetPostsNotifNum()
+        {
+            if (PostsMenuHeader != POSTS_MENU_HEADER)
+            {
+                // PostsMenuHeader is of the form: POSTS_MENU_HEADER(notifNum)
+                int numStartIndex = POSTS_MENU_HEADER.Length + 1;
+                int digitsCount = 0;
+                while (PostsMenuHeader[numStartIndex + digitsCount] != ')')
+                    digitsCount++;
+                string notifNumSrt = PostsMenuHeader.Substring(numStartIndex, digitsCount);
+                try
+                {
+                    int num = int.Parse(notifNumSrt);
+                    return num;
+                }
+                catch (Exception)
+                {
+                    return 0;
+                }
+            }
+            else
+                return 0;
+        }
 
 
     }

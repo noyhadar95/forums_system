@@ -31,7 +31,7 @@ namespace ForumsSystemClient.PresentationLayer
         public ForumWindow(string forumName) : base(forumName)
         {
             InitializeComponent();
-            
+
             WindowHelper.SetWindowBGImg(this);
 
             // initialize fields
@@ -171,7 +171,7 @@ namespace ForumsSystemClient.PresentationLayer
             }
 
             Regex rgx = new Regex(@"([0-9]8)$");
-            if (sessionToken!="" && !rgx.IsMatch(sessionToken))
+            if (sessionToken != "" && !rgx.IsMatch(sessionToken))
             {
                 MessageBox.Show("Session Token must be 8 numbers");
             }
@@ -205,18 +205,17 @@ namespace ForumsSystemClient.PresentationLayer
                 // save the user in WindowHelper so all windows will know 
                 // that the user is logged in.
                 WindowHelper.SetLoggedUser(forumName, user);
-                
+
 
                 // user is logged in, get type of user and change window accordingly.
                 string type = cl.GetUserType(forumName, username);
-                MessageBox.Show(type);
 
                 if (type == UserTypes.Member)
                     ShowMemberViewMode(user.Username);
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
 
-                
+
             }
         }
 
@@ -238,6 +237,6 @@ namespace ForumsSystemClient.PresentationLayer
 
         #endregion
 
-        
+
     }
 }

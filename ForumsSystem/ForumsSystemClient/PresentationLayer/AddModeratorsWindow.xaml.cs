@@ -1,6 +1,5 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
 using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
-using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,21 +18,24 @@ using System.Windows.Shapes;
 namespace ForumsSystemClient.PresentationLayer
 {
     /// <summary>
-    /// Interaction logic for AddSubForumWindow.xaml
+    /// Interaction logic for AddModeratorsWindow.xaml
     /// </summary>
-    public partial class AddSubForumWindow : NotifBarWindow
+    public partial class AddModeratorsWindow : NotifBarWindow
     {
+        private string subForumName;
         private int moderatorExpDateMonths = 12;
         private ObservableCollection<string> notModeratorsLVItems;
         private ObservableCollection<KeyValuePair<string, DateTime>> moderatorsLVItems;
 
-        public AddSubForumWindow(string forumName) : base(forumName)
+        public AddModeratorsWindow(string forumName, string subForumName) : base(forumName)
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
+            this.subForumName = subForumName;
+
             base.Initialize(dockPanel);
 
             List<string> usersList = cl.GetUsersInForum(forumName);
@@ -88,31 +90,41 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void submitBtn_Click(object sender, RoutedEventArgs e)
         {
-            string subForumName = nameTB.Text;
-
-            if (subForumName == "")
-            {
-                MessageBox.Show("please enter the name of the sub forum");
-                return;
-            }
-
+            List<string> couldntAddList = new List<string>(); // a list of the moderators that could not be added
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
             foreach (KeyValuePair<string, DateTime> pair in moderatorsLVItems)
             {
-                moderators.Add(pair.Key, pair.Value);
+                //moderators.Add(pair.Key, pair.Value);
+                bool isAdded = cl.AddModerator(forumName, subForumName, loggedUsername, pair);
+                if (!isAdded)
+                    couldntAddList.Add(pair.Key);
             }
-            string creator = WindowHelper.GetLoggedUsername(forumName);
 
-            SubForum sb = cl.CreateSubForum(creator, forumName, subForumName, moderators);
-            if (sb != null)
-                WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
+            if (couldntAddList.Count == moderators.Count)
+                MessageBox.Show("moderators couldn't be added");
+            else if (couldntAddList.Count > 0)
+            {
+                string couldntAddStr = "";
+                for (int i = 0; i < couldntAddList.Count; i++)
+                {
+                    couldntAddStr += couldntAddList[i];
+                    if (i < couldntAddList.Count - 1)
+                        couldntAddStr += ",";
+                }
+                MessageBox.Show("the following moderators couldn't be added:\n" + couldntAddStr);
+            }
             else
-                MessageBox.Show("sub-forum creation was unsuccessfull, please try again");
+            {
+                MessageBox.Show("the new moderators has been added successfully");
+                WindowHelper.SwitchWindow(this, new SubForumWindow(forumName, subForumName));
+            }
+
         }
 
-        private void cancelBtn_Click(object sender, RoutedEventArgs e)
+        private void backBtn_Click(object sender, RoutedEventArgs e)
         {
-            WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
+            WindowHelper.SwitchWindow(this, new SubForumWindow(forumName, subForumName));
         }
+
     }
 }
