@@ -1,4 +1,4 @@
-﻿<Window x:Class="ForumsSystemClient.PresentationLayer.AdminReportsWindow"
+﻿<local:NotifBarWindow x:Class="ForumsSystemClient.PresentationLayer.AdminReportsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,37 +6,39 @@
         xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
         mc:Ignorable="d"
         Title="AdminReportsWindow" Height="700" Width="900">
-    <Grid>
-        <Label x:Name="label2" Content="System Reports" HorizontalAlignment="Left" Margin="343,10,0,0" VerticalAlignment="Top" FontSize="21.333"/>
-        <Button x:Name="backBtn" Content="back" TabIndex="1" HorizontalAlignment="Left" Margin="36,617,0,0" VerticalAlignment="Top" Width="75" Click="backBtn_Click"/>
-        <ListView x:Name="subForumsListView" HorizontalAlignment="Left" Height="178" Margin="492,106,0,0" VerticalAlignment="Top" Width="302" >
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Sub Forum" DisplayMemberBinding="{Binding SubForum}"/>
-                    <GridViewColumn Header="Total Posts" DisplayMemberBinding="{Binding TotalPosts}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <ListView x:Name="membersListView" HorizontalAlignment="Left" Height="178" Margin="76,106,0,0" VerticalAlignment="Top" Width="302" PreviewMouseLeftButtonUp="membersListView_PreviewMouseLeftButtonUp" >
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Member" DisplayMemberBinding="{Binding Member}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <ListView x:Name="moderatorsListView" HorizontalAlignment="Left" Height="241" Margin="76,340,0,0" VerticalAlignment="Top" Width="718" PreviewMouseLeftButtonUp="moderatorsListView_PreviewMouseLeftButtonUp" >
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Username" DisplayMemberBinding="{Binding Username}"/>
-                    <GridViewColumn Header="Appointer" DisplayMemberBinding="{Binding Appointer}"/>
-                    <GridViewColumn Header="Appointment Date" DisplayMemberBinding="{Binding AppointmentDate}"/>
-                    <GridViewColumn Header="Sub Forum" DisplayMemberBinding="{Binding SubForum}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Label x:Name="label" Content="Forum Members: click on a member to see it's posts" HorizontalAlignment="Left" Margin="76,79,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label3" Content="Moderators: click on a moderator to see it's posts" HorizontalAlignment="Left" Margin="76,310,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label5" Content="Sub forums" HorizontalAlignment="Left" Margin="498,79,0,0" VerticalAlignment="Top"/>
+    <DockPanel x:Name="dockPanel">
+        <Grid>
+            <Label x:Name="label2" Content="System Reports" HorizontalAlignment="Left" Margin="343,10,0,0" VerticalAlignment="Top" FontSize="21.333"/>
+            <Button x:Name="backBtn" Content="back" TabIndex="1" HorizontalAlignment="Left" Margin="36,617,0,0" VerticalAlignment="Top" Width="75" Click="backBtn_Click"/>
+            <ListView x:Name="subForumsListView" HorizontalAlignment="Left" Height="178" Margin="492,106,0,0" VerticalAlignment="Top" Width="302" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Sub Forum" DisplayMemberBinding="{Binding SubForum}"/>
+                        <GridViewColumn Header="Total Posts" DisplayMemberBinding="{Binding TotalPosts}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <ListView x:Name="membersListView" HorizontalAlignment="Left" Height="178" Margin="76,106,0,0" VerticalAlignment="Top" Width="302" PreviewMouseLeftButtonUp="membersListView_PreviewMouseLeftButtonUp" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Member" DisplayMemberBinding="{Binding Member}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <ListView x:Name="moderatorsListView" HorizontalAlignment="Left" Height="241" Margin="76,340,0,0" VerticalAlignment="Top" Width="718" PreviewMouseLeftButtonUp="moderatorsListView_PreviewMouseLeftButtonUp" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Username" DisplayMemberBinding="{Binding Username}"/>
+                        <GridViewColumn Header="Appointer" DisplayMemberBinding="{Binding Appointer}"/>
+                        <GridViewColumn Header="Appointment Date" DisplayMemberBinding="{Binding AppointmentDate}"/>
+                        <GridViewColumn Header="Sub Forum" DisplayMemberBinding="{Binding SubForum}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Label x:Name="label" Content="Forum Members: click on a member to see it's posts" HorizontalAlignment="Left" Margin="76,79,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="label3" Content="Moderators: click on a moderator to see it's posts" HorizontalAlignment="Left" Margin="76,310,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="label5" Content="Sub forums" HorizontalAlignment="Left" Margin="498,79,0,0" VerticalAlignment="Top"/>
 
-    </Grid>
-</Window>
+        </Grid>
+    </DockPanel>
+</local:NotifBarWindow>

@@ -45,6 +45,15 @@ namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
             {
 
             }
+        public string GetTitle()
+        {
+            return this.title;
         }
+        public string GetPublisher()
+        {
+            return this.publisher;
+        }
+
+    }
     }
 

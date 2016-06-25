@@ -104,6 +104,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         void AddComplaint(bool isModerator);
         void DeactivateUser();
         bool SetPassword(string newPassword);
+        PrivateMessage GetPrivateMsg(int pmID);
+
     }
 
 

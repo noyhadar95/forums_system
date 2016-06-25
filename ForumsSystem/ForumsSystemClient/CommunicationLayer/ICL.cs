@@ -120,6 +120,12 @@ namespace ForumsSystemClient.CommunicationLayer
 
         bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, int postId);
 
+
         bool AddAdmin(string forumName, string username);
+
+        PrivateMessage GetPrivateMsg(string forumName, string msgReceiver, string msgSender, int pmID);
+        List<PrivateMessage> getReceivedMessages(string forumName, string username);
+
+
     }
 }

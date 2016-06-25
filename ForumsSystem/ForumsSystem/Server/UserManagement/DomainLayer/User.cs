@@ -987,6 +987,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.isActive = false;
         }
 
+
         public bool SetPassword(string newPassword)
         {
             //check password policies
@@ -1020,6 +1021,23 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             }
             return true;
         }
+
+
+        public PrivateMessage GetPrivateMsg(int pmID)
+        {
+            if (receivedMessages == null)
+                return null;
+            foreach (PrivateMessage pm in receivedMessages)
+            {
+                if (pm.id == pmID)
+                    return pm;
+            }
+            return null;
+        }
+
+
+
+
     }
 
 

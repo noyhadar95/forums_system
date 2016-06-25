@@ -13,6 +13,13 @@ namespace ForumsSystemClient.PresentationLayer
 
         void NotifyPrivateMessages(int privateMsgsNum);
 
+        void NotifyPosts(int postsNum);
+
+        int GetFRNotifNum();
+
+        int GetPMNotifNum();
+
+        string GetForumName();
 
     }
 }

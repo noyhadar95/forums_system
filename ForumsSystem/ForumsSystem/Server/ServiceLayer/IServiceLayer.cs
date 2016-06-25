@@ -116,6 +116,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
         bool isBanned(string forumName, string userName);
         bool AddAdmin(string forumName, string username);
-
+        PrivateMessage GetPrivateMsg(string forumName, string msgReceiver, string msgSender, int pmID);
+        List<PrivateMessage> getReceivedMessages(string forumName, string username);
     }
 }

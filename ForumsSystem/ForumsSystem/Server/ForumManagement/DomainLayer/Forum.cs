@@ -225,7 +225,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public bool isBanned(string userName)
         {
-            if (users[userName] == null)
+            if (!users.ContainsKey(userName))
                 return true;
             return !((User)users[userName]).isActive;
         }

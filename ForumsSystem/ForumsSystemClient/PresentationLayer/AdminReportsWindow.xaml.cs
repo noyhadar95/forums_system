@@ -19,19 +19,17 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for AdminReportsWindow.xaml
     /// </summary>
-    public partial class AdminReportsWindow : Window
+    public partial class AdminReportsWindow : NotifBarWindow
     {
-        private CL cl;
-        private string forumName;
 
-        public AdminReportsWindow(string forumName)
+        public AdminReportsWindow(string forumName) : base(forumName)
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
-            this.forumName = forumName;
+            base.Initialize(dockPanel);
 
             List<string> subForums = cl.GetSubForumsList(forumName);
             foreach (string subForumName in subForums)
@@ -57,6 +55,8 @@ namespace ForumsSystemClient.PresentationLayer
                     SubForum = modsDetails.Item4
                 });
             }
+
+            RefreshNotificationsBar(loggedUsername);
 
         }
 

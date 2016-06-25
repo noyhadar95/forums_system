@@ -154,13 +154,10 @@ namespace ForumsSystemClient.CommunicationLayer
                         {
                             NotificationHelper.recieveFriendRequest();
                         }
-
                     }
-
                 }
                 catch (Exception)
                 {
-
                 }
 
                 // Private Msgs
@@ -180,7 +177,25 @@ namespace ForumsSystemClient.CommunicationLayer
                 }
                 catch (Exception)
                 {
+                }
 
+                // Post notifications
+                try
+                {
+                    int postNotifNum = int.Parse(notifArr[0]);
+                    if (postNotifNum > 0)
+                    {
+                        // notify about friend request/s
+                        if (!testing)
+                            WindowHelper.NotifyPosts(postNotifNum);
+                        else
+                        {
+                            //NotificationHelper.recieveFriendRequest();
+                        }
+                    }
+                }
+                catch (Exception)
+                {
                 }
 
 
