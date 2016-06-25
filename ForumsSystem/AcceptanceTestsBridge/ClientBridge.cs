@@ -363,12 +363,12 @@ namespace AcceptanceTestsBridge
         
         public bool IsExistNotificationOfPost(string forumName, string username, int postId)
         {
-            Post[] notifications = cl.GetPostNotifications(forumName,username).ToArray();
-            Post temp;
+            PostNotification[] notifications = cl.GetPostNotifications(forumName,username).ToArray();
+            PostNotification temp;
             for (int i = 0; i < notifications.Length; i++)
             {
                 temp = notifications[i];
-                if (temp.GetId() == postId)
+                if (temp.id == postId)
                     return true;
             }
             return false;
