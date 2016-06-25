@@ -242,9 +242,9 @@ namespace AcceptanceTests.ServerTests
 
             res = bridge.RegisterToForum(forumName, username, pass, email, dateOfBirth);
 
-            Assert.IsFalse(res);
+            Assert.IsTrue(res);
             // make sure user isnt registered
-            Assert.IsFalse(bridge.IsRegisteredToForum(username, forumName));
+            Assert.IsTrue(bridge.IsRegisteredToForum(username, forumName));
 
             // cleanup
             base.Cleanup(forumName);
