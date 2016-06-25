@@ -336,9 +336,70 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return this.users.ContainsKey(username);
         }
 
-        public void SetPolicy(Policy policy)
+        public bool SetPolicy(Policy newPolicy)
         {
-            this.policies = policy;
+            Policy oldPol = policies;
+            while (oldPol != null)
+            {
+                if (!CanChangePolicy(oldPol, newPolicy))
+                    return false;
+                oldPol = oldPol.NextPolicy;
+            }
+
+            this.policies = newPolicy;
+            return true;
+        }
+
+        private bool CanChangePolicy(Policy oldPol, Policy newPolicy)
+        {
+            switch (oldPol.Type)
+            {
+                case Policies.AdminAppointment:
+                    return true;
+                    break;
+                case Policies.Authentication:
+                    return true;
+                    break;
+                case Policies.InteractivePolicy:
+                    return true;
+                    break;
+                case Policies.Confidentiality:
+                    return true;
+                    break;
+                case Policies.MaxModerators:
+                    foreach (ISubForum sf in GetSubForums().ToArray())
+                    {
+                        if (sf.numOfModerators() > ((MaxModeratorsPolicy)oldPol).maxModerators)
+                            return false;
+                    }
+                    return true;
+                    break;
+                case Policies.MemberSuspension:
+                    return true;
+                    break;
+                case Policies.MinimumAge:
+                    return true;
+                    break;
+                case Policies.ModeratorAppointment:
+                    return true;
+                    break;
+                case Policies.ModeratorPermissionToDelete:
+                    return true;
+                    break;
+                case Policies.ModeratorSuspension:
+                    return true;
+                    break;
+                case Policies.Password:
+                    return true;
+                    break;
+                case Policies.UsersLoad:
+                    if (this.users.Count > ((UsersLoadPolicy)oldPol).maxNumOfUsers)
+                        return false;
+                    return true;
+                    break;
+                default:
+                    return true;
+            }
         }
 
         public Policy GetPolicy()

@@ -487,10 +487,10 @@ namespace ForumsSystemClient.CommunicationLayer
             }
         }
 
-        public List<Post> GetPostNotifications(string forumName, string username)
+        public List<PostNotification> GetPostNotifications(string forumName, string username)
         {
             try { 
-            return (List<Post>)Client.SendRequest("GetPostNotifications", forumName, username);
+            return (List<PostNotification>)Client.SendRequest("GetPostNotifications", forumName, username);
             }
             catch (Exception)
             {

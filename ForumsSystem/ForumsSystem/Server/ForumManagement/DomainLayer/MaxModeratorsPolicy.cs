@@ -11,7 +11,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     public class MaxModeratorsPolicy:Policy
     {
         [DataMember]
-        private int maxModerators;
+        public int maxModerators;
 
         public MaxModeratorsPolicy(Policies type, int maxModerators):base(type)
         {

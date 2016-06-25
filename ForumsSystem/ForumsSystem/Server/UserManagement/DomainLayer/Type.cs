@@ -152,9 +152,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public virtual bool SetForumProperties(IForum forum, Policy properties)
         {
             DAL_Forum dal_forum = new DAL_Forum();
-            dal_forum.SetForumPolicy(forum.getName(), properties.ID);
-            forum.SetPolicy(properties);
-            return true;
+            bool res = forum.SetPolicy(properties);
+            if (res)
+                dal_forum.SetForumPolicy(forum.getName(), properties.ID);
+            return res;
         }
 
         public virtual bool ChangeForumProperties(IForum forum, Policy properties)

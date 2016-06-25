@@ -759,7 +759,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
             PostNotification notification = new PostNotification(type, post.getPublisher().getForum().getName(),
                 post.getPublisher().getUsername(), post.Thread.GetSubforum().getName(),
-                post.Title, post.Content, post.GetId());
+                post.Title, post.Content, post.GetId(),post.Thread.id);
             DAL_PostsNotification dal_postNotification = new DAL_PostsNotification();
             dal_postNotification.AddNotification(notification.id, (int)type, post.getPublisher().getForum().getName(), userName);
             postNotifications.Add(notification);

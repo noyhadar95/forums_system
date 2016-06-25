@@ -15,7 +15,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         List<ISubForum> GetSubForums();
             bool AddPolicy(Policy policy);
-        void SetPolicy(Policy policy);
+        bool SetPolicy(Policy policy);
 
         void RemovePolicy(Policies policyType);
 

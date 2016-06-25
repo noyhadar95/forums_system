@@ -14,7 +14,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     public class UsersLoadPolicy :Policy
     {
         [DataMember]
-        private int maxNumOfUsers;
+        public int maxNumOfUsers;
 
         public UsersLoadPolicy(Policies type,int maxNumOfUsers): base(type)
         {
