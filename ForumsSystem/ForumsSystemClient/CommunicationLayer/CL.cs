@@ -935,6 +935,19 @@ namespace ForumsSystemClient.CommunicationLayer
             }
         }
 
+        public List<string> getNonAdmins(string forumName)
+        {
+
+            try
+            {
+                return (List<string>)Client.SendRequest("getNonAdmins", forumName);
+            }
+            catch (Exception)
+            {
+                return new List<string>();
+            }
+        }
+
 
         public void removeFriend(string forumName, string userName, string friendUserName)
         {

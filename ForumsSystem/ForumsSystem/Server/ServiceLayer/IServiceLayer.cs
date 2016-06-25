@@ -120,5 +120,7 @@ namespace ForumsSystem.Server.ServiceLayer
         List<PrivateMessage> getReceivedMessages(string forumName, string username);
         List<string> getUsersFriends(string forumName, string userName);
         void removeFriend(string forumName, string userName, string friendUserName);
+
+        List<string> getNonAdmins(string forumName);
     }
 }

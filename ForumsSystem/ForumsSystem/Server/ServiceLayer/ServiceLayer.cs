@@ -738,6 +738,19 @@ namespace ForumsSystem.Server.ServiceLayer
             user.removeFriend(friend);
         }
 
+        public List<string> getNonAdmins(string forumName)
+        {
+            IForum forum = GetForum(forumName);
+           List<IUser> users = forum.getUsersInForum();
+            List<string> res = new List<string>();
 
+            foreach (IUser user in users)
+            {
+                if (!(user.getType() is Admin))
+                    res.Add(user.getUsername());
+            }
+
+            return res;
+        }
     }
 }
