@@ -501,9 +501,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return type.editPost(this, title, content, post);
         }
 
-        public bool deletePost(Post post)
+        public bool deletePost(Post post, string subforum)
         {
-            return type.deletePost(this, post);
+            return type.deletePost(this, post, subforum);
         }
 
 

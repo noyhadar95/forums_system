@@ -19,7 +19,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         Post postReply(Post parent, Thread thread, string title, string content);
         Thread createThread(ISubForum subForum, string title, string content);
         bool editPost(string title, string content, Post post);
-        bool deletePost(Post post);
+        bool deletePost(Post post,string subforum);
         void AddPostNotification(Post post, NotificationType type);
         List<PostNotification> GetPostNotifications();
 

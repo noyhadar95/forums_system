@@ -58,7 +58,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new Exception("permission denied");
         }
 
-        public override bool deletePost(IUser callingUser, Post post)
+        public override bool deletePost(IUser callingUser, Post post,string subforum)
         {
             throw new Exception("permission denied");
         }

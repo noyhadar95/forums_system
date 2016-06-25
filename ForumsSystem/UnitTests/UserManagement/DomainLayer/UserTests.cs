@@ -215,21 +215,21 @@ namespace UnitTests.UserManagement.DomainLayer
             Thread thread = user.createThread(subForum, "new thread", "by admin");
             Post openning = thread.GetOpeningPost();
             Post reply = user.postReply(openning, thread, "reply", "by admin");
-            Assert.IsFalse(user1.deletePost(openning));
+            Assert.IsFalse(user1.deletePost(openning, subForum.getName()));
 
-            Assert.IsTrue(user.deletePost(reply));
+            Assert.IsTrue(user.deletePost(reply, subForum.getName()));
             Assert.IsFalse(thread.GetOpeningPost().GetReplies().Contains(reply));
 
             Post reply2 = user1.postReply(openning, thread, "reply2", "by member");
             IUser guest = new User();
             try
             {
-                guest.deletePost(reply2);
+                guest.deletePost(reply2, subForum.getName());
                 Assert.Fail();
             }
             catch (Exception) { }
 
-            Assert.IsTrue(user.deletePost(openning));
+            Assert.IsTrue(user.deletePost(openning, subForum.getName()));
             Assert.IsNull(thread.GetOpeningPost());
         }
 
