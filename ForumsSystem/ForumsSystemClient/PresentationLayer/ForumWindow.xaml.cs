@@ -245,5 +245,9 @@ namespace ForumsSystemClient.PresentationLayer
 
         #endregion
 
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new ShowFriends(forumName));
+        }
     }
 }

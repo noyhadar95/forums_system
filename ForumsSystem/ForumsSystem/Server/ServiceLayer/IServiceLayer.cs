@@ -118,5 +118,7 @@ namespace ForumsSystem.Server.ServiceLayer
         bool AddAdmin(string forumName, string username);
         PrivateMessage GetPrivateMsg(string forumName, string msgReceiver, string msgSender, int pmID);
         List<PrivateMessage> getReceivedMessages(string forumName, string username);
+        List<string> getUsersFriends(string forumName, string userName);
+        void removeFriend(string forumName, string userName, string friendUserName);
     }
 }

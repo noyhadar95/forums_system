@@ -46,6 +46,7 @@
                 <Button x:Name="addFriendBtn" Content="add friend" TabIndex="7" HorizontalAlignment="Left" Margin="5,145,0,0" VerticalAlignment="Top"  Width="103" Height="30" Click="addFriendBtn_Click" />
             </Grid>
             <Label x:Name="badLoginLbl" Content="" HorizontalAlignment="Left" Margin="88,-3,0,0" VerticalAlignment="Top" Foreground="#FFEC350C" FontWeight="Bold"/>
+            <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="232,373,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
 
         </Grid>
     </DockPanel>

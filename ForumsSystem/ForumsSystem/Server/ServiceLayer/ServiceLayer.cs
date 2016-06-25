@@ -318,7 +318,7 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user1 = forum.getUser(username1);
             IUser user2 = forum.getUser(username2);
             user1.addFriend(user2);
-            user2.acceptFriend(user1);//TODO: probably need to remove this!
+          //  user2.acceptFriend(user1);//TODO: probably need to remove this!
         }
 
         // <moderatorUserName,appointerUserName,appointmentDate,subForumName,moderatorPosts>
@@ -560,7 +560,7 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(accepter);
             IUser user2 = forum.getUser(toAccept);
-            user.addFriend(user2);
+            user.acceptFriend(user2);
         }
 
         public List<string> GetUsersNotFriends(string forumName, string username)
@@ -714,6 +714,28 @@ namespace ForumsSystem.Server.ServiceLayer
             if (user == null)
                 return null;
             return user.getReceivedMessages();
+        }
+
+        public List<string> getUsersFriends(string forumName, string userName)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(userName);
+
+            List<IUser> friends = user.GetFriendsList();
+            List<string> res = new List<string>();
+            foreach (IUser u in friends)
+            {
+                res.Add(u.getUsername());
+            }
+            return res;
+        }
+
+        public void removeFriend(string forumName, string userName, string friendUserName)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(userName);
+            IUser friend = forum.getUser(friendUserName);
+            user.removeFriend(friend);
         }
 
 

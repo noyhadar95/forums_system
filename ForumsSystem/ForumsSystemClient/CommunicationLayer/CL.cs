@@ -922,5 +922,31 @@ namespace ForumsSystemClient.CommunicationLayer
                 return new List<PrivateMessage>();
             }
         }
+
+        public List<string> getUsersFriends(string forumName, string userName)
+        {
+            try
+            {
+                return (List<string>)Client.SendRequest("getUsersFriends", forumName, userName);
+            }
+            catch (Exception)
+            {
+                return new List<string>();
+            }
+        }
+
+
+        public void removeFriend(string forumName, string userName, string friendUserName)
+        {
+            try
+            {
+               Client.SendRequest("removeFriend", forumName, userName, friendUserName);
+            }
+            catch (Exception)
+            {
+                
+            }
+
+        }
     }
 }

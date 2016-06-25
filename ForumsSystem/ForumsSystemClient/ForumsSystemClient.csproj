@@ -70,6 +70,9 @@
     <Compile Include="CommunicationLayer\NotificationHelper.cs" />
     <Compile Include="CommunicationLayer\TcpListenerEx.cs" />
     <Compile Include="CommunicationLayer\ThreadParameter.cs" />
+    <Compile Include="PresentationLayer\AddAdminToForumWindow.xaml.cs">
+      <DependentUpon>AddAdminToForumWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\AddAdminWindow.xaml.cs">
       <DependentUpon>AddAdminWindow.xaml</DependentUpon>
     </Compile>
@@ -107,6 +110,9 @@
     </Compile>
     <Compile Include="PresentationLayer\SendFriendReqWindow.xaml.cs">
       <DependentUpon>SendFriendReqWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\ShowFriends.xaml.cs">
+      <DependentUpon>ShowFriends.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLayer\SuperAdminReportsWindow.xaml.cs">
       <DependentUpon>SuperAdminReportsWindow.xaml</DependentUpon>
@@ -204,6 +210,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="PresentationLayer\AddAdminToForumWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLayer\AddAdminWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -277,6 +287,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\SendPrMsgWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\ShowFriends.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
