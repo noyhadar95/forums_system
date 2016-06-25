@@ -94,7 +94,7 @@ namespace ForumsSystemClient.PresentationLayer
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
             foreach (KeyValuePair<string, DateTime> pair in moderatorsLVItems)
             {
-                //moderators.Add(pair.Key, pair.Value);
+                moderators.Add(pair.Key, pair.Value);
                 bool isAdded = cl.AddModerator(forumName, subForumName, loggedUsername, pair);
                 if (!isAdded)
                     couldntAddList.Add(pair.Key);

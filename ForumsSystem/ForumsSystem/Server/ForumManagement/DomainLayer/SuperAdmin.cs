@@ -136,5 +136,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return instance != null;
 
         }
+        public bool ChangeForumProperties(IForum forum, Policy properties)
+        {
+
+            DAL_Forum dal_forum = new DAL_Forum();
+            bool res = forum.SetPolicy(properties);
+            if (res)
+                dal_forum.SetForumPolicy(forum.getName(), properties.ID);
+            return res;
+
+        }
     }
 }

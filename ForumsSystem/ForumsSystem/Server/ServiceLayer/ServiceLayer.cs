@@ -61,9 +61,12 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public bool ChangeForumProperties(string username, string forumName, Policy properties)
         {
+            SuperAdmin sa = SuperAdmin.GetInstance();
+            
             IForum forum = GetForum(forumName);
-            IUser user = forum.getUser(username);
-            return user.ChangeForumProperties(forum, properties);
+           // IUser user = forum.getUser(username);
+            //return user.ChangeForumProperties(forum, properties);
+            return sa.ChangeForumProperties(forum, properties);
         }
 
         public bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob)
