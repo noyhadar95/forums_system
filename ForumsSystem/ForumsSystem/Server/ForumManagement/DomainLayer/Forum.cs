@@ -581,7 +581,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         }
         public bool AddAdmin(string username)
         {
-            if (users[username] == null)
+            if (!users.ContainsKey(username))
                 return false;
             PolicyParametersObject param = new PolicyParametersObject(Policies.AdminAppointment);
                 param.User = users[username];
@@ -589,6 +589,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                 return false; ;
 
             users[username].ChangeType(new Admin());
+            return true;
+        }
+        public bool RemoveAdmin(string username)
+        {
+            if (!users.ContainsKey(username))
+                return false;
+            users[username].ChangeType(new Member());
             return true;
         }
     }

@@ -752,5 +752,12 @@ namespace ForumsSystem.Server.ServiceLayer
 
             return res;
         }
+        public bool RemoveAdmin(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            if (forum == null)
+                return false;
+            return forum.RemoveAdmin(username);
+        }
     }
 }

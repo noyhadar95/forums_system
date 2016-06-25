@@ -36,6 +36,7 @@ namespace ForumsSystemClient.PresentationLayer
 
             nonAdmins = new ObservableCollection<string>(nonAdminsList);
             lv_users.ItemsSource = nonAdmins;
+            this.loggedUsername= WindowHelper.GetLoggedUsername(forumName);
         }
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
@@ -45,7 +46,32 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void btn_switch_Click(object sender, RoutedEventArgs e)
         {
-
+            var selectedItems = lv_users.SelectedItems;
+            List<string> selectedItemsCopy = new List<string>();
+            foreach (string item in selectedItems)
+            {
+                selectedItemsCopy.Add(item);
+            }
+            if (selectedItemsCopy.Count != 1)
+            {
+                MessageBox.Show("Please Select exactly one user");
+                return;
+            }
+            foreach (string selectedItem in selectedItemsCopy)
+            {
+                bool f = cl.AddAdmin(forumName, selectedItem);
+                if (f)
+                {
+                    cl.RemoveAdmin(forumName, loggedUsername);
+                    MessageBox.Show("you have successfuly passed your administrative permissions");
+                    WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
+                }
+                else
+                {
+                    MessageBox.Show("new user cannot be an admin");
+                    return;
+                }
+            }
         }
     }
 }

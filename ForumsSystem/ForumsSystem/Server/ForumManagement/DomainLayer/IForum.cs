@@ -56,7 +56,6 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         void DeactivateUser (string username);
         bool isBanned(string userName);
        bool AddAdmin(string username);
-
-
+       bool RemoveAdmin(string username);
     }
 }

@@ -247,7 +247,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            WindowHelper.SwitchWindow(this, new ShowFriends(forumName));
+            WindowHelper.SwitchWindow(this, new ReplaceAdminWindow(forumName));
         }
     }
 }

@@ -961,5 +961,16 @@ namespace ForumsSystemClient.CommunicationLayer
             }
 
         }
+        public bool RemoveAdmin(string forumName, string username)
+        {
+            try
+            {
+                return (bool)Client.SendRequest("RemoveAdmin", forumName, username);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

@@ -55,19 +55,19 @@ namespace ForumsSystemClient.PresentationLayer
                 return;
             }
 
-            if (!rgx.IsMatch(txt_newPass.Text))
+            if (!rgx.IsMatch(txt_newPass.Password))
             {
                 MessageBox.Show("Enter valid Password");
                 return;
             }
-            if (!txt_newPass.Text.Equals(txt_newPassCon.Text))
+            if (!txt_newPass.Password.Equals(txt_newPassCon.Password))
             {
                 MessageBox.Show("Passwords do not match");
                 return;
             }
 
 
-            if (cl.CheckSecurityQuestion(forumName, txt_username.Text, cbbx_questions.SelectedIndex, txt_answer.Text,txt_newPass.Text ))
+            if (cl.CheckSecurityQuestion(forumName, txt_username.Text, cbbx_questions.SelectedIndex, txt_answer.Text,txt_newPass.Password))
             {
                 MessageBox.Show("Successfully Changed Password");
                 WindowHelper.SwitchWindow(this, new ForumWindow(forumName));

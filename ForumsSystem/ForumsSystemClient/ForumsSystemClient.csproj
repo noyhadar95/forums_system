@@ -108,6 +108,9 @@
     <Compile Include="PresentationLayer\PrivateMsgWindow.xaml.cs">
       <DependentUpon>PrivateMsgWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\ReplaceAdminWindow.xaml.cs">
+      <DependentUpon>ReplaceAdminWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\SendFriendReqWindow.xaml.cs">
       <DependentUpon>SendFriendReqWindow.xaml</DependentUpon>
     </Compile>
@@ -279,6 +282,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\RegisterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\ReplaceAdminWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -122,5 +122,6 @@ namespace ForumsSystem.Server.ServiceLayer
         void removeFriend(string forumName, string userName, string friendUserName);
 
         List<string> getNonAdmins(string forumName);
+        bool RemoveAdmin(string forumName, string username);
     }
 }
