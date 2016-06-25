@@ -1,0 +1,17 @@
+﻿<Window x:Class="ForumsSystemClient.PresentationLayer.SeePrivateMessagesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
+        mc:Ignorable="d"
+        Title="SeePrivateMessagesWindow" Height="450" Width="750">
+    <Grid>
+        <TreeView x:Name="postsTreeView" HorizontalAlignment="Left" Height="258" Margin="127,127,0,0" VerticalAlignment="Top" Width="496" Loaded="postsTreeView_Loaded" />
+        <Label x:Name="label1" Content="Private Messages" HorizontalAlignment="Left" Margin="295,10,0,0" VerticalAlignment="Top" FontSize="18.667"/>
+        <Label x:Name="label2" Content="messages count: " HorizontalAlignment="Left" Margin="127,95,0,0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="postsCountTB" HorizontalAlignment="Left" Margin="211,98,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
+        <Label x:Name="noPostsLbl" Content="you don't have any private messages" HorizontalAlignment="Left" Margin="231,238,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
