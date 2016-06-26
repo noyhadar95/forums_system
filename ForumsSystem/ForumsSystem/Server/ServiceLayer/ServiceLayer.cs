@@ -803,7 +803,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public void LogoutAll()
         {
-            SuperAdmin.GetInstance().LogoutAll();
+           // SuperAdmin.GetInstance().LogoutAll();
         }
 
         public void removeFriend(string forumName, string userName, string friendUserName)
