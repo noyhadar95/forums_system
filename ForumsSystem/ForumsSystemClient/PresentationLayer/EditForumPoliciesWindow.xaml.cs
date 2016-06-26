@@ -47,6 +47,7 @@ namespace ForumsSystemClient.PresentationLayer
         {
             // password
             InitComboBox(passwordLengthCB, AddForumWindow.MAX_PASS_LENGTH);
+            InitComboBox(passwordValidityCB, AddForumWindow.MAX_PASS_VALIDITY);
 
             // mod appointment
             InitComboBox(modSeniorityCB, AddForumWindow.MAX_MOD_SENIORITY);
