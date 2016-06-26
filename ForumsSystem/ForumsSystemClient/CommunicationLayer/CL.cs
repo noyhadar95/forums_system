@@ -923,6 +923,7 @@ namespace ForumsSystemClient.CommunicationLayer
             }
         }
 
+
         public List<string> getUsersFriends(string forumName, string userName)
         {
             try
@@ -970,6 +971,18 @@ namespace ForumsSystemClient.CommunicationLayer
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        public void LogoutAll()
+        {
+            try
+            {
+                Client.SendRequest("LogoutAll");
+            }
+            catch
+            {
+
             }
         }
     }

@@ -25,6 +25,7 @@ namespace ForumsSystemClient.PresentationLayer
         private CL cl;
         private ObservableCollection<string> users;
         private string loggedUsername;
+
         public BanUserWindow()
         {
             InitializeComponent();

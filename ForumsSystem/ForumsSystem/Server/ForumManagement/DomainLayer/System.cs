@@ -1,4 +1,5 @@
 ﻿using ForumsSystem.Server.ForumManagement.Data_Access_Layer;
+using ForumsSystem.Server.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -127,6 +128,17 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return forums.Keys.ToList<string>();
 
+        }
+        public void LogoutAll()
+        {
+            foreach (IForum f in forums.Values.ToArray())
+            {
+                foreach (IUser u in f.getUsersInForum().ToArray())
+                {
+                    if (u.isLogin())
+                        u.Logout();
+                }
+            }
         }
     }
 }

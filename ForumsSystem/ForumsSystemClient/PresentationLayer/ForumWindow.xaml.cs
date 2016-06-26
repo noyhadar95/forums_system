@@ -178,7 +178,7 @@ namespace ForumsSystemClient.PresentationLayer
 
             WindowHelper.SetCurrentWindow(this);
 
-            //// fields are not empty try to login
+            // fields are not empty try to login
             Tuple<User, string> userTokenTuple = null;
             if (sessionToken == "")
             {
@@ -194,6 +194,16 @@ namespace ForumsSystemClient.PresentationLayer
 
             if (user == null)
             {
+                if (userTokenTuple.Item2 == "-1")
+                {
+                    MessageBox.Show("this user has been banned from the forum");
+                }
+                else if (userTokenTuple.Item2 == "-2")
+                {
+                    MessageBox.Show("password validity period has been passed");
+                    WindowHelper.SwitchWindow(this, new ResetPasswordWindow(forumName));
+                }
+
                 // failed login
                 WindowHelper.SetCurrentWindow(null);
                 ShowBadLoginMsg();
@@ -235,8 +245,16 @@ namespace ForumsSystemClient.PresentationLayer
         }
 
 
+        private void complainUserBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new AddComplaintWindow(forumName));
+        }
 
-  
+        private void privateMsgBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new SeePrivateMessagesWindow(forumName));
+        }
+
 
         private void forgotPasswordBtn_Click(object sender, RoutedEventArgs e)
         {

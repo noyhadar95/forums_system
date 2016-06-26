@@ -76,6 +76,9 @@
     <Compile Include="PresentationLayer\AddAdminWindow.xaml.cs">
       <DependentUpon>AddAdminWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\AddComplaintWindow.xaml.cs">
+      <DependentUpon>AddComplaintWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\AddModeratorsWindow.xaml.cs">
       <DependentUpon>AddModeratorsWindow.xaml</DependentUpon>
     </Compile>
@@ -111,6 +114,11 @@
     <Compile Include="PresentationLayer\ReplaceAdminWindow.xaml.cs">
       <DependentUpon>ReplaceAdminWindow.xaml</DependentUpon>
 	</Compile>
+
+    <Compile Include="PresentationLayer\ResetPasswordWindow.xaml.cs">
+      <DependentUpon>ResetPasswordWindow.xaml</DependentUpon>
+    </Compile>
+
     <Compile Include="PresentationLayer\SeePrivateMessagesWindow.xaml.cs">
       <DependentUpon>SeePrivateMessagesWindow.xaml</DependentUpon>
     </Compile>
@@ -134,6 +142,7 @@
     <Compile Include="Resources\ForumManagement\DomainLayer\MaxModeratorsPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\MemberSuspensionPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\MinimumAgePolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\ModeratorDeletePermissionPolicy.cs" />
     <Compile Include="Resources\UserManagement\DomainLayer\Moderator.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\ModeratorAppointmentPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\ModeratorSeniorityPolicy.cs" />
@@ -224,6 +233,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PresentationLayer\AddComplaintWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PresentationLayer\AddForumWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -288,11 +301,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-
     <Page Include="PresentationLayer\ReplaceAdminWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
 	</Page>
+    <Page Include="PresentationLayer\ResetPasswordWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLayer\SeePrivateMessagesWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

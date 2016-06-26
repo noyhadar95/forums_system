@@ -19,5 +19,7 @@ namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
         public User sender { get; private set; }
         [IgnoreDataMember]
         public User receiver { get; private set; }
+        [DataMember]
+        public string senderUsername { get; private set; }
     }
 }

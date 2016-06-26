@@ -20,99 +20,57 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for SeePrivateMessagesWindow.xaml
     /// </summary>
-    public partial class SeePrivateMessagesWindow : Window
+    public partial class SeePrivateMessagesWindow : NotifBarWindow
     {
-        private CL cl;
-        private string forumName;
-        private string username; // show the posts of this user
+        private int CONTENT_LENGTH_TO_SHOW = 10;
 
-        private double firstLevelItemOffset = 70; // offset of the items in the first level of the treeview
-        private List<PrivateMessage> posts;
-
-        public SeePrivateMessagesWindow(string forumName, string username)
+        public SeePrivateMessagesWindow(string forumName) : base(forumName)
         {
             InitializeComponent();
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
-            this.forumName = forumName;
-            this.username = username;
+            base.Initialize(dockPanel);
 
-            noPostsLbl.Visibility = Visibility.Hidden;
-        }
-
-        private void postsTreeView_Loaded(object sender, RoutedEventArgs e)
-        {
-            posts = //TODO:cl.getprmsgs()
-            // update postsCount text block
-            postsCountTB.Text = "" + posts.Count;
-
-            if (posts.Count == 0)
+            List<PrivateMessage> pmList = cl.getReceivedMessages(forumName, loggedUsername);
+            foreach (PrivateMessage pm in pmList)
             {
-                noPostsLbl.Visibility = Visibility.Visible;
+                string content;
+                if (pm.content.Length < CONTENT_LENGTH_TO_SHOW)
+                    content = pm.content;
+                else
+                    content = pm.content.Substring(0, 10) + "...";
+                pmListView.Items.Add(new PMListItem { Sender = pm.senderUsername, Title = pm.title, Content = content });
             }
 
-            // Get TreeView reference and add the items for the posts.
-            var tree = sender as TreeView;
-            foreach (PrivateMessage post in posts)
+            RefreshNotificationsBar(loggedUsername);
+        }
+
+
+        private void pmListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var item = (sender as ListView).SelectedItem;
+            if (item != null)
             {
-                TreeViewItem item = new TreeViewItem();
-                tree.Items.Add(item);
-                // handles nested posts too
-                CreatePostTVItem(item, post, firstLevelItemOffset);
+                PMListItem pmItem = ((PMListItem)item);
+                Window newWin = new PrivateMsgWindow(pmItem.Sender, pmItem.Title, pmItem.Content);
+                WindowHelper.ShowWindow(this, newWin);
             }
         }
 
-        private void CreatePostTVItem(TreeViewItem item, PrivateMessage post, double nestedItemOffset)
+        private void backBtn_Click(object sender, RoutedEventArgs e)
         {
-            Border border = CreatePostBorder(post);
-            border.Width = postsTreeView.Width - nestedItemOffset;
-            item.Header = border;
-
+            WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
         }
 
-        // return border with stack pnael that contains the controls for a post
-        private Border CreatePostBorder(PrivateMessage post)
-        {
-
-
-            //TODO: sender and receiver!!!
-
-
-
-            // post title
-            TextBlock titleTB = new TextBlock();
-            titleTB.Text = post.title;
-            titleTB.Background = Brushes.AliceBlue;
-
-            // post content
-            TextBlock contentTB = new TextBlock();
-            contentTB.MaxWidth = postsTreeView.Width;
-            contentTB.TextWrapping = TextWrapping.WrapWithOverflow;
-            contentTB.Text = post.content;
-
-            // stack panel for the whole post
-            StackPanel sp = new StackPanel();
-            sp.Children.Add(WrapElementWithBorder(titleTB));
-            sp.Children.Add(WrapElementWithBorder(contentTB));
-
-            // post border
-            Border border = new Border();
-            border.Margin = new Thickness(0, 10, 15, 0);
-            border.BorderThickness = new Thickness(0.3);
-            border.BorderBrush = Brushes.Black;
-            border.Child = sp;
-
-            return border;
-        }
-
-        private Border WrapElementWithBorder(UIElement c)
-        {
-            Border border = new Border();
-            border.BorderThickness = new Thickness(0.3);
-            border.BorderBrush = Brushes.Black;
-            border.Child = c;
-            return border;
-        }
     }
+
+
+    public class PMListItem
+    {
+        public string Sender { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
     }
+
+}

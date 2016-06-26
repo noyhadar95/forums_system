@@ -95,6 +95,8 @@ namespace ForumsSystemClient.PresentationLayer
             policiesCBGridDict.Add(cbUsersLoad, gridUsersLoad);
             policiesCBGridDict.Add(cbMinimumAge, gridMinimumAge);
             policiesCBGridDict.Add(cbMaxModerators, gridMaxModerators);
+            policiesCBGridDict.Add(cbModeratorPermissionToDelete, gridModeratorPermissionToDelete);
+            policiesCBGridDict.Add(cbInteractivePolicy, gridInteractivePolicy);
         }
 
         private void HidePoliciesGrids()
@@ -108,6 +110,8 @@ namespace ForumsSystemClient.PresentationLayer
             gridPolicies.Children.Remove(gridUsersLoad);
             gridPolicies.Children.Remove(gridMinimumAge);
             gridPolicies.Children.Remove(gridMaxModerators);
+            gridPolicies.Children.Remove(gridModeratorPermissionToDelete);
+            gridPolicies.Children.Remove(gridInteractivePolicy);
         }
 
         private void HandleCheckedPolicy(CheckBox cb, Grid grid)
@@ -213,7 +217,7 @@ namespace ForumsSystemClient.PresentationLayer
             }
             if (cbConfidentiality.IsChecked == true)
             {
-                policyList.Add(new ConfidentialityPolicy(Policies.Confidentiality, (bool)confidentialityBlockPassCB.SelectedItem));
+                policyList.Add(new ConfidentialityPolicy(Policies.Confidentiality, WordToBool((string)confidentialityBlockPassCB.SelectedItem)));
             }
             if (cbModeratorAppointment.IsChecked == true)
             {
@@ -245,6 +249,29 @@ namespace ForumsSystemClient.PresentationLayer
             {
                 policyList.Add(new MaxModeratorsPolicy(Policies.MaxModerators, (int)maxModsCB.SelectedItem));
             }
+            if (cbModeratorPermissionToDelete.IsChecked == true)
+            {
+                policyList.Add(new ModeratorDeletePermissionPolicy(Policies.ModeratorPermissionToDelete, WordToBool((string)modPerToDeleteCB.SelectedItem)));
+            }
+            if (cbInteractivePolicy.IsChecked == true)
+            {
+                int notifMode = 0;
+                switch ((string)interactivePolicyCB.SelectedItem)
+                {
+                    case "online only":
+                        notifMode = 0;
+                        break;
+                    case "offline and online":
+                        notifMode = 1;
+                        break;
+                    case "selective":
+                        notifMode = 2;
+                        break;
+                    default:
+                        break;
+                }
+                policyList.Add(new InteractivePolicy(Policies.InteractivePolicy, notifMode));
+            }
 
             // check if no policy has been chosen
             if (policyList.Count == 0)
@@ -261,6 +288,13 @@ namespace ForumsSystemClient.PresentationLayer
             }
 
             return policyHead;
+        }
+
+        private bool WordToBool(string word)
+        {
+            if (word == "yes")
+                return true;
+            else return false;
         }
 
 

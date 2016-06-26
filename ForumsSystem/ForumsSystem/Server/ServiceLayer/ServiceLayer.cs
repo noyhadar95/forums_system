@@ -779,6 +779,7 @@ namespace ForumsSystem.Server.ServiceLayer
             return user.getReceivedMessages();
         }
 
+
         public List<string> getUsersFriends(string forumName, string userName)
         {
             IForum forum = GetForum(forumName);
@@ -791,6 +792,11 @@ namespace ForumsSystem.Server.ServiceLayer
                 res.Add(u.getUsername());
             }
             return res;
+        }
+
+        public void LogoutAll()
+        {
+            SuperAdmin.GetInstance().LogoutAll();
         }
 
         public void removeFriend(string forumName, string userName, string friendUserName)
