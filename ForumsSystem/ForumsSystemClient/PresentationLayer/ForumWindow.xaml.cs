@@ -292,7 +292,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void replaceAdminBtn_Click(object sender, RoutedEventArgs e)
         {
-            WindowHelper.SwitchWindow(this, new ResetPasswordWindow(forumName));
+            WindowHelper.SwitchWindow(this, new ReplaceAdminWindow(forumName));
         }
 
         private void friendsListBtn_Click(object sender, RoutedEventArgs e)

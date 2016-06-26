@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
         mc:Ignorable="d"
-        Title="ForumWindow" Height="530" Width="750">
+        Title="ForumWindow" Height="600" Width="750">
     <DockPanel x:Name="dockPanel">
         <!--<Menu x:Name="userMenuBar" DockPanel.Dock="Top">
             <Menu.Background>
@@ -22,7 +22,7 @@
 
         <Grid>
             <ListView x:Name="subForumsListView" HorizontalAlignment="Left" Height="224" Margin="185,125,0,0" VerticalAlignment="Top" Width="472" PreviewMouseLeftButtonUp="subForumsListView_PreviewMouseLeftButtonUp" />
-            <Button x:Name="backBtn" Content="back" TabIndex="13" HorizontalAlignment="Left" Margin="20,440,0,0" VerticalAlignment="Top" Width="76" Click="backBtn_Click"/>
+            <Button x:Name="backBtn" Content="back" TabIndex="13" HorizontalAlignment="Left" Margin="18,524,0,0" VerticalAlignment="Top" Width="76" Click="backBtn_Click"/>
             <Grid x:Name="loginGrid" HorizontalAlignment="Left" Height="105" Margin="18,8,0,0" VerticalAlignment="Top" Width="693">
                 <Button x:Name="loginBtn" Content="login" TabIndex="3" HorizontalAlignment="Left" Margin="217,10,0,0" VerticalAlignment="Top" Width="74" Click="loginBtn_Click" />
                 <Label x:Name="usernameLbl" Content="username" HorizontalAlignment="Left" Margin="0,7,0,0" VerticalAlignment="Top"/>

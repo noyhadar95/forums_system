@@ -18,8 +18,8 @@ namespace ForumsSystemClient
         protected override void OnExit(ExitEventArgs e)
         {
             // try logout if possible
-            ICL cl = new CL();
-            cl.LogoutAll();
+            //ICL cl = new CL();
+            //cl.LogoutAll();
 
             base.OnExit(e);
         }

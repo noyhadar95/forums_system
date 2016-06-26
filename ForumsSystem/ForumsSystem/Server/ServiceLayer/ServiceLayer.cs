@@ -793,6 +793,8 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user = forum.getUser(userName);
 
             List<IUser> friends = user.GetFriendsList();
+            if (friends == null)
+                return new List<string>();
             List<string> res = new List<string>();
             foreach (IUser u in friends)
             {
