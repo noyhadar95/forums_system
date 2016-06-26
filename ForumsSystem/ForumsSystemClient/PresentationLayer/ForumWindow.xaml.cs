@@ -299,6 +299,11 @@ namespace ForumsSystemClient.PresentationLayer
         {
             WindowHelper.SwitchWindow(this, new ShowFriends(forumName));
         }
+
+        private void banUserBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new BanUserWindow(forumName));
+        }
         
 
         #endregion

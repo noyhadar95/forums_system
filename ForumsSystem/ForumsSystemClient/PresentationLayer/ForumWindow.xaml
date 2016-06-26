@@ -51,7 +51,7 @@
             </Grid>
             <Label x:Name="badLoginLbl" Content="" HorizontalAlignment="Left" Margin="88,-3,0,0" VerticalAlignment="Top" Foreground="#FFEC350C" FontWeight="Bold"/>
             <Grid x:Name="moderatorGrid" HorizontalAlignment="Left" Height="46" Margin="996,335,-424,0" VerticalAlignment="Top" Width="170">
-                <Button x:Name="banUserBtn" Content="ban user" TabIndex="10" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"  Width="103" Height="30" Click="privateMsgBtn_Click" />
+                <Button x:Name="banUserBtn" Content="ban user" TabIndex="10" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"  Width="103" Height="30" Click="banUserBtn_Click" />
             </Grid>
 
         </Grid>
