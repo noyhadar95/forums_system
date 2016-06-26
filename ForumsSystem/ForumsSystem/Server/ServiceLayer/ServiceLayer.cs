@@ -32,7 +32,11 @@ namespace ForumsSystem.Server.ServiceLayer
                 return true;
             }
             else
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to initial system");
                 return false;
+            }
+            
         }
 
         public Forum CreateForum(string creatorName, string password, string name, Policy properties, List<User> adminUsername)
@@ -44,9 +48,17 @@ namespace ForumsSystem.Server.ServiceLayer
             }
             SuperAdmin creator;
             if (!SuperAdmin.GetInstance().userName.Equals(creatorName))
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to create forum");
                 return null;
+            }
+                
             if (!SuperAdmin.GetInstance().password.Equals(password))
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to create system");
                 return null;
+            }
+                
             creator = SuperAdmin.GetInstance();
             // creator.Login(creatorName, password);//TODO ?????
             return creator.createForum(name, properties, serverAdmins);
@@ -84,7 +96,11 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             IUser creator = GetForum(forumName).getUser(creatorName);
             if (creator == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to create sub forum because no creator");
                 return null;
+            }
+               
             return creator.createSubForum(subforumName, moderators);
 
         }
@@ -95,7 +111,11 @@ namespace ForumsSystem.Server.ServiceLayer
             ISubForum subForum = forum.getSubForum(subForumName);
             IUser publisher = forum.getUser(publisherName);
             if (publisher == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to add thread no publisher");
                 return -1;
+            }
+                
             Thread t = publisher.createThread(subForum, title, content);
             if (t != null)
                 return t.id;
@@ -133,9 +153,9 @@ namespace ForumsSystem.Server.ServiceLayer
             return admin.editExpirationTimeOfModerator(moderator, newDate, subforum);
         }
 
-        private bool DeletePostHelper(IUser deleter, Post post)
+        private bool DeletePostHelper(IUser deleter, Post post, string subforum)
         {
-            return deleter.deletePost(post);
+            return deleter.deletePost(post, subforum);
         }
 
         public bool DeleteForumProperties(string deleter, string forumName, List<Policies> properties)
@@ -143,7 +163,11 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(deleter);
             if (user == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to delete forum properties no user");
                 return false;
+            }
+                
             return user.DeleteForumProperties(forum, properties);
 
         }
@@ -172,12 +196,24 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             IForum forum = this.GetForum(forumName);
             if (forum == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to confirm registration forum is null");
                 return false;
+            }
+                
             IUser user = forum.GetWaitingUser(username);
             if (user == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to confirm registration user is null");
                 return false;
+            }
+
             return user.AcceptEmail(token);
             
+
+            
+           
+
         }
 
         public bool LoginSuperAdmin(string username, string pass)
@@ -229,7 +265,10 @@ namespace ForumsSystem.Server.ServiceLayer
             ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
             IForum forum = sys.getForum(forumName);
             if (forum == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("is exist forum forum is null");
                 return false;
+            }
             return true;
         }
 
@@ -242,12 +281,18 @@ namespace ForumsSystem.Server.ServiceLayer
             {
                 Post post = thread.GetPostById(postID);
                 if (post == null)
+                {
+                    Loggers.Logger.GetInstance().AddErrorEntry("Failed to delete post no post");
                     return false;
-
-                return DeletePostHelper(user, post);
+                }
+                return DeletePostHelper(user, post, subForumName);
             }
             else
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to delete post no therad or user");
                 return false;
+            }
+               
         }
 
         public void DeleteForum(string forumName)
@@ -294,7 +339,10 @@ namespace ForumsSystem.Server.ServiceLayer
             if (SuperAdmin.GetInstance().userName == userName && SuperAdmin.GetInstance().password == password)
                 return sys.GetMultipleUsersInfo();
             else
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("is exist thread faild");
                 return null;
+            }
         }
 
         public int GetNumOfForums(string userName, string password)
@@ -302,7 +350,11 @@ namespace ForumsSystem.Server.ServiceLayer
             if (SuperAdmin.GetInstance().userName == userName && SuperAdmin.GetInstance().password == password)
                 return sys.GetNumOfForums();
             else
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("get num of forums faild");
+
                 return -1;
+            }
         }
 
         public List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username)
@@ -349,7 +401,11 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             Policy policy = forum.GetPolicy();
             if (policy == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("check if policy exists - no policy");
                 return false;
+            }
+                
             bool res = policy.CheckIfPolicyExists(expectedPolicy);
             return res;
         }
@@ -406,14 +462,21 @@ namespace ForumsSystem.Server.ServiceLayer
         public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
         {
             IForum forum = GetForum(forumName);
-            if (forum == null) return false;
+            if (forum == null) {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to remove moderator no forum");
+                return false; }
             ISubForum subforum = forum.getSubForum(subForumName);
-            if (subforum == null) return false;
+            if (subforum == null) {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to remove moderator no subforum");
+                return false; }
             Moderator moderator = subforum.getModeratorByUserName(moderatorName);
             //IUser user = forum.getUser(remover);
             //IUser moderator = forum.getUser(moderatorName);
             if (moderator == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to remove moderator no moderator");
                 return false;
+            }
             //  if (!moderator.CanBeDeletedBy(remover))
             //      return false;
             return subforum.removeModerator(remover, moderatorName);

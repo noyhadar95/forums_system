@@ -355,7 +355,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return true;
         }
 
-        public virtual bool deletePost(IUser callingUser, Post post)
+        public virtual bool deletePost(IUser callingUser, Post post, string subforum)
         {
             if (!callingUser.isLogin())
                 return false;
@@ -363,7 +363,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return false;
             //check if caling user is the publisher or an admin
             if (post.getPublisher() == callingUser
-                ||((callingUser.getForum().getName().Equals(post.getPublisher().getForum().getName()))&& callingUser.getType() is Admin))
+                || ((callingUser.getForum().getName().Equals(post.getPublisher().getForum().getName())) && callingUser.getType() is Admin)
+                || ((callingUser.getForum().getName().Equals(post.getPublisher().getForum().getName())) && post.getPublisher().getForum().getSubForum(subforum).isModerator(callingUser.getUsername())&& 
+                post.getPublisher().getForum().getSubForum(subforum).getModeratorByUserName(callingUser.getUsername()).hasSeniority()))
             {
                 List<Post> replies = post.GetReplies();
                 foreach (Post p in replies)

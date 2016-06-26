@@ -73,7 +73,10 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public bool hasSeniority()
         {
-            return (DateTime.Now - appointmentDate).TotalDays > 10;
+            bool f1= (DateTime.Now - appointmentDate).TotalDays > 10;
+            PolicyParametersObject p = new PolicyParametersObject(Policies.ModeratorPermissionToDelete);
+            bool f2 = this.user.getForum().GetPolicy() != null && this.user.getForum().GetPolicy().CheckPolicy(p);
+            return f1 || f2;
         }
     }
 }
