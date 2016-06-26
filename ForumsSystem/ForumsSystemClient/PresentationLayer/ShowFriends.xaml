@@ -1,4 +1,4 @@
-﻿<Window x:Class="ForumsSystemClient.PresentationLayer.ShowFriends"
+﻿<local:NotifBarWindow x:Class="ForumsSystemClient.PresentationLayer.ShowFriends"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
         mc:Ignorable="d"
         Title="ShowFriends" Height="450" Width="700">
+    <DockPanel x:Name="dockPanel">
     <Grid>
         <Button x:Name="btn_delete" Content="Remove Friend" TabIndex="2" HorizontalAlignment="Left" Margin="375,331,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="btn_delete_Click" />
         <Label x:Name="label" Content="Friends" HorizontalAlignment="Left" Margin="242,10,0,0" VerticalAlignment="Top" FontSize="14.667"/>
@@ -20,4 +21,5 @@
         <Label x:Name="label1" Content="Select Friends:" HorizontalAlignment="Left" Margin="242,66,0,0" VerticalAlignment="Top"/>
 
     </Grid>
-</Window>
+    </DockPanel>
+</local:NotifBarWindow>

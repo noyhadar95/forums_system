@@ -51,6 +51,9 @@ namespace ForumsSystemClient.PresentationLayer
             adminGrid.Visibility = Visibility.Hidden;
             adminGrid.Margin = new Thickness(userGrid.Margin.Left, userGrid.Margin.Top + userGrid.Height,
                 userGrid.Margin.Right, userGrid.Margin.Bottom);
+            moderatorGrid.Visibility = Visibility.Hidden;
+            moderatorGrid.Margin = new Thickness(adminGrid.Margin.Left, adminGrid.Margin.Top + adminGrid.Height,
+               adminGrid.Margin.Right, adminGrid.Margin.Bottom);
 
 
             // hide user menu bar (notifications bar included)
@@ -66,10 +69,27 @@ namespace ForumsSystemClient.PresentationLayer
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
 
+                if (IsModerator(items, user))
+                    ShowModeratorViewMode(user.Username);
             }
 
         }
 
+        private bool IsModerator(List<string> subforumsList, User user)
+        {
+            // handle moderator
+            bool isMod = false;
+            foreach (string subforum in subforumsList)
+            {
+                if (cl.IsModerator(forumName, subforum, user.Username))
+                {
+                    isMod = true;
+                    break;
+                }
+            }
+
+            return isMod;
+        }
 
         private void subForumsListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -100,6 +120,11 @@ namespace ForumsSystemClient.PresentationLayer
             adminGrid.Visibility = Visibility.Visible;
         }
 
+        private void ShowModeratorViewMode(string username)
+        {
+            moderatorGrid.Visibility = Visibility.Visible;
+        }
+
         private void ShowBadLoginMsg()
         {
             badLoginLbl.Content = badLoginMsg;
@@ -117,6 +142,7 @@ namespace ForumsSystemClient.PresentationLayer
             loginGrid.Visibility = Visibility.Visible;
             userGrid.Visibility = Visibility.Hidden;
             adminGrid.Visibility = Visibility.Hidden;
+            moderatorGrid.Visibility = Visibility.Hidden;
 
             // hide and clear user menu bar
             userMenuBar.Visibility = Visibility.Hidden;
@@ -225,6 +251,9 @@ namespace ForumsSystemClient.PresentationLayer
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
 
+                List<string> subforumsList = cl.GetSubForumsList(forumName);
+                if (IsModerator(subforumsList, user))
+                    ShowModeratorViewMode(user.Username);
 
             }
         }
@@ -261,11 +290,19 @@ namespace ForumsSystemClient.PresentationLayer
             WindowHelper.SwitchWindow(this, new ForgotPassword(forumName));
         }
 
-        #endregion
-
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void replaceAdminBtn_Click(object sender, RoutedEventArgs e)
         {
             WindowHelper.SwitchWindow(this, new ReplaceAdminWindow(forumName));
         }
+
+        private void friendsListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new ShowFriends(forumName));
+        }
+        
+
+        #endregion
+
+
     }
 }
