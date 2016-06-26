@@ -344,9 +344,9 @@ namespace ForumsSystem.Server.CommunicationLayer
 
                 if (method.Equals("LogoutAll"))
                 {
-                    halfClients = new Dictionary<Tuple<string, string>, string>();
-                    clients = new Dictionary<Tuple<string, string>, string>();
-                    clientsDetails = new Dictionary<int, Client>();
+                   // halfClients = new Dictionary<Tuple<string, string>, string>();
+                   // clients = new Dictionary<Tuple<string, string>, string>();
+                  //  clientsDetails = new Dictionary<int, Client>();
                     clientSessions = new Dictionary<Tuple<string, string>, Tuple<string, int>>();
                 }
 
