@@ -40,7 +40,7 @@ namespace ForumsSystemClient.PresentationLayer
                     content = pm.content;
                 else
                     content = pm.content.Substring(0, 10) + "...";
-                pmListView.Items.Add(new PMListItem { Sender = pm.senderUsername, Title = pm.title, Content = content });
+                pmListView.Items.Add(new PMListItem { Sender = pm.senderUsername, Title = pm.title, Content = content, FullContent = pm.content });
             }
 
             RefreshNotificationsBar(loggedUsername);
@@ -53,7 +53,7 @@ namespace ForumsSystemClient.PresentationLayer
             if (item != null)
             {
                 PMListItem pmItem = ((PMListItem)item);
-                Window newWin = new PrivateMsgWindow(pmItem.Sender, pmItem.Title, pmItem.Content);
+                Window newWin = new PrivateMsgWindow(pmItem.Sender, pmItem.Title, pmItem.FullContent);
                 WindowHelper.ShowWindow(this, newWin);
             }
         }
@@ -71,6 +71,7 @@ namespace ForumsSystemClient.PresentationLayer
         public string Sender { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
+        public string FullContent { get; set; }
     }
 
 }

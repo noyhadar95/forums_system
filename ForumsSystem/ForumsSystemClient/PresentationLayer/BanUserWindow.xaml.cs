@@ -19,21 +19,23 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for BanUserWindow.xaml
     /// </summary>
-    public partial class BanUserWindow : Window
+    public partial class BanUserWindow : NotifBarWindow
     {
-        private string forumName;
-        private CL cl;
         private ObservableCollection<string> users;
-        private string loggedUsername;
 
-        public BanUserWindow()
+        public BanUserWindow(string forumName) : base(forumName)
         {
             InitializeComponent();
+            WindowHelper.SetWindowBGImg(this);
+            cl = new CL();
 
-            loggedUsername = WindowHelper.GetLoggedUsername(forumName);
+            base.Initialize(dockPanel);
+
             List<string> usersList = cl.GetUsersInForum(forumName);
             users = new ObservableCollection<string>(usersList);
             usersLV.ItemsSource = users;
+
+            RefreshNotificationsBar(loggedUsername);
         }
 
         private void sendBtn_Click(object sender, RoutedEventArgs e)

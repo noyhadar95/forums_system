@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ForumsSystemClient.CommunicationLayer;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -18,25 +19,24 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for ReplaceAdminWindow.xaml
     /// </summary>
-    public partial class ReplaceAdminWindow : Window
+    public partial class ReplaceAdminWindow : NotifBarWindow
     {
-        private string forumName;
-        private string loggedUsername;
-        private CommunicationLayer.CL cl;
-
         private ObservableCollection<string> nonAdmins;
-        public ReplaceAdminWindow(string forumName)
+
+        public ReplaceAdminWindow(string forumName) : base(forumName)
         {
             InitializeComponent();
 
-            this.forumName = forumName;
+            WindowHelper.SetWindowBGImg(this);
+            cl = new CL();
 
-            cl = new CommunicationLayer.CL();
+            base.Initialize(dockPanel);
+
             List<string> nonAdminsList = cl.getNonAdmins(forumName);
-
             nonAdmins = new ObservableCollection<string>(nonAdminsList);
             lv_users.ItemsSource = nonAdmins;
-            this.loggedUsername= WindowHelper.GetLoggedUsername(forumName);
+
+            RefreshNotificationsBar(loggedUsername);
         }
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)

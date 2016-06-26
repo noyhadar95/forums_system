@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ForumsSystemClient.CommunicationLayer;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -18,28 +19,24 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for ShowFriends.xaml
     /// </summary>
-    public partial class ShowFriends : Window
+    public partial class ShowFriends : NotifBarWindow
     {
-        private string forumName;
-        private string loggedUsername;
-        private CommunicationLayer.CL cl;
-
-
         private ObservableCollection<string> friends;
-        public ShowFriends(string forumName )
+
+        public ShowFriends(string forumName ) : base(forumName)
         {
             InitializeComponent();
-            this.forumName = forumName;
 
-            loggedUsername = WindowHelper.GetLoggedUsername(forumName);
+            WindowHelper.SetWindowBGImg(this);
+            cl = new CL();
 
-            cl = new CommunicationLayer.CL();
+            base.Initialize(dockPanel);
+
             List<string> friendsList = cl.getUsersFriends(forumName, loggedUsername);
-
             friends = new ObservableCollection<string>(friendsList);
             lv_friends.ItemsSource = friends;
 
-
+            RefreshNotificationsBar(loggedUsername);
         }
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)

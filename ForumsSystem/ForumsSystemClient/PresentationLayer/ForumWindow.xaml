@@ -35,20 +35,24 @@
                 <Button x:Name="confirmEmailBtn" Content="confirm email" TabIndex="4" HorizontalAlignment="Left" Margin="580,10,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="confirmEmailBtn_Click" />
                 <Button x:Name="forgotPasswordBtn" Content="forgot password" TabIndex="5" HorizontalAlignment="Left" Margin="580,60,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="forgotPasswordBtn_Click" />
             </Grid>
-            <Grid x:Name="adminGrid" HorizontalAlignment="Left" Height="88" Margin="-196,182,0,0" VerticalAlignment="Top" Width="172">
+            <Grid x:Name="adminGrid" HorizontalAlignment="Left" Height="125" Margin="-196,182,0,0" VerticalAlignment="Top" Width="172">
                 <Button x:Name="addSubForumBtn" Content="add sub forum" TabIndex="11" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="addSubForumBtn_Click"/>
                 <Button x:Name="reportsBtn" Content="reports" TabIndex="12" HorizontalAlignment="Left" Margin="5,51,0,0" VerticalAlignment="Top" Width="103" Height="30" FontSize="10.667" Click="reportsBtn_Click"  />
+                <Button x:Name="replaceAdminBtn" Content="replace admin" TabIndex="12" HorizontalAlignment="Left" Margin="5,93,0,0" VerticalAlignment="Top" Width="103" Height="30" FontSize="10.667" Click="replaceAdminBtn_Click"  />
             </Grid>
-            <Grid x:Name="userGrid" Height="274" Margin="786,90,-214,0" VerticalAlignment="Top">
+            <Grid x:Name="userGrid" Height="314" Margin="786,90,-214,0" VerticalAlignment="Top">
                 <Button x:Name="logoutBtn" Content="logout" TabIndex="6" HorizontalAlignment="Left" Margin="5,54,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="logoutBtn_Click"/>
                 <Button x:Name="sendMsgBtn" Content="send private msg" TabIndex="7" HorizontalAlignment="Left" Margin="5,101,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="sendMsgBtn_Click"/>
                 <TextBlock x:Name="welcomeTextBlock" HorizontalAlignment="Left" Margin="5,10,0,0" TextWrapping="WrapWithOverflow" Text="Welcome" VerticalAlignment="Top"/>
                 <Button x:Name="addFriendBtn" Content="add friend" TabIndex="8" HorizontalAlignment="Left" Margin="5,145,0,0" VerticalAlignment="Top"  Width="103" Height="30" Click="addFriendBtn_Click" />
                 <Button x:Name="complainUserBtn" Content="complain user" TabIndex="9" HorizontalAlignment="Left" Margin="5,191,0,0" VerticalAlignment="Top"  Width="103" Height="30" Click="complainUserBtn_Click" />
                 <Button x:Name="privateMsgBtn" Content="private messages" TabIndex="10" HorizontalAlignment="Left" Margin="5,237,0,0" VerticalAlignment="Top"  Width="103" Height="30" Click="privateMsgBtn_Click" />
+                <Button x:Name="friendsListBtn" Content="friends list" TabIndex="10" HorizontalAlignment="Left" Margin="5,282,0,0" VerticalAlignment="Top"  Width="103" Height="30" Click="friendsListBtn_Click" />
             </Grid>
             <Label x:Name="badLoginLbl" Content="" HorizontalAlignment="Left" Margin="88,-3,0,0" VerticalAlignment="Top" Foreground="#FFEC350C" FontWeight="Bold"/>
-            <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="232,373,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
+            <Grid x:Name="moderatorGrid" HorizontalAlignment="Left" Height="46" Margin="996,335,-424,0" VerticalAlignment="Top" Width="170">
+                <Button x:Name="banUserBtn" Content="ban user" TabIndex="10" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"  Width="103" Height="30" Click="banUserBtn_Click" />
+            </Grid>
 
         </Grid>
     </DockPanel>
