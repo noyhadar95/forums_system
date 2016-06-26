@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
 {
-    class ModeratorDeletePermissionPolicy : Policy
+    [DataContract(IsReference = true)]
+   public class ModeratorDeletePermissionPolicy : Policy
     {
         [DataMember]
-        private bool moderatorDeletePermission;
+        public bool moderatorDeletePermission { get; set; }
 
         public ModeratorDeletePermissionPolicy(Policies type, bool moderatorDeletePermission) : base(type)
         {

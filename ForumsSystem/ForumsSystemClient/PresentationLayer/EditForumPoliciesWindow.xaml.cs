@@ -209,7 +209,7 @@ namespace ForumsSystemClient.PresentationLayer
 
             if (cbPassword.IsChecked == true)
             {
-                policyList.Add(new PasswordPolicy(Policies.Password, (int)passwordLengthCB.SelectedItem, (int)passwordValidityCB.SelectedItem));
+                policyList.Add(new PasswordPolicy(Policies.Password, (int)passwordLengthCB.SelectionBoxItem, (int)passwordValidityCB.SelectionBoxItem));
             }
             if (cbAuthentication.IsChecked == true)
             {
@@ -217,46 +217,46 @@ namespace ForumsSystemClient.PresentationLayer
             }
             if (cbConfidentiality.IsChecked == true)
             {
-                policyList.Add(new ConfidentialityPolicy(Policies.Confidentiality, WordToBool((string)confidentialityBlockPassCB.SelectedItem)));
+                policyList.Add(new ConfidentialityPolicy(Policies.Confidentiality, WordToBool((string)confidentialityBlockPassCB.SelectionBoxItem)));
             }
             if (cbModeratorAppointment.IsChecked == true)
             {
-                policyList.Add(new ModeratorAppointmentPolicy(Policies.ModeratorAppointment, (int)modSeniorityCB.SelectedItem, (int)modNumOfMessagesCB.SelectedItem,
-                    (int)modNumOfComplaintsCB.SelectedItem));
+                policyList.Add(new ModeratorAppointmentPolicy(Policies.ModeratorAppointment, (int)modSeniorityCB.SelectionBoxItem, (int)modNumOfMessagesCB.SelectionBoxItem,
+                    (int)modNumOfComplaintsCB.SelectionBoxItem));
             }
             if (cbAdminAppointment.IsChecked == true)
             {
-                policyList.Add(new AdminAppointmentPolicy(Policies.AdminAppointment, (int)adminSeniorityCB.SelectedItem, (int)adminNumOfMessagesCB.SelectedItem,
-                    (int)adminNumOfComplaintsCB.SelectedItem));
+                policyList.Add(new AdminAppointmentPolicy(Policies.AdminAppointment, (int)adminSeniorityCB.SelectionBoxItem, (int)adminNumOfMessagesCB.SelectionBoxItem,
+                    (int)adminNumOfComplaintsCB.SelectionBoxItem));
             }
             if (cbModeratorSuspension.IsChecked == true)
             {
-                policyList.Add(new ModeratorSuspensionPolicy(Policies.ModeratorSuspension, (int)modSuspNumOfComplCB.SelectedItem));
+                policyList.Add(new ModeratorSuspensionPolicy(Policies.ModeratorSuspension, (int)modSuspNumOfComplCB.SelectionBoxItem));
             }
             if (cbMemberSuspension.IsChecked == true)
             {
-                policyList.Add(new MemberSuspensionPolicy(Policies.MemberSuspension, (int)memberSuspNumOfComplCB.SelectedItem));
+                policyList.Add(new MemberSuspensionPolicy(Policies.MemberSuspension, (int)memberSuspNumOfComplCB.SelectionBoxItem));
             }
             if (cbUsersLoad.IsChecked == true)
             {
-                policyList.Add(new UsersLoadPolicy(Policies.UsersLoad, (int)maxUsersCB.SelectedItem));
+                policyList.Add(new UsersLoadPolicy(Policies.UsersLoad, (int)maxUsersCB.SelectionBoxItem));
             }
             if (cbMinimumAge.IsChecked == true)
             {
-                policyList.Add(new MinimumAgePolicy(Policies.MinimumAge, (int)minAgeCB.SelectedItem));
+                policyList.Add(new MinimumAgePolicy(Policies.MinimumAge, (int)minAgeCB.SelectionBoxItem));
             }
             if (cbMaxModerators.IsChecked == true)
             {
-                policyList.Add(new MaxModeratorsPolicy(Policies.MaxModerators, (int)maxModsCB.SelectedItem));
+                policyList.Add(new MaxModeratorsPolicy(Policies.MaxModerators, (int)maxModsCB.SelectionBoxItem));
             }
             if (cbModeratorPermissionToDelete.IsChecked == true)
             {
-                policyList.Add(new ModeratorDeletePermissionPolicy(Policies.ModeratorPermissionToDelete, WordToBool((string)modPerToDeleteCB.SelectedItem)));
+                policyList.Add(new ModeratorDeletePermissionPolicy(Policies.ModeratorPermissionToDelete, WordToBool((string)modPerToDeleteCB.SelectionBoxItem)));
             }
             if (cbInteractivePolicy.IsChecked == true)
             {
                 int notifMode = 0;
-                switch ((string)interactivePolicyCB.SelectedItem)
+                switch ((string)interactivePolicyCB.SelectionBoxItem)
                 {
                     case "online only":
                         notifMode = 0;

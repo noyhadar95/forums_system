@@ -423,9 +423,12 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public List<string> GetWaitingFriendsList(string forumName, string username)
         {
+           
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
             List<IUser> waitingFriends = user.GetWaitingFriendsList();
+            if (waitingFriends == null)
+                return new List<string>();
             List<string> res = new List<string>();
             foreach (IUser u in waitingFriends)
             {
