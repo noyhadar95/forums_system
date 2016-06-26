@@ -692,6 +692,8 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             if (forum == null)
                 return true;
+            if (forum.getUser(username) == null)
+                return true;
             PolicyParametersObject expPass = new PolicyParametersObject(Policies.PasswordValidity);
             Policy p = forum.GetPolicy();
             while (p != null)
@@ -755,6 +757,8 @@ namespace ForumsSystem.Server.ServiceLayer
         public bool isBanned(string forumName, string userName)
         {
             IForum forum = GetForum(forumName);
+            if (forum.getUser(userName) == null)
+                return false;
             return forum.isBanned(userName);
         }
 

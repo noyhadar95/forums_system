@@ -194,11 +194,11 @@ namespace ForumsSystemClient.PresentationLayer
 
             if (user == null)
             {
-                if (userTokenTuple.Item2 == "-1")
+                if (userTokenTuple.Item2 == "-2")
                 {
                     MessageBox.Show("this user has been banned from the forum");
                 }
-                else if (userTokenTuple.Item2 == "-2")
+                else if (userTokenTuple.Item2 == "-1")
                 {
                     MessageBox.Show("password validity period has been passed");
                     WindowHelper.SwitchWindow(this, new ResetPasswordWindow(forumName));
@@ -265,7 +265,7 @@ namespace ForumsSystemClient.PresentationLayer
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            WindowHelper.SwitchWindow(this, new ReplaceAdminWindow(forumName));
+            WindowHelper.SwitchWindow(this, new ResetPasswordWindow(forumName));
         }
     }
 }
