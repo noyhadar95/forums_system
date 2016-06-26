@@ -19,26 +19,24 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for AddComplaintWindow.xaml
     /// </summary>
-    public partial class AddComplaintWindow : Window
+    public partial class AddComplaintWindow : NotifBarWindow
     {
-        CL cl;
-        private string forumName;
-        private string loggedUsername;
         private ObservableCollection<string> users;
 
-        public AddComplaintWindow(string forumName)
+        public AddComplaintWindow(string forumName) : base(forumName)
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
-
             cl = new CL();
-            this.forumName = forumName;
+            base.Initialize(dockPanel);
 
-            this.loggedUsername = WindowHelper.GetLoggedUsername(forumName);
             List<string> usersList = cl.GetUsersInForum(forumName);
+            usersList.Remove(loggedUsername);
             users = new ObservableCollection<string>(usersList);
             usersLV.ItemsSource = users;
+
+            RefreshNotificationsBar(loggedUsername);
         }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
@@ -50,9 +48,9 @@ namespace ForumsSystemClient.PresentationLayer
         {
             var selectedItems = usersLV.SelectedItems;
             List<string> selectedItemsCopy = new List<string>();
-            if (selectedItemsCopy.Count != 1)
+            if (selectedItems.Count != 1)
             {
-                MessageBox.Show("Can only complaint one user at a time");
+                MessageBox.Show("Can only complain on one user at a time");
                 return;
             }
             foreach (string item in selectedItems)
@@ -61,9 +59,9 @@ namespace ForumsSystemClient.PresentationLayer
             }
             foreach (string selectedItem in selectedItemsCopy)
             {
-                cl.AddComplaint(forumName,"", selectedItem);
+                cl.AddComplaint(forumName, "", selectedItem);
             }
-            
+
             MessageBox.Show("your complaint has been successfully sent");
             WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
         }

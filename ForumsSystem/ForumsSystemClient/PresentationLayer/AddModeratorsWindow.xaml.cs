@@ -39,7 +39,9 @@ namespace ForumsSystemClient.PresentationLayer
             base.Initialize(dockPanel);
 
             List<string> usersList = cl.GetUsersInForum(forumName);
-            notModeratorsLVItems = new ObservableCollection<string>(usersList);
+            List<string> modsList = cl.GetModeratorsList(forumName, subForumName, loggedUsername);
+            List<string> notModsList = usersList.Except(modsList).ToList<string>();
+            notModeratorsLVItems = new ObservableCollection<string>(notModsList);
             moderatorsLVItems = new ObservableCollection<KeyValuePair<string, DateTime>>();
 
             notModeratorsListView.ItemsSource = notModeratorsLVItems;

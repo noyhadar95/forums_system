@@ -125,7 +125,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
         PrivateMessage GetPrivateMsg(string forumName, string msgReceiver, string msgSender, int pmID);
         List<PrivateMessage> getReceivedMessages(string forumName, string username);
-
+        void LogoutAll();
 
     }
 }

@@ -146,5 +146,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return res;
 
         }
+        public void LogoutAll()
+        {
+            forumSystem.LogoutAll();
+        }
     }
 }

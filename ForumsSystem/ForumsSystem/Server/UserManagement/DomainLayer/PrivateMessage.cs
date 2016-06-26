@@ -24,6 +24,8 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public IUser receiver { get; private set; }
 
         public int id { get; private set; }
+        [DataMember]
+        public string senderUsername { get; private set; }
 
         public PrivateMessage(string title,string content, IUser sender, IUser receiver)
         {
@@ -31,8 +33,19 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             this.content = content;
             this.sender = sender;
             this.receiver = receiver;
+            this.senderUsername = sender.getUsername();
             DAL_Messages dm = new DAL_Messages();
             this.id = dm.CreateMessage(sender.getForum().getName(), sender.getUsername(), receiver.getUsername(), title, content);
+        }
+
+        public PrivateMessage(string title, string content, IUser sender, IUser receiver,int i)
+        {
+            this.title = title;
+            this.content = content;
+            this.sender = sender;
+            this.receiver = receiver;
+            this.senderUsername = sender.getUsername();
+          
         }
 
         private PrivateMessage()
@@ -54,6 +67,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                     message.title = messageRow["Title"].ToString();
                     message.content = messageRow["Content"].ToString();
                     message.sender = user;
+                    message.senderUsername = user.getUsername();
                     User reciever =(User)allUsers[messageRow["RecieverUserName"].ToString()];
                     message.receiver = reciever;
                     message.id = (int)messageRow["ID"];

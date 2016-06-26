@@ -227,6 +227,8 @@ namespace ForumsSystem.Server.CommunicationLayer
             }
 
 
+            
+
 
             if (method.Equals("MemberLogin"))
             {//check if login then Halfsubscribe
@@ -323,6 +325,10 @@ namespace ForumsSystem.Server.CommunicationLayer
 
                 //HalfSubscribeClient(client, forumName, username);
             }
+
+
+          
+
             if (returnObj == null)
             {
 
@@ -334,6 +340,17 @@ namespace ForumsSystem.Server.CommunicationLayer
                 NetworkStream nwStream = client.GetStream();
                 byte[] buf = GetBytes(returnValue);
                 nwStream.Write(buf, 0, buf.Length);
+
+
+                if (method.Equals("LogoutAll"))
+                {
+                    halfClients = new Dictionary<Tuple<string, string>, string>();
+                    clients = new Dictionary<Tuple<string, string>, string>();
+                    clientsDetails = new Dictionary<int, Client>();
+                    clientSessions = new Dictionary<Tuple<string, string>, Tuple<string, int>>();
+                }
+
+
                 client.Close();
             }
             else {
@@ -349,6 +366,17 @@ namespace ForumsSystem.Server.CommunicationLayer
                 NetworkStream nwStream = client.GetStream();
                 byte[] buf = GetBytes(returnValue);
                 nwStream.Write(buf, 0, buf.Length);
+
+
+                if (method.Equals("LogoutAll"))
+                {
+                    halfClients = new Dictionary<Tuple<string, string>, string>();
+                    clients = new Dictionary<Tuple<string, string>, string>();
+                    clientsDetails = new Dictionary<int, Client>();
+                    clientSessions = new Dictionary<Tuple<string, string>, Tuple<string, int>>();
+                }
+
+
                 client.Close();
             }
         }

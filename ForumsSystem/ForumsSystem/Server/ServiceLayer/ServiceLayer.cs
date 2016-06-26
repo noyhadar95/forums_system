@@ -715,7 +715,10 @@ namespace ForumsSystem.Server.ServiceLayer
                 return null;
             return user.getReceivedMessages();
         }
-
+        public void LogoutAll()
+        {
+            SuperAdmin.GetInstance().LogoutAll();
+        }
 
     }
 }

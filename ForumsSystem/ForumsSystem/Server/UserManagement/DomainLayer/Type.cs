@@ -465,7 +465,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             PrivateMessage privateMessage = new PrivateMessage(title, content, callingUser, reciever);
             reciever.AddReceivedMessage(privateMessage);
             callingUser.AddSentMessage(privateMessage);
-            dal_messages.CreateMessage(callingUser.getForum().getName(), callingUser.getUsername(), recieverUserName, title, content);
+          //  dal_messages.CreateMessage(callingUser.getForum().getName(), callingUser.getUsername(), recieverUserName, title, content);
             return privateMessage;
         }
 

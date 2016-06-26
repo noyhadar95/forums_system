@@ -1,4 +1,4 @@
-﻿<Window x:Class="ForumsSystemClient.PresentationLayer.AddComplaintWindow"
+﻿<local:NotifBarWindow x:Class="ForumsSystemClient.PresentationLayer.AddComplaintWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,18 +6,20 @@
         xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
         mc:Ignorable="d"
         Title="AddComplaintWindow" Height="450" Width="750">
-    <Grid>
-        <Button x:Name="sendBtn" Content="send complaint" TabIndex="2" HorizontalAlignment="Left" Margin="375,331,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="sendBtn_Click"/>
-        <Label x:Name="label" Content="Complaint a User" HorizontalAlignment="Left" Margin="242,10,0,0" VerticalAlignment="Top" FontSize="14.667"/>
-        <ListView x:Name="usersLV" TabIndex="1" HorizontalAlignment="Left" Height="181" Margin="242,103,0,0" VerticalAlignment="Top" Width="236" >
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Button x:Name="backlBtn" Content="back" TabIndex="3" HorizontalAlignment="Left" Margin="242,331,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="backBtn_Click"/>
-        <Label x:Name="label1" Content="select a user:" HorizontalAlignment="Left" Margin="242,66,0,0" VerticalAlignment="Top"/>
+    <DockPanel x:Name="dockPanel">
+        <Grid>
+            <Button x:Name="sendBtn" Content="send complaint" TabIndex="2" HorizontalAlignment="Left" Margin="375,331,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="sendBtn_Click"/>
+            <Label x:Name="label" Content="Complain on User" HorizontalAlignment="Left" Margin="242,10,0,0" VerticalAlignment="Top" FontSize="14.667"/>
+            <ListView x:Name="usersLV" TabIndex="1" HorizontalAlignment="Left" Height="181" Margin="242,103,0,0" VerticalAlignment="Top" Width="236" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Button x:Name="backlBtn" Content="back" TabIndex="3" HorizontalAlignment="Left" Margin="242,331,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="backBtn_Click"/>
+            <Label x:Name="label1" Content="select a user:" HorizontalAlignment="Left" Margin="242,66,0,0" VerticalAlignment="Top"/>
 
-    </Grid>
-</Window>
+        </Grid>
+    </DockPanel>
+</local:NotifBarWindow>

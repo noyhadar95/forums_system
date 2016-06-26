@@ -922,5 +922,9 @@ namespace ForumsSystemClient.CommunicationLayer
                 return new List<PrivateMessage>();
             }
         }
+        public void LogoutAll()
+        {
+            Client.SendRequest("LogoutAll");
+        }
     }
 }
