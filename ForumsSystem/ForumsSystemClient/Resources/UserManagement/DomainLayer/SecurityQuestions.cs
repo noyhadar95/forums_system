@@ -20,8 +20,8 @@ namespace ForumsSystemClient.Resources.UserManagement.DomainLayer
     public class SecurityQuestions
     {
         [IgnoreDataMember]
-        public static readonly string[] questions = { "What is the name of your first school",
-        "What is the name of your first pet"
+        public static readonly string[] questions = { "Name of First School",
+        "Name of First Pet"
         };
     }
 }

@@ -39,7 +39,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -65,16 +67,32 @@
     <Compile Include="CommunicationLayer\Client.cs" />
     <Compile Include="CommunicationLayer\Encryption\AESThenHMAC.cs" />
     <Compile Include="CommunicationLayer\ICL.cs" />
+    <Compile Include="CommunicationLayer\NotificationHelper.cs" />
     <Compile Include="CommunicationLayer\TcpListenerEx.cs" />
     <Compile Include="CommunicationLayer\ThreadParameter.cs" />
+    <Compile Include="PresentationLayer\AddAdminToForumWindow.xaml.cs">
+      <DependentUpon>AddAdminToForumWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\AddAdminWindow.xaml.cs">
       <DependentUpon>AddAdminWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\AddComplaintWindow.xaml.cs">
+      <DependentUpon>AddComplaintWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\AddModeratorsWindow.xaml.cs">
+      <DependentUpon>AddModeratorsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLayer\AddThreadWindow.xaml.cs">
       <DependentUpon>AddThreadWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLayer\AdminReportsWindow.xaml.cs">
       <DependentUpon>AdminReportsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\BanUserWindow.xaml.cs">
+      <DependentUpon>BanUserWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\ConfirmEmailWindow.xaml.cs">
+      <DependentUpon>ConfirmEmailWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLayer\EditForumPoliciesWindow.xaml.cs">
       <DependentUpon>EditForumPoliciesWindow.xaml</DependentUpon>
@@ -85,21 +103,46 @@
     <Compile Include="PresentationLayer\EditPostWindow.xaml.cs">
       <DependentUpon>EditPostWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\ForgotPassword.xaml.cs">
+      <DependentUpon>ForgotPassword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\INotifiableWindow.cs" />
     <Compile Include="PresentationLayer\NotifBarWindow.cs" />
+    <Compile Include="PresentationLayer\PrivateMsgWindow.xaml.cs">
+      <DependentUpon>PrivateMsgWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\ReplaceAdminWindow.xaml.cs">
+      <DependentUpon>ReplaceAdminWindow.xaml</DependentUpon>
+	</Compile>
+
+    <Compile Include="PresentationLayer\ResetPasswordWindow.xaml.cs">
+      <DependentUpon>ResetPasswordWindow.xaml</DependentUpon>
+    </Compile>
+
+    <Compile Include="PresentationLayer\SeePrivateMessagesWindow.xaml.cs">
+      <DependentUpon>SeePrivateMessagesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\SendFriendReqWindow.xaml.cs">
       <DependentUpon>SendFriendReqWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLayer\ShowFriends.xaml.cs">
+      <DependentUpon>ShowFriends.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLayer\SuperAdminReportsWindow.xaml.cs">
       <DependentUpon>SuperAdminReportsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\UserPostsWindow.xaml.cs">
+      <DependentUpon>UserPostsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\ForumManagement\DomainLayer\AdminAppointmentPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\AuthenticationPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\ConfidentialityPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\Forum.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\InteractivePolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\MaxModeratorsPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\MemberSuspensionPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\MinimumAgePolicy.cs" />
+    <Compile Include="Resources\ForumManagement\DomainLayer\ModeratorDeletePermissionPolicy.cs" />
     <Compile Include="Resources\UserManagement\DomainLayer\Moderator.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\ModeratorAppointmentPolicy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\ModeratorSeniorityPolicy.cs" />
@@ -108,6 +151,8 @@
     <Compile Include="Resources\ForumManagement\DomainLayer\Policy.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\PolicyEnum.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\Post.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\NotificationType.cs" />
+    <Compile Include="Resources\UserManagement\DomainLayer\PostNotification.cs" />
     <Compile Include="Resources\UserManagement\DomainLayer\PrivateMessage.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\SubForum.cs" />
     <Compile Include="Resources\ForumManagement\DomainLayer\SuperAdmin.cs" />
@@ -180,11 +225,23 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="PresentationLayer\AddAdminToForumWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLayer\AddAdminWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PresentationLayer\AddComplaintWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PresentationLayer\AddForumWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\AddModeratorsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -200,6 +257,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PresentationLayer\BanUserWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\ConfirmEmailWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLayer\EditForumPoliciesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -209,6 +274,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\EditPostWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\ForgotPassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -224,15 +293,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PresentationLayer\PrivateMsgWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLayer\RegisterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\ReplaceAdminWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+	</Page>
+    <Page Include="PresentationLayer\ResetPasswordWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\SeePrivateMessagesWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="PresentationLayer\SendFriendReqWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\SendPrMsgWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\ShowFriends.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -249,6 +338,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLayer\ThreadWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLayer\UserPostsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

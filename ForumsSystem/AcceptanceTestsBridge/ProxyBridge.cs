@@ -198,7 +198,10 @@ namespace AcceptanceTestsBridge
         public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
         {
             if (realBridge != null)
-                return realBridge.RegisterToForum(forumName, username, password, email, dateOfBirth);
+            {
+                bool res = realBridge.RegisterToForum(forumName, username, password, email, dateOfBirth);
+                return res;
+            }
 
             return true;
         }
@@ -368,7 +371,7 @@ namespace AcceptanceTestsBridge
 
  
 
-        public List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        public List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
             if (realBridge != null)
                 return realBridge.ReportModeratorsDetails(forumName,adminUserName1);
@@ -408,6 +411,22 @@ namespace AcceptanceTestsBridge
         {
             if (realBridge != null)
                 return realBridge.CreateForum(creator, creatorPass, forumName, admins, forumPolicies, policyParams);
+
+            return true;
+        }
+
+        public bool recievedNotification(string forumName, string userName)
+        {
+            if (realBridge != null)
+                return realBridge.recievedNotification( forumName,  userName);
+
+            return true;
+        }
+
+        public bool SetForumProperties(string forumName, string username, PoliciesStub forumPolicies, params object[] policyParams)
+        {
+            if (realBridge != null)
+                return realBridge.SetForumProperties(forumName, username, forumPolicies, policyParams);
 
             return true;
         }

@@ -23,6 +23,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     [KnownType(typeof(ModeratorSuspensionPolicy))]
     [KnownType(typeof(PasswordPolicy))]
     [KnownType(typeof(UsersLoadPolicy))]
+    [KnownType(typeof(InteractivePolicy))]
+    [KnownType(typeof(ModeratorDeletePermissionPolicy))]
     public abstract class Policy 
     {
         /*
@@ -84,8 +86,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                     var passwordValidity = policyParameterRow["passwordValidity"];
                     var maxNumOfUsers = policyParameterRow["maxNumOfUsers"];
                     bool moderatorDeletePermission = (bool)policyParameterRow["moderatorDeletePermission"];
+                    var notifyMode = policyParameterRow["notifyMode"];
 
-                     switch ((Policies)type)
+                    switch ((Policies)type)
                      {
                          case Policies.Password:
                              policy = PasswordPolicy.createPasswordPolicyForInit((int)requiredLength, (int)passwordValidity);
@@ -123,6 +126,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                          case Policies.ModeratorPermissionToDelete:
                             policy = ModeratorDeletePermissionPolicy.createmoderatorDeletePermissionForInit(moderatorDeletePermission);
                              break;
+                        case Policies.InteractivePolicy:
+                            policy = InteractivePolicy.createInteractivePolicyForInit((int)notifyMode);
+                            break;
                          default:
                              break;
                      }
@@ -163,6 +169,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         /// <param name="newPolicy"></param>
         public virtual bool AddPolicy(Policy newPolicy)
         {
+            if (newPolicy == null)
+                return false;
             dal_policy = new DAL_Policy();
             dal_policyParameter = new DAL_PolicyParameter();
             if (CheckIfPolicyExists(newPolicy.type))

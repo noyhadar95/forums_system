@@ -7,12 +7,13 @@ using WebApplication.Communication;
 using WebApplication.Resources.ForumManagement.DomainLayer;
 using System.Xml.Linq;
 using WebApplication.Resources.UserManagement.DomainLayer;
+using ForumsSystemClient.CommunicationLayer;
 
 namespace AcceptanceTestsBridge
 {
     public class WebBridge : IBridge
     {
-        private CL cl;
+        private WebApplication.Communication.CL cl;
         // default values for policies params
         private int numOfComplaints = 100;
         private bool blockPassword = false;
@@ -25,7 +26,7 @@ namespace AcceptanceTestsBridge
 
         public WebBridge()
         {
-            cl = new CL();
+            cl = new WebApplication.Communication.CL();
         }
         #region Add/Create Methods
 
@@ -151,9 +152,10 @@ namespace AcceptanceTestsBridge
         public bool LoginUser(string forumName, string username, string pass)
         {
             //   Tuple<User, string> t = cl.MemberLogin(forumName, username, pass);
-            User t = cl.MemberLogin(forumName, username, pass);
+            // User t = cl.MemberLogin(forumName, username, pass);
             //    sessionKeys.Add(new Tuple<string, string>(forumName, username), t.Item2);
-            return t != null;
+            // return t != null;
+            return false;
         }
 
         public bool LoginSuperAdmin(string username, string pass)
@@ -268,7 +270,7 @@ namespace AcceptanceTestsBridge
             cl.MemberLogout(forumName, username);
         }
 
-        public List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        public List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
             throw new NotImplementedException();
         }
@@ -328,6 +330,16 @@ namespace AcceptanceTestsBridge
         }
 
         public List<string> GetNotifications(string forumName, string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool recievedNotification(string forumName, string userName)
+        {
+            return true;
+        }
+
+        public bool SetForumProperties(string forumName, string username, PoliciesStub forumPolicies, params object[] policyParams)
         {
             throw new NotImplementedException();
         }

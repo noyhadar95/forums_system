@@ -19,7 +19,7 @@ namespace ForumsSystemClient.CommunicationLayer
         const int CLIENT_PORT_NO = 4000;
         const int SERVER_PORT_NO = 5000;
         const string delimeter = "$|deli|$";
-        static string SERVER_IP = "132.72.226.107";
+        static string SERVER_IP = "132.72.224.248";
         static ThreadStart startNotification;
         static Thread notificationThread;
         static bool notificationsServerActive = false;
@@ -27,31 +27,42 @@ namespace ForumsSystemClient.CommunicationLayer
         static int id;
         static Byte[] encKey;
         static Byte[] authKey;
+
+        static bool testing = false;
+        static string connectionErrorString = "!@#!#connectionerror!@!#@";
         private static string connect(string textToSend)
         {
-            SERVER_IP = GetLocalIPAddress();
-            //---create a TCPClient object at the IP and port no.---
-            TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
+            try
+            {
+                SERVER_IP = GetLocalIPAddress();
+                //---create a TCPClient object at the IP and port no.---
+                TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
 
-            int port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
+                int port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
 
 
-            NetworkStream nwStream = client.GetStream();
-            byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
+                NetworkStream nwStream = client.GetStream();
+                byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
 
-            //---send the text---
-            Console.WriteLine("Sending : " + textToSend);
-            nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+                //---send the text---
+                Console.WriteLine("Sending : " + textToSend);
+                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
 
-            //---read back the text---
-            byte[] bytesToRead = new byte[client.ReceiveBufferSize];
-            int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
-            // Console.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
-            string textFromServer = GetString(bytesToRead, bytesRead);
-            client.Close();
+                //---read back the text---
+                byte[] bytesToRead = new byte[client.ReceiveBufferSize];
+                int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
+                // Console.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
+                string textFromServer = GetString(bytesToRead, bytesRead);
+                client.Close();
 
-            return textFromServer;
-
+                return textFromServer;
+            }
+            catch(Exception e)
+            {
+                if (!testing)
+                    WindowHelper.ShowNoConnectionAlert();
+                return connectionErrorString;
+            }
 
         }
         public static void WaitForNotification()
@@ -137,14 +148,16 @@ namespace ForumsSystemClient.CommunicationLayer
                     if (friendReqsNum > 0)
                     {
                         // notify about friend request/s
-                        WindowHelper.NotifyFriendRequests(friendReqsNum);
-
+                        if(!testing)
+                            WindowHelper.NotifyFriendRequests(friendReqsNum);
+                        else
+                        {
+                            NotificationHelper.recieveFriendRequest();
+                        }
                     }
-
                 }
                 catch (Exception)
                 {
-
                 }
 
                 // Private Msgs
@@ -154,12 +167,35 @@ namespace ForumsSystemClient.CommunicationLayer
                     if (PrivateMsgsNum > 0)
                     {
                         // notify about private message/s
-                        WindowHelper.NotifyPrivateMessages(PrivateMsgsNum);
+                        if(!testing)
+                            WindowHelper.NotifyPrivateMessages(PrivateMsgsNum);
+                        else
+                        {
+                            NotificationHelper.recievePrivateMessage();
+                        }
                     }
                 }
                 catch (Exception)
                 {
+                }
 
+                // Post notifications
+                try
+                {
+                    int postNotifNum = int.Parse(notifArr[0]);
+                    if (postNotifNum > 0)
+                    {
+                        // notify about friend request/s
+                        if (!testing)
+                            WindowHelper.NotifyPosts(postNotifNum);
+                        else
+                        {
+                            //NotificationHelper.recieveFriendRequest();
+                        }
+                    }
+                }
+                catch (Exception)
+                {
                 }
 
 
@@ -203,15 +239,27 @@ namespace ForumsSystemClient.CommunicationLayer
             string textToSend = methodName;
             foreach (Object param in methodParameter)
             {
-                string pType = param.GetType().ToString();
-                //  if(!pType.StartsWith("System."))
-                //     pType = pType.Substring(pType.LastIndexOf('.') + 1);
+                string pType;
+                pType = null;
+                if (param != null)
+                {
+                    pType = param.GetType().ToString();
+                    //  if(!pType.StartsWith("System."))
+                    //     pType = pType.Substring(pType.LastIndexOf('.') + 1);
 
-                textToSend += delimeter + pType;
-                textToSend += delimeter + ObjectToString(param);
+                    textToSend += delimeter + pType;
+                    textToSend += delimeter + ObjectToString(param);
+                }
+                else
+                {
+                    textToSend += delimeter + "null";
+                    textToSend += delimeter + "null";
+                }
             }
             textToSend = Encrypt(textToSend);
             string textFromServer = connect(textToSend);
+            if (textFromServer.Equals(connectionErrorString))
+                return null;
             textFromServer = Decrypt(textFromServer);
             if (textFromServer.Equals("null"))
                 return null;
@@ -239,12 +287,19 @@ namespace ForumsSystemClient.CommunicationLayer
 
         }
 
-        public static void StartSecuredConnection()
+        public static void setTesting (bool istesting)
+        {
+            testing = istesting;
+        }
+
+        public static void StartSecuredConnection(bool isTesting)
         {
             string textToSend = "StartSecuredConnection";
-
+            testing = isTesting;
             // textToSend = Encrypt(textToSend);
             string textFromServer = connect(textToSend);
+            if (textFromServer.Equals(connectionErrorString))
+                return;
             //textFromServer = Decrypt(textFromServer);
             if (textFromServer.Equals("null"))
                 return;

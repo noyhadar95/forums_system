@@ -49,6 +49,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             //----privateMessageNotifications
             PrivateMessageNotification.populateMessageNotification(forum.users, forum.waiting_users);
 
+            User.populateSecurityQuestions(forum.users, forum.waiting_users, forumName);
+
+
             //--subForums (includes threads, posts and moderators)
             forum.sub_forums = SubForum.populateSubForums(forum);
 
@@ -91,8 +94,9 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             //PolicyParametersObject param = new PolicyParametersObject(Policies.Authentication);
             if (policies != null && policies.CheckIfPolicyExists(Policies.Authentication))
             {
+                ((User)user).emailConfirmationToken = PRG.ClientSessionKeyGenerator.GetUniqueKey();
                 sendMail(user.getEmail(), user.getUsername(), "Successfully Registered To Forum: " + this.name,
-                   "Hello" + user.getUsername() + ",\n You have registered to the Forum: " + this.name + ". Please click on this link to  complete your registration: " + createLinkForRegistration(user));
+                   "Hello" + user.getUsername() + ",\n You have registered to the Forum: " + this.name + ". Please enter this token to  complete your registration: " + ((User)user).emailConfirmationToken);
             }
             
 
@@ -121,7 +125,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             users.Add(user.getUsername(), user);
             Loggers.Logger.GetInstance().AddActivityEntry("User: " + user.getUsername() + " Registered");
             waiting_users.Remove(user.getUsername());
-             SendMailWhenRegistered(user);
+            // SendMailWhenRegistered(user);
             return true;
         }
 
@@ -188,6 +192,25 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
                         if (!this.policies.CheckPolicy(susp))
                             return null;
                     }
+
+                    //check if password is expired
+                    PolicyParametersObject expPass = new PolicyParametersObject(Policies.PasswordValidity);
+                    Policy p = this.GetPolicy();
+                    while (p != null)
+                    {
+                        if(p is PasswordPolicy)
+                        {
+                            if (((PasswordPolicy)p).passwordValidity < (DateTime.Now - users[userName].GetDateOfPassLastChange()).TotalDays)
+                                return null;//TODO: need to let the client know that passwors is expired
+                            break;
+                        }
+                        p = p.NextPolicy;
+                    }
+
+                    //check if user is banned
+                    if (isBanned(userName))
+                        return null;
+
                     users[userName].Login();
                     Loggers.Logger.GetInstance().AddActivityEntry("User: " + userName + " logged in");
                     return users[userName];
@@ -198,6 +221,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
             else
                 return null;
+        }
+
+        public bool isBanned(string userName)
+        {
+            if (!users.ContainsKey(userName))
+                return true;
+            return !((User)users[userName]).isActive;
         }
 
         public bool InitForum()
@@ -211,8 +241,11 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         public bool AddPolicy(Policy policy)
         {
+            if (policy == null)
+                return true;
             bool flag = false;
-            Loggers.Logger.GetInstance().AddActivityEntry("Policy: " + policy.Type + "added to forum: " + this.name);
+            if(policy!=null)
+                 Loggers.Logger.GetInstance().AddActivityEntry("Policy: " + policy.Type + "added to forum: " + this.name);
             if (policies == null)
             {
                 if (policy is PasswordPolicy)
@@ -303,9 +336,70 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             return this.users.ContainsKey(username);
         }
 
-        public void SetPolicy(Policy policy)
+        public bool SetPolicy(Policy newPolicy)
         {
-            this.policies = policy;
+            Policy oldPol = policies;
+            while (oldPol != null)
+            {
+                if (!CanChangePolicy(oldPol, newPolicy))
+                    return false;
+                oldPol = oldPol.NextPolicy;
+            }
+
+            this.policies = newPolicy;
+            return true;
+        }
+
+        private bool CanChangePolicy(Policy oldPol, Policy newPolicy)
+        {
+            switch (oldPol.Type)
+            {
+                case Policies.AdminAppointment:
+                    return true;
+                    break;
+                case Policies.Authentication:
+                    return true;
+                    break;
+                case Policies.InteractivePolicy:
+                    return true;
+                    break;
+                case Policies.Confidentiality:
+                    return true;
+                    break;
+                case Policies.MaxModerators:
+                    foreach (ISubForum sf in GetSubForums().ToArray())
+                    {
+                        if (sf.numOfModerators() > ((MaxModeratorsPolicy)oldPol).maxModerators)
+                            return false;
+                    }
+                    return true;
+                    break;
+                case Policies.MemberSuspension:
+                    return true;
+                    break;
+                case Policies.MinimumAge:
+                    return true;
+                    break;
+                case Policies.ModeratorAppointment:
+                    return true;
+                    break;
+                case Policies.ModeratorPermissionToDelete:
+                    return true;
+                    break;
+                case Policies.ModeratorSuspension:
+                    return true;
+                    break;
+                case Policies.Password:
+                    return true;
+                    break;
+                case Policies.UsersLoad:
+                    if (this.users.Count > ((UsersLoadPolicy)oldPol).maxNumOfUsers)
+                        return false;
+                    return true;
+                    break;
+                default:
+                    return true;
+            }
         }
 
         public Policy GetPolicy()
@@ -373,6 +467,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (waiting_users.ContainsKey(user.getUsername()))
                 return false;
             waiting_users.Add(user.getUsername(), user);
+            SendMailWhenRegistered(user);
             return true;
         }
 
@@ -429,6 +524,79 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             }
             return users_res;
 
+        }
+        public bool ShouldNotify(string notifier, string username)
+        {
+            Policy p = this.GetPolicy();
+            if (p == null)
+                return true;
+            do
+            {
+                if(p is InteractivePolicy)
+                {
+                    switch (((InteractivePolicy)p).notifyMode)
+                    {
+                        case 0://online only
+                            return users[username].isLogin();
+                        case 1://online and offline
+                            return true;
+
+                        default: //selective
+                            if(((User) users[notifier]).notifyOffline)
+                                return true;
+                            else
+                                return users[username].isLogin();
+
+
+                    }
+                    
+                }
+                p = p.NextPolicy;
+            }
+            while (p != null) ;
+            return true;
+        }
+        public void AddComplaint(string subforum, string username)
+        {
+            if (!users.ContainsKey(username))
+                return;
+            bool isMod = false;
+            List<ISubForum> subforums = this.GetSubForums();
+            foreach (ISubForum sf in subforums.ToArray()) 
+            {
+                isMod = isMod | sf.isModerator(username);
+                if (isMod)
+                    break;
+            }
+
+            users[username].AddComplaint(isMod);
+
+
+        }
+        public void DeactivateUser(string username)
+        {
+            if (!users.ContainsKey(username))
+                return;
+            users[username].DeactivateUser();
+        }
+        public bool AddAdmin(string username)
+        {
+            if (!users.ContainsKey(username))
+                return false;
+            PolicyParametersObject param = new PolicyParametersObject(Policies.AdminAppointment);
+                param.User = users[username];
+            if (this.GetPolicy() != null && !this.GetPolicy().CheckPolicy(param))//check if user can be an admin (Policies) 
+                return false; ;
+
+            users[username].ChangeType(new Admin());
+            return true;
+        }
+        public bool RemoveAdmin(string username)
+        {
+            if (!users.ContainsKey(username))
+                return false;
+            users[username].ChangeType(new Member());
+            return true;
         }
     }
 }

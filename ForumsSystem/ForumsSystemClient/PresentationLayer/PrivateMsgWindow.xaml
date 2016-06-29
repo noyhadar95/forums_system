@@ -1,0 +1,18 @@
+﻿<Window x:Class="ForumsSystemClient.PresentationLayer.PrivateMsgWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
+        mc:Ignorable="d"
+        Title="PrivateMsgWindow" Height="300" Width="300">
+    <Grid>
+        <Label x:Name="label" Content="From: " HorizontalAlignment="Left" Margin="25,39,0,0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="senderTB" HorizontalAlignment="Left" Margin="90,39,0,0" TextWrapping="Wrap" Text="vd" VerticalAlignment="Top"/>
+        <TextBlock x:Name="titleTB" HorizontalAlignment="Left" Margin="90,80,0,0" TextWrapping="Wrap" Text="vd" VerticalAlignment="Top"/>
+        <TextBlock x:Name="contentTB" HorizontalAlignment="Left" Margin="90,118,0,0" TextWrapping="Wrap" Text="vd" VerticalAlignment="Top"/>
+        <Label x:Name="label1" Content="Title:" HorizontalAlignment="Left" Margin="25,80,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label2" Content="Content:" HorizontalAlignment="Left" Margin="25,118,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

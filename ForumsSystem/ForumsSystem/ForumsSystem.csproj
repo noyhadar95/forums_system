@@ -101,6 +101,7 @@
     <Compile Include="Server\ForumManagement\DomainLayer\ConfidentialityPolicy.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\Forum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\IForum.cs" />
+    <Compile Include="Server\ForumManagement\DomainLayer\InteractivePolicy.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\ISubForum.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\ModeratorDeletePermissionPolicy.cs" />
     <Compile Include="Server\ForumManagement\DomainLayer\ModeratorSeniorityPolicy.cs" />

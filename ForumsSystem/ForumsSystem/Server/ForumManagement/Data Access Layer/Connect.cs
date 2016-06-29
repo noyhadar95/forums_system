@@ -9,6 +9,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
     public class Connect
     {
         private string my_path;
+        static object Lock = new object();
 
         private OleDbConnection my_con;
         //-------------------------------------------------------------------
@@ -22,73 +23,88 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         //------------------------------------------------------------------------
         public DataTable DownloadData(string my_sql, string tableName)
         {
-            DataSet ds = new DataSet();
+            lock (Lock)
+            {
+                DataSet ds = new DataSet();
 
-            OleDbCommand cmmd = new OleDbCommand(my_sql, this.my_con);
+                OleDbCommand cmmd = new OleDbCommand(my_sql, this.my_con);
 
-            OleDbDataAdapter da = new OleDbDataAdapter(cmmd);
+                OleDbDataAdapter da = new OleDbDataAdapter(cmmd);
 
-            da.Fill(ds, tableName);
+                da.Fill(ds, tableName);
 
-            DataTable dt = ds.Tables[0];
+                DataTable dt = ds.Tables[0];
 
-            return (dt);
+                return (dt);
+            }
         }
         public DataTable DownloadData2(OleDbCommand cmd, string tableName)
         {
-            DataSet ds = new DataSet();
-            cmd.Connection = this.my_con;
+            lock (Lock)
+            {
+                DataSet ds = new DataSet();
+                cmd.Connection = this.my_con;
 
-            OleDbDataAdapter da = new OleDbDataAdapter(cmd);
+                OleDbDataAdapter da = new OleDbDataAdapter(cmd);
 
-            da.Fill(ds, tableName);
+                da.Fill(ds, tableName);
 
-            DataTable dt = ds.Tables[0];
+                DataTable dt = ds.Tables[0];
 
-            return (dt);
+                return (dt);
+            }
         }
        
         //------------------------------------------------------------------
         public void TakeAction(OleDbCommand cmmd)
         {
-            try
+            lock (Lock)
             {
-                cmmd.Connection = this.my_con;
+                try
+                {
+                    cmmd.Connection = this.my_con;
 
-                this.my_con.Open();
+                    this.my_con.Open();
 
-                cmmd.ExecuteNonQuery();
+                    cmmd.ExecuteNonQuery();
 
-                this.my_con.Close();
-            }
-            catch(Exception e)
-            {
+                    this.my_con.Close();
+                }
+                catch (Exception e)
+                {
 
+                }
             }
         }
         //------------------------------------------------------------------
         public int ReturnValue(string sql)
         {
-            OleDbCommand cmmd = new OleDbCommand(sql, my_con);
+            lock (Lock)
+            {
+                OleDbCommand cmmd = new OleDbCommand(sql, my_con);
 
-            this.my_con.Open();
+                this.my_con.Open();
 
-            int result = (int)cmmd.ExecuteScalar();
+                int result = (int)cmmd.ExecuteScalar();
 
-            this.my_con.Close();
+                this.my_con.Close();
 
-            return (result);
+                return (result);
+            }
         }
         //----------------------------------------------------------------------
         public void TakeAction2(OleDbCommand cmmd)
         {
-            cmmd.Connection = this.my_con;
+            lock (Lock)
+            {
+                cmmd.Connection = this.my_con;
 
-            this.my_con.Open();
+                this.my_con.Open();
 
-            cmmd.ExecuteReader();
+                cmmd.ExecuteReader();
 
-            this.my_con.Close();
+                this.my_con.Close();
+            }
         }
     }
 

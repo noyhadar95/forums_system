@@ -58,7 +58,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new Exception("permission denied");
         }
 
-        public override bool deletePost(IUser callingUser, Post post)
+        public override bool deletePost(IUser callingUser, Post post,string subforum)
         {
             throw new Exception("permission denied");
         }
@@ -152,7 +152,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             throw new Exception("permission denied");
         }
 
-        public override List<Tuple<string, string, DateTime, string, List<Post>>> ReportModerators(IUser callingUser)
+        public override List<Tuple<string, string, DateTime, string>> ReportModerators(IUser callingUser)
         {
             throw new Exception("permission denied");
         }

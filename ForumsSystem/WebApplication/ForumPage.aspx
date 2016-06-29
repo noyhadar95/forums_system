@@ -34,12 +34,17 @@
             <img alt="" class="auto-style3" src="images/logo.png" />
             <asp:Panel ID="Panel3" runat="server" Height="420px" style="margin-left: 806px; margin-top: -22px; color: #FFFFFF;" Width="300px" BackColor="Black" CssClass="rounded-corners">
                  <br />&nbsp;&nbsp;&nbsp;<asp:Label ID="LabelLogin" runat="server" style="font-size: medium" Text="logged in as "></asp:Label>
+                <br />&nbsp;&nbsp;&nbsp;<asp:Label ID="LabelSession" runat="server" style="font-size: medium" Text="session "></asp:Label>
                  <br /><asp:Button ID="BtnLogout" runat="server" style="margin-left: 7px; margin-top: 14px; background-color: #000000; text-decoration: underline; color: #0099FF; font-size: medium;" Text="logout" CssClass="rounded-corners-light" Width="56px" Height="28px" ForeColor="White" BorderColor="Black" BackColor="Black" BorderStyle="Solid" BorderWidth="0px" OnClick="BtnLogout_Click" />
                 <br /> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<asp:Label ID="LabelUserName" runat="server" style="font-size: medium" Text="user name:"></asp:Label>
                 <br /><asp:TextBox ID="TextBox1" runat="server" CssClass="rounded-corners-light" style="margin-left: 55px; margin-top: 2px"></asp:TextBox>
                 <br /><br /> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<asp:Label ID="LabelPassword" runat="server" style="font-size: medium" Text="password:"></asp:Label>
-                <asp:TextBox ID="TextBox2" runat="server" CssClass="rounded-corners-light" style="margin-left: 55px; margin-top: 2px" TextMode="Password"></asp:TextBox>
-                <asp:Button ID="Button1" runat="server" style="margin-left: 57px; margin-top: 14px; background-color: #CCCCCC;" Text="login" CssClass="rounded-corners-light" Width="56px" Height="28px" OnClick="Button1_Click" />
+                 <asp:TextBox ID="TextBox2" runat="server" CssClass="rounded-corners-light" style="margin-left: 55px; margin-top: 2px" TextMode="Password"></asp:TextBox>
+                 <br /><br /> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<asp:Label ID="LabelSessionKey" runat="server" style="font-size: medium" Text="session key:"></asp:Label>
+                <asp:TextBox ID="TextBox3" runat="server" CssClass="rounded-corners-light" style="margin-left: 55px; margin-top: 2px" ></asp:TextBox>
+                <br /><br /> 
+                <asp:Button ID="Button1" runat="server" CssClass="rounded-corners-light" Height="28px" OnClick="Button1_Click" style="margin-left: 57px; background-color: #CCCCCC;" Text="login" Width="56px" />
+                 
             </asp:Panel>
             &nbsp;</asp:Panel>
     

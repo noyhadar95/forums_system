@@ -152,9 +152,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         public virtual bool SetForumProperties(IForum forum, Policy properties)
         {
             DAL_Forum dal_forum = new DAL_Forum();
-            dal_forum.SetForumPolicy(forum.getName(), properties.ID);
-            forum.SetPolicy(properties);
-            return true;
+            bool res = forum.SetPolicy(properties);
+            if (res)
+                dal_forum.SetForumPolicy(forum.getName(), properties.ID);
+            return res;
         }
 
         public virtual bool ChangeForumProperties(IForum forum, Policy properties)
@@ -232,9 +233,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         }
 
         // <moderatorUserName,appointerUserName,appointmentDate,subForumName,moderatorPosts>
-        public virtual List<Tuple<string,string,DateTime,string,List<Post>>> ReportModerators(IUser callingUser)
+        public virtual List<Tuple<string,string,DateTime,string>> ReportModerators(IUser callingUser)
         {
-            List<Tuple<string, string, DateTime, string, List<Post>>> res = new List<Tuple<string, string, DateTime, string, List<Post>>>();
+            List<Tuple<string, string, DateTime, string>> res = new List<Tuple<string, string, DateTime, string>>();
             IForum forum = callingUser.getForum();
             List<ISubForum> subForums = forum.GetSubForums();
             foreach(ISubForum sf in subForums)
@@ -243,9 +244,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 foreach(string m in moderators)
                 {
                     Moderator mod = sf.getModeratorByUserName(m);
-                    Tuple<string, string, DateTime, string, List<Post>> t = new Tuple<string, string, DateTime, string, List<Post>>(
+                    Tuple<string, string, DateTime, string> t = new Tuple<string, string, DateTime, string>(
                         mod.user.getUsername(), mod.appointer.getUsername(), mod.appointmentDate,
-                        sf.getName(), ReportPostsByMember(callingUser, mod.user.getUsername()));
+                        sf.getName());
                     res.Add(t);
                 }
             }
@@ -354,7 +355,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             return true;
         }
 
-        public virtual bool deletePost(IUser callingUser, Post post)
+        public virtual bool deletePost(IUser callingUser, Post post, string subforum)
         {
             if (!callingUser.isLogin())
                 return false;
@@ -362,7 +363,9 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
                 return false;
             //check if caling user is the publisher or an admin
             if (post.getPublisher() == callingUser
-                ||((callingUser.getForum().getName().Equals(post.getPublisher().getForum().getName()))&& callingUser.getType() is Admin))
+                || ((callingUser.getForum().getName().Equals(post.getPublisher().getForum().getName())) && callingUser.getType() is Admin)
+                || ((callingUser.getForum().getName().Equals(post.getPublisher().getForum().getName())) && post.getPublisher().getForum().getSubForum(subforum).isModerator(callingUser.getUsername())&& 
+                post.getPublisher().getForum().getSubForum(subforum).getModeratorByUserName(callingUser.getUsername()).hasSeniority()))
             {
                 List<Post> replies = post.GetReplies();
                 foreach (Post p in replies)
@@ -464,7 +467,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
             PrivateMessage privateMessage = new PrivateMessage(title, content, callingUser, reciever);
             reciever.AddReceivedMessage(privateMessage);
             callingUser.AddSentMessage(privateMessage);
-            dal_messages.CreateMessage(callingUser.getForum().getName(), callingUser.getUsername(), recieverUserName, title, content);
+          //  dal_messages.CreateMessage(callingUser.getForum().getName(), callingUser.getUsername(), recieverUserName, title, content);
             return privateMessage;
         }
 

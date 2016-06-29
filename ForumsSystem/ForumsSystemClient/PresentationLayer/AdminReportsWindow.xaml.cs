@@ -1,4 +1,5 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,58 +19,72 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for AdminReportsWindow.xaml
     /// </summary>
-    public partial class AdminReportsWindow : Window
+    public partial class AdminReportsWindow : NotifBarWindow
     {
-        private CL cl;
-        private string forumName;
 
-        public AdminReportsWindow(string forumName)
+        public AdminReportsWindow(string forumName) : base(forumName)
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
-            this.forumName = forumName;
+            base.Initialize(dockPanel);
 
             List<string> subForums = cl.GetSubForumsList(forumName);
             foreach (string subForumName in subForums)
             {
-                // TODO::
-                // int totalPosts = cl
-                int totalPost = -1;
-                subForumsListView.Items.Add(new SubForumListItem { SubForum = subForumName, TotalPosts = totalPost });
+                int totalPosts = cl.getNumOfPostsInSubForum(forumName, subForumName);
+                subForumsListView.Items.Add(new SubForumListItem { SubForum = subForumName, TotalPosts = totalPosts });
             }
 
+            List<string> members = cl.GetForumMembers(forumName);
+            foreach (string mem in members)
+            {
+                membersListView.Items.Add(new MembersListItem { Member = mem });
+            }
 
+            List<Tuple<string, string, DateTime, string>> modsDetailsList = cl.ReportModeratorsDetails(forumName, WindowHelper.GetLoggedUsername(forumName));
+            foreach (Tuple<string, string, DateTime, string> modsDetails in modsDetailsList)
+            {
+                moderatorsListView.Items.Add(new ModeratorsListItem
+                {
+                    Username = modsDetails.Item1,
+                    Appointer = modsDetails.Item2,
+                    AppointmentDate = modsDetails.Item3,
+                    SubForum = modsDetails.Item4
+                });
+            }
 
+            RefreshNotificationsBar(loggedUsername);
 
         }
 
+        private void membersListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var item = (sender as ListView).SelectedItem;
+            if (item != null)
+            {
+                Window newWin = new UserPostsWindow(forumName, ((MembersListItem)item).Member);
+                WindowHelper.ShowWindow(this, newWin);
+            }
+        }
 
-        //private void postsTreeView_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    string username;
-        //    cl.ReportPostsByMember(forumName, WindowHelper.GetLoggedUsername(forumName), username);
-        //    posts = cl.GetPosts(forumName, subForumName, threadID);
-
-        //    // Get TreeView reference and add the items for the posts.
-        //    var tree = sender as TreeView;
-        //    foreach (Post post in posts)
-        //    {
-        //        TreeViewItem item = new TreeViewItem();
-        //        tree.Items.Add(item);
-        //        // handles nested posts too
-        //        CreatePostTVItem(item, post, firstLevelItemOffset);
-        //    }
-
-        //}
-
+        private void moderatorsListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var item = (sender as ListView).SelectedItem;
+            if (item != null)
+            {
+                Window newWin = new UserPostsWindow(forumName, ((ModeratorsListItem)item).Username);
+                WindowHelper.ShowWindow(this, newWin);
+            }
+        }
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
             WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
         }
+
     }
 
     public class SubForumListItem
@@ -77,6 +92,19 @@ namespace ForumsSystemClient.PresentationLayer
         public string SubForum { get; set; }
 
         public int TotalPosts { get; set; }
+    }
+
+    public class MembersListItem
+    {
+        public string Member { get; set; }
+    }
+
+    public class ModeratorsListItem
+    {
+        public string Username { get; set; }
+        public string Appointer { get; set; }
+        public DateTime AppointmentDate { get; set; }
+        public string SubForum { get; set; }
     }
 
 }

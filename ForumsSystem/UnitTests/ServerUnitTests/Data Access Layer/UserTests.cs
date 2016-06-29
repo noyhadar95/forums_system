@@ -25,10 +25,12 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
         }
 
         [TestMethod]
-        public void Test1()
+        public void TestDalUser()
         {
-            du.CreateUser("Test1", "User1", "Pass1", "User1@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member, DateTime.Today, "t1");
-            du.editUser("Test1", "User1", "Pass12", "User12@email.com", DateTime.Today, DateTime.Today.AddYears(-10), 10, UserType.UserTypes.Admin, DateTime.Today, "t1");
+
+            du.CreateUser("Test1", "User1", "Pass1", "User1@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member, DateTime.Today, "t1",true, true, "nothing");
+            du.editUser("Test1", "User1", "Pass12", "User12@email.com", DateTime.Today, DateTime.Today.AddYears(-10), 10, UserType.UserTypes.Admin, DateTime.Today, "t1",true, true, "nothing");
+
         }
     }
 }

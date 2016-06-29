@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -40,7 +41,6 @@ namespace ForumsSystemClient.PresentationLayer
 
             base.Initialize(dockPanel);
 
-
             // initialize sub-forums list
             List<string> items = cl.GetSubForumsList(forumName);
             subForumsListView.ItemsSource = items;
@@ -51,6 +51,9 @@ namespace ForumsSystemClient.PresentationLayer
             adminGrid.Visibility = Visibility.Hidden;
             adminGrid.Margin = new Thickness(userGrid.Margin.Left, userGrid.Margin.Top + userGrid.Height,
                 userGrid.Margin.Right, userGrid.Margin.Bottom);
+            moderatorGrid.Visibility = Visibility.Hidden;
+            moderatorGrid.Margin = new Thickness(adminGrid.Margin.Left, adminGrid.Margin.Top + adminGrid.Height,
+               adminGrid.Margin.Right, adminGrid.Margin.Bottom);
 
 
             // hide user menu bar (notifications bar included)
@@ -66,11 +69,27 @@ namespace ForumsSystemClient.PresentationLayer
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
 
-                RefreshNotificationsBar(user.Username);
+                if (IsModerator(items, user))
+                    ShowModeratorViewMode(user.Username);
             }
 
         }
 
+        private bool IsModerator(List<string> subforumsList, User user)
+        {
+            // handle moderator
+            bool isMod = false;
+            foreach (string subforum in subforumsList)
+            {
+                if (cl.IsModerator(forumName, subforum, user.Username))
+                {
+                    isMod = true;
+                    break;
+                }
+            }
+
+            return isMod;
+        }
 
         private void subForumsListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -101,6 +120,11 @@ namespace ForumsSystemClient.PresentationLayer
             adminGrid.Visibility = Visibility.Visible;
         }
 
+        private void ShowModeratorViewMode(string username)
+        {
+            moderatorGrid.Visibility = Visibility.Visible;
+        }
+
         private void ShowBadLoginMsg()
         {
             badLoginLbl.Content = badLoginMsg;
@@ -118,6 +142,7 @@ namespace ForumsSystemClient.PresentationLayer
             loginGrid.Visibility = Visibility.Visible;
             userGrid.Visibility = Visibility.Hidden;
             adminGrid.Visibility = Visibility.Hidden;
+            moderatorGrid.Visibility = Visibility.Hidden;
 
             // hide and clear user menu bar
             userMenuBar.Visibility = Visibility.Hidden;
@@ -171,9 +196,15 @@ namespace ForumsSystemClient.PresentationLayer
                 return;
             }
 
+            Regex rgx = new Regex(@"([0-9]8)$");
+            if (sessionToken != "" && !rgx.IsMatch(sessionToken))
+            {
+                MessageBox.Show("Session Token must be 8 numbers");
+            }
+
             WindowHelper.SetCurrentWindow(this);
 
-            //// fields are not empty try to login
+            // fields are not empty try to login
             Tuple<User, string> userTokenTuple = null;
             if (sessionToken == "")
             {
@@ -183,12 +214,22 @@ namespace ForumsSystemClient.PresentationLayer
             {
                 userTokenTuple = cl.MemberLogin(forumName, username, password, sessionToken);
             }
-            User user=null;
-            if(userTokenTuple!=null)
-                user= userTokenTuple.Item1;//cl.MemberLogin(forumName, username, password);
+            User user = null;
+            if (userTokenTuple != null)
+                user = userTokenTuple.Item1;
 
             if (user == null)
             {
+                if (userTokenTuple.Item2 == "-2")
+                {
+                    MessageBox.Show("this user has been banned from the forum");
+                }
+                else if (userTokenTuple.Item2 == "-1")
+                {
+                    MessageBox.Show("password validity period has been passed");
+                    WindowHelper.SwitchWindow(this, new ResetPasswordWindow(forumName));
+                }
+
                 // failed login
                 WindowHelper.SetCurrentWindow(null);
                 ShowBadLoginMsg();
@@ -196,19 +237,23 @@ namespace ForumsSystemClient.PresentationLayer
             }
             else
             {
-                //TODO: User user = userTokenTuple.Item1;
-
+                base.session_token = userTokenTuple.Item2;
                 // save the user in WindowHelper so all windows will know 
                 // that the user is logged in.
                 WindowHelper.SetLoggedUser(forumName, user);
 
+
                 // user is logged in, get type of user and change window accordingly.
                 string type = cl.GetUserType(forumName, username);
-                MessageBox.Show(type);
+
                 if (type == UserTypes.Member)
                     ShowMemberViewMode(user.Username);
                 else if (type == UserTypes.Admin)
                     ShowAdminViewMode(user.Username);
+
+                List<string> subforumsList = cl.GetSubForumsList(forumName);
+                if (IsModerator(subforumsList, user))
+                    ShowModeratorViewMode(user.Username);
 
             }
         }
@@ -218,12 +263,51 @@ namespace ForumsSystemClient.PresentationLayer
             WindowHelper.SwitchWindow(this, new AdminReportsWindow(forumName));
         }
 
+        private void confirmEmailBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new ConfirmEmailWindow(forumName));
+        }
+
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
             WindowHelper.SwitchWindow(this, new MainWindow());
         }
 
+
+        private void complainUserBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new AddComplaintWindow(forumName));
+        }
+
+        private void privateMsgBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new SeePrivateMessagesWindow(forumName));
+        }
+
+
+        private void forgotPasswordBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new ForgotPassword(forumName));
+        }
+
+        private void replaceAdminBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new ReplaceAdminWindow(forumName));
+        }
+
+        private void friendsListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new ShowFriends(forumName));
+        }
+
+        private void banUserBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WindowHelper.SwitchWindow(this, new BanUserWindow(forumName));
+        }
+        
+
         #endregion
+
 
     }
 }

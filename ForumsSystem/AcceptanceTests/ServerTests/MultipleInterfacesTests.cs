@@ -13,8 +13,10 @@ namespace AcceptanceTests.ServerTests
         public MultipleInterfacesTests()
             : base()
         {
-            guiBridge = new RealBridge();//TODO: change this!!! ClientBridge
-            webBridge = new RealBridge();//TODO: change this!!! WebBridge
+            #region bridges
+            guiBridge = new RealBridge();
+            webBridge = new RealBridge();
+            #endregion
         }
 
 

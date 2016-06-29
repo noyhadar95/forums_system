@@ -139,8 +139,8 @@ namespace ForumsSystemClient.PresentationLayer
                 btnSPParents.Add(replyBtn, sp);
             }
 
-            // check if the logged user is the post publisher
-            if (IsLoggedUserPostPublisher(post))
+            // check if the logged user is the post publisher or is he a moderator with seniority privileges
+            if (IsLoggedUserPostPublisher(post) || HasSeniorityPrivilege(post))
             {
                 // add delete button
                 Button deleteBtn = new Button();
@@ -172,6 +172,14 @@ namespace ForumsSystemClient.PresentationLayer
         private bool IsLoggedUserPostPublisher(Post post)
         {
             return (WindowHelper.IsLoggedUser(forumName) && WindowHelper.GetLoggedUser(forumName).Username == post.Publisher.Username);
+        }
+
+        private bool HasSeniorityPrivilege(Post post)
+        {
+            if (WindowHelper.IsLoggedUser(forumName))
+                return cl.HasSeniorityPriviledge(forumName, subForumName, threadID, WindowHelper.GetLoggedUser(forumName).Username, post.Id);
+            else
+                return false;
         }
 
         private Border WrapElementWithBorder(UIElement c)

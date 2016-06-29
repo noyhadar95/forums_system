@@ -19,26 +19,26 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for SendFriendReqWindow.xaml
     /// </summary>
-    public partial class SendFriendReqWindow : Window
+    public partial class SendFriendReqWindow : NotifBarWindow
     {
-        private string forumName;
-        private CL cl;
         private ObservableCollection<string> usersNotFriends;
-        private string loggedUsername;
 
-        public SendFriendReqWindow(string forumName)
+        public SendFriendReqWindow(string forumName) : base(forumName)
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
 
-            this.forumName = forumName;
             cl = new CL();
+
+            base.Initialize(dockPanel);
 
             loggedUsername = WindowHelper.GetLoggedUsername(forumName);
             List<string> users = cl.GetUsersNotFriends(forumName, loggedUsername);
             usersNotFriends = new ObservableCollection<string>(users);
             usersLV.ItemsSource = usersNotFriends;
+
+            RefreshNotificationsBar(loggedUsername);
         }
 
 

@@ -17,77 +17,47 @@ namespace WebApplication.Communication
         const int SERVER_PORT_NO = 5000;
         const string delimeter = "$|deli|$";
         static string SERVER_IP = "132.72.226.107";
- 
+        static string connectionErrorString = "!@#!#connectionerror!@!#@";
+
+        static int id;
+        static Byte[] encKey;
+        static Byte[] authKey;
 
         private static string connect(string textToSend)
         {
-            SERVER_IP = GetLocalIPAddress();
-            //---create a TCPClient object at the IP and port no.---
-            TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
-
-            int port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
-
-
-            NetworkStream nwStream = client.GetStream();
-            byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
-
-            //---send the text---
-            Console.WriteLine("Sending : " + textToSend);
-            nwStream.Write(bytesToSend, 0, bytesToSend.Length);
-
-            //---read back the text---
-            byte[] bytesToRead = new byte[client.ReceiveBufferSize];
-            int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
-            // Console.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
-            string textFromServer = GetString(bytesToRead, bytesRead);
-            client.Close();
-
-            return textFromServer;
-
-
-        }
-        public static void WaitForNotification()
-        {
-            string myIp = GetLocalIPAddress();
-            //---listen at the specified IP and port no.---
-            IPAddress localAdd = IPAddress.Parse(myIp);
-            TcpListener listener = new TcpListener(localAdd, CLIENT_PORT_NO);
-
-            listener.Start();
-
-            while (true)
+            try
             {
-                Console.WriteLine("Listening...");
-                //---incoming client connected---
-                TcpClient client = listener.AcceptTcpClient();
+                SERVER_IP = GetLocalIPAddress();
+                //---create a TCPClient object at the IP and port no.---
+                TcpClient client = new TcpClient(SERVER_IP, SERVER_PORT_NO);
+
+                int port = ((IPEndPoint)client.Client.RemoteEndPoint).Port;
 
 
-
-                //---get the incoming data through a network stream---
                 NetworkStream nwStream = client.GetStream();
-                byte[] buffer = new byte[client.ReceiveBufferSize];
+                byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
 
-                //---read incoming stream---
-                int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
+                //---send the text---
+                Console.WriteLine("Sending : " + textToSend);
+                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
 
-                //---convert the data received into a string---
-                string dataReceived = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                string[] seperators = new string[] { delimeter };
-                string[] items = dataReceived.Split(seperators, StringSplitOptions.None);
+                //---read back the text---
+                byte[] bytesToRead = new byte[client.ReceiveBufferSize];
+                int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
+                // Console.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
+                string textFromServer = GetString(bytesToRead, bytesRead);
+                client.Close();
 
-                //TODO: MAKE THIS WORK ---------------------
-                List<Object> parameters = new List<object>();
-
-                for (int i = 1; i < items.Length; i += 2)
-                {
-                    parameters.Add(StringToObject(items[i], items[i + 1]));
-                }
-
-                Console.WriteLine("Received : " + dataReceived);
-
+                return textFromServer;
             }
-            //  listener.Stop   
+            catch (Exception e)
+            {
+                
+                return connectionErrorString;
+            }
+
         }
+
         static string GetString(byte[] bytes, int bytesRead)
         {
             char[] chars = new char[bytesRead / sizeof(char)];
@@ -113,15 +83,28 @@ namespace WebApplication.Communication
             string textToSend = methodName;
             foreach (Object param in methodParameter)
             {
-                string pType = param.GetType().ToString();
-                //  if(!pType.StartsWith("System."))
-                //     pType = pType.Substring(pType.LastIndexOf('.') + 1);
+                string pType;
+                pType = null;
+                if (param != null)
+                {
+                    pType = param.GetType().ToString();
+                    //  if(!pType.StartsWith("System."))
+                    //     pType = pType.Substring(pType.LastIndexOf('.') + 1);
 
-                textToSend += delimeter + pType;
-                textToSend += delimeter + ObjectToString(param);
+                    textToSend += delimeter + pType;
+                    textToSend += delimeter + ObjectToString(param);
+                }
+                else
+                {
+                    textToSend += delimeter + "null";
+                    textToSend += delimeter + "null";
+                }
             }
-
+            textToSend = Encrypt(textToSend);
             string textFromServer = connect(textToSend);
+            if (textFromServer.Equals(connectionErrorString))
+                return null;
+            textFromServer = Decrypt(textFromServer);
             if (textFromServer.Equals("null"))
                 return null;
 
@@ -129,10 +112,43 @@ namespace WebApplication.Communication
             string[] items = textFromServer.Split(seperators, StringSplitOptions.None);
 
             Object retValue = StringToObject(items[0], items[1]);
+            if (methodName == "StartSecuredConnection")
+            {
+                List<Object> ret = (List<Object>)retValue;
+                id = (int)ret[0];
+                encKey = (Byte[])ret[1];
+                authKey = (Byte[])ret[1];
+                return null;
+            }
+            
             return retValue;
 
         }
 
+        public static void StartSecuredConnection(bool isTesting)
+        {
+            string textToSend = "StartSecuredConnection";
+            // textToSend = Encrypt(textToSend);
+            string textFromServer = connect(textToSend);
+            if (textFromServer.Equals(connectionErrorString))
+                return;
+            //textFromServer = Decrypt(textFromServer);
+            if (textFromServer.Equals("null"))
+                return;
+
+            string[] seperators = new string[] { delimeter };
+            string[] items = textFromServer.Split(seperators, StringSplitOptions.None);
+
+            Object retValue = StringToObject(items[0], items[1]);
+
+            List<Object> ret = (List<Object>)retValue;
+            id = (int)ret[0];
+            encKey = (Byte[])ret[1];
+            authKey = (Byte[])ret[2];
+            return;
+
+
+        }
         /*   public static string ObjectToString(Object obj)
            {
 
@@ -209,6 +225,7 @@ namespace WebApplication.Communication
                 string[] items = classType.Split(seperators, StringSplitOptions.None);
                 classType = items[0] + "WebApplication.Resources" + items[1];
             }
+
             Type type = Type.GetType(classType);
 
             /*
@@ -256,5 +273,18 @@ namespace WebApplication.Communication
             }
         }
 
+        private static string Encrypt(string textToSend)
+        {
+            if (encKey != null && authKey != null)
+                return id + delimeter + Encryption.AESThenHMAC.SimpleEncrypt(textToSend, encKey, authKey);
+            return textToSend;
+        }
+
+        private static string Decrypt(string textFromServer)
+        {
+            if (encKey != null && authKey != null)
+                return Encryption.AESThenHMAC.SimpleDecrypt(textFromServer, encKey, authKey);
+            return textFromServer;
+        }
     }
 }

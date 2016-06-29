@@ -65,7 +65,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             foreach (IUser user in adminUsername.ToList<IUser>())
             {
                 param.User = user;
-                if (!properties.CheckPolicy(param))//check if user can be an admin (Policies) 
+                if (properties!=null&&!properties.CheckPolicy(param))//check if user can be an admin (Policies) 
                     return null;
             }
 
@@ -135,6 +135,20 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         {
             return instance != null;
 
+        }
+        public bool ChangeForumProperties(IForum forum, Policy properties)
+        {
+
+            DAL_Forum dal_forum = new DAL_Forum();
+            bool res = forum.SetPolicy(properties);
+            if (res)
+                dal_forum.SetForumPolicy(forum.getName(), properties.ID);
+            return res;
+
+        }
+        public void LogoutAll()
+        {
+            forumSystem.LogoutAll();
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
 using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,22 +22,21 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for AddSubForumWindow.xaml
     /// </summary>
-    public partial class AddSubForumWindow : Window
+    public partial class AddSubForumWindow : NotifBarWindow
     {
         private int moderatorExpDateMonths = 12;
-        private CL cl;
-        private string forumName;
         private ObservableCollection<string> notModeratorsLVItems;
         private ObservableCollection<KeyValuePair<string, DateTime>> moderatorsLVItems;
 
-        public AddSubForumWindow(string forumName)
+        public AddSubForumWindow(string forumName) : base(forumName)
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
 
-            this.forumName = forumName;
             cl = new CL();
+            base.Initialize(dockPanel);
+
             List<string> usersList = cl.GetUsersInForum(forumName);
             notModeratorsLVItems = new ObservableCollection<string>(usersList);
             moderatorsLVItems = new ObservableCollection<KeyValuePair<string, DateTime>>();
@@ -44,9 +45,11 @@ namespace ForumsSystemClient.PresentationLayer
             moderatorsListView.ItemsSource = moderatorsLVItems;
 
             // set the width of two columns in moderators list view to be 50% each
-            GridView gv= (GridView) moderatorsListView.View;
+            GridView gv = (GridView)moderatorsListView.View;
             gv.Columns[0].Width = moderatorsListView.Width / 2;
             gv.Columns[1].Width = moderatorsListView.Width / 2;
+
+            RefreshNotificationsBar(loggedUsername);
         }
 
         private void moveRightBtn_Click(object sender, RoutedEventArgs e)
@@ -80,7 +83,7 @@ namespace ForumsSystemClient.PresentationLayer
             {
                 notModeratorsLVItems.Add(selectedItem.Key);
                 moderatorsLVItems.Remove(selectedItem);
-               
+
             }
         }
 
@@ -94,15 +97,25 @@ namespace ForumsSystemClient.PresentationLayer
                 return;
             }
 
+            Regex rgx = new Regex(@"^[a-z0-9_-]{1,30}$");
+            if (!rgx.IsMatch(subForumName))
+            {
+                MessageBox.Show("Enter valid Sub Forum Name");
+                return;
+            }
+
             Dictionary<string, DateTime> moderators = new Dictionary<string, DateTime>();
             foreach (KeyValuePair<string, DateTime> pair in moderatorsLVItems)
             {
                 moderators.Add(pair.Key, pair.Value);
             }
             string creator = WindowHelper.GetLoggedUsername(forumName);
-            cl.CreateSubForum(creator, forumName, subForumName, moderators);
 
-            WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
+            SubForum sb = cl.CreateSubForum(creator, forumName, subForumName, moderators);
+            if (sb != null)
+                WindowHelper.SwitchWindow(this, new ForumWindow(forumName));
+            else
+                MessageBox.Show("sub-forum creation was unsuccessfull, please try again");
         }
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)

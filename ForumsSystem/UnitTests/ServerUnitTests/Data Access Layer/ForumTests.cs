@@ -19,7 +19,7 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
         }
 
         [TestMethod]
-        public void Test1()
+        public void TestDalForum()
         {
             dl.DeleteForum("test");
             dl.CreateForum("test", -1);

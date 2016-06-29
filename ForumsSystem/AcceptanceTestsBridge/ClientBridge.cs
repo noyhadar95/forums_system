@@ -23,10 +23,12 @@ namespace AcceptanceTestsBridge
         private int minAge = 1;
         private int maxModerators = 20;
         private Dictionary<Tuple<string,string>, string> sessionKeys =  new Dictionary<Tuple<string, string>, string>();
+        private int notifyMode = 1;
 
         public ClientBridge()
         {
             cl = new CL();
+            cl.startTesting();
         }
         #region Add/Create Methods
 
@@ -73,6 +75,9 @@ namespace AcceptanceTestsBridge
                     break;
                 case Policies.MaxModerators:
                     policy = new MaxModeratorsPolicy(forumPol, maxModerators);
+                    break;
+                case Policies.InteractivePolicy:
+                    policy = new InteractivePolicy(forumPol, notifyMode);
                     break;
                 default:
                     policy = new PasswordPolicy(forumPol, 2, 100);
@@ -266,11 +271,58 @@ namespace AcceptanceTestsBridge
             }
             return cl.SetForumProperties(username, forumName, policy);
         }
+        public bool SetForumProperties(string forumName, string username, PoliciesStub forumPolicies, params object[] policyParams)
+        {
+            Forum forum = cl.GetForum(forumName);
+            User user = forum.getUser(username);
+            Policies forumPol = ConvertPolicyStubToReal(forumPolicies);
+            Policy policy;
+            switch (forumPol)
+            {
+                case Policies.Password:
+                    policy = new PasswordPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1));
+                    break;
+                case Policies.Authentication:
+                    policy = new AuthenticationPolicy(forumPol);
+                    break;
+                case Policies.ModeratorSuspension:
+                    policy = new ModeratorSuspensionPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.Confidentiality:
+                    policy = new ConfidentialityPolicy(forumPol, (bool)policyParams.ElementAt(0));
+                    break;
+                case Policies.ModeratorAppointment:
+                    policy = new ModeratorAppointmentPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1), (int)policyParams.ElementAt(2));
+                    break;
+                case Policies.AdminAppointment:
+                    policy = new AdminAppointmentPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1), (int)policyParams.ElementAt(2));
+                    break;
+                case Policies.MemberSuspension:
+                    policy = new MemberSuspensionPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.UsersLoad:
+                    policy = new UsersLoadPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.MinimumAge:
+                    policy = new MinimumAgePolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.MaxModerators:
+                    policy = new MaxModeratorsPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                default:
+                    policy = new PasswordPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1));
+                    break;
+            }
+            return cl.SetForumProperties(username, forumName, policy);
+        }
+         
 
-        public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
+
+
+    public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
         {
            // Forum forum = cl.GetForum(forumName);
-            return cl.RegisterToForum( forumName, username, password, email, dateOfBirth);
+            return cl.RegisterToForum( forumName, username, password, email, dateOfBirth, 1, "Bonzo");
         }
 
         public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
@@ -315,7 +367,7 @@ namespace AcceptanceTestsBridge
 
         public bool ConfirmRegistration(string forumName, string username)
         {
-            return cl.ConfirmRegistration(forumName, username);
+            return cl.ConfirmRegistration(forumName, username,"");
         }
 
         public int GetOpenningPostID(string forumName, string subForumName, int threadID)
@@ -358,12 +410,12 @@ namespace AcceptanceTestsBridge
         
         public bool IsExistNotificationOfPost(string forumName, string username, int postId)
         {
-            Post[] notifications = cl.GetPostNotifications(forumName,username).ToArray();
-            Post temp;
+            PostNotification[] notifications = cl.GetPostNotifications(forumName,username).ToArray();
+            PostNotification temp;
             for (int i = 0; i < notifications.Length; i++)
             {
                 temp = notifications[i];
-                if (temp.GetId() == postId)
+                if (temp.id == postId)
                     return true;
             }
             return false;
@@ -470,7 +522,7 @@ namespace AcceptanceTestsBridge
             cl.MemberLogout(forumName, username);
         }
 
-        public List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        public List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
             throw new NotImplementedException();
         }
@@ -538,6 +590,12 @@ namespace AcceptanceTestsBridge
             }
             Forum newForum = cl.CreateForum(superAdmin.userName, superAdmin.password, forumName, policy, newAdmins);
             return newForum != null;
+        }
+
+     
+        public bool recievedNotification(string forumName, string userName)
+        {
+            return NotificationHelper.recievedNotification();
         }
     }
 }

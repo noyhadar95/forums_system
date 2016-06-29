@@ -3,51 +3,68 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
+using WebApplication.Resources.ForumManagement.DomainLayer;
 
 namespace WebApplication.Resources.UserManagement.DomainLayer
 {
     [DataContract(IsReference = true)]
-    //  [KnownType(typeof(Forum))]
-    //  [KnownType(typeof(PrivateMessage))]
+    [KnownType(typeof(Forum))]
+    [KnownType(typeof(PrivateMessage))]
+    // [KnownType(typeof(PrivateMessageNotification))]
+    // [KnownType(typeof(PostNotification))]
     [Serializable]
     public class User
     {
         [DataMember]
         private string userName;
-        [IgnoreDataMember]
+        [DataMember]
         private string password;
-        [IgnoreDataMember]
+        [DataMember]
         private string email;
         [IgnoreDataMember]
         private int age;
         [IgnoreDataMember]
         private DateTime dateJoined;
-        [IgnoreDataMember]
+        [DataMember]
         private DateTime dateOfBirth;
-        //  [IgnoreDataMember]
-        //  private Forum forum;
+        [IgnoreDataMember]
+        private Forum forum;
         [IgnoreDataMember]
         private int numOfMessages;
         [IgnoreDataMember]
         private int numOfComplaints;
         [IgnoreDataMember]
         private Type type;
-        //  [IgnoreDataMember]
-        //  private List<PrivateMessage> sentMessages;
-        //  [IgnoreDataMember]
-        //  private List<PrivateMessage> receivedMessages;
-        //  [IgnoreDataMember]
-        //  private List<PrivateMessage> notifications;
+        [IgnoreDataMember]
+        private List<PrivateMessage> sentMessages;
+        [IgnoreDataMember]
+        private List<PrivateMessage> receivedMessages;
+        [IgnoreDataMember]
+        private List<PrivateMessage> notifications;
         [IgnoreDataMember]
         private List<User> friends;
         [IgnoreDataMember]
         private List<User> waitingFriendsList;
-        //  [IgnoreDataMember]
-        //  private List<Post> postsNotifications;
+        [IgnoreDataMember]
+        private List<Post> postsNotifications;
         [IgnoreDataMember]
         private bool isLoggedIn;
         [IgnoreDataMember]
         private bool emailAccepted;
+        [IgnoreDataMember]
+        private string clientSession;
+        [DataMember]
+        private string passwordSalt;
+        [DataMember]
+        public bool notifyOffline;
+        [DataMember]
+        public bool isActive = true;
+        [DataMember]
+        public string emailConfirmationToken;
+
+
+
+        #region Gettes/Setters
 
         public string Username { get { return userName; } set { userName = value; } }
 
@@ -63,6 +80,230 @@ namespace WebApplication.Resources.UserManagement.DomainLayer
                 userName = value;
             }
         }
+        /*
+        public string Password
+        {
+            get
+            {
+                return password;
+            }
+
+            set
+            {
+                password = value;
+            }
+        }
+
+        public string Email
+        {
+            get
+            {
+                return email;
+            }
+
+            set
+            {
+                email = value;
+            }
+        }
+
+        public int Age
+        {
+            get
+            {
+                return age;
+            }
+
+            set
+            {
+                age = value;
+            }
+        }
+
+        public DateTime DateJoined
+        {
+            get
+            {
+                return dateJoined;
+            }
+
+            set
+            {
+                dateJoined = value;
+            }
+        }
+
+        public DateTime DateOfBirth
+        {
+            get
+            {
+                return dateOfBirth;
+            }
+
+            set
+            {
+                dateOfBirth = value;
+            }
+        }
+
+        public Forum Forum
+        {
+            get
+            {
+                return forum;
+            }
+
+            set
+            {
+                forum = value;
+            }
+        }
+
+        public int NumOfMessages
+        {
+            get
+            {
+                return numOfMessages;
+            }
+
+            set
+            {
+                numOfMessages = value;
+            }
+        }
+
+        public int NumOfComplaints
+        {
+            get
+            {
+                return numOfComplaints;
+            }
+
+            set
+            {
+                numOfComplaints = value;
+            }
+        }
+
+        public Type Type
+        {
+            get
+            {
+                return type;
+            }
+
+            set
+            {
+                type = value;
+            }
+        }
+
+        public List<PrivateMessage> SentMessages
+        {
+            get
+            {
+                return sentMessages;
+            }
+
+            set
+            {
+                sentMessages = value;
+            }
+        }
+
+        public List<PrivateMessage> ReceivedMessages
+        {
+            get
+            {
+                return receivedMessages;
+            }
+
+            set
+            {
+                receivedMessages = value;
+            }
+        }
+
+        public List<PrivateMessage> Notifications
+        {
+            get
+            {
+                return notifications;
+            }
+
+            set
+            {
+                notifications = value;
+            }
+        }
+
+        public List<User> Friends
+        {
+            get
+            {
+                return friends;
+            }
+
+            set
+            {
+                friends = value;
+            }
+        }
+
+        public List<User> WaitingFriendsList
+        {
+            get
+            {
+                return waitingFriendsList;
+            }
+
+            set
+            {
+                waitingFriendsList = value;
+            }
+        }
+
+        public List<Post> PostsNotifications
+        {
+            get
+            {
+                return postsNotifications;
+            }
+
+            set
+            {
+                postsNotifications = value;
+            }
+        }
+
+        public bool IsLoggedIn
+        {
+            get
+            {
+                return isLoggedIn;
+            }
+
+            set
+            {
+                isLoggedIn = value;
+            }
+        }
+
+        public bool EmailAccepted
+        {
+            get
+            {
+                return emailAccepted;
+            }
+
+            set
+            {
+                emailAccepted = value;
+            }
+        }
+        */
+        #endregion
+
 
         public User()
         {

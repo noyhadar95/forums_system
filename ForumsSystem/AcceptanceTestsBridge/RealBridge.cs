@@ -293,13 +293,22 @@ namespace AcceptanceTestsBridge
                     policy = new PasswordPolicy(forumPol, 2, 100);
                     break;
             }
-            return sl.SetForumProperties(username, forumName, policy);
+            return sl.ChangeForumProperties(username, forumName, policy);
         }
 
         public bool RegisterToForum(string forumName, string username, string password, string email, DateTime dateOfBirth)
         {
             //IForum forum = sl.GetForum(forumName);
-            return sl.RegisterToForum(forumName, username, password, email, dateOfBirth);
+            bool res= sl.RegisterToForum(forumName, username, password, email, dateOfBirth);
+            if (res)
+            {
+                User u = (User)sl.GetForum(forumName).GetWaitingUser(username);
+                if (u != null)
+                {
+                    u.emailConfirmationToken = "";
+                }
+            }
+            return res;
         }
 
         public int CountNestedReplies(string forumName, string subForumName, int threadID, int postID)
@@ -365,7 +374,7 @@ namespace AcceptanceTestsBridge
 
         public bool ConfirmRegistration(string forumName, string username)
         {
-            return sl.ConfirmRegistration(forumName, username);
+            return sl.ConfirmRegistration(forumName, username, "");
         }
 
         public int GetOpenningPostID(string forumName, string subForumName, int threadID)
@@ -523,19 +532,15 @@ namespace AcceptanceTestsBridge
         }
 
  
-        public List<Tuple<string, string, DateTime, string, List<int>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        public List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
-            List<Tuple<string, string, DateTime, string, List<int>>> res = new List<Tuple<string, string, DateTime, string, List<int>>>();
-            List<Tuple<string, string, DateTime, string, List<Post>>> l = sl.ReportModeratorsDetails(forumName, adminUserName1);
-            foreach(Tuple<string, string, DateTime, string, List<Post>> t in l)
+            List<Tuple<string, string, DateTime, string>> res = new List<Tuple<string, string, DateTime, string>>();
+            List<Tuple<string, string, DateTime, string>> l = sl.ReportModeratorsDetails(forumName, adminUserName1);
+            foreach(Tuple<string, string, DateTime, string> t in l)
             {
-                List<int> postIds = new List<int>();
-                foreach(Post p in t.Item5)
-                {
-                    postIds.Add(p.GetId());
-                }
-                Tuple < string, string, DateTime, string, List<int>> newt = new Tuple<string, string, DateTime, string, List<int>>(
-                    t.Item1, t.Item2, t.Item3, t.Item4, postIds);
+               
+                Tuple < string, string, DateTime, string> newt = new Tuple<string, string, DateTime, string>(
+                    t.Item1, t.Item2, t.Item3, t.Item4);
                 res.Add(newt);
             }
             return res;
@@ -615,6 +620,57 @@ namespace AcceptanceTestsBridge
             }
             IForum newForum = sl.CreateForum(creator, creatorPass, forumName, policy, newAdmins);
             return newForum != null;
+        }
+
+        public bool recievedNotification(string forumName, string userName)
+        {
+            return true;
+        }
+
+        public bool SetForumProperties(string forumName, string username, PoliciesStub forumPolicies, params object[] policyParams)
+        {
+            IForum forum = sl.GetForum(forumName);
+            IUser user = forum.getUser(username);
+            Policies forumPol = ConvertPolicyStubToReal(forumPolicies);
+            Policy policy;
+            
+            switch (forumPol)
+            {
+                case Policies.Password:
+                    policy = new PasswordPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1));
+                    break;
+                case Policies.Authentication:
+                    policy = new AuthenticationPolicy(forumPol);
+                    break;
+                case Policies.ModeratorSuspension:
+                    policy = new ModeratorSuspensionPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.Confidentiality:
+                    policy = new ConfidentialityPolicy(forumPol, (bool)policyParams.ElementAt(0));
+                    break;
+                case Policies.ModeratorAppointment:
+                    policy = new ModeratorAppointmentPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1), (int)policyParams.ElementAt(2));
+                    break;
+                case Policies.AdminAppointment:
+                    policy = new AdminAppointmentPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1), (int)policyParams.ElementAt(2));
+                    break;
+                case Policies.MemberSuspension:
+                    policy = new MemberSuspensionPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.UsersLoad:
+                    policy = new UsersLoadPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.MinimumAge:
+                    policy = new MinimumAgePolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                case Policies.MaxModerators:
+                    policy = new MaxModeratorsPolicy(forumPol, (int)policyParams.ElementAt(0));
+                    break;
+                default:
+                    policy = new PasswordPolicy(forumPol, (int)policyParams.ElementAt(0), (int)policyParams.ElementAt(1));
+                    break;
+            }
+            return sl.ChangeForumProperties(username, forumName, policy);
         }
     }
 }

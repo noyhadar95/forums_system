@@ -70,5 +70,13 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             //only the appointer is able to delete the modeartor
             return appointer.getUsername().Equals(user);
         }
+
+        public bool hasSeniority()
+        {
+            bool f1= (DateTime.Now - appointmentDate).TotalDays > 10;
+            PolicyParametersObject p = new PolicyParametersObject(Policies.ModeratorPermissionToDelete);
+            bool f2 = this.user.getForum().GetPolicy() != null && this.user.getForum().GetPolicy().CheckPolicy(p);
+            return f1 || f2;
+        }
     }
 }

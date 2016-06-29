@@ -11,7 +11,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
     public class MaxModeratorsPolicy:Policy
     {
         [DataMember]
-        private int maxModerators;
+        public int maxModerators;
 
         public MaxModeratorsPolicy(Policies type, int maxModerators):base(type)
         {
@@ -56,7 +56,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         public override void AddParamObject()
         {
             dal_policyParameter = new Data_Access_Layer.DAL_PolicyParameter();
-            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1, false, maxModerators, -1, -1, -1, -1, -1, false);
+            dal_policyParameter.CreatePolicyParameter(ID, -1, -1, -1, false, maxModerators, -1, -1, -1, -1, -1, false, -1);
 
         }
     }

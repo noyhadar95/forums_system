@@ -18,27 +18,28 @@ namespace ForumsSystemClient.PresentationLayer
     /// <summary>
     /// Interaction logic for EditModeratorsWindow.xaml
     /// </summary>
-    public partial class EditModeratorsWindow : Window
+    public partial class EditModeratorsWindow : NotifBarWindow
     {
-        private CL cl;
-        private string forumName;
         private string subForumName;
         private List<string> moderators;
         private string adminUsername;  // the current logged-in admin username
 
-        public EditModeratorsWindow(string forumName, string subForumName)
+        public EditModeratorsWindow(string forumName, string subForumName) : base(forumName)
         {
             InitializeComponent();
 
             WindowHelper.SetWindowBGImg(this);
 
             cl = new CL();
-            this.forumName = forumName;
             this.subForumName = subForumName;
+
+            base.Initialize(dockPanel);
 
             adminUsername = WindowHelper.GetLoggedUsername(forumName);
             moderators = cl.GetModeratorsList(forumName, subForumName, adminUsername);
             moderatorsComboBox.ItemsSource = moderators;
+
+            RefreshNotificationsBar(loggedUsername);
         }
 
         private void moderatorsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

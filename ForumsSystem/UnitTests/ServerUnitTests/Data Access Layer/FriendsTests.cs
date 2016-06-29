@@ -20,8 +20,10 @@ namespace UnitTests.ServerUnitTests.Data_Access_Layer
             df = new DAL_Friends();
 
             dl.CreateForum(forumName, -1);
-            du.CreateUser(forumName, "User1", "Pass1", "User1@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member,DateTime.Today, "t1");
-            du.CreateUser(forumName, "User2", "Pass1", "User2@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member,DateTime.Today, "t2");
+
+            du.CreateUser(forumName, "User1", "Pass1", "User1@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member,DateTime.Today, "t1",true, true, "nothing");
+            du.CreateUser(forumName, "User2", "Pass1", "User2@email.com", DateTime.Today, DateTime.Today.AddYears(-20), 0, UserType.UserTypes.Member,DateTime.Today, "t2",true, true, "nothing");
+
 
         }
         [TestCleanup()]

@@ -46,7 +46,7 @@ namespace ForumsSystem.Server.ServiceLayer
 
         bool AddModerator(string forumName, string subForumName, string adminUsername, string username, DateTime expiratoinDate);
         //void removeForum(string forumName);
-        bool ConfirmRegistration(string forumName, string username);
+        bool ConfirmRegistration(string forumName, string username, string token);
         bool LoginSuperAdmin(string username, string pass);
         DateTime GetModeratorExpDate(string forumName, string subForumName, string username);
         int CountNestedReplies(string forumName, string subForumName, int threadID, int postID);
@@ -74,7 +74,7 @@ namespace ForumsSystem.Server.ServiceLayer
         Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfoBySuperAdmin(string userName, string password);
         void AddFriend(string forumName, string username1, string username2);
         
-        List<Tuple<string, string, DateTime, string, List<Post>>> ReportModeratorsDetails(string forumName, string adminUserName1);
+        List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1);
         void MemberLogout(string forumName, string username);
       //  Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1);
         List<Post> GetPosts(string forumName, string subforumName, int threadId);
@@ -101,9 +101,31 @@ namespace ForumsSystem.Server.ServiceLayer
         void SendFriendRequest(string forumName, string sender, string reciever);
         List<string> GetUsersNotFriends(string forumName, string username);
 
-        bool SetUserPassword(string forumName, string username, string newPassword);
-        bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
-        bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question);
-        bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
+        bool SetUserPassword(string forumName, string username,string oldPassword, string newPassword);
+        bool AddSecurityQuestion(string forumName, string username, int question, string answer);
+        bool RemoveSecurityQuestion(string forumName, string username, int question);
+        bool CheckSecurityQuestion(string forumName, string username, int question, string answer,string newPassword);
+
+        int getNumOfPostsInSubForum(string forumName, string subForumName);
+
+        bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, int postId);
+
+        void AddComplaint(string forum, string subforum, string username);
+        bool CheckPasswordValidity(string forumName, string username);
+        void DeactivateUser(string forumName, string username);
+
+        bool isBanned(string forumName, string userName);
+        bool AddAdmin(string forumName, string username);
+        PrivateMessage GetPrivateMsg(string forumName, string msgReceiver, string msgSender, int pmID);
+        List<PrivateMessage> getReceivedMessages(string forumName, string username);
+
+        List<string> getUsersFriends(string forumName, string userName);
+        void removeFriend(string forumName, string userName, string friendUserName);
+
+        List<string> getNonAdmins(string forumName);
+        bool RemoveAdmin(string forumName, string username);
+
+        void LogoutAll();
+
     }
 }

@@ -212,7 +212,10 @@ namespace ForumsSystem.Server.CommunicationLayer
 
             for (int i = 1; i < items.Length; i += 2)
             {
-                parameters.Add(StringToObject(items[i], items[i + 1]));
+                if (items[i].Equals("null"))
+                    parameters.Add(null);
+                else
+                    parameters.Add(StringToObject(items[i], items[i + 1]));
             }
 
 
@@ -223,6 +226,8 @@ namespace ForumsSystem.Server.CommunicationLayer
                 return;
             }
 
+
+            
 
 
             if (method.Equals("MemberLogin"))
@@ -320,6 +325,10 @@ namespace ForumsSystem.Server.CommunicationLayer
 
                 //HalfSubscribeClient(client, forumName, username);
             }
+
+
+          
+
             if (returnObj == null)
             {
 
@@ -331,6 +340,17 @@ namespace ForumsSystem.Server.CommunicationLayer
                 NetworkStream nwStream = client.GetStream();
                 byte[] buf = GetBytes(returnValue);
                 nwStream.Write(buf, 0, buf.Length);
+
+
+                if (method.Equals("LogoutAll"))
+                {
+                   // halfClients = new Dictionary<Tuple<string, string>, string>();
+                   // clients = new Dictionary<Tuple<string, string>, string>();
+                  //  clientsDetails = new Dictionary<int, Client>();
+                  //  clientSessions = new Dictionary<Tuple<string, string>, Tuple<string, int>>();
+                }
+
+
                 client.Close();
             }
             else {
@@ -346,6 +366,17 @@ namespace ForumsSystem.Server.CommunicationLayer
                 NetworkStream nwStream = client.GetStream();
                 byte[] buf = GetBytes(returnValue);
                 nwStream.Write(buf, 0, buf.Length);
+
+
+                if (method.Equals("LogoutAll"))
+                {
+                    halfClients = new Dictionary<Tuple<string, string>, string>();
+                    clients = new Dictionary<Tuple<string, string>, string>();
+                    clientsDetails = new Dictionary<int, Client>();
+                    clientSessions = new Dictionary<Tuple<string, string>, Tuple<string, int>>();
+                }
+
+
                 client.Close();
             }
         }

@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
         mc:Ignorable="d"
-        Title="RegisterWindow" Height="450" Width="750">
+        Title="RegisterWindow" Height="500" Width="750">
     <Grid x:Name="grid">
-        <Button x:Name="submitBtn" Content="submit" TabIndex="6" HorizontalAlignment="Left" Margin="396,353,0,0" VerticalAlignment="Top" Width="75" Click="submitBtn_Click"/>
+        <Button x:Name="submitBtn" Content="submit" TabIndex="6" HorizontalAlignment="Left" Margin="396,422,0,0" VerticalAlignment="Top" Width="75" Click="submitBtn_Click"/>
         <TextBox x:Name="usernameTB" TabIndex="1" HorizontalAlignment="Left" Height="26" Margin="396,52,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="156"/>
         <DatePicker x:Name="dateOfBirthDP" TabIndex="5" HorizontalAlignment="Left" Margin="396,281,0,0" VerticalAlignment="Top" Height="30" Width="156"/>
         <Label x:Name="usernameLbl" Content="username" HorizontalAlignment="Left" Margin="213,52,0,0" VerticalAlignment="Top"/>
@@ -16,9 +16,13 @@
         <Label x:Name="emailLbl" Content="email" HorizontalAlignment="Left" Margin="213,220,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="emailTB" TabIndex="4" HorizontalAlignment="Left" Height="26" Margin="396,220,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="156"/>
         <Label x:Name="dateOfBirthLbl" Content="date of birth" HorizontalAlignment="Left" Margin="213,281,0,0" VerticalAlignment="Top" Height="30"/>
-        <Button x:Name="cancelBtn" Content="cancel" TabIndex="7" HorizontalAlignment="Left" Margin="213,353,0,0" VerticalAlignment="Top" Width="75" Click="cancelBtn_Click"/>
+        <Button x:Name="cancelBtn" Content="cancel" TabIndex="7" HorizontalAlignment="Left" Margin="209,422,0,0" VerticalAlignment="Top" Width="75" Click="cancelBtn_Click"/>
         <PasswordBox x:Name="passwordBox" TabIndex="2" HorizontalAlignment="Left" Margin="396,103,0,0" VerticalAlignment="Top" Height="26" Width="156"/>
         <PasswordBox x:Name="confPasswordBox" TabIndex="3" HorizontalAlignment="Left" Margin="396,163,0,0" VerticalAlignment="Top" Height="26" Width="156"/>
+        <Label x:Name="SecurityQuestionLbl" Content="Security Question" HorizontalAlignment="Left" Margin="213,335,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="SecurityQuestionCB" HorizontalAlignment="Left" Margin="396,329,0,0" VerticalAlignment="Top" Width="156"/>
+        <Label x:Name="SecurityAnswerLbl" Content="Security Answer" HorizontalAlignment="Left" Margin="213,381,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="SecurityAnswerTB" HorizontalAlignment="Left" Height="23" Margin="396,380,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="156"/>
 
     </Grid>
 </Window>

@@ -12,8 +12,9 @@
 
             </ListView>
             <Button x:Name="backBtn" Content="back" TabIndex="3" HorizontalAlignment="Left" Margin="20,370,0,0" VerticalAlignment="Top" Width="75" Click="backBtn_Click"/>
-            <Grid x:Name="adminGrid" HorizontalAlignment="Left" Height="85" Margin="10,162,0,0" VerticalAlignment="Top" Width="170">
+            <Grid x:Name="adminGrid" HorizontalAlignment="Left" Height="112" Margin="10,162,0,0" VerticalAlignment="Top" Width="170">
                 <Button x:Name="editModsBtn" Content="edit moderators" TabIndex="2" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="editModsBtn_Click"/>
+                <Button x:Name="addModsBtn" Content="add moderators" TabIndex="2" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="addModsBtn_Click"/>
             </Grid>
             <Grid x:Name="userGrid" HorizontalAlignment="Left" Height="69" Margin="10,93,0,0" VerticalAlignment="Top" Width="170">
                 <Button x:Name="addThreadBtn" Content="add new topic" TabIndex="1" HorizontalAlignment="Left" Margin="10,29,0,0" VerticalAlignment="Top" Width="103" Height="30" Click="addThreadBtn_Click" />

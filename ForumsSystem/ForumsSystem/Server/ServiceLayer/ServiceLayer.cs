@@ -32,10 +32,14 @@ namespace ForumsSystem.Server.ServiceLayer
                 return true;
             }
             else
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to initial system");
                 return false;
+            }
+
         }
 
-        public Forum CreateForum(string creatorName,string password, string name, Policy properties, List<User> adminUsername)
+        public Forum CreateForum(string creatorName, string password, string name, Policy properties, List<User> adminUsername)
         {
             List<User> serverAdmins = new List<User>();
             foreach (User admin in adminUsername)
@@ -44,11 +48,19 @@ namespace ForumsSystem.Server.ServiceLayer
             }
             SuperAdmin creator;
             if (!SuperAdmin.GetInstance().userName.Equals(creatorName))
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to create forum");
                 return null;
+            }
+
             if (!SuperAdmin.GetInstance().password.Equals(password))
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to create system");
                 return null;
+            }
+
             creator = SuperAdmin.GetInstance();
-           // creator.Login(creatorName, password);//TODO ?????
+            // creator.Login(creatorName, password);//TODO ?????
             return creator.createForum(name, properties, serverAdmins);
         }
 
@@ -61,14 +73,17 @@ namespace ForumsSystem.Server.ServiceLayer
 
         public bool ChangeForumProperties(string username, string forumName, Policy properties)
         {
+            SuperAdmin sa = SuperAdmin.GetInstance();
+
             IForum forum = GetForum(forumName);
-            IUser user = forum.getUser(username);
-            return user.ChangeForumProperties(forum, properties);
+            // IUser user = forum.getUser(username);
+            //return user.ChangeForumProperties(forum, properties);
+            return sa.ChangeForumProperties(forum, properties);
         }
 
         public bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob)
         {
-            
+
             IForum forum = GetForum(forumName);
 
             //IUser guest = forum.GetGuest(guestName);
@@ -81,7 +96,11 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             IUser creator = GetForum(forumName).getUser(creatorName);
             if (creator == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to create sub forum because no creator");
                 return null;
+            }
+
             return creator.createSubForum(subforumName, moderators);
 
         }
@@ -92,9 +111,13 @@ namespace ForumsSystem.Server.ServiceLayer
             ISubForum subForum = forum.getSubForum(subForumName);
             IUser publisher = forum.getUser(publisherName);
             if (publisher == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to add thread no publisher");
                 return -1;
+            }
+
             Thread t = publisher.createThread(subForum, title, content);
-            if(t!=null)
+            if (t != null)
                 return t.id;
             return -1;
 
@@ -104,8 +127,8 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             Post post = GetForum(forumName).getSubForum(subForumName).getThread(threadID).GetPostById(postID);
             IUser publisher = GetForum(forumName).getUser(publisherName);
-            return publisher.postReply(post, post.Thread, title, content);
-
+            Post res = publisher.postReply(post, post.Thread, title, content);
+            return res;
         }
 
         public IUser MemberLogin(string username, string password, string forumName)
@@ -117,30 +140,34 @@ namespace ForumsSystem.Server.ServiceLayer
         public bool SendPrivateMessage(string forumName, string senderUsername, string to, string title, string content)
         {
             IUser from = GetForum(forumName).getUser(senderUsername);
-            return from.SendPrivateMessage(to, title, content)!=null;
+            return from.SendPrivateMessage(to, title, content) != null;
 
 
         }
 
         public bool ChangeExpirationDate(string forumName, string subForumName, string adminName, string moderator, DateTime newDate)
         {
-            IForum forum=GetForum(forumName);
+            IForum forum = GetForum(forumName);
             IUser admin = forum.getUser(adminName);
             ISubForum subforum = forum.getSubForum(subForumName);
             return admin.editExpirationTimeOfModerator(moderator, newDate, subforum);
         }
 
-        private bool DeletePostHelper(IUser deleter, Post post)
+        private bool DeletePostHelper(IUser deleter, Post post, string subforum)
         {
-            return deleter.deletePost(post);
+            return deleter.deletePost(post, subforum);
         }
 
-        public bool DeleteForumProperties(string deleter, string forumName , List<Policies> properties)
+        public bool DeleteForumProperties(string deleter, string forumName, List<Policies> properties)
         {
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(deleter);
             if (user == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to delete forum properties no user");
                 return false;
+            }
+
             return user.DeleteForumProperties(forum, properties);
 
         }
@@ -159,22 +186,34 @@ namespace ForumsSystem.Server.ServiceLayer
             return admin.appointModerator(username, expiratoinDate, subForum);
         }
 
-      /*  public void removeForum(string forumName)
-        {
-            SuperAdmin.GetInstance().removeForum(forumName);
-        }
-        */
+        /*  public void removeForum(string forumName)
+          {
+              SuperAdmin.GetInstance().removeForum(forumName);
+          }
+          */
 
-        public bool ConfirmRegistration(string forumName, string username)
+        public bool ConfirmRegistration(string forumName, string username, string token)
         {
             IForum forum = this.GetForum(forumName);
             if (forum == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to confirm registration forum is null");
                 return false;
+            }
+
             IUser user = forum.GetWaitingUser(username);
             if (user == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to confirm registration user is null");
                 return false;
-            user.AcceptEmail();
-            return true;
+            }
+
+            return user.AcceptEmail(token);
+
+
+
+
+
         }
 
         public bool LoginSuperAdmin(string username, string pass)
@@ -226,11 +265,14 @@ namespace ForumsSystem.Server.ServiceLayer
             ForumsSystem.Server.ForumManagement.DomainLayer.System sys = superAdmin.forumSystem;
             IForum forum = sys.getForum(forumName);
             if (forum == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("is exist forum forum is null");
                 return false;
+            }
             return true;
         }
 
-        public bool DeletePost(string forumName, string subForumName,string deleter, int threadID, int postID)
+        public bool DeletePost(string forumName, string subForumName, string deleter, int threadID, int postID)
         {
             IForum forum = GetForum(forumName);
             Thread thread = forum.getSubForum(subForumName).GetThreadById(threadID);
@@ -239,12 +281,18 @@ namespace ForumsSystem.Server.ServiceLayer
             {
                 Post post = thread.GetPostById(postID);
                 if (post == null)
+                {
+                    Loggers.Logger.GetInstance().AddErrorEntry("Failed to delete post no post");
                     return false;
-
-                return DeletePostHelper(user, post);
+                }
+                return DeletePostHelper(user, post, subForumName);
             }
             else
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to delete post no therad or user");
                 return false;
+            }
+
         }
 
         public void DeleteForum(string forumName)
@@ -291,7 +339,10 @@ namespace ForumsSystem.Server.ServiceLayer
             if (SuperAdmin.GetInstance().userName == userName && SuperAdmin.GetInstance().password == password)
                 return sys.GetMultipleUsersInfo();
             else
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("is exist thread faild");
                 return null;
+            }
         }
 
         public int GetNumOfForums(string userName, string password)
@@ -299,7 +350,11 @@ namespace ForumsSystem.Server.ServiceLayer
             if (SuperAdmin.GetInstance().userName == userName && SuperAdmin.GetInstance().password == password)
                 return sys.GetNumOfForums();
             else
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("get num of forums faild");
+
                 return -1;
+            }
         }
 
         public List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username)
@@ -315,11 +370,11 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user1 = forum.getUser(username1);
             IUser user2 = forum.getUser(username2);
             user1.addFriend(user2);
-            user2.acceptFriend(user1);//TODO: probably need to remove this!
+            //  user2.acceptFriend(user1);//TODO: probably need to remove this!
         }
-        
+
         // <moderatorUserName,appointerUserName,appointmentDate,subForumName,moderatorPosts>
-        public List<Tuple<string, string, DateTime, string, List<Post>>> ReportModeratorsDetails(string forumName, string adminUserName1)
+        public List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1)
         {
             IForum forum = GetForum(forumName);
             IUser admin = forum.getUser(adminUserName1);
@@ -333,7 +388,7 @@ namespace ForumsSystem.Server.ServiceLayer
             user.Logout();
         }
 
-        public List<Post> GetPosts(string forumName,string subforumName,int threadId)
+        public List<Post> GetPosts(string forumName, string subforumName, int threadId)
         {
             Thread thread = sys.getForum(forumName).getSubForum(subforumName).GetThreadById(threadId);
             List<Post> res = new List<Post>();
@@ -345,6 +400,12 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             IForum forum = GetForum(forumName);
             Policy policy = forum.GetPolicy();
+            if (policy == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("check if policy exists - no policy");
+                return false;
+            }
+
             bool res = policy.CheckIfPolicyExists(expectedPolicy);
             return res;
         }
@@ -353,16 +414,23 @@ namespace ForumsSystem.Server.ServiceLayer
         {
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
-            return user.GetPostNotifications();
+            List<PostNotification> res = user.GetPostNotifications();
+            if (res == null)
+                return new List<PostNotification>();
+            else
+                return res;
         }
 
         public List<string> GetWaitingFriendsList(string forumName, string username)
         {
+
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
-            List<IUser> waitingFriends =  user.GetWaitingFriendsList();
+            List<IUser> waitingFriends = user.GetWaitingFriendsList();
+            if (waitingFriends == null)
+                return new List<string>();
             List<string> res = new List<string>();
-            foreach(IUser u in waitingFriends)
+            foreach (IUser u in waitingFriends)
             {
                 res.Add(u.getUsername());
             }
@@ -377,21 +445,45 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             ISubForum subforum = forum.getSubForum(subForumName);
             Thread thread = subforum.GetThreadById(threadId);
-            thread.EditPost(postId, newTitle, newContent);
+            bool updated = thread.EditPost(postId, newTitle, newContent);
+            //notify users:
+            if (updated)
+            {
+                Post post = thread.GetPostById(postId);
+                string pub = post.getPublisher().getUsername();
+                List<Post> replies = post.GetReplies();
+                foreach (Post p in replies.ToArray())
+                {
+                    if (((Forum)forum).ShouldNotify(pub, p.getPublisher().getUsername()))
+                        p.getPublisher().AddPostNotification(post, NotificationType.Changed);
+                }
+            }
+            //update db
             DAL_Posts dp = new DAL_Posts();
             dp.EditPost(postId, newTitle, newContent);
         }
         public bool RemoveModerator(string forumName, string subForumName, string remover, string moderatorName)
         {
             IForum forum = GetForum(forumName);
-            if (forum == null) return false;
+            if (forum == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to remove moderator no forum");
+                return false;
+            }
             ISubForum subforum = forum.getSubForum(subForumName);
-            if (subforum == null) return false;
+            if (subforum == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to remove moderator no subforum");
+                return false;
+            }
             Moderator moderator = subforum.getModeratorByUserName(moderatorName);
             //IUser user = forum.getUser(remover);
             //IUser moderator = forum.getUser(moderatorName);
             if (moderator == null)
+            {
+                Loggers.Logger.GetInstance().AddErrorEntry("Failed to remove moderator no moderator");
                 return false;
+            }
             //  if (!moderator.CanBeDeletedBy(remover))
             //      return false;
             return subforum.removeModerator(remover, moderatorName);
@@ -458,7 +550,9 @@ namespace ForumsSystem.Server.ServiceLayer
         public List<string> GetForumMembers(string forumName)
         {
             IForum forum = GetForum(forumName);
-            Dictionary<string,string>details= forum.GetAllUsers();
+            Dictionary<string, string> details = forum.GetAllUsers();
+            if (details == null)
+                return new List<string>();
             return details.Keys.ToList<string>();
         }
         public List<string> GetThreadsList(string forumName, string subForumName)
@@ -467,6 +561,8 @@ namespace ForumsSystem.Server.ServiceLayer
             ISubForum subforum = forum.getSubForum(subForumName);
             List<Thread> threads = subforum.GetThreads();
             List<string> res = new List<string>();
+            if (threads == null)
+                return new List<string>();
             foreach (Thread thrd in threads)
             {
                 res.Add(thrd.GetTiltle());
@@ -497,6 +593,8 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             List<ISubForum> subforums = forum.GetSubForums();
             List<string> res = new List<string>();
+            if (subforums == null)
+                return new List<string>();
             foreach (ISubForum subf in subforums)
             {
                 res.Add(subf.getName());
@@ -514,12 +612,12 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
             return user.GetTypeString();
-            
+
         }
 
         public bool IgnoreFriend(string forumName, string userName, string userToIgnore)
         {
-            IForum forum = GetForum(forumName); 
+            IForum forum = GetForum(forumName);
             IUser user = forum.getUser(userName);
             IUser user2 = forum.getUser(userToIgnore);
             return user.IgnoreFriend(user2);
@@ -538,7 +636,7 @@ namespace ForumsSystem.Server.ServiceLayer
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(accepter);
             IUser user2 = forum.getUser(toAccept);
-            user.addFriend(user2);
+            user.acceptFriend(user2);
         }
 
         public List<string> GetUsersNotFriends(string forumName, string username)
@@ -547,12 +645,16 @@ namespace ForumsSystem.Server.ServiceLayer
             IUser user = forum.getUser(username);
             List<IUser> tempUsers = forum.getUsersInForum();
             List<string> users = new List<string>();
+            if (tempUsers == null)
+                return new List<string>();
             foreach (IUser usr in tempUsers)
             {
                 users.Add(usr.getUsername());
             }
             List<IUser> tempFriends = user.GetFriendsList();
             List<string> friends = new List<string>();
+            if (tempFriends == null)
+                return new List<string>();
             foreach (IUser usr in tempFriends)
             {
                 friends.Add(usr.getUsername());
@@ -566,32 +668,193 @@ namespace ForumsSystem.Server.ServiceLayer
             return users;
         }
 
-        public bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer)
+        public bool AddSecurityQuestion(string forumName, string username, int question, string answer)
         {
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
-            return user.AddSecurityQuestion(question, answer);
+            if (user == null)
+                user = forum.GetWaitingUser(username);
+            if (user == null)
+                return false;
+            return user.AddSecurityQuestion((SecurityQuestionsEnum)question, answer);
         }
 
-        public bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question)
+        public bool RemoveSecurityQuestion(string forumName, string username, int question)
         {
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
-            return user.RemoveSecurityQuestion(question);
+            return user.RemoveSecurityQuestion((SecurityQuestionsEnum)question);
         }
 
-        public bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer)
+        public bool CheckSecurityQuestion(string forumName, string username, int question, string answer, string newPassword)
         {
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
-            return user.CheckSecurityQuestion(question,answer);
+            return user.CheckSecurityQuestion((SecurityQuestionsEnum)question, answer) && user.SetPassword(newPassword);
+
         }
 
-        public bool SetUserPassword(string forumName, string username, string newPassword)
+        public bool SetUserPassword(string forumName, string username, string oldPassword, string newPassword)
         {
             IForum forum = GetForum(forumName);
             IUser user = forum.getUser(username);
-            return user.SetPassword(newPassword);
+            return user.SetPassword(oldPassword, newPassword);
+        }
+        public void AddComplaint(string forumName, string subforum, string username)
+        {
+            IForum forum = GetForum(forumName);
+            forum.AddComplaint(subforum, username);
+        }
+        public bool CheckPasswordValidity(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            if (forum == null)
+                return true;
+            if (forum.getUser(username) == null)
+                return true;
+            PolicyParametersObject expPass = new PolicyParametersObject(Policies.PasswordValidity);
+            Policy p = forum.GetPolicy();
+            while (p != null)
+            {
+                if (p is PasswordPolicy)
+                {
+                    if (((PasswordPolicy)p).passwordValidity < (DateTime.Now - forum.getUser(username).GetDateOfPassLastChange()).TotalDays)
+                        return false;
+                    break;
+                }
+                p = p.NextPolicy;
+            }
+            return true;
+        }
+        public void DeactivateUser(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            if (forum != null)
+                forum.DeactivateUser(username);
+        }
+
+        public int getNumOfPostsInSubForum(string forumName, string subForumName)
+        {
+            int total = 0;
+            IForum forum = GetForum(forumName);
+
+            ISubForum sub = forum.getSubForum(subForumName);
+            foreach (Thread thread in sub.GetThreads())
+            {
+                total += thread.GetNumOfNestedReplies();
+            }
+
+
+            return total;
+        }
+
+
+        public bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, int postId)
+        {
+            IForum forum = GetForum(forumName);
+            ISubForum subforum = forum.getSubForum(subForumName);
+
+
+            IUser user = forum.getUser(username);
+            if (user.getType() is Admin)
+                return true;
+
+            Moderator mod = subforum.getModeratorByUserName(username);
+            if (mod != null)
+            {
+                if (mod.hasSeniority())
+                    return true;
+            }
+
+
+            Thread thread = subforum.GetThreadById(threadId);
+            Post post = thread.GetPostById(postId);
+            return post.getPublisher().getUsername().Equals(username);
+
+        }
+        public bool isBanned(string forumName, string userName)
+        {
+            IForum forum = GetForum(forumName);
+            if (forum.getUser(userName) == null)
+                return false;
+            return forum.isBanned(userName);
+        }
+
+
+        public bool AddAdmin(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            return forum.AddAdmin(username);
+        }
+
+        public PrivateMessage GetPrivateMsg(string forumName, string msgReceiver, string msgSender, int pmID)
+        {
+            IForum forum = GetForum(forumName);
+            IUser receiver = forum.getUser(msgReceiver);
+            if (receiver == null)
+                return null;
+            return receiver.GetPrivateMsg(pmID);
+        }
+        public List<PrivateMessage> getReceivedMessages(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(username);
+            if (user == null)
+                return null;
+            return user.getReceivedMessages();
+        }
+
+
+        public List<string> getUsersFriends(string forumName, string userName)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(userName);
+
+            List<IUser> friends = user.GetFriendsList();
+            if (friends == null)
+                return new List<string>();
+            List<string> res = new List<string>();
+            foreach (IUser u in friends)
+            {
+                res.Add(u.getUsername());
+            }
+            return res;
+        }
+
+        public void LogoutAll()
+        {
+            // SuperAdmin.GetInstance().LogoutAll();
+        }
+
+        public void removeFriend(string forumName, string userName, string friendUserName)
+        {
+            IForum forum = GetForum(forumName);
+            IUser user = forum.getUser(userName);
+            IUser friend = forum.getUser(friendUserName);
+            user.removeFriend(friend);
+        }
+
+        public List<string> getNonAdmins(string forumName)
+        {
+            IForum forum = GetForum(forumName);
+            List<IUser> users = forum.getUsersInForum();
+            List<string> res = new List<string>();
+            if (users == null)
+                return new List<string>();
+            foreach (IUser user in users)
+            {
+                if (!(user.getType() is Admin))
+                    res.Add(user.getUsername());
+            }
+
+            return res;
+        }
+        public bool RemoveAdmin(string forumName, string username)
+        {
+            IForum forum = GetForum(forumName);
+            if (forum == null)
+                return false;
+            return forum.RemoveAdmin(username);
         }
     }
 }

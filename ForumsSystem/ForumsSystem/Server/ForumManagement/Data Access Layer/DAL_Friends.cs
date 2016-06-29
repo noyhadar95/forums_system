@@ -68,7 +68,7 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
             Connect_to_DB();
             OleDbCommand cmd = new OleDbCommand();
             cmd.CommandText = "Delete From [Friends] Where [ForumName]=@p1 AND"+
-                "(([UserName]=@p2 AND [FriendUserName]=@p3) OR ([UserName]=@p3 AND [FriendUserName]=@p2)";
+                "(([UserName]=@p2 AND [FriendUserName]=@p3) OR ([UserName]=@p3 AND [FriendUserName]=@p2))";
 
 
 

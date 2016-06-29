@@ -15,7 +15,7 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
 
         List<ISubForum> GetSubForums();
             bool AddPolicy(Policy policy);
-        void SetPolicy(Policy policy);
+        bool SetPolicy(Policy policy);
 
         void RemovePolicy(Policies policyType);
 
@@ -47,5 +47,15 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
         List<IUser> getUsersInForum();
 
         bool CheckRegistrationPolicies(string password, DateTime dateOfBirth);
+
+
+
+        bool ShouldNotify(string notifier, string username);
+
+        void AddComplaint(string subforum, string username);
+        void DeactivateUser (string username);
+        bool isBanned(string userName);
+       bool AddAdmin(string username);
+       bool RemoveAdmin(string username);
     }
 }

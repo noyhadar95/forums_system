@@ -19,6 +19,8 @@ namespace ForumsSystemClient.Resources.ForumManagement.DomainLayer
     [KnownType(typeof(ModeratorSuspensionPolicy))]
     [KnownType(typeof(PasswordPolicy))]
     [KnownType(typeof(UsersLoadPolicy))]
+    [KnownType(typeof(InteractivePolicy))]
+    [KnownType(typeof(ModeratorDeletePermissionPolicy))]
     public abstract class Policy
     {
         /* public enum Policies

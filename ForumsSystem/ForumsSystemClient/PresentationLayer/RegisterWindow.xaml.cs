@@ -1,8 +1,11 @@
 ﻿using ForumsSystemClient.CommunicationLayer;
+using ForumsSystemClient.Resources.ForumManagement.DomainLayer;
+using ForumsSystemClient.Resources.UserManagement.DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,16 +34,20 @@ namespace ForumsSystemClient.PresentationLayer
 
             cl = new CL();
             this.forumName = forumName;
+
+            this.SecurityQuestionCB.ItemsSource = SecurityQuestions.questions;//(typeof(SecurityQuestionsEnum)).Cast<SecurityQuestionsEnum>();
+            
+            this.SecurityQuestionCB.SelectedIndex = 0;
         }
 
         private void submitBtn_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: consider forum policies, maybe email confirmation is needed
             string username = usernameTB.Text;
             string password = passwordBox.Password;
             string confPassword = confPasswordBox.Password;
             string email = emailTB.Text;
             DateTime? nullable_dob = dateOfBirthDP.SelectedDate;
+            string answer = SecurityAnswerTB.Text;
 
             // check that all fields are not empty
             if (username == "")
@@ -79,9 +86,58 @@ namespace ForumsSystemClient.PresentationLayer
                 MessageBox.Show("please choose date of birth");
                 return;
             }
+            if (answer == "")
+            {
+                MessageBox.Show("please enter an answer");
+                return;
+            }
+
+            if (cl.CheckIfPolicyExists(forumName, Policies.Password))
+            {
+                Forum forum = cl.GetForum(forumName);
+                Policy p = forum.GetPolicy();
+                while (p != null && p.Type != Policies.Password)
+                    p = p.NextPolicy;
+                if (p != null && password.Length < ((PasswordPolicy)p).RequiredLength)
+                {
+                    MessageBox.Show("password length is required to be at least " + ((PasswordPolicy)p).RequiredLength);
+                    return;
+                }
+            }
+
+
+            Regex rgx = new Regex(@"^[a-z0-9_-]{1,16}$");
+            if (!rgx.IsMatch(username))
+            {
+                MessageBox.Show("Enter valid UserName");
+                return;
+            }
+
+            if (!rgx.IsMatch(password))
+            {
+                MessageBox.Show("Enter valid Password");
+                return;
+            }
+
+            rgx = new Regex(@"^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$");
+            if (!rgx.IsMatch(email))
+            {
+                MessageBox.Show("Enter valid Email");
+                return;
+            }
+
+
+
+
 
             DateTime dob = nullable_dob.Value;
-            bool isRegistered = cl.RegisterToForum(forumName, username, password, email, dob);
+            int question = SecurityQuestionCB.SelectedIndex;
+            bool isRegistered = cl.RegisterToForum(forumName, username, password, email, dob, question,answer);
+            
+
+            
+           
+
             if (isRegistered)
             {
                 MessageBox.Show("you have been successfully registered to the forum");

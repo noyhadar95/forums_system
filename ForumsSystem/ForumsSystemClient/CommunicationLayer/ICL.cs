@@ -30,7 +30,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
         Tuple<User, string> MemberLogin(string forumName, string username, string password);
         Tuple<User, string> MemberLogin(string forumName, string username, string password, string sessionToken);
-        bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob);
+        bool RegisterToForum(string forumName, string guestName, string password, string email, DateTime dob, int question, string answer);
 
 
         bool SendPrivateMessage(string forumName, string from, string to, string title, string content);
@@ -48,7 +48,7 @@ namespace ForumsSystemClient.CommunicationLayer
 
         bool AddModerator(string forumName, string subForumName, string adminUsername, string username, DateTime expiratoinDate);
        // void removeForum(string forumName);
-        bool ConfirmRegistration(string forumName, string username);
+        bool ConfirmRegistration(string forumName, string username, string token);
         bool LoginSuperAdmin(string username, string pass);
         DateTime GetModeratorExpDate(string forumName, string subForumName, string username);
         int CountNestedReplies(string forumName, string subForumName, int threadID, int postID);
@@ -73,7 +73,7 @@ namespace ForumsSystemClient.CommunicationLayer
         Dictionary<string, List<Tuple<string, string>>> GetMultipleUsersInfoBySuperAdmin(string userName, string password);
         void AddFriend(string forumName, string username1, string username2);
 
-        List<Tuple<string, string, DateTime, string, List<Post>>> ReportModeratorsDetails(string forumName, string adminUserName1);
+        List<Tuple<string, string, DateTime, string>> ReportModeratorsDetails(string forumName, string adminUserName1);
         void MemberLogout(string forumName, string username);
         //  Tuple<string, string, DateTime, string> GetModeratorAppointmentsDetails(string forumName, string subForumName, string adminUserName1, string username1);
         List<Post> GetPosts(string forumName, string subforumName, int threadId);
@@ -99,10 +99,36 @@ namespace ForumsSystemClient.CommunicationLayer
         
         List<string> GetFriendRequests(string forumName, string username);
 
-        bool SetUserPassword(string forumName, string username, string newPassword);
-        bool AddSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
-        bool RemoveSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question);
-        bool CheckSecurityQuestion(string forumName, string username, SecurityQuestionsEnum question, string answer);
+        bool SetUserPassword(string forumName, string username, string oldPassword, string newPassword);
+        bool AddSecurityQuestion(string forumName, string username, int question, string answer);
+        bool RemoveSecurityQuestion(string forumName, string username, int question);
+        bool CheckSecurityQuestion(string forumName, string username, int question, string answer, string newPassword);
         List<PrivateMessageNotification> GetPrivateMessageNotifications(string forumName, string username);
+
+
+        int getNumOfPostsInSubForum(string forumName, string subForum);
+        bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, string postId);
+
+        void AddComplaint(string forumName, string subforum, string username);
+        void DeactivateUser(string forumName, string username);
+
+        bool isBanned(string forumName, string userName);
+
+
+        string GetSessionKey(string username, string forumName);
+
+
+        bool HasSeniorityPriviledge(string forumName, string subForumName, int threadId, string username, int postId);
+
+
+        bool AddAdmin(string forumName, string username);
+
+        PrivateMessage GetPrivateMsg(string forumName, string msgReceiver, string msgSender, int pmID);
+        List<PrivateMessage> getReceivedMessages(string forumName, string username);
+
+        bool RemoveAdmin(string forumName, string username);
+        void LogoutAll();
+
+
     }
 }

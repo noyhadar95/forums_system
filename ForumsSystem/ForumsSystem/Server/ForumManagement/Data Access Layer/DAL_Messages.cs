@@ -10,21 +10,30 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
 {
     public class DAL_Messages : DAL_Connection
     {
+        private static int numFailed = 0;
+        static object Lock = new object();
         /// <summary>
         /// Gets the current maximum id of messages
         /// </summary>
         /// <returns></returns>
         public int getMaxId()
         {
-            Connect_to_DB();
-            string sql = "Select MAX(ID) AS MaxId From Messages";
+            try
+            {
+                Connect_to_DB();
+                string sql = "Select MAX(ID) AS MaxId From Messages";
 
-            DataTable tb = connect_me.DownloadData(sql, "Messages");
-            if (tb.Rows.Count == 0)
-                return 0;
-            if (tb.Rows[0][0] == null || tb.Rows[0][0].ToString() == "")
-                return 0;
-            return (int)tb.Rows[0][0];
+                DataTable tb = connect_me.DownloadData(sql, "Messages");
+                if (tb.Rows.Count == 0)
+                    return 0;
+                if (tb.Rows[0][0] == null || tb.Rows[0][0].ToString() == "")
+                    return 0;
+                return (int)tb.Rows[0][0];
+            }
+            catch (Exception e)
+            {
+                return (1000 + numFailed++);
+            }
         }
         /// <summary>
         /// Adds a message to the database
@@ -37,23 +46,26 @@ namespace ForumsSystem.Server.ForumManagement.Data_Access_Layer
         /// <returns>The new message Id</returns>
         public int CreateMessage(string forumName, string senderUserName, string recieverUserName, string title, string content)
         {
-            int newId = getMaxId() + 1;
+            lock (Lock)
+            {
+                int newId = getMaxId() + 1;
 
-            Connect_to_DB();
-            string sql = "Insert into [Messages] values(@p1,@p2,@p3,@p4,@p5,@p6)";
+                Connect_to_DB();
+                string sql = "Insert into [Messages] values(@p1,@p2,@p3,@p4,@p5,@p6)";
 
-            OleDbCommand cmd = new OleDbCommand(sql);
+                OleDbCommand cmd = new OleDbCommand(sql);
 
-            cmd.Parameters.AddWithValue("@p1", newId);
-            cmd.Parameters.AddWithValue("@p2", title);
-            cmd.Parameters.AddWithValue("@p3", content);
-            cmd.Parameters.AddWithValue("@p4", forumName);
-            cmd.Parameters.AddWithValue("@p5", senderUserName);
-            cmd.Parameters.AddWithValue("@p6", recieverUserName);
+                cmd.Parameters.AddWithValue("@p1", newId);
+                cmd.Parameters.AddWithValue("@p2", title);
+                cmd.Parameters.AddWithValue("@p3", content);
+                cmd.Parameters.AddWithValue("@p4", forumName);
+                cmd.Parameters.AddWithValue("@p5", senderUserName);
+                cmd.Parameters.AddWithValue("@p6", recieverUserName);
 
-            connect_me.TakeAction(cmd);
+                connect_me.TakeAction(cmd);
 
-            return newId;
+                return newId;
+            }
         }
 
         public DataTable GetUsersMessages(string forumName, string userName)

@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ForumsSystemClient.PresentationLayer"
         mc:Ignorable="d"
-        Title="EditForumPoliciesWindow" Height="450" Width="951">
+        Title="EditForumPoliciesWindow" Height="480.486" Width="951">
     <Grid x:Name="gridMain">
         <ListView x:Name="forumsListView" HorizontalAlignment="Left" Height="238" Margin="33,53,0,0" VerticalAlignment="Top" Width="437" PreviewMouseLeftButtonUp="forumsListView_PreviewMouseLeftButtonUp"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="348" Margin="547,53,0,0" VerticalAlignment="Top" Width="341" CornerRadius="7">
-            <ScrollViewer HorizontalAlignment="Left" Height="332" VerticalAlignment="Top" Width="326" Margin="5,5,5,5">
-                <StackPanel x:Name="sp_policies" HorizontalAlignment="Left" Height="266" VerticalAlignment="Top" Width="284">
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="369" Margin="547,53,0,0" VerticalAlignment="Top" Width="341" CornerRadius="7">
+            <ScrollViewer HorizontalAlignment="Left" Height="353" VerticalAlignment="Top" Width="326" Margin="5,5,5,5">
+                <StackPanel x:Name="sp_policies" HorizontalAlignment="Left" Height="343" VerticalAlignment="Top" Width="284">
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type CheckBox}">
                             <Setter Property="Margin" Value="0,10,0,0"/>
@@ -29,6 +29,8 @@
                     <CheckBox x:Name="cbUsersLoad" Content="UsersLoad" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="cbPolicy_Checked" Unchecked="cbPolicy_Unchecked"/>
                     <CheckBox x:Name="cbMinimumAge" Content="MinimumAge" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="cbPolicy_Checked" Unchecked="cbPolicy_Unchecked"/>
                     <CheckBox x:Name="cbMaxModerators" Content="MaxModerators" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="cbPolicy_Checked" Unchecked="cbPolicy_Unchecked"/>
+                    <CheckBox x:Name="cbModeratorPermissionToDelete" Content="ModeratorPermissionToDelete" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="cbPolicy_Checked" Unchecked="cbPolicy_Unchecked"/>
+                    <CheckBox x:Name="cbInteractivePolicy" Content="Interactive" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="cbPolicy_Checked" Unchecked="cbPolicy_Unchecked"/>
                 </StackPanel>
             </ScrollViewer>
         </Border>
@@ -37,7 +39,7 @@
             <Grid x:Name="gridPassword" HorizontalAlignment="Left" Height="83" VerticalAlignment="Top" Width="266" Margin="10,33,0,0" >
                 <Label x:Name="label5" Content="length:" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top"/>
                 <ComboBox x:Name="passwordLengthCB" HorizontalAlignment="Left" Margin="133,9,-61,0" VerticalAlignment="Top" Width="120"/>
-                <Label x:Name="label6" Content="validity:" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="label6" Content="validity:(in days)" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
                 <ComboBox x:Name="passwordValidityCB" HorizontalAlignment="Left" Margin="133,36,-61,0" VerticalAlignment="Top" Width="120"/>
             </Grid>
             <Grid x:Name="gridConfidentiality" HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="266" Margin="10,121,0,0">
@@ -84,9 +86,22 @@
             <Grid x:Name="gridMaxModerators" Margin="281,272,117,178">
                 <ComboBox x:Name="maxModsCB" HorizontalAlignment="Left" Margin="96,10,0,0" VerticalAlignment="Top" Width="120"/>
             </Grid>
+            <Grid x:Name="gridModeratorPermissionToDelete" Margin="367,340,29,110">
+                <ComboBox x:Name="modPerToDeleteCB" HorizontalAlignment="Left" Margin="96,10,0,0" VerticalAlignment="Top" Width="120">
+                    <ComboBoxItem IsSelected="True" Content="yes"/>
+                    <ComboBoxItem Content="no"/>
+                </ComboBox>
+            </Grid>
+            <Grid x:Name="gridInteractivePolicy" Margin="367,395,29,55">
+                <ComboBox x:Name="interactivePolicyCB" HorizontalAlignment="Left" Margin="96,10,0,0" VerticalAlignment="Top" Width="120">
+                    <ComboBoxItem IsSelected="True" Content="online only"/>
+                    <ComboBoxItem Content="offline and online"/>
+                    <ComboBoxItem Content="selective"/>
+                </ComboBox>
+            </Grid>
         </Grid>
-        <Button x:Name="submitBtn" Content="edit forum" TabIndex="1" HorizontalAlignment="Left" Margin="362,371,0,0" VerticalAlignment="Top" Width="108" Height="30" Click="submitBtn_Click" />
-        <Button x:Name="cancelBtn" Content="cancel" TabIndex="2" HorizontalAlignment="Left" Margin="44,371,0,0" VerticalAlignment="Top" Width="108" Height="30" Click="cancelBtn_Click" />
+        <Button x:Name="submitBtn" Content="edit forum" TabIndex="1" HorizontalAlignment="Left" Margin="362,388,0,0" VerticalAlignment="Top" Width="108" Height="30" Click="submitBtn_Click" />
+        <Button x:Name="cancelBtn" Content="cancel" TabIndex="2" HorizontalAlignment="Left" Margin="33,388,0,0" VerticalAlignment="Top" Width="108" Height="30" Click="cancelBtn_Click" />
         <Label x:Name="chooseForumLbl" Content="choose a forum to edit:" HorizontalAlignment="Left" Margin="33,15,0,0" VerticalAlignment="Top" Width="146"/>
 
     </Grid>

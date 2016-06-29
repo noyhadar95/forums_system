@@ -203,6 +203,8 @@ namespace ForumsSystem.Server.ForumManagement.DomainLayer
             if (!mod.CanBeDeletedBy(remover))
                 return false;
             moderators.Remove(moderator);
+            DAL_Moderators dm = new DAL_Moderators();
+            dm.DeleteModerator(this.forum.getName(), this.name, moderator);
             Loggers.Logger.GetInstance().AddActivityEntry("Moderator: " + moderator + "removes from subforum: " + this.name );
             return true;
         }

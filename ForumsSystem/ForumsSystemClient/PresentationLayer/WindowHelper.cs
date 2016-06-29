@@ -17,7 +17,7 @@ namespace ForumsSystemClient.PresentationLayer
         // that the user is logged in.
         private static Dictionary<string, User> loggedUsers = new Dictionary<string, User>();
         private static SuperAdmin loggedSuperAdmin = null;
-        private static INotifiableWindow currentNotifyWin;
+        private static INotifiableWindow currentNotifyWin = null;
 
 
         // not including super admin
@@ -88,14 +88,25 @@ namespace ForumsSystemClient.PresentationLayer
 
         public static void SwitchWindow(Window oldWin, Window newWin)
         {
-            newWin.Left = oldWin.Left;
-            newWin.Top = oldWin.Top;
-            newWin.Show();
+            ShowWindow(oldWin, newWin);
             oldWin.Close();
 
             // handle INotifiableWindow
             if (newWin is INotifiableWindow)
-                currentNotifyWin = (INotifiableWindow)newWin;
+            {
+                if (currentNotifyWin != null && IsLoggedUser(currentNotifyWin.GetForumName()))
+                {
+                    int friendReqNum = currentNotifyWin.GetFRNotifNum();
+                    int privateMsgNum = currentNotifyWin.GetPMNotifNum();
+                    // TODO: add post notif
+                    currentNotifyWin = (INotifiableWindow)newWin;
+                    currentNotifyWin.NotifyFriendRequests(friendReqNum);
+                    currentNotifyWin.NotifyPrivateMessages(privateMsgNum);
+                }
+                else
+                    currentNotifyWin = (INotifiableWindow)newWin;
+
+            }
         }
 
         // show newWin without closing oldWin.
@@ -125,6 +136,18 @@ namespace ForumsSystemClient.PresentationLayer
             if (currentNotifyWin != null)
             {
                 currentNotifyWin.NotifyPrivateMessages(privateMsgsNum);
+            }
+        }
+        public static void ShowNoConnectionAlert()
+        {
+            MessageBox.Show("Whoops!\nIt seems as if we were ubable to connect to the server.\nPlease try again later.");
+        }
+
+        public static void NotifyPosts(int postsNum)
+        {
+            if (currentNotifyWin != null)
+            {
+                currentNotifyWin.NotifyPosts(postsNum);
             }
         }
 

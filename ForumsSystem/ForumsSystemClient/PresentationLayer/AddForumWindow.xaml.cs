@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,26 +24,25 @@ namespace ForumsSystemClient.PresentationLayer
     /// </summary>
     public partial class AddForumWindow : Window
     {
-        // TODO:: SET THE MAX VALUES
         // password
         public static int MAX_PASS_LENGTH = 12;
-        public static int MAX_PASS_VALIDITY = 12; // in days
+        public static int MAX_PASS_VALIDITY = 30; // in days
         // mod appointment
-        public static int MAX_MOD_SENIORITY = 12;
+        public static int MAX_MOD_SENIORITY = 30;
         public static int MAX_MOD_MSGS = 12;
         public static int MAX_MOD_APP_COMPLAINTS = 5;
         // admin appointment
-        public static int MAX_ADMIN_SENIORITY = 12;
+        public static int MAX_ADMIN_SENIORITY = 30;
         public static int MAX_ADMIN_MSGS = 12;
         public static int MAX_ADMIN_COMPLAINTS = 5;
         // mod suspension
-        public static int MAX_MOD_SUSP_COMPLAINTS = 5;
+        public static int MAX_MOD_SUSP_COMPLAINTS = 10;
         // member suspension
-        public static int MAX_MEMBER_SUSP_COMPLAINTS = 5;
+        public static int MAX_MEMBER_SUSP_COMPLAINTS = 10;
         // users load
         public static int MAX_USERS = 100;
         // minimum age
-        public static int MIN_AGE = 12;
+        public static int MIN_AGE = 21;
         // max moderators
         public static int MAX_MODS = 5;
 
@@ -123,6 +123,8 @@ namespace ForumsSystemClient.PresentationLayer
             policiesCBGridDict.Add(cbUsersLoad, gridUsersLoad);
             policiesCBGridDict.Add(cbMinimumAge, gridMinimumAge);
             policiesCBGridDict.Add(cbMaxModerators, gridMaxModerators);
+            policiesCBGridDict.Add(cbModeratorPermissionToDelete, gridModeratorPermissionToDelete);
+            policiesCBGridDict.Add(cbInteractivePolicy, gridInteractivePolicy);
         }
 
         private void HidePoliciesGrids()
@@ -136,6 +138,8 @@ namespace ForumsSystemClient.PresentationLayer
             gridPolicies.Children.Remove(gridUsersLoad);
             gridPolicies.Children.Remove(gridMinimumAge);
             gridPolicies.Children.Remove(gridMaxModerators);
+            gridPolicies.Children.Remove(gridModeratorPermissionToDelete);
+            gridPolicies.Children.Remove(gridInteractivePolicy);
         }
 
         public void AddAdmin(User admin)
@@ -153,17 +157,35 @@ namespace ForumsSystemClient.PresentationLayer
                 MessageBox.Show("please enter the name of the forum");
                 return;
             }
+            if (admins.Count == 0)
+            {
+                MessageBox.Show("please add at least 1 admin for the forum");
+                return;
+            }
             if (!WindowHelper.IsLoggedSuperAdmin())
             {
                 MessageBox.Show("error: super admin is not logged in");
                 return;
             }
+
+
+            Regex rgx = new Regex(@"^[a-z0-9_-]{1,30}$");
+            if (!rgx.IsMatch(forumName))
+            {
+                MessageBox.Show("Enter valid Forum Name");
+                return;
+            }
+
+
             SuperAdmin creator = WindowHelper.GetLoggedSuperAdmin();
 
             Policy policy = GetForumPolicy();
-            cl.CreateForum(creator.userName, creator.password, forumName, policy, admins);
 
-            WindowHelper.SwitchWindow(this, new MainWindow());
+            Forum forum = cl.CreateForum(creator.userName, creator.password, forumName, policy, admins);
+            if (forum != null)
+                WindowHelper.SwitchWindow(this, new MainWindow());
+            else
+                MessageBox.Show("forum creation was unsuccessfull, please try again");
         }
 
         private Policy GetForumPolicy()
@@ -172,7 +194,7 @@ namespace ForumsSystemClient.PresentationLayer
 
             if (cbPassword.IsChecked == true)
             {
-                policyList.Add(new PasswordPolicy(Policies.Password, (int)passwordLengthCB.SelectedItem, (int)passwordValidityCB.SelectedItem));
+                policyList.Add(new PasswordPolicy(Policies.Password, (int)passwordLengthCB.SelectionBoxItem, (int)passwordValidityCB.SelectionBoxItem));
             }
             if (cbAuthentication.IsChecked == true)
             {
@@ -180,37 +202,60 @@ namespace ForumsSystemClient.PresentationLayer
             }
             if (cbConfidentiality.IsChecked == true)
             {
-                policyList.Add(new ConfidentialityPolicy(Policies.Confidentiality, (bool)confidentialityBlockPassCB.SelectedItem));
+                policyList.Add(new ConfidentialityPolicy(Policies.Confidentiality, WordToBool((string)confidentialityBlockPassCB.SelectionBoxItem)));
             }
             if (cbModeratorAppointment.IsChecked == true)
             {
-                policyList.Add(new ModeratorAppointmentPolicy(Policies.ModeratorAppointment, (int)modSeniorityCB.SelectedItem, (int)modNumOfMessagesCB.SelectedItem,
-                    (int)modNumOfComplaintsCB.SelectedItem));
+                policyList.Add(new ModeratorAppointmentPolicy(Policies.ModeratorAppointment, (int)modSeniorityCB.SelectionBoxItem, (int)modNumOfMessagesCB.SelectionBoxItem,
+                    (int)modNumOfComplaintsCB.SelectionBoxItem));
             }
             if (cbAdminAppointment.IsChecked == true)
             {
-                policyList.Add(new AdminAppointmentPolicy(Policies.AdminAppointment, (int)adminSeniorityCB.SelectedItem, (int)adminNumOfMessagesCB.SelectedItem,
-                    (int)adminNumOfComplaintsCB.SelectedItem));
+                policyList.Add(new AdminAppointmentPolicy(Policies.AdminAppointment, (int)adminSeniorityCB.SelectionBoxItem, (int)adminNumOfMessagesCB.SelectionBoxItem,
+                    (int)adminNumOfComplaintsCB.SelectionBoxItem));
             }
             if (cbModeratorSuspension.IsChecked == true)
             {
-                policyList.Add(new ModeratorSuspensionPolicy(Policies.ModeratorSuspension, (int)modSuspNumOfComplCB.SelectedItem));
+                policyList.Add(new ModeratorSuspensionPolicy(Policies.ModeratorSuspension, (int)modSuspNumOfComplCB.SelectionBoxItem));
             }
             if (cbMemberSuspension.IsChecked == true)
             {
-                policyList.Add(new MemberSuspensionPolicy(Policies.MemberSuspension, (int)memberSuspNumOfComplCB.SelectedItem));
+                policyList.Add(new MemberSuspensionPolicy(Policies.MemberSuspension, (int)memberSuspNumOfComplCB.SelectionBoxItem));
             }
             if (cbUsersLoad.IsChecked == true)
             {
-                policyList.Add(new UsersLoadPolicy(Policies.UsersLoad, (int)maxUsersCB.SelectedItem));
+                policyList.Add(new UsersLoadPolicy(Policies.UsersLoad, (int)maxUsersCB.SelectionBoxItem));
             }
             if (cbMinimumAge.IsChecked == true)
             {
-                policyList.Add(new MinimumAgePolicy(Policies.MinimumAge, (int)minAgeCB.SelectedItem));
+                policyList.Add(new MinimumAgePolicy(Policies.MinimumAge, (int)minAgeCB.SelectionBoxItem));
             }
             if (cbMaxModerators.IsChecked == true)
             {
-                policyList.Add(new MaxModeratorsPolicy(Policies.MaxModerators, (int)maxModsCB.SelectedItem));
+                policyList.Add(new MaxModeratorsPolicy(Policies.MaxModerators, (int)maxModsCB.SelectionBoxItem));
+            }
+            if (cbModeratorPermissionToDelete.IsChecked == true)
+            {
+                policyList.Add(new ModeratorDeletePermissionPolicy(Policies.ModeratorPermissionToDelete, WordToBool((string)modPerToDeleteCB.SelectionBoxItem)));
+            }
+            if (cbInteractivePolicy.IsChecked == true)
+            {
+                int notifMode = 0;
+                switch ((string)interactivePolicyCB.SelectionBoxItem)
+                {
+                    case "online only":
+                        notifMode = 0;
+                        break;
+                    case "offline and online":
+                        notifMode = 1;
+                        break;
+                    case "selective":
+                        notifMode = 2;
+                        break;
+                    default:
+                        break;
+                }
+                policyList.Add(new InteractivePolicy(Policies.InteractivePolicy, notifMode));
             }
 
             // check if no policy has been chosen
@@ -228,6 +273,13 @@ namespace ForumsSystemClient.PresentationLayer
             }
 
             return policyHead;
+        }
+
+        private bool WordToBool(string word)
+        {
+            if (word == "yes")
+                return true;
+            else return false;
         }
 
 

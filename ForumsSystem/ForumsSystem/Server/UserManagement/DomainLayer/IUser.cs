@@ -19,7 +19,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         Post postReply(Post parent, Thread thread, string title, string content);
         Thread createThread(ISubForum subForum, string title, string content);
         bool editPost(string title, string content, Post post);
-        bool deletePost(Post post);
+        bool deletePost(Post post,string subforum);
         void AddPostNotification(Post post, NotificationType type);
         List<PostNotification> GetPostNotifications();
 
@@ -64,7 +64,7 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         bool ChangeForumProperties(IForum forum, Policy properties);
         bool DeleteForumProperties(IForum forum, List<Policies> properties);
 
-        void AcceptEmail();
+        bool AcceptEmail(string token);
         bool IsMessageSent(string msgTitle, string msgContent);
         bool IsMessageReceived(string msgTitle, string msgContent);
 
@@ -79,13 +79,13 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
 
 
 
-        bool SetPassword(string password);
+        bool SetPassword(string oldPassword, string newPassword);
 
         DateTime GetDateOfPassLastChange();
 
         int ReportNumOfPostsInSubForum(ISubForum subForum);
 
-        List<Tuple<string, string, DateTime, string, List<Post>>> ReportModerators();
+        List<Tuple<string, string, DateTime, string>> ReportModerators();
 
         string GetTypeString();
 
@@ -101,7 +101,10 @@ namespace ForumsSystem.Server.UserManagement.DomainLayer
         bool AddSecurityQuestion(SecurityQuestionsEnum question, string answer);
         bool RemoveSecurityQuestion(SecurityQuestionsEnum question);
         bool CheckSecurityQuestion(SecurityQuestionsEnum question, string answer);
-
+        void AddComplaint(bool isModerator);
+        void DeactivateUser();
+        bool SetPassword(string newPassword);
+        PrivateMessage GetPrivateMsg(int pmID);
 
     }
 
